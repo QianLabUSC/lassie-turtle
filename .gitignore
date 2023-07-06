@@ -1,0 +1,6 @@
+build/*
+devel/*
+logs/*
+site/*
+.catkin_tools/*
+.devcontainer/*
