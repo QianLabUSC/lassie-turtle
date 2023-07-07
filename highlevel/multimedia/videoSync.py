@@ -11,38 +11,42 @@ import time
 import os
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import Bool
-
+from std_msgs.msg import Bool, String
+from traveler_msgs.msg import TravelerConfig
+import datetime
 WIDTH = 1280
 HEIGHT = 720
 WIDTH_2K = 2560
 HEIGHT_2K = 1440
 
-class Recorder(Node):
-    def __init__(self, filename, running_scenario, scale_size=1):
-        super().__init__('video_recorder')
-        self.filename = filename
-        REC_FOLDER = "experiment_video/" + running_scenario + "/camera_1/"
-        if not os.path.exists(os.path.dirname(REC_FOLDER + filename)):
-            os.makedirs(os.path.dirname(REC_FOLDER + filename))
-        self.video_thread = self.VideoRecorder(self, REC_FOLDER + filename, scale_size)
+class VideoSync(Node):
+    def __init__(self):
+        super().__init__('video_sync')
+        self.filename = "defaultfilename"
+        self.running_scenario = "defaultscenario"
+        self.video_thread = None
 
-        self.subscription = self.create_subscription(
-            Bool,
-            'travelerleg_start',
-            self.start_stop_callback,
+        self.subscription_start = self.create_subscription(
+            TravelerConfig,
+            'travelerleg/config',
+            self.gui_callback,
             10
         )
+        
         self.is_recording = False
 
-    def start_stop_callback(self, msg):
-        if msg.data and not self.is_recording:
+    def gui_callback(self, msg):
+        self.filename = msg.filename
+        self.running_scenario = msg.running_scenario
+        if msg.start_flag and not self.is_recording:
             self.startRecording()
-        elif not msg.data and self.is_recording:
+        elif not msg.start_flag and self.is_recording:
             self.stopRecording()
             self.saveRecording()
 
+
     def startRecording(self):
+        self.video_thread = self.VideoRecorder(self, self.filename, self.running_scenario)
         self.video_thread.start()
         self.is_recording = True
 
@@ -57,39 +61,45 @@ class Recorder(Node):
     class VideoRecorder():
         "Video class based on openCV"
 
-        def __init__(self, recorder, name, scale_size, fourcc="MJPG", frameSize=(1920, 1090), camindex=0, fps=30):
+        def __init__(self, recorder, filename, running_scenario, scale_size=1, fourcc="MJPG", frameSize=(1920, 1090), camindex=0, fps=30):
             self.recorder = recorder
             self.open = True
             self.duration = 0
             self.device_index = camindex
             self.fps = fps                          # fps should be the minimum constant rate at which the camera can
             self.fourcc = fourcc                    # capture images (with no decrease in speed over time; testing is required)
-            self.video_filename = name + ".avi"     # video formats and sizes also depend and vary according to the camera used
+            current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            self.video_filename = filename + "_" + current_time + ".avi"     # video formats and sizes also depend and vary according to the camera used
+            self.running_scenario = running_scenario
+            REC_FOLDER = "experiment_video/" + self.running_scenario + "/"
+            
+            if not os.path.exists(os.path.dirname(REC_FOLDER + self.video_filename)):
+                os.makedirs(os.path.dirname(REC_FOLDER + self.video_filename))
             self.video_cap = cv2.VideoCapture("/dev/video0")
             self.frame_size = frameSize
-            self.scale = scale_size
+            self.scale = 1
 
             self.video_cap.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
             self.video_cap.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH*self.scale)
             self.video_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT*self.scale)
             self.video_writer = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
-            self.video_out = cv2.VideoWriter(self.video_filename, self.video_writer, self.fps, self.frame_size)
+            self.video_out = cv2.VideoWriter(REC_FOLDER + 'test.avi', self.video_writer, self.fps, self.frame_size)
             self.frame_counts = 1
             self.start_time = time.time()
 
             self.openCvVidCapIds = []
 
         def record(self):
-            width = int(self.video_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-            height = int(self.video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-            fps = self.video_cap.get(cv2.CAP_PROP_FPS)
+            # width = int(self.video_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            # height = int(self.video_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            # fps = self.video_cap.get(cv2.CAP_PROP_FPS)
 
             "Video starts being recorded"
             counter = 1
             while self.open:
                 ret, video_frame = self.video_cap.read()
                 if ret:
-                    cv2.imshow('frame', video_frame)
+                    # cv2.imshow('frame', video_frame)
 
                     # scale the frame
                     dim = tuple([int(1 * x) for x in self.frame_size])
@@ -111,7 +121,7 @@ class Recorder(Node):
 
         def stop(self):
             "Finishes the video recording therefore the thread too"
-            self.open=False
+            self.open = False
 
         def start(self):
             "Launches the video recording function using a thread"
@@ -125,6 +135,6 @@ class Recorder(Node):
 
 if __name__ == '__main__':
     rclpy.init()
-    recorder = Recorder("test1", "MiniRhex")
+    recorder = VideoSync()
     rclpy.spin(recorder)
     rclpy.shutdown()
