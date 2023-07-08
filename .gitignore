@@ -4,3 +4,4 @@ logs/*
 site/*
 .catkin_tools/*
 .devcontainer/*
+.vscode/*
