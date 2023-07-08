@@ -60,12 +60,14 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     git \
     vim \
-    ros-dev-tools ros-humble-teleop-twist-keyboard xclip ros-humble-webots-ros2 webots\
+    ros-dev-tools ros-humble-teleop-twist-keyboard xclip\
     libusb-1.0-0-dev ros-humble-ros2-control ros-humble-ros2-controllers ros-humble-xacro\
+    # ros-humble-webots-ros2 webots\
     && pip3 install odrive==0.5.3.post0 \
-    && pip3 install serial Kivy==2.1.0 kivymd==0.104.2 matplotlib numpy kivy-garden\
-    && chmod +777 /usr/local/bin/garden \
-    && /usr/local/bin/garden install matplotlib
+    && pip3 install serial matplotlib numpy
+    # && pip3 install serial Kivy==2.1.0 kivymd==0.104.2 matplotlib numpy kivy-garden\
+    # && chmod +777 /usr/local/bin/garden \
+    # && /usr/local/bin/garden install matplotlib
 
 ENV DEBIAN_FRONTEND=noninteractive   
 # Install colcon
@@ -74,7 +76,7 @@ RUN apt-get -y update \
   && sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/main `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list' \
   && curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add - \
   && apt -y update \
-  && apt -y install python3-colcon-common-extensions
+  && apt -y install python3-colcon-common-extensions ros-humble-rosbridge-server ros-humble-geographic-msgs
   
 
 ARG USERNAME=traveler
@@ -91,9 +93,9 @@ RUN groupadd --gid $USER_GID $USERNAME \
   && chmod 0440 /etc/sudoers.d/$USERNAME \
   # # Cleanup
   # && rm -rf /var/lib/apt/lists/* \
-  && echo "if [ -f /opt/ros/${ROS_DISTRO}/setup.bash ]; then source /opt/ros/${ROS_DISTRO}/setup.bash; fi" >> /home/$USERNAME/.bashrc
-  
+  && echo "if [ -f /opt/ros/humble/setup.bash ]; then source /opt/ros/humble/setup.bash; fi" >> /home/$USERNAME/.bashrc\
+  && echo "if [ -f /home/traveler/install/setup.bash ]; then source /home/traveler/install/setup.bash; fi" >> /home/$USERNAME/.bashrc
 ENV DEBIAN_FRONTEND=noninteractive
 USER $USERNAME
-RUN /usr/local/bin/garden install matplotlib
+# RUN /usr/local/bin/garden install matplotlib
  

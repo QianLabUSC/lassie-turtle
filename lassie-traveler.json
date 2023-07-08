@@ -1,0 +1,175 @@
+{
+  "configById": {
+    "Plot!4a4mjhm": {
+      "paths": [
+        {
+          "value": "",
+          "enabled": true,
+          "timestampMethod": "receiveTime"
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "foxglovePanelTitle": "Plot",
+      "title": "Plot"
+    },
+    "RosOut!avet31": {
+      "searchTerms": [],
+      "minLogLevel": 1
+    },
+    "Image!4a01fnn": {
+      "cameraState": {
+        "distance": 20,
+        "perspective": true,
+        "phi": 60,
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOffset": [
+          0,
+          0,
+          0
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "thetaOffset": 45,
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-pose",
+      "scene": {},
+      "transforms": {},
+      "topics": {},
+      "layers": {},
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "Gauge!3vspn5n": {
+      "path": "",
+      "minValue": 0,
+      "maxValue": 1,
+      "colorMap": "red-yellow-green",
+      "colorMode": "colormap",
+      "gradient": [
+        "#0000ff",
+        "#ff00ff"
+      ],
+      "reverse": false
+    },
+    "Teleop!ljwm6l": {
+      "publishRate": 1,
+      "upButton": {
+        "field": "linear-x",
+        "value": 1
+      },
+      "downButton": {
+        "field": "linear-x",
+        "value": -1
+      },
+      "leftButton": {
+        "field": "angular-z",
+        "value": 1
+      },
+      "rightButton": {
+        "field": "angular-z",
+        "value": -1
+      }
+    },
+    "Tab!5gaqaz": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Data Plot",
+          "layout": "Plot!4a4mjhm"
+        }
+      ]
+    },
+    "Tab!4jt6auz": {
+      "activeTabIdx": 0,
+      "tabs": [
+        {
+          "title": "Log",
+          "layout": "RosOut!avet31"
+        },
+        {
+          "title": "Camera",
+          "layout": "Image!4a01fnn"
+        }
+      ]
+    },
+    "Publish!20dvf06": {
+      "topicName": "/travelerleg/config",
+      "datatype": "traveler_msgs/msg/TravelerConfig",
+      "buttonText": "Publish",
+      "buttonTooltip": "0: sit, 1: stand, 2: walk",
+      "buttonColor": "#00A871",
+      "advancedView": true,
+      "value": "{\n  \"start_flag\": false,\n  \"running_scenario\": \"test\",\n  \"filename\": \"test_remote\",\n  \"penetrate_speed\": 1.5\n}",
+      "foxglovePanelTitle": "Traveler Config"
+    },
+    "Publish!4dltzx8": {
+      "topicName": "",
+      "datatype": "",
+      "buttonText": "Publish",
+      "buttonTooltip": "",
+      "buttonColor": "#00A871",
+      "advancedView": true,
+      "value": ""
+    }
+  },
+  "globalVariables": {
+    "globalVariable": 4,
+    "": "\"\"",
+    "test": 8
+  },
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "direction": "row",
+    "first": {
+      "first": "Gauge!3vspn5n",
+      "second": "Teleop!ljwm6l",
+      "direction": "column"
+    },
+    "second": {
+      "direction": "row",
+      "first": {
+        "first": "Tab!5gaqaz",
+        "second": "Tab!4jt6auz",
+        "direction": "column",
+        "splitPercentage": 61.47479307750188
+      },
+      "second": {
+        "first": "Publish!20dvf06",
+        "second": "Publish!4dltzx8",
+        "direction": "column",
+        "splitPercentage": 61.55003762227238
+      },
+      "splitPercentage": 65.74575659082701
+    },
+    "splitPercentage": 20.84870848708487
+  }
+}
