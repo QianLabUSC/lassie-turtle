@@ -23,3 +23,7 @@ once you setup the repo,
 write a launch code in highlevel, main.py, so that you only need to run main.py, that will launch all stuff we need. 
 
 IF you are using another raspberry pi to test, you might need to change the username, host, and remote_folder in the deploy_traveler bash and enter_traveler.sh. 
+
+In the computer, download the foxglove studio to control the robot, link: https://foxglove.dev/studio
+
+and open the layout with lassie-traveler.json, should allow you to control the robot on your commputer, if the computer and rasp are in the same network. 
