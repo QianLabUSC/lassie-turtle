@@ -1,0 +1,3 @@
+extrude_speed_slider,extrude_angle_slider,extrude_length_slider,down_length_slider,down_speed_slider,delay_after_down,shear_length,shear_speed,delay_after_shear,back_speed,moving_speed,moving_step_angle,time_delay,variable1,variable3,search_start,search_end,ground_height,extrude_back_speed
+3,2.0,0.0,4.0,4.0,1.0,3.0,17.0,1.0,0.0,1.0,10.0,5.0,0.0,18.0,0.0,18.0,27.0,17.0,1.0
+time,toeforce_x,toeforce_y,toeforce_x_loadcell,toeforce_yloadcell,toe_position_x,toe_position_y,toe_velocity_x,toe_velocity_y,position,position1,torque,torque1,theta command,length command,state flag,current

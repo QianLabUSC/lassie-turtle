@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the folders to copy
-folders=("docker" "highlevel")
+folders=("docker")
 
 # SSH connection details
 user="ubuntu"

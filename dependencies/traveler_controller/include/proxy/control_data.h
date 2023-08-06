@@ -16,7 +16,8 @@
 #include <vector>
 #include <cmath>
 #include "utils/traveler_utils.h"
-
+#include "traveler_msgs/msg/odrive_status.hpp"
+#include "traveler_msgs/msg/set_input_position.hpp"
 /**
  * The offset positions of the motors are the angles at which the motor will
  * point the control arm directly opposing the encoder's connector
@@ -35,6 +36,7 @@ struct MotorStatus
     float temperature;
     float position;
     float velocity;
+    traveler_msgs::msg::OdriveStatus odrive_status;
 };
 
 struct LegStatus
@@ -67,6 +69,7 @@ struct MotorCommand
     float motor_control_velocity;
     float motor_control_position;
     float motor_control_speed;
+    traveler_msgs::msg::SetInputPosition set_input_position;
 };
 
 struct LegCommand

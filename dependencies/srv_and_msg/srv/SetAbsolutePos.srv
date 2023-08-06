@@ -1,4 +1,0 @@
-uint8 axis
-float32 absolute_pos
----
-bool success

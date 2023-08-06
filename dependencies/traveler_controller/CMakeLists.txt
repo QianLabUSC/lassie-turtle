@@ -16,7 +16,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(control_msgs REQUIRED)
-find_package(odrive_pro_srvs_msgs REQUIRED)
+find_package(traveler_msgs REQUIRED)
 find_package(traveler_msgs REQUIRED)
 #find_package(glog REQUIRED)
 #find_package(Eigen3 REQUIRED)
@@ -29,6 +29,8 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
 )
+
+
 add_executable( traveler_high_controller
     src/main.cpp
 
@@ -40,38 +42,39 @@ add_executable( traveler_high_controller
     src/proxy/lowerproxy.cpp
     src/proxy/upperproxy.cpp
 
+    src/can_driver/can_driver.cpp
+    src/can_driver/socketcan_interface.cpp
+
     src/utils/lowpassfilter.cpp
 )
-# add_executable( shearing_speed
-#     src/shearing.cpp
-
-#     src/controller/controller_monitor.cpp
-#     src/controller/pid_speed_controller.cpp
-#     src/controller/Inverse_kinematics.cpp
-#     src/controller/trajectories_parser.cpp
-
-#     src/proxy/lowerproxy.cpp
-#     src/proxy/upperproxy.cpp
-
-#     # src/utils/lowpassfilter.cpp
-# )
-
-# ament_target_dependencies(shearing_speed rclcpp
-#             std_msgs
-#             control_msgs
-#             odrive_pro_srvs_msgs
-#             traveler_msgs)
-
 ament_target_dependencies(traveler_high_controller 
   rclcpp
   std_msgs
   control_msgs
   traveler_msgs
-  odrive_pro_srvs_msgs
 )
+
+
 install(TARGETS
   traveler_high_controller
   # shearing_speed
   DESTINATION lib/${PROJECT_NAME})
+
+
+## below compile the can node alone and it allows you to subscribe and 
+## publish a message
+add_executable(odrive_can_interface 
+      src/can_driver/odrive_can.cpp
+      # src/can_service.cpp
+      src/can_driver/can_publisher.cpp
+      src/can_driver/socketcan_interface.cpp
+      src/can_driver/can_suber.cpp)
+ament_target_dependencies(odrive_can_interface
+      rclcpp
+      traveler_msgs
+      )
+
+install(TARGETS odrive_can_interface
+        DESTINATION lib/${PROJECT_NAME})
 
 ament_package()

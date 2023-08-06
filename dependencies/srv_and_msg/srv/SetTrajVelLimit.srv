@@ -1,4 +1,0 @@
-uint8 axis
-float32 traj_vel_limit
----
-bool success

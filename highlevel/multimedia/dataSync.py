@@ -30,7 +30,7 @@ class TravelerDataSave(Node):
             TravelerStatus,
             '/traveler/status',
             self.traveler_status_callback,
-            10
+            3000
         )
         self.filename_subscription = self.create_subscription(
            TravelerConfig,
@@ -52,7 +52,7 @@ class TravelerDataSave(Node):
     def traveler_status_callback(self, msg):
         
         if(self.high_data_save_flag):
-            print('go to save mdoe')
+            # print('go to save mdoe')
             rowdict = {
                 self.fieldnames[0]: msg.time,
                 self.fieldnames[1]: msg.toeforce_x,

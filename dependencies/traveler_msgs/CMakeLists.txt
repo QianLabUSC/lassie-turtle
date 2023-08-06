@@ -22,10 +22,43 @@ set(msg_files
   "msg/TravelerStatus.msg"
 
 )
-
+# Add msgs/srvs
+set(odrive_msg_files
+  "odrivemsg/OdriveStatus.msg"
+  "odrivemsg/SetInputPosition.msg"
+)
+set(odrive_srv_files
+  "odrivesrv/SetInputPos.srv"
+  "odrivesrv/SetInputVel.srv"
+  "odrivesrv/SetInputTorque.srv"
+  "odrivesrv/ClearErrors.srv"
+  "odrivesrv/GetEncoderCount.srv"
+  "odrivesrv/GetEncoderError.srv"
+  "odrivesrv/GetEncoderEstimates.srv"
+  "odrivesrv/GetIq.srv"
+  "odrivesrv/GetMotorError.srv"
+  "odrivesrv/GetTemperature.srv"
+  "odrivesrv/GetVbusVoltage.srv"
+  "odrivesrv/OdriveEstop.srv"
+  "odrivesrv/ResetOdrive.srv"
+  "odrivesrv/SetAbsolutePos.srv"
+  "odrivesrv/SetAxisNodeId.srv"
+  "odrivesrv/SetAxisRequestedState.srv"
+  "odrivesrv/SetAxisStartupConfig.srv"
+  "odrivesrv/SetControllerModes.srv"
+  "odrivesrv/SetPosGain.srv"
+  "odrivesrv/SetTrajAccelLimits.srv"
+  "odrivesrv/SetTrajInertia.srv"
+  "odrivesrv/SetTrajVelLimit.srv"
+  "odrivesrv/SetVelGains.srv"
+  "odrivesrv/SetVelLimit.srv"
+  "odrivesrv/StartAnticogging.srv"
+)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
+  ${odrive_msg_files}
+  # ${odrive_srv_files}
 )
 
 # Allows the use of smsgs/srvs defined in this package

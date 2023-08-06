@@ -36,15 +36,15 @@ namespace control
         // joint0_speed_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint0_velocity_controller/commands", 10);
         // joint1_speed_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint0_velocity_controller/commands", 10);
         // controller_state_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/travelerstate", 10);
-        Position_publisher_channel_0 = this->create_publisher<odrive_pro_srvs_msgs::msg::SetInputPosition>("/odrivepos0" , 100);
-        Position_publisher_channel_1 = this->create_publisher<odrive_pro_srvs_msgs::msg::SetInputPosition>("/odrivepos1" , 100);
-        traveler_status_publisher = this->create_publisher<traveler_msgs::msg::TravelerStatus>("/traveler/status", 100);
+        Position_publisher_channel_0 = this->create_publisher<traveler_msgs::msg::SetInputPosition>("/odrivepos0" , 3000);
+        Position_publisher_channel_1 = this->create_publisher<traveler_msgs::msg::SetInputPosition>("/odrivepos1" , 3000);
+        traveler_status_publisher = this->create_publisher<traveler_msgs::msg::TravelerStatus>("/traveler/status", 3000);
         start_time = std::chrono::high_resolution_clock::now();
-        // client_ = this->create_client<odrive_pro_srvs_msgs::srv::SetInputPos>("odrive/set_input_pos");
+        // client_ = this->create_client<traveler_msgs::srv::SetInputPos>("odrive/set_input_pos");
         // Robot_state_publisher = this->create_publisher<travelermsgs::msg::RobotState>
         //     ("/robot_state", 10);
-        Leg1_subscriber = this->create_subscription<odrive_pro_srvs_msgs::msg::OdriveStatus>
-                                ("/odrive/odrive_status", 20, std::bind(&lowerproxy::handle_joint_state, this, _1));
+        // Leg1_subscriber = this->create_subscription<traveler_msgs::msg::OdriveStatus>
+        //                         ("/odrive/odrive_status", 20, std::bind(&lowerproxy::handle_joint_state, this, _1));
 
         _count = 0;
         rclcpp::Clock::SharedPtr clock = this->get_clock();
@@ -194,27 +194,32 @@ namespace control
         traveler_leg_.traveler_chassis.Leg_lf.toe_position.y = leg_length_ * cos(theta_);
     }
 
-    void lowerproxy::handle_joint_state(const odrive_pro_srvs_msgs::msg::OdriveStatus::SharedPtr msg)
+    void lowerproxy::UpdateJoystickStatus(Traveler& traveler_)
     {
+
+        // instead of reading message from ros2, directly call the function 
+        // in odrivepro drive to get the message
+
+        traveler_leg_ = traveler_;
+
         // get raw encoder estimate from ODrive in unit of turns
         // convert to radians
-        _count = _count + 1.0;
-        float pos_estimate_rad = (msg->pos_estimate) * 2 * M_PI;
+        auto odrive0 = traveler_leg_.traveler_chassis.Leg_lf.axis0.odrive_status;
+        auto odrive1 = traveler_leg_.traveler_chassis.Leg_lf.axis1.odrive_status;
+        
+
         // clamp the position estimate from [0, 2pi]
         // pos_estimate_rad = fmodf_0_2pi(pos_estimate_rad);
     
-        if (msg->can_channel==0)
-        {
-            traveler_leg_.traveler_chassis.Leg_lf.axis0.effort = msg->iq_measured * TORQUE_CONST;
-            traveler_leg_.traveler_chassis.Leg_lf.axis0.position = 
-                -1.0f * pos_estimate_rad + M0_OFFSET + (M_PI/2);
-        }
-        else
-        {
-            traveler_leg_.traveler_chassis.Leg_lf.axis1.effort = msg->iq_measured * TORQUE_CONST;
-            traveler_leg_.traveler_chassis.Leg_lf.axis1.position =
-                pos_estimate_rad + (M_PI/2) - M1_OFFSET;
-        }
+      
+        traveler_leg_.traveler_chassis.Leg_lf.axis0.effort = odrive0.iq_measured * TORQUE_CONST;
+        traveler_leg_.traveler_chassis.Leg_lf.axis0.position = 
+            -1.0f * (odrive0.pos_estimate) * 2 * M_PI + M0_OFFSET + (M_PI/2);
+    
+        traveler_leg_.traveler_chassis.Leg_lf.axis1.effort = odrive1.iq_measured * TORQUE_CONST;
+        traveler_leg_.traveler_chassis.Leg_lf.axis1.position =
+            (odrive1.pos_estimate) * 2 * M_PI + (M_PI/2) - M1_OFFSET;
+        
 
         
         calculationHelper();
@@ -240,8 +245,8 @@ namespace control
         traveler_status_msg.time = static_cast<float>(diff.count());
 
         traveler_status_publisher->publish(traveler_status_msg);
-        std::cout<< "time: " << traveler_status_msg.time << "count: " << _count << std::endl;
-        // RCLCPP_INFO(this->get_logger(), "Publisher cjejrererated!!");
+        // std::cout<< "high time: " << traveler_status_msg.time << "count: " << _count << std::endl;
+        traveler_ = traveler_leg_;
         // }
 
 
@@ -298,12 +303,8 @@ namespace control
     {
     }
 
-    void lowerproxy::UpdateJoystickStatus(Traveler &traveler_)
-    {
-        traveler_.traveler_chassis = traveler_leg_.traveler_chassis;
-    }
 
-    void lowerproxy::set_position(Traveler &traveler_ )
+    void lowerproxy::calculate_position(Traveler &traveler_ )
     {
         /**
          * The motor positions must be converted from Radians to Turns
@@ -318,10 +319,10 @@ namespace control
         // axis0_pos = fmodf(axis0_pos, 1.0f);
         // axis1_pos = fmodf(axis1_pos, 1.0f);
         
-        _count = _count + 0.01;
+        // _count = _count + 1;
         //int sign = 0;
 
-        auto message_channel_0 = odrive_pro_srvs_msgs::msg::SetInputPosition();
+        auto message_channel_0 = traveler_msgs::msg::SetInputPosition();
         message_channel_0.can_channel = 0;
         message_channel_0.axis = 0;
         message_channel_0.input_position = axis0_pos;
@@ -329,15 +330,17 @@ namespace control
         message_channel_0.vel_ff = 0;
         message_channel_0.torque_ff = 0;
 
-        auto message_channel_1 = odrive_pro_srvs_msgs::msg::SetInputPosition();
+        auto message_channel_1 = traveler_msgs::msg::SetInputPosition();
         message_channel_1.can_channel = 1;
         message_channel_1.axis = 0;
         message_channel_1.input_position = axis1_pos;
         message_channel_1.vel_ff = 0;
         message_channel_1.torque_ff = 0;
-
-        Position_publisher_channel_0->publish(message_channel_0);
-        Position_publisher_channel_1->publish(message_channel_1);
+        // instead of publiishing to ros topics, publish to local class
+        traveler_.traveler_control.Leg_lf.axis0.set_input_position = message_channel_0;
+        traveler_.traveler_control.Leg_lf.axis1.set_input_position = message_channel_1;
+        // Position_publisher_channel_0->publish(message_channel_0);
+        // Position_publisher_channel_1->publish(message_channel_1);
         
       
     }

@@ -20,6 +20,7 @@ def launch_bridge():
     with open('/dev/null', 'w') as dev_null:
         process = subprocess.Popen(["ros2", "launch", "foxglove_bridge", "foxglove_bridge_launch.xml"], stdout=dev_null, stderr=dev_null)
     return process
+
 def launch_c_node(packagename, nodename):
     process = subprocess.Popen(["ros2", "run", packagename, nodename])
 
@@ -62,11 +63,11 @@ class NodeManager:
 def main():
     """Main function to launch RViz and start node scripts."""
     manager = NodeManager()
-    manager.register('bridge', None, is_bridge=True)
+    # manager.register('bridge', None, is_bridge=True)
     # manager.register('state_estimator', './visualizer/stateEstimator.py')
-    manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
-    manager.register('odrivepro_can_interface', 'odrive_can_interface', isc=True)
-    manager.register('data_sync', './multimedia/dataSync.py')
+    # manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
+    # manager.register('data_sync', './multimedia/dataSync.py')
+    manager.register('gui', './LASSIE_GUI/lassie_gui.py')
     # manager.register('video_sync', './multimedia/dataSync.py')
     # print(manager.nodes)
     manager.block()

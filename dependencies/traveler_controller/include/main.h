@@ -15,6 +15,7 @@
 #include "proxy/lowerproxy.h"
 #include "proxy/upperproxy.h"
 #include "proxy/control_data.h"
+#include "can_driver/can_driver.hpp"
 
 //#include <Eigen/Dense>
 //#include <qpOASES.hpp>

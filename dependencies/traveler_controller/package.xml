@@ -15,7 +15,6 @@
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
   <depend>control_msgs</depend>
-  <depend>odrive_pro_srvs_msgs</depend>
   <depend>traveler_msgs</depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

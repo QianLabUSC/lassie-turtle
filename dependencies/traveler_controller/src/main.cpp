@@ -29,18 +29,24 @@ int main(int argc, char ** argv)
   std::shared_ptr<lowerproxy> Lower_proxy_ = std::make_shared<lowerproxy>();
   // detect motor status, and publish motion command 
   std::shared_ptr<upperproxy> Upper_proxy_ = std::make_shared<upperproxy>();
+  std::shared_ptr<can_driver> Can_driver_  = std::make_shared<can_driver>();
+
   monitor.Init();       //initial monitor
   traj_parser.init();
-  rclcpp::Rate loop_rate(1000);       //renew frequence 100HZ
+  rclcpp::Rate loop_rate(1500);       //renew frequence 100HZ
   while (rclcpp::ok()) {
     rclcpp::spin_some(Upper_proxy_);
-    rclcpp::spin_some(Lower_proxy_);
+    // // remove spin low proxy, because it doesnot need to receive message
+    // // rclcpp::spin_some(Lower_proxy_);
+    // rclcpp::spin_some(Can_driver_);
+    Can_driver_->get_motor_status(traveler_leg_);
     Lower_proxy_->UpdateJoystickStatus(traveler_leg_);             //update leg feedback status
     Upper_proxy_->UpdateGuiCommand(traveler_leg_);             //update gui command
     //printf("traveler extrude angle: %f", traveler_leg_.traj_data.extrude_angle);
     traj_parser.generateTempTraj(traveler_leg_);
     //Lower_proxy_->PublishControlCommand(traveler_leg_);
-    Lower_proxy_->set_position(traveler_leg_);              //publish control command
+    Lower_proxy_->calculate_position(traveler_leg_);             
+    Can_driver_->setControl(traveler_leg_);
     
     // Upper_proxy_->PublishStatusFeedback(traveler_leg_);             //publish current times
     loop_rate.sleep();
