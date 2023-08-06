@@ -18,8 +18,8 @@ parent_dir=$(dirname "$script_dir")
 echo "load thhe folder highlevel in  $parent_dir to docker ..."
 sudo docker run -it -e NEWUID=$(id -u) -e DISPLAY=$DISPLAY	\
         -v /tmp/.X11-unix/:/tmp/.X11-unix/ \
-	-v $parent_dir/src/:/home/traveler/src/ \
 	-v $parent_dir/highlevel/:/home/traveler/highlevel/ \
-	-v $parent_dir/install/:/home/traveler/install/ \
+	-v $parent_dir/experiment_records/:/home/traveler/experiment_records/\
+	-v $parent_dir/dependencies/:/home/traveler/dependencies/ \
 	-v /dev:/dev --privileged \
 	--ipc host --network=host --name=traveler_container  $CONTAINER $*

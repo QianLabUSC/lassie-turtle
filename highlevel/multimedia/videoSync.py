@@ -27,22 +27,37 @@ class VideoSync(Node):
         self.video_thread = None
 
         self.subscription_start = self.create_subscription(
-            TravelerConfig,
-            'travelerleg/config',
+            Bool,
+            'traveler/start_flag',
             self.gui_callback,
+            10
+        )
+
+        self.subscription_start = self.create_subscription(
+            TravelerConfig,
+            'traveler/config',
+            self.config_callback,
             10
         )
         
         self.is_recording = False
+        print('init')
 
-    def gui_callback(self, msg):
+    def config_callback(self, msg):
         self.filename = msg.filename
         self.running_scenario = msg.running_scenario
-        if msg.start_flag and not self.is_recording:
-            self.startRecording()
-        elif not msg.start_flag and self.is_recording:
-            self.stopRecording()
-            self.saveRecording()
+        self.get_logger().warn('scenario and video folder seted')
+
+
+    def gui_callback(self, msg):            
+        
+        if msg.data and not self.is_recording:
+            self.get_logger().warn('save video start at mainboard time')
+            # self.startRecording()
+        elif not msg.data and self.is_recording:
+            self.get_logger().warn('save video stop at mainboard time')
+            # self.stopRecording()
+            # self.saveRecording()
 
 
     def startRecording(self):
@@ -69,13 +84,19 @@ class VideoSync(Node):
             self.fps = fps                          # fps should be the minimum constant rate at which the camera can
             self.fourcc = fourcc                    # capture images (with no decrease in speed over time; testing is required)
             current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-            self.video_filename = filename + "_" + current_time + ".avi"     # video formats and sizes also depend and vary according to the camera used
+            self.video_filename = filename + "_" + current_time + ".avi" # video formats and sizes also depend and vary according to the camera used
             self.running_scenario = running_scenario
+
             REC_FOLDER = "experiment_video/" + self.running_scenario + "/"
-            
-            if not os.path.exists(os.path.dirname(REC_FOLDER + self.video_filename)):
-                os.makedirs(os.path.dirname(REC_FOLDER + self.video_filename))
-            self.video_cap = cv2.VideoCapture("/dev/video0")
+            CURR_FOLDER = os.getcwd()
+            print(CURR_FOLDER)
+            PARAENT_FOLDER = os.path.dirname(CURR_FOLDER)
+            print(PARAENT_FOLDER)
+            COMBINED_PATH = os.path.join(PARAENT_FOLDER, REC_FOLDER + self.video_filename)
+            print(COMBINED_PATH)
+            if not os.path.exists(os.path.dirname(COMBINED_PATH)):
+                os.makedirs(os.path.dirname(COMBINED_PATH))
+            self.video_cap = cv2.VideoCapture("/dev/robocam")
             self.frame_size = frameSize
             self.scale = 1
 
@@ -83,7 +104,8 @@ class VideoSync(Node):
             self.video_cap.set(cv2.CAP_PROP_FRAME_WIDTH, WIDTH*self.scale)
             self.video_cap.set(cv2.CAP_PROP_FRAME_HEIGHT, HEIGHT*self.scale)
             self.video_writer = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
-            self.video_out = cv2.VideoWriter(REC_FOLDER + 'test.avi', self.video_writer, self.fps, self.frame_size)
+            print(COMBINED_PATH)
+            self.video_out = cv2.VideoWriter(COMBINED_PATH, self.video_writer, self.fps, self.frame_size)
             self.frame_counts = 1
             self.start_time = time.time()
 

@@ -1,4 +1,0 @@
-bool start_flag
-string running_scenario
-string filename
-float32 penetrate_speed

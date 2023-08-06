@@ -1,5 +1,5 @@
 import subprocess
-
+import datetime
 
 def launch_rviz(rviz_config):
     """Launches RViz with the given configuration.
@@ -13,11 +13,18 @@ def launch_rviz(rviz_config):
     process = subprocess.Popen(["ros2", "run", "rviz2", "rviz2", "-d", rviz_config])
     return process
 
-def launch_bridge():
-    process = subprocess.Popen(["ros2", "launch", "rosbridge_server", "rosbridge_websocket_launch.xml" ])
-    return process
 
-def start_node(node_script_path):
+    
+def launch_bridge():
+    # Open /dev/null file
+    with open('/dev/null', 'w') as dev_null:
+        process = subprocess.Popen(["ros2", "launch", "foxglove_bridge", "foxglove_bridge_launch.xml"], stdout=dev_null, stderr=dev_null)
+    return process
+def launch_c_node(packagename, nodename):
+    process = subprocess.Popen(["ros2", "run", packagename, nodename])
+
+
+def launch_python_node(node_script_path):
     """Starts a node script as a separate process.
 
     Args:
@@ -30,29 +37,40 @@ def start_node(node_script_path):
     return process
 
 
+class NodeManager:
+    def __init__(self):
+        self.nodes = {}
+
+    def register(self, name, path, is_bridge=False, isc=False):
+        """Register a node."""
+        if is_bridge:
+            self.nodes[name] = launch_bridge()
+        elif isc:
+            self.nodes[name] = launch_c_node(name, path)
+        else:
+            self.nodes[name] = launch_python_node(path)
+
+    def block(self):
+        """Block main thread until all nodes are done."""
+        try:
+            [node.wait() for node in self.nodes.values()]
+        except KeyboardInterrupt:
+            [node.terminate() for node in self.nodes.values()]
+            [node.wait() for node in self.nodes.values()]
+
+
 def main():
-    """Main function to launch RViz and start node scripts.
-    
-    Launches RViz with a given configuration and starts two node scripts.
-    It waits for these processes to complete. If KeyboardInterrupt is caught,
-    it terminates the subprocesses and waits for them to finish.
+    """Main function to launch RViz and start node scripts."""
+    manager = NodeManager()
+    manager.register('bridge', None, is_bridge=True)
+    # manager.register('state_estimator', './visualizer/stateEstimator.py')
+    manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
+    manager.register('odrivepro_can_interface', 'odrive_can_interface', isc=True)
+    manager.register('data_sync', './multimedia/dataSync.py')
+    # manager.register('video_sync', './multimedia/dataSync.py')
+    # print(manager.nodes)
+    manager.block()
 
-    """
-    # rviz_process = launch_rviz('./visualizer/map.rviz')
-    multimedia_collection = start_node('./multimedia/videoSync.py')
-    bridge = launch_bridge()
-
-    try:
-        # rviz_process.wait()
-        multimedia_collection.wait()
-        bridge.wait()
-    except KeyboardInterrupt:
-        # rviz_process.terminate()
-        multimedia_collection.terminate()
-        bridge.terminate()
-        # rviz_process.wait()
-        multimedia_collection.wait()
-        bridge.wait()
 
 
 if __name__ == '__main__':
