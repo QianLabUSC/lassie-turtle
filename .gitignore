@@ -5,3 +5,4 @@ site/*
 .catkin_tools/*
 .devcontainer/*
 .vscode/*
+experiment_records/*
