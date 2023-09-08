@@ -7,15 +7,15 @@
 
 #include "controller/controller_monitor.h"
 
-namespace traveler_namespace{
+namespace turtle_namespace{
 namespace control{
 void ControllerMonitor::Init(){
     pid_controller_ptr_ = new PID_speed_controller();
     pid_controller_ptr_->Init();
 }
 
-void ControllerMonitor::ControlCommand(Traveler& traveler_){
-    pid_controller_ptr_->ComputeControlCommand(traveler_);
+void ControllerMonitor::ControlCommand(turtle& turtle_){
+    pid_controller_ptr_->ComputeControlCommand(turtle_);
 }
 
 
@@ -25,5 +25,5 @@ void ControllerMonitor::ControlCommand(Traveler& traveler_){
 
 
 
-}//namespace control
-}//namespace traveler_namespace
+} //name space control
+} //name space turtle_namespace

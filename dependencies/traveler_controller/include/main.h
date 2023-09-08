@@ -10,13 +10,11 @@
 #define MAIN_H_
 
 #include "controller/controller_monitor.h"
-#include "controller/trajectories_parser.h"
 #include "controller/pid_speed_controller.h"
 #include "proxy/lowerproxy.h"
 #include "proxy/upperproxy.h"
 #include "proxy/control_data.h"
 #include "can_driver/can_driver.hpp"
-
 //#include <Eigen/Dense>
 //#include <qpOASES.hpp>
 //#include <glog/logging.h>
@@ -35,12 +33,17 @@
 using namespace std;
 // using namespace qpOASES;
 
-using traveler_namespace::control::lowerproxy;
-using traveler_namespace::control::upperproxy;
-// using traveler_namespace::control::visualizor;
-using traveler_namespace::control::ControllerMonitor;
-using traveler_namespace::control::TrajectoriesParser;
+using turtle_namespace::control::lowerproxy;
+using turtle_namespace::control::upperproxy;
+// using turtle_namespace::control::visualizor;
+using turtle_namespace::control::ControllerMonitor;
 
-Traveler traveler_leg_; 
+static float init_cnt = 0;
+static int init_done = 0;
+int i = 0;
+static float timer[10] = { 0 };
+int TIME_STEP = 5;
+float dT = TIME_STEP / 1000.;
+turtle  turtle_; 
 
 #endif

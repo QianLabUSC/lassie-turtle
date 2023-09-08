@@ -14,65 +14,47 @@
  * agile taur.
  */
 
-namespace traveler_namespace{
+namespace turtle_namespace{
 namespace control{
 
 upperproxy::upperproxy(std::string name) : Node(name){
     std::cout<<"Traveler Upper Proxy established"
                 <<std::endl;
-    // GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-    //     ("/drag_times", 10);
-    GUI_subscriber = this->create_subscription<traveler_msgs::msg::TravelerConfig>
-        ("/traveler/config", 10, std::bind(&upperproxy::handle_gui, this, _1));
-    start_subscriber = this->create_subscription<traveler_msgs::msg::TravelerMode>
-        ("/traveler/start_flag", 10, std::bind(&upperproxy::handle_start, this, _1));
+    GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/drag_times", 10);
+    GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
+        ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
 }
-
-void upperproxy::handle_start
-    (const traveler_msgs::msg::TravelerMode::SharedPtr msg){
-        traveler_leg.traveler_gui.start_flag = msg->start_flag;
-        traveler_leg.traveler_gui.drag_traj = msg->traveler_mode;
-    }
 
 void upperproxy::handle_gui
-    (const traveler_msgs::msg::TravelerConfig::SharedPtr msg){
+    (const std_msgs::msg::Float64MultiArray::SharedPtr msg){
         // int len = msg->data.size();
-        // traveler_leg.traveler_gui.start_flag = msg->start_flag;
-        // traveler_leg.traveler_gui.drag_traj = msg->drag_traj;
-        traveler_leg.traj_data.extrude_speed = msg->extrude_speed / 100.0f;
-        traveler_leg.traj_data.extrude_angle = (msg->extrude_angle / -180 * M_PI) + M_PI;
-        traveler_leg.traj_data.extrude_depth = msg->extrude_depth / 100.0f;
-        traveler_leg.traj_data.shear_penetration_depth = msg->shear_penetration_depth / 100.0f;
-        traveler_leg.traj_data.shear_penetration_speed = msg->shear_penetration_speed / 100.0f;
-        traveler_leg.traj_data.shear_penetration_delay = msg->shear_penetration_delay;
-        traveler_leg.traj_data.shear_length = msg->shear_length/ 100.0f;
-        traveler_leg.traj_data.shear_speed = msg->shear_speed/ 100.0f;
-        traveler_leg.traj_data.shear_delay = msg->shear_delay;
-        traveler_leg.traj_data.shear_return_speed = msg->shear_return_speed / 100.0f;
-        traveler_leg.traj_data.workspace_angular_speed = msg->workspace_angular_speed / 100.0f;
-        traveler_leg.traj_data.workspace_moving_angle = msg->workspace_moving_angle / 180 * M_PI;
-        traveler_leg.traj_data.workspace_time_delay = msg->workspace_time_delay;
-        traveler_leg.traj_data.static_length = msg->static_length / 100.0f;
-        traveler_leg.traj_data.static_angle = (msg->static_angle / -180 * M_PI) + M_PI;
-        traveler_leg.traj_data.search_start = msg->search_start / 100.0f;
-        traveler_leg.traj_data.search_end = msg->search_end / 100.0f;
-        traveler_leg.traj_data.ground_height = msg->ground_height / 100.0f;
-        traveler_leg.traj_data.back_speed = msg->back_speed / 100.0f;
+        turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
+        turtle_inter_.turtle_gui.drag_traj = msg->data[1];
+        turtle_inter_.traj_data.lateral_angle_range = msg->data[2] * M_PI / 180.0f;
+        turtle_inter_.traj_data.drag_speed = msg->data[3] / 100.0f;
+        turtle_inter_.traj_data.wiggle_time = msg->data[4]/10.0f;
+        turtle_inter_.traj_data.servo_time = msg->data[5] / 10.0f;
+        turtle_inter_.traj_data.extraction_height = msg->data[6] / 100.0f;
+        turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
+        turtle_inter_.traj_data.insertion_angle = msg->data[8] * M_PI / 180.0f;
+        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9] * M_PI / 180.0f;
+        
     }
 
-void upperproxy::UpdateGuiCommand(Traveler& traveler_){
-    traveler_.traveler_gui = traveler_leg.traveler_gui;
-    traveler_.traj_data = traveler_leg.traj_data;
+void upperproxy::UpdateGuiCommand(turtle& turtle_){
+    turtle_.turtle_gui = turtle_inter_.turtle_gui;
+    turtle_.traj_data = turtle_inter_.traj_data;
 }
-// void upperproxy::PublishStatusFeedback(Traveler& traveler_){
-//     if(traveler_.traveler_gui.status_update_flag == true){
-//         auto message = std_msgs::msg::Float64MultiArray();
-//         // std::cout <<  message.data[message.data.size() - 1] << std::endl;
-//         GUI_publisher->publish(message);
-//         traveler_.traveler_gui.status_update_flag = false;
-//     }
+void upperproxy::PublishStatusFeedback(turtle& turtle_){
+    if(turtle_.turtle_gui.status_update_flag == true){
+        auto message = std_msgs::msg::Float64MultiArray();
+        // std::cout <<  message.data[message.data.size() - 1] << std::endl;
+        GUI_publisher->publish(message);
+        turtle_.turtle_gui.status_update_flag = false;
+    }
     
-// }
+}
 
 } //namespace control
-} //namespace traveler_namespace
+} //namespace turtle_namespace

@@ -12,9 +12,9 @@
 #include <string>
 #include "controller/basecontroller.h"
 #include "controller/pid_speed_controller.h"
-#include "proxy/control_data.h"
+#include  "proxy/control_data.h"
 
-namespace traveler_namespace{
+namespace turtle_namespace{
 namespace control{
 
 enum ControllerID {
@@ -28,7 +28,7 @@ class ControllerMonitor{
       return singleton;
     }
     void Init();
-    void ControlCommand(Traveler &);
+    void ControlCommand(turtle &);
   private:
     BaseController* pid_controller_ptr_;
 
@@ -37,7 +37,7 @@ class ControllerMonitor{
 
 
 } //namespace control
-} //namespace traveler_namespace
+} //namespace turtle_namespace
 
 
 #endif

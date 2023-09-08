@@ -1,0 +1,175 @@
+[0.010s] Invoking command in '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/traveler/traveler_msgs:/home/qianlab/traveler_workspace/install/traveler_high_controller:/home/qianlab/traveler_workspace/install/odrive_pro_srvs_msgs:/home/qianlab/lassie-spirit/lassie-spirit/dependencies/spirit_msgs/install/spirit_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12
+[0.031s] [ 35%] Built target odrive_can_interface
+[0.042s] [ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/pid_speed_controller.cpp.o[0m
+[0.042s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[0.043s] [ 57%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[0.043s] [ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[1.004s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:17[m[K,
+[1.004s]                  from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.004s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:17:21:[m[K [01;31m[Kerror: [m[K‘[01m[KTraveler[m[K’ has not been declared
+[1.004s]    17 |     void setControl([01;31m[KTraveler[m[K& traveler_leg_);
+[1.004s]       |                     [01;31m[K^~~~~~~~[m[K
+[1.005s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:18:27:[m[K [01;31m[Kerror: [m[K‘[01m[KTraveler[m[K’ has not been declared
+[1.005s]    18 |     void get_motor_status([01;31m[KTraveler[m[K& traveler_leg_);
+[1.005s]       |                           [01;31m[K^~~~~~~~[m[K
+[1.016s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[1.016s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:34:33:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kturtle[m[K’ to ‘[01m[Kint&[m[K’
+[1.016s]    34 |   Can_driver_->get_motor_status([01;31m[Kturtle_[m[K);
+[1.016s]       |                                 [01;31m[K^~~~~~~[m[K
+[1.016s]       |                                 [01;31m[K|[m[K
+[1.016s]       |                                 [01;31m[Kturtle[m[K
+[1.016s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:17[m[K,
+[1.016s]                  from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.016s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:18:37:[m[K [01;36m[Knote: [m[K  initializing argument 1 of ‘[01m[Kvoid can_driver::get_motor_status(int&)[m[K’
+[1.016s]    18 |     void get_motor_status([01;36m[KTraveler& traveler_leg_[m[K);
+[1.017s]       |                           [01;36m[K~~~~~~~~~~^~~~~~~~~~~~~[m[K
+[1.017s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:38:27:[m[K [01;31m[Kerror: [m[Kcannot convert ‘[01m[Kturtle[m[K’ to ‘[01m[Kint&[m[K’
+[1.017s]    38 |   Can_driver_->setControl([01;31m[Kturtle_[m[K);
+[1.017s]       |                           [01;31m[K^~~~~~~[m[K
+[1.017s]       |                           [01;31m[K|[m[K
+[1.017s]       |                           [01;31m[Kturtle[m[K
+[1.017s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:17[m[K,
+[1.017s]                  from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.017s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:17:31:[m[K [01;36m[Knote: [m[K  initializing argument 1 of ‘[01m[Kvoid can_driver::setControl(int&)[m[K’
+[1.017s]    17 |     void setControl([01;36m[KTraveler& traveler_leg_[m[K);
+[1.017s]       |                     [01;36m[K~~~~~~~~~~^~~~~~~~~~~~~[m[K
+[1.062s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:[m[K In member function ‘[01m[Kvirtual void turtle_namespace::control::PID_speed_controller::ComputeControlCommand(turtle&)[m[K’:
+[1.062s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:40:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_limb_motor[m[K’
+[1.062s]    40 |                 turtle_.turtle_control.[01;31m[Kleft_limb_motor[m[K.motor_control_position = theta1;
+[1.062s]       |                                        [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.062s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:41:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_big_servo_command[m[K’
+[1.062s]    41 |                 turtle_.turtle_control.[01;31m[Kleft_big_servo_command[m[K = gamma1;
+[1.063s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.063s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:42:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_small_servo_command[m[K’
+[1.063s]    42 |                 turtle_.turtle_control.[01;31m[Kleft_small_servo_command[m[K = beta1;
+[1.063s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.063s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:44:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_limb_motor[m[K’
+[1.063s]    44 |                 turtle_.turtle_control.[01;31m[Kright_limb_motor[m[K.motor_control_position = theta2;
+[1.063s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.063s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:45:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_big_servo_command[m[K’
+[1.063s]    45 |                 turtle_.turtle_control.[01;31m[Kright_big_servo_command[m[K = gamma2;
+[1.063s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.063s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:46:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_small_servo_command[m[K’
+[1.063s]    46 |                 turtle_.turtle_control.[01;31m[Kright_small_servo_command[m[K = beta2;
+[1.063s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.063s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:49:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kleft_big_servo_pos[m[K’
+[1.063s]    49 |                 turtle_.turtle_chassis.[01;31m[Kleft_big_servo_pos[m[K = gamma1;
+[1.064s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.064s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:50:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kleft_small_servo_pos[m[K’
+[1.064s]    50 |                 turtle_.turtle_chassis.[01;31m[Kleft_small_servo_pos[m[K = beta1;
+[1.064s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[1.064s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:51:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_big_servo_pos[m[K’
+[1.064s]    51 |                 turtle_.turtle_chassis.[01;31m[Kright_big_servo_pos[m[K = gamma2;
+[1.064s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[1.064s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:52:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_small_servo_pos[m[K’
+[1.064s]    52 |                 turtle_.turtle_chassis.[01;31m[Kright_small_servo_pos[m[K = beta2;
+[1.064s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[1.064s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:60:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_limb_motor[m[K’
+[1.064s]    60 |                 turtle_.turtle_control.[01;31m[Kleft_limb_motor[m[K.motor_control_position = 0.12;
+[1.064s]       |                                        [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.064s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:61:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_big_servo_command[m[K’
+[1.064s]    61 |                 turtle_.turtle_control.[01;31m[Kleft_big_servo_command[m[K = 100;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.065s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:62:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kleft_small_servo_command[m[K’
+[1.065s]    62 |                 turtle_.turtle_control.[01;31m[Kleft_small_servo_command[m[K = 0;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.065s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:65:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_limb_motor[m[K’
+[1.065s]    65 |                 turtle_.turtle_control.[01;31m[Kright_limb_motor[m[K.motor_control_position = 1.2;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.065s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:66:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_big_servo_command[m[K’
+[1.065s]    66 |                 turtle_.turtle_control.[01;31m[Kright_big_servo_command[m[K = 23;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.065s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:67:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct trutle_command[m[K’ has no member named ‘[01m[Kright_small_servo_command[m[K’
+[1.065s]    67 |                 turtle_.turtle_control.[01;31m[Kright_small_servo_command[m[K = 0;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.065s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:70:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kleft_big_servo_pos[m[K’
+[1.065s]    70 |                 turtle_.turtle_chassis.[01;31m[Kleft_big_servo_pos[m[K = 100;
+[1.065s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.066s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:71:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kleft_small_servo_pos[m[K’
+[1.066s]    71 |                 turtle_.turtle_chassis.[01;31m[Kleft_small_servo_pos[m[K = 0;
+[1.066s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[1.066s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:72:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_big_servo_pos[m[K’
+[1.066s]    72 |                 turtle_.turtle_chassis.[01;31m[Kright_big_servo_pos[m[K = 23;
+[1.066s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[1.066s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/pid_speed_controller.cpp:73:40:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_small_servo_pos[m[K’
+[1.066s]    73 |                 turtle_.turtle_chassis.[01;31m[Kright_small_servo_pos[m[K = 0;
+[1.066s]       |                                        [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[1.389s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.390s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:84:36:[m[K [01;31m[Kerror: [m[K‘[01m[Ktraveler_[m[K’ was not declared in this scope; did you mean ‘[01m[Ktraveler_msgs[m[K’?
+[1.390s]    84 |         float axis0_pos = (-1.0f * [01;31m[Ktraveler_[m[K.traveler_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
+[1.390s]       |                                    [01;31m[K^~~~~~~~~[m[K
+[1.390s]       |                                    [32m[Ktraveler_msgs[m[K
+[1.391s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:84:101:[m[K [01;31m[Kerror: [m[K‘[01m[KM0_OFFSET[m[K’ was not declared in this scope; did you mean ‘[01m[KMOD_OFFSET[m[K’?
+[1.391s]    84 |         float axis0_pos = (-1.0f * traveler_.traveler_control.Leg_lf.axis0.motor_control_position + [01;31m[KM0_OFFSET[m[K + (M_PI / 2)) / (2 * M_PI);
+[1.391s]       |                                                                                                     [01;31m[K^~~~~~~~~[m[K
+[1.391s]       |                                                                                                     [32m[KMOD_OFFSET[m[K
+[1.393s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:85:106:[m[K [01;31m[Kerror: [m[K‘[01m[KM1_OFFSET[m[K’ was not declared in this scope; did you mean ‘[01m[KMOD_OFFSET[m[K’?
+[1.393s]    85 |         float axis1_pos = (traveler_.traveler_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + [01;31m[KM1_OFFSET[m[K) / (2 * M_PI);
+[1.393s]       |                                                                                                          [01;31m[K^~~~~~~~~[m[K
+[1.393s]       |                                                                                                          [32m[KMOD_OFFSET[m[K
+[1.393s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:76:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[1.393s]    76 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K )
+[1.393s]       |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[1.395s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::UpdateJoystickStatus(turtle&)[m[K’:
+[1.395s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:172:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kturtle_temp_[m[K’ was not declared in this scope; did you mean ‘[01m[Kturtle_inter_[m[K’?
+[1.395s]   172 |     [01;31m[Kturtle_temp_[m[K = turtle_;
+[1.395s]       |     [01;31m[K^~~~~~~~~~~~[m[K
+[1.395s]       |     [32m[Kturtle_inter_[m[K
+[1.395s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:196:25:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[K}[m[K’ token
+[1.395s]   196 |     terrain_estimation()
+[1.395s]       |                         [01;31m[K^[m[K
+[1.396s]       |                         [32m[K;[m[K
+[1.396s] ......
+[1.396s]   200 | [32m[K}[m[K
+[1.396s]       | [32m[K~[m[K                        
+[1.429s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.429s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:17:21:[m[K [01;31m[Kerror: [m[K‘[01m[KTraveler[m[K’ has not been declared
+[1.430s]    17 |     void setControl([01;31m[KTraveler[m[K& traveler_leg_);
+[1.430s]       |                     [01;31m[K^~~~~~~~[m[K
+[1.430s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:18:27:[m[K [01;31m[Kerror: [m[K‘[01m[KTraveler[m[K’ has not been declared
+[1.430s]    18 |     void get_motor_status([01;31m[KTraveler[m[K& traveler_leg_);
+[1.430s]       |                           [01;31m[K^~~~~~~~[m[K
+[1.431s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.431s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:[m[K At global scope:
+[1.431s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:44:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.431s]    44 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[1.431s]       |              [01;35m[K^~~~~[m[K
+[1.431s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:42:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.431s]    42 | static int [01;35m[Kinit_done[m[K = 0;
+[1.431s]       |            [01;35m[K^~~~~~~~~[m[K
+[1.431s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:41:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.431s]    41 | static float [01;35m[Kinit_cnt[m[K = 0;
+[1.431s]       |              [01;35m[K^~~~~~~~[m[K
+[1.437s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In constructor ‘[01m[Kcan_driver::can_driver()[m[K’:
+[1.437s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:11:80:[m[K [01;31m[Kerror: [m[K‘[01m[KMG_GET_ENCODER_ESTIMATES[m[K’ is not a member of ‘[01m[Kodrive_can::Msg[m[K’
+[1.437s]    11 |                                socket_get_encoder_estimates_1(odrive_can::Msg::[01;31m[KMG_GET_ENCODER_ESTIMATES[m[K | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
+[1.437s]       |                                                                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[1.447s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:76: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o] Error 1
+[1.447s] make[2]: *** Waiting for unfinished jobs....
+[1.450s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:104: CMakeFiles/turtle_high_controller.dir/src/controller/pid_speed_controller.cpp.o] Error 1
+[1.451s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K At global scope:
+[1.451s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:92:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid can_driver::get_motor_status(turtle&)[m[K’
+[1.451s]    92 | void [01;31m[Kcan_driver[m[K::get_motor_status(turtle& turtle_){
+[1.451s]       |      [01;31m[K^~~~~~~~~~[m[K
+[1.451s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.451s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:18:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid can_driver::get_motor_status(int&)[m[K’
+[1.452s]    18 |     void [01;36m[Kget_motor_status[m[K(Traveler& traveler_leg_);
+[1.452s]       |          [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[1.452s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:12:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass can_driver[m[K’ defined here
+[1.452s]    12 | class [01;36m[Kcan_driver[m[K : public rclcpp::Node
+[1.452s]       |       [01;36m[K^~~~~~~~~~[m[K
+[1.452s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:101:6:[m[K [01;31m[Kerror: [m[Kno declaration matches ‘[01m[Kvoid can_driver::setControl(turtle&)[m[K’
+[1.452s]   101 | void [01;31m[Kcan_driver[m[K::setControl(turtle& turtle_){
+[1.452s]       |      [01;31m[K^~~~~~~~~~[m[K
+[1.452s] In file included from [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.452s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:17:10:[m[K [01;36m[Knote: [m[Kcandidate is: ‘[01m[Kvoid can_driver::setControl(int&)[m[K’
+[1.452s]    17 |     void [01;36m[KsetControl[m[K(Traveler& traveler_leg_);
+[1.452s]       |          [01;36m[K^~~~~~~~~~[m[K
+[1.452s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:12:7:[m[K [01;36m[Knote: [m[K‘[01m[Kclass can_driver[m[K’ defined here
+[1.452s]    12 | class [01;36m[Kcan_driver[m[K : public rclcpp::Node
+[1.452s]       |       [01;36m[K^~~~~~~~~~[m[K
+[1.825s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:160: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+[1.940s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:132: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+[1.940s] make[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[1.940s] make: *** [Makefile:146: all] Error 2
+[1.942s] Invoked command in '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/traveler/traveler_msgs:/home/qianlab/traveler_workspace/install/traveler_high_controller:/home/qianlab/traveler_workspace/install/odrive_pro_srvs_msgs:/home/qianlab/lassie-spirit/lassie-spirit/dependencies/spirit_msgs/install/spirit_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12

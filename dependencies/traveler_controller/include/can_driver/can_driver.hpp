@@ -14,8 +14,8 @@ class can_driver : public rclcpp::Node
 public:
     can_driver(/* args */);
 
-    void setControl(Traveler& traveler_leg_);
-    void get_motor_status(Traveler& traveler_leg_);
+    void setControl(turtle& turtle_);
+    void get_motor_status(turtle& turtle_);
     ~can_driver();
 
 private:

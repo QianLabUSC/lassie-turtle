@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(traveler_high_controller)
+project(turtle_high_controller)
 
 set(CMAKE_BUILD_TYPE Debug)
 
@@ -31,13 +31,13 @@ include_directories(
 )
 
 
-add_executable( traveler_high_controller
+add_executable( turtle_high_controller
     src/main.cpp
 
     src/controller/controller_monitor.cpp
     src/controller/pid_speed_controller.cpp
     src/controller/Inverse_kinematics.cpp
-    src/controller/trajectories_parser.cpp
+    # src/controller/trajectories_parser.cpp
 
     src/proxy/lowerproxy.cpp
     src/proxy/upperproxy.cpp
@@ -45,9 +45,9 @@ add_executable( traveler_high_controller
     src/can_driver/can_driver.cpp
     src/can_driver/socketcan_interface.cpp
 
-    src/utils/lowpassfilter.cpp
+    # src/utils/lowpassfilter.cpp
 )
-ament_target_dependencies(traveler_high_controller 
+ament_target_dependencies(turtle_high_controller 
   rclcpp
   std_msgs
   control_msgs
@@ -56,7 +56,7 @@ ament_target_dependencies(traveler_high_controller
 
 
 install(TARGETS
-  traveler_high_controller
+  turtle_high_controller
   # shearing_speed
   DESTINATION lib/${PROJECT_NAME})
 

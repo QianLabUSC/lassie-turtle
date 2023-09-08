@@ -1,0 +1,24 @@
+[0.013s] Invoking command in '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/traveler/traveler_msgs:/home/qianlab/traveler_workspace/install/traveler_high_controller:/home/qianlab/traveler_workspace/install/odrive_pro_srvs_msgs:/home/qianlab/lassie-spirit/lassie-spirit/dependencies/spirit_msgs/install/spirit_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12
+[0.033s] [ 35%] Built target odrive_can_interface
+[0.044s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[0.045s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[1.001s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.001s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:76:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[1.001s]    76 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K )
+[1.001s]       |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[1.003s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::UpdateJoystickStatus(turtle&)[m[K’:
+[1.003s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:168:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kturtle_temp_[m[K’ was not declared in this scope; did you mean ‘[01m[Kturtle_inter_[m[K’?
+[1.003s]   168 |     [01;31m[Kturtle_temp_[m[K = turtle_;
+[1.003s]       |     [01;31m[K^~~~~~~~~~~~[m[K
+[1.003s]       |     [32m[Kturtle_inter_[m[K
+[1.003s] [01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:192:25:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K;[m[K’ before ‘[01m[K}[m[K’ token
+[1.004s]   192 |     terrain_estimation()
+[1.004s]       |                         [01;31m[K^[m[K
+[1.004s]       |                         [32m[K;[m[K
+[1.004s] ......
+[1.004s]   196 | [32m[K}[m[K
+[1.004s]       | [32m[K~[m[K                        
+[1.567s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:132: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+[1.567s] make[1]: *** [CMakeFiles/Makefile2:139: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[1.567s] make: *** [Makefile:146: all] Error 2
+[1.568s] Invoked command in '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/traveler/traveler_msgs:/home/qianlab/traveler_workspace/install/traveler_high_controller:/home/qianlab/traveler_workspace/install/odrive_pro_srvs_msgs:/home/qianlab/lassie-spirit/lassie-spirit/dependencies/spirit_msgs/install/spirit_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12

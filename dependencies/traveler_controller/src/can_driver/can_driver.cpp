@@ -89,16 +89,20 @@ void can_driver::updateChannel2StatusCallback(){
    //  std::cout<< "time: " << time_cucrr << "count: " << count << std::endl;
 }
 
-void can_driver::get_motor_status(Traveler& traveler_leg_){
+void can_driver::get_motor_status(turtle& turtle_){
       updateChannel1StatusCallback();
       updateChannel2StatusCallback();
-      traveler_leg_.traveler_chassis.Leg_lf.axis0.odrive_status = odrive_status_msg_0;
-      traveler_leg_.traveler_chassis.Leg_lf.axis1.odrive_status = odrive_status_msg_1;
+      turtle_.turtle_chassis.left_adduction = odrive_status_msg_0;
+      turtle_.turtle_chassis.left_sweeping = odrive_status_msg_1;
+      turtle_.turtle_chassis.right_adduction = odrive_status_msg_0;
+      turtle_.turtle_chassis.right_sweeping = odrive_status_msg_1;
 }
 
-void can_driver::setControl(Traveler& traveler_leg_){
-   setPosition(traveler_leg_.traveler_control.Leg_lf.axis0.set_input_position);
-   setPosition(traveler_leg_.traveler_control.Leg_lf.axis1.set_input_position);
+void can_driver::setControl(turtle& turtle_){
+   setPosition(turtle_.turtle_control.left_adduction.set_input_position);
+   setPosition(turtle_.turtle_control.left_sweeping.set_input_position);
+   setPosition(turtle_.turtle_control.right_adduction.set_input_position);
+   setPosition(turtle_.turtle_control.right_sweeping.set_input_position);
 }
 
 void can_driver::setPosition(traveler_msgs::msg::SetInputPosition msg)

@@ -16,7 +16,7 @@
 #include "proxy/control_data.h"
 #include "rclcpp/rclcpp.hpp"
 
-namespace traveler_namespace{
+namespace turtle_namespace{
 namespace control{
 class PID_speed_controller : public BaseController
 {
@@ -28,17 +28,37 @@ public:
 
     void Init() override;
 
-    void ComputeControlCommand(Traveler &) override;
+    void ComputeControlCommand(turtle &) override;
 
     void Reset() override;
 
     void Stop() override;
 
 private:
-
+    bool is_init = false;
+    float t = 0;
+    float theta1;
+    float gamma1;
+    float beta1;
+    float theta2;
+    float gamma2;
+    float beta2;
+    float kp = 10;
+    float ki = 0;
+    float kd = 2;
+    float current_theta;
+    float current_gamma;
+    float target_speed = 2;
+    float theta_error;
+    float gamma_error;
+    float theta_last_error;
+    float gamma_last_error;
+    float output;
+    float integral_theta;
+    float integral_gamma;
 
 };
 } // namespace control
-} // namespace traveler_namespace
+} // namespace turtle_namespace
 
 #endif

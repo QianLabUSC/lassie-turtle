@@ -1,310 +1,79 @@
 /*
- * @Author: Ryoma Liu -- ROBOLAND
- * @Date: 2021-11-21 21:58:00
+ * @Author: Ryoma Liu -- ROBOLAND 
+ * @Date: 2021-11-21 21:58:00 
  * @Last Modified by: Ryoma Liu
  * @Last Modified time: 2022-02-02 18:31:48
  */
 
 #include "proxy/lowerproxy.h"
-
-#define _USE_MATH_DEFINES
-#define DEBUG
+#include <fstream>
+#include <iostream>
+#include <iomanip>
 
 /**
- * lowerproxy - class to publish control command to webots traveler_namespace or real
+ * lowerproxy - class to publish control command to webots turtle_namespace or real 
  * agile taur.
  */
+const double PI = 3.141592653589793238463;
+const double TWO_PI = PI*2;
+namespace turtle_namespace{
+namespace control{
 
-const double TWO_PI = M_PI * 2;
-const double TORQUE_CONST = 8.27 / 85; // second value is the motor KV
-// old motor offset: 1.3515 radians
 
-using namespace std;
+lowerproxy::lowerproxy(std::string name) : Node(name){
+    std::cout<<"Start to create the ros node subscriber and publisher"
+                <<std::endl;
+    // create a list of low level position command publisher 
+    joint0_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/joint0_position_controller/commands", 10);
+    joint1_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/joint1_position_controller/commands", 10);
+    // replace previous servo topics with current direct drive topic
+    servo0_publisher_dd = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/servo0_controller/commands", 10);
+    servo1_publisher_dd = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/servo1_controller/commands", 10);
 
-namespace traveler_namespace
+    servo0_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/traveler_servo_big_1", 10);
+    servo1_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/traveler_servo_big_2", 10);
+    servo2_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/traveler_servo_small_1", 10);
+    servo3_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/traveler_servo_small_2", 10);
+    controller_state_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
+        ("/controller", 10);
+    // Robot_state_publisher = this->create_publisher<travelermsgs::msg::RobotState>
+    //     ("/robot_state", 10);
+    // Leg1_subscriber = this->create_subscription
+    //                     <control_msgs::msg::DynamicJointState>
+    //     ("/dynamic_joint_states", 10, std::bind(&lowerproxy::handle_joint_state, this, _1));
+
+
+    _count = 0;
+
+    // RCLCPP_INFO(this->get_logger(), "Publisher created!!");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+}
+
+float lowerproxy::fmodf_mpi_pi(float f)
 {
-namespace control
-{
-
-    lowerproxy::lowerproxy(std::string name) : Node(name)
-    {
-        std::cout << "Traveler Lower Proxy established"
-                    << std::endl;
-        // create a list of low level velocity command publisher
-        // joint0_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint0_position_controller/commands", 10);
-        // joint1_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint1_position_controller/commands", 10);
-        // joint0_speed_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint0_velocity_controller/commands", 10);
-        // joint1_speed_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/joint0_velocity_controller/commands", 10);
-        // controller_state_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>("/travelerstate", 10);
-        Position_publisher_channel_0 = this->create_publisher<traveler_msgs::msg::SetInputPosition>("/odrivepos0" , 3000);
-        Position_publisher_channel_1 = this->create_publisher<traveler_msgs::msg::SetInputPosition>("/odrivepos1" , 3000);
-        traveler_status_publisher = this->create_publisher<traveler_msgs::msg::TravelerStatus>("/traveler/status", 3000);
-        start_time = std::chrono::high_resolution_clock::now();
-        // client_ = this->create_client<traveler_msgs::srv::SetInputPos>("odrive/set_input_pos");
-        // Robot_state_publisher = this->create_publisher<travelermsgs::msg::RobotState>
-        //     ("/robot_state", 10);
-        // Leg1_subscriber = this->create_subscription<traveler_msgs::msg::OdriveStatus>
-        //                         ("/odrive/odrive_status", 20, std::bind(&lowerproxy::handle_joint_state, this, _1));
-
-        _count = 0;
-        rclcpp::Clock::SharedPtr clock = this->get_clock();
+  if (f>0)
+    return (fmodf(f+PI, TWO_PI) - PI);
+  else
+    return (fmodf(f-PI, TWO_PI) + PI);
+}
 
 
-        // RCLCPP_INFO(this->get_logger(), "Publisher created!!");
-    }
+/// @brief estimate terrain in this function
+void lowerproxy::terrain_estimation(){
 
-    float lowerproxy::fmodf_0_pi(float f)
-    {
-        float result = fmodf(f, M_PI);
-        if (result < 0)
-            result += M_PI;
-        return result;
-    }
+}
 
-    float lowerproxy::fmodf_0_2pi(float f)
-    {
-        float r = fmodf(f, TWO_PI);
-        if (r < 0)
-            r += TWO_PI;
-        return r;
-    }
-
-    float lowerproxy::fmodf_mpi_pi(float f)
-    {
-        if (f>0)
-            return (fmodf(f+M_PI, TWO_PI) - M_PI);
-        else
-            return (fmodf(f-M_PI, TWO_PI) + M_PI);
-    }
-
-    void lowerproxy::getMeanDiffAngles(float &meanAng, float &diffAng)
-    {
-        float mot_pos0 = fmodf_0_2pi(traveler_leg_.traveler_chassis.Leg_lf.axis0.position);
-        float mot_pos1 = fmodf_0_2pi(traveler_leg_.traveler_chassis.Leg_lf.axis1.position);
-        float r = mot_pos0 - mot_pos1;
-        diffAng = fmodf_0_pi(0.5 * abs(r));
-        meanAng = fmodf_0_2pi(mot_pos1 + diffAng);
-        
-        #ifdef DEBUG
-            //printf("DEBUG:: Motor Pos: [%4.2f, %4.2f] | Diff Angle: %4.2f | Mean Angle: %4.2f | ", 
-                    //mot_pos0, mot_pos1, gamma_, theta_);
-        #endif
-    }
-
-    void lowerproxy::calculateLength(float diffAng, float &proj, float &length)
-    {
-        proj = L1 * sinf(diffAng);
-        length = sqrtf(L2 * L2 - proj * proj) + L1 * cosf(diffAng);
-        
-        #ifdef DEBUG
-            //printf("Length DiffAng: %4.2f | L1Proj: %4.2f | Leg Length: %4.2f\n", diffAng, proj, length);
-        #endif
-    }
-
-    void lowerproxy::calculationHelper()
-    {
-        // determine motor positions
-        mot_pos0_ = fmodf_0_2pi(traveler_leg_.traveler_chassis.Leg_lf.axis0.position);
-        mot_pos1_ = fmodf_0_2pi(traveler_leg_.traveler_chassis.Leg_lf.axis1.position);
-        
-        // update private variables
-        float gamma = 0.5 * (mot_pos1_ - mot_pos0_);
-        float theta = 0.5 * (mot_pos1_ + mot_pos0_);
-        
-
-        float l1proj = L1 * sinf(gamma);
-        float length = sqrtf(L2 * L2 - l1proj * l1proj) + L1 * cosf(gamma) + L3;
-        // float cosDiff = cosf(gamma);
-        // float sinDiff = sinf(gamma);
-
-        gamma_ = gamma;
-        theta_ = theta;
-        l1proj_ = l1proj;
-        leg_length_ = length;
-        
-        // Debug output log
-        #ifdef DEBUG
-            // printf("Lowerproxy ::      Axis0: %4.2f, Axis 1: %4.2f\n", mot_pos0_, mot_pos1_);
-            
-            // printf("Diff Angle: %4.2f | Mean Angle: %4.2f |Leg Length: %4.2f\n", gamma, theta, length);
-        #endif
-    }
-
-    void lowerproxy::getToeVelocity()
-    {
-        float vel_0 = -(1.0 * traveler_leg_.traveler_chassis.Leg_lf.axis0.velocity) * TWO_PI;
-        float vel_1 = 1.0 * traveler_leg_.traveler_chassis.Leg_lf.axis1.velocity * TWO_PI;
-        
-        // float filtered_vel_0 = lpf.update(vel_0, 0.01, 5);
-        // float filtered_vel_1 = lpf.update(vel_1, 0.01, 5);
-        // Polar Velocity: <theta direction, radial direction>
-        float dummy = L1 * sin(gamma_) / 2 - L1 * cos(gamma_) / (4 * sqrtf(L2 * L2 - l1proj_ * l1proj_));
-        float L_dot = dummy * (vel_1 - vel_0);
-        float theta_dot = (vel_0 + vel_1) / 2;
-
-        float vel_x = L_dot * sinf(theta_) - leg_length_ * theta_dot * cosf(theta_);
-        float vel_y = -L_dot * cosf(theta_) - leg_length_ * theta_dot * sinf(theta_);
-
-        traveler_leg_.traveler_chassis.Leg_lf.toe_velocity.x = vel_x;
-        traveler_leg_.traveler_chassis.Leg_lf.toe_velocity.y = vel_y;
-        
-    }
-
-    void lowerproxy::getToeForce()
-    {
-         float u0 = -1.0 * traveler_leg_.traveler_chassis.Leg_lf.axis0.effort;
-        float u1 = traveler_leg_.traveler_chassis.Leg_lf.axis1.effort;
-
-        float dummy = -2 / (2 * l1proj_ + L1 * L1 * sinf(gamma_ * 2) / sqrtf(L2 * L2 - l1proj_ * l1proj_));
-        
-        float phi = -1.0f * l1proj_ * (1.0f + L1 * cosf(gamma_) / (sqrtf(L2 * L2 - l1proj_ * l1proj_)));
-
-        float sinTheta = sinf(theta_);
-        float cosTheta = cosf(theta_);
-
-        //  1/determinant(Jacobian)
-        float invDeterminant = 1.0f / (phi * leg_length_ * (sinTheta * sinTheta + cosTheta * cosTheta));
-
-        float forceX = invDeterminant * (u0 * (phi * cosTheta - leg_length_ * sinTheta) + u1 * (phi * cosTheta + leg_length_ * sinTheta));
-        float forceY = invDeterminant * (u0 * (-1.0f * phi * sinTheta - leg_length_ * cosTheta) + u1 * (-1.0f * phi * sinTheta + leg_length_ * cosTheta));
-
-        traveler_leg_.traveler_chassis.Leg_lf.toe_force.y = forceY;
-        traveler_leg_.traveler_chassis.Leg_lf.toe_force.x = forceX;
-
-        traveler_leg_.traveler_chassis.Leg_lf.diffAng = gamma_;
-        traveler_leg_.traveler_chassis.Leg_lf.meanAng = theta_;
-        traveler_leg_.traveler_chassis.Leg_lf.l1proj = l1proj_;
-        traveler_leg_.traveler_chassis.Leg_lf.length = leg_length_;
-        traveler_leg_.traveler_chassis.Leg_lf.dummy = dummy;
-
-        // printf("Motor Torques [0,1]: [%4.4f, %4.4f] | Toe Force [X, Y]: [%4.2f, %4.2f]\n\n", u0, u1, forceX, forceY);
-
-        #ifdef DEBUG
-            // printf("DEBUG:: Intermediate values: ur = %4.2f, uth = %4.2f \n", ur, uth);
-            // printf("Mean Angle: %4.2f | Diff Angle: %4.2f | Leg Length: %4.2f | L1 Proj: %4.2f\n", theta_, gamma_, leg_length_, l1proj_);
-            // printf("Dummy: %4.2f | Arg 1: %4.2f | Arg 2: %4.2f | Denom: %4.2f\n", dummy, arg1, arg2, denom);
-            // printf("cosine Mean: %4.2f | sine mean: %4.2f\n", cosMean, sinMean);
-            // printf("Motor Torques [0,1]: [%4.4f, %4.4f] | Toe Force [X, Y]: [%4.2f, %4.2f]\n\n", u0, u1, forceX, forceY);
-        #endif
-    }
-
-    void lowerproxy::getToePosition()
-    {
-        traveler_leg_.traveler_chassis.Leg_lf.toe_position.x = leg_length_ * sin(theta_);
-        traveler_leg_.traveler_chassis.Leg_lf.toe_position.y = leg_length_ * cos(theta_);
-    }
-
-    void lowerproxy::UpdateJoystickStatus(Traveler& traveler_)
-    {
-
-        // instead of reading message from ros2, directly call the function 
-        // in odrivepro drive to get the message
-
-        traveler_leg_ = traveler_;
-
-        // get raw encoder estimate from ODrive in unit of turns
-        // convert to radians
-        auto odrive0 = traveler_leg_.traveler_chassis.Leg_lf.axis0.odrive_status;
-        auto odrive1 = traveler_leg_.traveler_chassis.Leg_lf.axis1.odrive_status;
-        
-
-        // clamp the position estimate from [0, 2pi]
-        // pos_estimate_rad = fmodf_0_2pi(pos_estimate_rad);
-    
-      
-        traveler_leg_.traveler_chassis.Leg_lf.axis0.effort = odrive0.iq_measured * TORQUE_CONST;
-        traveler_leg_.traveler_chassis.Leg_lf.axis0.position = 
-            -1.0f * (odrive0.pos_estimate) * 2 * M_PI + M0_OFFSET + (M_PI/2);
-    
-        traveler_leg_.traveler_chassis.Leg_lf.axis1.effort = odrive1.iq_measured * TORQUE_CONST;
-        traveler_leg_.traveler_chassis.Leg_lf.axis1.position =
-            (odrive1.pos_estimate) * 2 * M_PI + (M_PI/2) - M1_OFFSET;
-        
-
-        
-        calculationHelper();
-        getToeForce();
-        getToeVelocity();
-        getToePosition();
-
-
-        // // to check if the motor is still alive and added the toe force data
-        auto traveler_status_msg = traveler_msgs::msg::TravelerStatus();
-        // // if(msg->is_axis_alive == true){
-        traveler_status_msg.toeforce_x = traveler_leg_.traveler_chassis.Leg_lf.toe_force.x;
-        traveler_status_msg.toeforce_y = traveler_leg_.traveler_chassis.Leg_lf.toe_force.y;
-        traveler_status_msg.toe_pos_x = traveler_leg_.traveler_chassis.Leg_lf.toe_position.x;
-        traveler_status_msg.toe_pos_y = traveler_leg_.traveler_chassis.Leg_lf.toe_position.y;
-        traveler_status_msg.motor0_pos = traveler_leg_.traveler_chassis.Leg_lf.axis0.position;
-        traveler_status_msg.motor1_pos = traveler_leg_.traveler_chassis.Leg_lf.axis1.position;
-        traveler_status_msg.motor0_torque = traveler_leg_.traveler_chassis.Leg_lf.axis0.effort;
-        traveler_status_msg.motor1_torque = traveler_leg_.traveler_chassis.Leg_lf.axis1.effort;
-        // traveler_status_msg.is_alive = msg->is_axis_alive;
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> diff = end - start_time; // duration in seconds as a double
-        traveler_status_msg.time = static_cast<float>(diff.count());
-
-        traveler_status_publisher->publish(traveler_status_msg);
-        // std::cout<< "high time: " << traveler_status_msg.time << "count: " << _count << std::endl;
-        traveler_ = traveler_leg_;
-        // }
-
-
-
-        // printf("LOWERPROXY:: Motors: [%4.2f, %4.2f]   Toe: [%4.2f, %4.2f]\n", 
-        //         traveler_leg_.traveler_chassis.Leg_lf.axis0.position,
-        //         traveler_leg_.traveler_chassis.Leg_lf.axis1.position,
-        //         traveler_leg_.traveler_chassis.Leg_lf.toe_position.x,
-        //         traveler_leg_.traveler_chassis.Leg_lf.toe_position.y);
-        // printf("LOWERPROXY:: Theta: %4.2f, Gamma: %4.2f, L: %4.2f\n\n",
-        //         theta_, gamma_, leg_length_);
-        // printf("LOWERPROXY:: Toe Force: [%4.2f, %4.2f]\n",
-        //         traveler_leg_.traveler_chassis.Leg_lf.toe_force.x,
-        //         traveler_leg_.traveler_chassis.Leg_lf.toe_force.y);
-
-    }
-
-    
-
-    //  void lowerproxy::PublishControlCommand(Traveler &traveler_)
-    // {
-    //     _count = _count + 0.01;
-    //     auto message = std_msgs::msg::Float64MultiArray();
-        
-    //     message.data.push_back(traveler_.traveler_control.Leg_lf.axis0.motor_control_position);
-    //     auto message2 = std_msgs::msg::Float64MultiArray();
-    //     message2.data.push_back(traveler_.traveler_control.Leg_lf.axis1.motor_control_position);
-    //     auto message3 = std_msgs::msg::Float64MultiArray();
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_force.x);
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_force.y);
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_position.x);
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_position.y);
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_velocity.x);
-    //     message3.data.push_back(traveler_.traveler_chassis.Leg_lf.toe_velocity.y);
-    //     message3.data.push_back(traveler_.traveler_control.Leg_lf.theta_command);
-    //     message3.data.push_back(traveler_.traveler_control.Leg_lf.length_command);
-    //     message3.data.push_back(traveler_.traveler_control.Leg_lf.state_flag);
-
-    //     joint0_publisher->publish(message);
-    //     joint1_publisher->publish(message2);
-    //     controller_state_publisher->publish(message3);
-
-    // } 
-
-    // void lowerproxy::PublishSpeedCommand(Traveler &traveler_)
-    // {
-    //     auto message = std_msgs::msg::Float64MultiArray();
-    //     message.data.push_back(traveler_.traveler_control.Leg_lf.axis0.motor_control_speed);
-    //     joint0_speed_publisher->publish(message);
-
-    // }
-
-    void lowerproxy::Estop()
-    {
-    }
-
-
-    void lowerproxy::calculate_position(Traveler &traveler_ )
+/// @brief calculate the motor command using different controller:
+///        default: inverse kinematic controller
+/// @param turtle
+void lowerproxy::calculate_position(turtle &turtle_ )
     {
         /**
          * The motor positions must be converted from Radians to Turns
@@ -312,38 +81,122 @@ namespace control
          * The controller interprets angular position in radians, but the ODrive
          * uses turns as its angular unit.
         */
-        float axis0_pos = (-1.0f * traveler_.traveler_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
-        float axis1_pos = (traveler_.traveler_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + M1_OFFSET) / (2 * M_PI);
+        // float axis0_pos = (-1.0f * turtle_.turtle_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
+        // float axis1_pos = (traveler_.traveler_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + M1_OFFSET) / (2 * M_PI);
 
         // clamp both motor angles to within 1 turn;
-        // axis0_pos = fmodf(axis0_pos, 1.0f);
-        // axis1_pos = fmodf(axis1_pos, 1.0f);
         
-        // _count = _count + 1;
-        //int sign = 0;
 
-        auto message_channel_0 = traveler_msgs::msg::SetInputPosition();
-        message_channel_0.can_channel = 0;
-        message_channel_0.axis = 0;
-        message_channel_0.input_position = axis0_pos;
-        //message_channel_0.input_position = sign ;
-        message_channel_0.vel_ff = 0;
-        message_channel_0.torque_ff = 0;
+        // auto message_channel_0 = traveler_msgs::msg::SetInputPosition();
+        // message_channel_0.can_channel = 0;
+        // message_channel_0.axis = 0;
+        // message_channel_0.input_position = axis0_pos;
+        // //message_channel_0.input_position = sign ;
+        // message_channel_0.vel_ff = 0;
+        // message_channel_0.torque_ff = 0;
 
-        auto message_channel_1 = traveler_msgs::msg::SetInputPosition();
-        message_channel_1.can_channel = 1;
-        message_channel_1.axis = 0;
-        message_channel_1.input_position = axis1_pos;
-        message_channel_1.vel_ff = 0;
-        message_channel_1.torque_ff = 0;
-        // instead of publiishing to ros topics, publish to local class
-        traveler_.traveler_control.Leg_lf.axis0.set_input_position = message_channel_0;
-        traveler_.traveler_control.Leg_lf.axis1.set_input_position = message_channel_1;
+        // auto message_channel_1 = traveler_msgs::msg::SetInputPosition();
+        // message_channel_1.can_channel = 1;
+        // message_channel_1.axis = 0;
+        // message_channel_1.input_position = axis1_pos;
+        // message_channel_1.vel_ff = 0;
+        // message_channel_1.torque_ff = 0;
+        // // instead of publiishing to ros topics, publish to local class
+        // traveler_.traveler_control.Leg_lf.axis0.set_input_position = message_channel_0;
+        // traveler_.traveler_control.Leg_lf.axis1.set_input_position = message_channel_1;
         // Position_publisher_channel_0->publish(message_channel_0);
         // Position_publisher_channel_1->publish(message_channel_1);
+
+        ////
+        // if(turtle_.turtle_gui.start_flag==1){
+        //         t = t + 0.01;
+        //         boundingGAIT(turtle_, t, theta1, gamma1, beta1, theta2, gamma2, beta2);
+        //         // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
+
+        //         turtle_.turtle_control.left_limb_motor.motor_control_position = theta1;
+        //         turtle_.turtle_control.left_big_servo_command = gamma1;
+        //         turtle_.turtle_control.left_small_servo_command = beta1;
+
+        //         turtle_.turtle_control.right_limb_motor.motor_control_position = theta2;
+        //         turtle_.turtle_control.right_big_servo_command = gamma2;
+        //         turtle_.turtle_control.right_small_servo_command = beta2;
+
+        //         // update the current state
+        //         turtle_.turtle_chassis.left_big_servo_pos = gamma1;
+        //         turtle_.turtle_chassis.left_small_servo_pos = beta1;
+        //         turtle_.turtle_chassis.right_big_servo_pos = gamma2;
+        //         turtle_.turtle_chassis.right_small_servo_pos = beta2;
+        //     }
+        //     else{
+        //         t = 0;
+        //         // boundingGAIT(turtle_, t, theta1, gamma1, beta1, theta2, gamma2, beta2);
+        //         // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
+
+        //         // turtle_.turtle_control.left_limb_motor.motor_control_position = turtle_.turtle_chassis.left_limb_motor.position + 0.0001*(0.2 - turtle_.turtle_chassis.left_limb_motor.position);
+        //         turtle_.turtle_control.left_limb_motor.motor_control_position = 0.12;
+        //         turtle_.turtle_control.left_big_servo_command = 100;
+        //         turtle_.turtle_control.left_small_servo_command = 0;
+
+        //         // turtle_.turtle_control.right_limb_motor.motor_control_position = turtle_.turtle_chassis.right_limb_motor.position + 0.0001*(1.2 - turtle_.turtle_chassis.right_limb_motor.position);
+        //         turtle_.turtle_control.right_limb_motor.motor_control_position = 1.2;
+        //         turtle_.turtle_control.right_big_servo_command = 23;
+        //         turtle_.turtle_control.right_small_servo_command = 0;
+
+        //         // update the current state
+        //         turtle_.turtle_chassis.left_big_servo_pos = 100;
+        //         turtle_.turtle_chassis.left_small_servo_pos = 0;
+        //         turtle_.turtle_chassis.right_big_servo_pos = 23;
+        //         turtle_.turtle_chassis.right_small_servo_pos = 0;
+        //     }
         
       
     }
 
-} // namespace control
-} // namespace traveler_namespace
+
+
+void lowerproxy::Estop(){
+
+}
+
+void lowerproxy::UpdateJoystickStatus(turtle& turtle_){
+    turtle_.turtle_control = turtle_inter_.turtle_control;
+    turtle_.turtle_gui = turtle_inter_.turtle_gui;
+
+    // instead of reading message from ros2, directly call the function 
+    // in odrivepro drive to get the message
+
+    turtle_inter_ = turtle_;
+
+    // get raw encoder estimate from ODrive in unit of turns
+    // convert to radians
+    // auto odrive0 = turtle_inter_.turtle_chassis.left_adduction;
+    // auto odrive1 = turtle_inter_.turtle_chassis.left_sweeping;
+    // auto odrive2 = turtle_inter_.turtle_chassis.left_adduction;
+    // auto odrive3 = turtle_inter_.turtle_chassis.left_sweeping;
+    
+
+    // clamp the position estimate from [0, 2pi]
+    // pos_estimate_rad = fmodf_0_2pi(pos_estimate_rad);
+
+    // need to modify here to get the status feedback
+    // traveler_leg_.traveler_chassis.Leg_lf.axis0.effort = odrive0.iq_measured * TORQUE_CONST;
+    // traveler_leg_.traveler_chassis.Leg_lf.axis0.position = 
+    //     -1.0f * (odrive0.pos_estimate) * 2 * M_PI + M0_OFFSET + (M_PI/2);
+
+    // traveler_leg_.traveler_chassis.Leg_lf.axis1.effort = odrive1.iq_measured * TORQUE_CONST;
+    // traveler_leg_.traveler_chassis.Leg_lf.axis1.position =
+    //     (odrive1.pos_estimate) * 2 * M_PI + (M_PI/2) - M1_OFFSET;
+
+
+    // to be implemented
+    terrain_estimation();
+
+    
+    
+}
+    
+} //namespace control
+} //namespace turtle_namespace
+
+
+

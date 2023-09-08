@@ -1,336 +1,890 @@
 #include "controller/inverse_kinematics.h"
 
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 using namespace std;
 
 #define DEBUG
-#define CONTROL_FREQ 100    // Hz
-
 
 /**
  * ! Leg Workspace:
- * Gamma must be within [0.087, 2.61] radians
- * Theta must be within [-2.47, +2.47] radians
+ * Gamma is the rotation angle of odrive motor and must be within [-0.79 0.79]
+ * Theta is the big servo angle and must be within [-1.05, +1.05] radians
+ * Beta is the small servo angle and must be within [-1.05, +1.05] radians
  */
-
 
 /**
- * @brief Converts Abstract leg position into Theta, Gamma values
+ * @brief Finds the motor and server control command for a given toe position
  *
- * @param L Leg length
- * @param Theta Abstract leg angle
- * @return Pair (Theta, Gamma) representing the motor separation
- *             for the given input parameters. Also called the Diff Angle
+ * @param X : Toe X position
+ * @param Y : Toe Y position
+ *
+ * @return : Returns <theta, gamma , beta>
  */
-void getGamma(float L, float &gamma)
+void PhysicalToAbstract(float X1, float Y1, float X2, float Y2, float &theta1, float &gamma1, float &beta1, float &theta2, float &gamma2, float &beta2)
 {
-    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
-}
+    float L = 0.14;
 
-/**
- * @brief Finds the Leg length, angle, and motor separation for a given X, Y toe point
- *
- * @param X Toe X position
- * @param Y Toe Y position
- *
- * @return Returns <Length, Angle, Gamma>
- */
-void physicalToAbstract(float X, float Y, float &L, float &theta, float &gamma)
-{
-    L = sqrt(pow(X, 2) + pow(Y, 2));
-    theta = atan2(X, Y);
+    theta1 = atan2(X1, L); // now -> rad,
 
-    float theta_temp = atan2(X, Y);
-    // compensates for -x, -y wrapping
-    // if (X < 0.0f && Y < 0.0f) {
-    //     theta = 2 * M_PI + theta_temp;
-    // } else {
-    //     theta = theta_temp;
-    // }
-    if (theta_temp < (-M_PI / 2)) {
-        theta = 2 * M_PI + theta_temp;
-    } else {
-        theta = theta_temp;
-    }
-    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
-}
+    gamma1 = atan2(Y1, L); // now -> rad,
+    beta2 = 90;            // now -> rad,
+    beta1 = 180 - beta2;   // now -> rad,
 
-/**
- * @brief Finds the Leg angle and motor separation for a given X, Y toe point
- *
- * @param X Toe X position
- * @param Y Toe Y position
- *
- * @return Returns <Theta, Gamma>
- */
-void physicalToAbstract(float X, float Y, float &theta, float &gamma)
-{
-    float L = sqrt(X*X + Y*Y);
-
-    float theta_temp = atan2(X, Y);
-    // compensates for -x, -y wrapping
-    // if (X < 0.0f && Y < 0.0f) {
-    //     theta = 2 * M_PI + theta_temp;
-    // } else {
-    //     theta = theta_temp;
-    // }
-    if (theta_temp < (M_PI/2)) {
-        theta = 2 * M_PI + theta_temp;
-    } else {
-        theta = theta_temp;
-    }
-    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+    theta2 = atan2(X2, L); // now -> rad,
+    gamma2 = atan2(Y2, L); // now -> rad,
     
-    // printf("X: %f, Y: %f, L: %f, theta: %f, gamma: %f\n", X, Y, L, theta, gamma);
+    checkleft(gamma1, beta1, theta1);
+    checkright(gamma2, beta2, theta2);
+    
 
+}
+/**
+ * @brief check whether gamma1, beta1 are out of range and transfer them to angle
+ *
+ *
+ * @return : Returns <gamma1, beta1>
+ */
+void checkleft(float &gamma1, float &beta1, float &theta1)
+{
+    float L = 0.14;
+
+    /*140 is hotizontal, 10 is vertical*/
+
+    // if(gamma1 >= 10) {
+    //     gamma1 = 140;
+    // }
+    // else {
+    //     float gamma1_degree = 180 * gamma1 / M_PI;
+    //     gamma1 = 140 + gamma1_degree * 140/90;
+    // }
+    // if(gamma1 > 140) gamma1 = 140;
+    // if(gamma1 < 10) gamma1 = 10;
+
+    // if(gamma1 >= 0) {
+    //     gamma1 = 180;
+    // }
+
+    // float gamma1_degree = 180 * gamma1 / M_PI;
+    theta1 = theta1 * M_PI/180;
+    // gamma1 = 105 + gamma1_degree * (180 - 10) / 120;
+    // gamma1 = 140;
+    // cout << "gamma_degree_left" << gamma1 << endl;
+    if (gamma1 > 105)
+        gamma1 = 105;
+    if (gamma1 < 10)
+        gamma1 = 10;
+
+    // beta1 = 180;
+    float shift = 0.6 - 0.08;
+    theta1 = theta1 + shift;
+    if (theta1 < shift - 0.7)
+        theta1 = shift - 0.7;
+    if (theta1 > shift + 0.9)
+        theta1 = shift + 0.9;
+}
+
+/**
+ * @brief check whether gamma2, beta2 are out of range and transfer them to angle
+ *
+ *
+ * @return : Returns < gamma2 , beta2>
+ */
+void checkright(float &gamma2, float &beta2, float &theta2)
+{
+    float L = 0.14;
+
+    /*50 is hotizontal, 180 is vertical*/
+    // if(gamma2 >= 0) {
+    //     gamma2 = 50;
+    // }
+    // else {
+    //     float gamma2_degree = 180 * gamma2 / M_PI;
+    //     gamma2 = 50 - gamma2_degree * 130 / 90;
+    // }
+    // if(gamma2 > 180) gamma2 = 180;
+    // if(gamma2 < 50) gamma2 = 50;
+
+    // if(gamma2 >= 0) {
+    //     gamma2 = 10;
+    // }
+    // float gamma2_degree = 180 * gamma2 / M_PI;
+
+    // gamma2 = 12 - gamma2_degree * (180 - 10) / 120;
+    theta2 = theta2 * M_PI / 180;
+    if (gamma2 > 180)
+        gamma2 = 180;
+    if (gamma2 < 10)
+        gamma2 = 10;
+
+    // beta2 = 0;
+    float shift = 0.6 + 0.08;
+    theta2 = theta2 + shift;
+    if (theta2 < shift - 0.9)
+        theta2 = shift - 0.9;
+    if (theta2 > shift + 0.7)
+        theta2 = shift + 0.7;
 }
 
 /**
  * @brief Finds the physical (X, Y) position of the toe for a given L and Theta
  *
- * @param L Leg length
- * @param Theta Abstract leg angle
- * @return Pair (X, Y) representing the position of the toe in relation to
+ * @param L : Leg length
+ * @param Theta : Abstract leg angle
+ * @return : Pair (X, Y) representing the position of the toe in relation to
  *              the Origin (the hip joint)
  */
-void abstractToPhysical(float L, float Theta, float &x, float &y)
+void AbstractToPhysical(float L, float Theta, float gamma, float &x, float &y)
 {
-    // check consistency for this
-    x = - L * sinf(Theta);
-    y = L * cosf(Theta);
+    x = L * sinf(Theta);
+    y = L * sinf(gamma);
 }
 
-void abstractToPhysical(float L, float Theta, XY_pair &point) {
-    point.x = - L * sinf(Theta);
-    point.y = L * cosf(Theta);
-}
+/**
+ * @brief oval trajectories
+ * @param time
+ * @param OvalParams
+ * @return x y : the coordinates of the toe trajectories
+ */
 
-
-void linearTraj(float t, float t_start, float vel, XY_pair A, XY_pair B, float &X, float &Y) {
-    float t_rel = t - t_start;
-    float d1 = B.x - A.x;
-    float d2 = B.y - A.y;
-
-    float raw_vel = sqrtf(d1*d1 + d2*d2);
-    float scalar = vel/raw_vel;
-    
-    X = scalar * d1 * t_rel + A.x;
-    Y = scalar * d2 * t_rel + B.x;
-}
-
-bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, float &X, float &Y) {    
-    // create the vector from A to B
-    float d1 = B.x - A.x;
-    float d2 = B.y - A.y;
-
-    // find the magnitude of the vector
-    float vector_magnitude = sqrtf(d1*d1 + d2*d2);
-    
-    // scale the vector to the desired velocity
-    float scalar = vel/vector_magnitude;
-
-    // find the point along the vector
-    X = (scalar * d1 * t_rel) + A.x;
-    Y = (scalar * d2 * t_rel) + A.y;
-
-    //? TODO: Check for end of trajectory using current position
-    // Checking for end of trajectory
-
-    // actual distance is point along the path
-    float actual_dist = sqrtf((X - A.x) * (X - A.x)+ (Y - A.y) * (Y - A.y));
-
-    if (actual_dist <= vector_magnitude) {
-        return false;
-    } else {
-        return true;    // returns true when complete
+void oval_generator(float t, float &X1, float &Y1, float &X2, float &Y2)
+{
+    OvalParams oval_params = {0.3f, .3f, 0.17f, 0.17f};
+    float t_mod = fmod(t, (oval_params.period_down + oval_params.period_up));
+    float corres_angle = 0;
+    if (t_mod < oval_params.period_down)
+    {
+        corres_angle = M_PI + M_PI * t_mod / oval_params.period_down;
     }
-}
-
-bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, XY_pair ToeXY, float &X, float &Y, float threshold) {    
-    // create the vector from A to B
-    float d1 = B.x - A.x;
-    float d2 = B.y - A.y;
-
-    // find the magnitude of the vector
-    float vector_magnitude = sqrtf(d1*d1 + d2*d2);
-    
-    // scale the vector to the desired velocity
-    float scalar = vel/vector_magnitude;
-
-    // find the point along the vector
-    X = (scalar * d1 * t_rel) + A.x;
-    Y = (scalar * d2 * t_rel) + A.y;
-
-    //? TODO: Check for end of trajectory using current position
-    // Checking for end of trajectory
-
-    // finds the distance between B and the Toe
-    float actual_dist = sqrtf((ToeXY.x - B.x) * (ToeXY.x - B.x)+ (ToeXY.y - B.y) * (ToeXY.y - B.y));
-
-    if (actual_dist > threshold) {
-        return false;
-    } else {
-        return true;    // returns true when complete
+    else
+    {
+        // corres_angle = M_PI;
+        corres_angle = M_PI * ((t_mod - oval_params.period_down) / oval_params.period_up);
     }
+
+    if (corres_angle == M_PI / 2)
+    {
+        X1 = 0;
+        Y1 = 0;
+        X2 = 0;
+        Y2 = 0;
+    }
+    if (corres_angle == 3 * M_PI / 2)
+    {
+        X1 = 0;
+        Y1 = -oval_params.vertical_range;
+        X2 = 0;
+        Y2 = -oval_params.vertical_range;
+    }
+    // else if(corres_angle == 3*M_PI/2){
+    //     X = 0;
+    //     Y = - oval_params.vertical_range;
+    // }
+    // else if(corres_angle > M_PI/2 && corres_angle < 3*M_PI/2){
+    //     float r_h = oval_params.horizontal_range;
+    //     float r_v = oval_params.vertical_range;
+    //     X = - r_h * r_v / sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
+    //     Y = - r_h * r_v * tanf(corres_angle)/sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
+    // }
+    // else{
+    //     float r_h = oval_params.horizontal_range;
+    //     float r_v = oval_params.vertical_range;
+    //     X = r_h * r_v / sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
+    //     Y = r_h * r_v * tanf(corres_angle)/sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
+    // }
+    else if (corres_angle > 0 && corres_angle < M_PI / 2)
+    {
+        float r_h = oval_params.horizontal_range;
+        float r_v = oval_params.vertical_range;
+        X1 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y1 = 0;
+        X2 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y2 = 0;
+    }
+
+    else if (corres_angle > M_PI / 2 && corres_angle < M_PI)
+    {
+        float r_h = oval_params.horizontal_range;
+        float r_v = oval_params.vertical_range;
+        X1 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y1 = 0;
+        X2 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y2 = 0;
+    }
+
+    else if (corres_angle > M_PI && corres_angle < 3 * M_PI / 2)
+    {
+        float r_h = oval_params.horizontal_range;
+        float r_v = oval_params.vertical_range;
+        X1 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y1 = -r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        ;
+        X2 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y2 = -r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        ;
+    }
+
+    else if (corres_angle > 3 * M_PI / 2 && corres_angle < 2 * M_PI)
+    {
+        float r_h = oval_params.horizontal_range;
+        float r_v = oval_params.vertical_range;
+        X1 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y1 = r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        ;
+        X2 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        Y2 = r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
+        ;
+    }
+    X1 = -X1;
+    X2 = -X2;
 }
 
+void rectangle_generator(turtle turtle_, float t, float &X1, float &Y1, float &X2, float &Y2)
+{
+    // float temp = 2.5f;
+    // float idle = 8.0f;
+    // float servo_time = 0.25f;
+    // float period = 1.25;
+
+    // please change this value to control the turtle
+    // turtle_.traj_data.drag_speed;
+    // turtle_.traj_data.extraction_height;
+    // turtle_.traj_data.insertion_angle;
+    // turtle_.traj_data.lateral_angle_range;
+    // turtle_.traj_data.servo_time;
+    // turtle_.traj_data.wiggle_amptitude;
+    // turtle_.traj_data.wiggle_frequency;
+    // turtle_.traj_data.wiggle_time;
+
+    // please use these two variables to start the robot and stop the robot
+    // turtle_.turtle_gui.drag_traj; //5
+    // turtle_.turtle_gui.start_flag; //1 or 0
+    float horizontal_range = 0.14 * tanf(turtle_.traj_data.lateral_angle_range);
+    float drag = horizontal_range/turtle_.traj_data.drag_speed;
+
+    float servo_time = turtle_.traj_data.servo_time;
+    float pad_back_time = drag;
+
+    float upper_height = 0.05;
+    float insertion_depth = 0.14*sinf(turtle_.traj_data.insertion_angle);
+    
+    float waiting_time = turtle_.traj_data.wiggle_time;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+
+    // cout << "horizontal_range" << horizontal_range << "drag" <<drag<<"servo_time"<<servo_time<<"insertion_depth"<<insertion_depth<<"waiting_time"<<waiting_time<<"wiggle_length"<<wiggle_length<<"wiggle_frequency"<<wiggle_frequency<<endl;
 
 
-bool validPath(XY_pair A, XY_pair B) {
-    float a = A.y - B.y;
-    float b = B.x - A.x;
-    float c = (A.x - B.x) *  A.y + A.x * (B.y - A.y);
-    float dist = abs(c) / sqrt(a * a + b * b);
-    bool valid = (dist >= (0.105 + L3));
-    // CASE: infinite line does not intersect circle
-    if (valid) {
-        printf("Path does not intersect center of leg\n");
-        return true;
-    // CASE: infinite line intersects circle, but segment may not
-    } else {
-        Point_Pair circle_points;
-        circle_points = findSwingPoints(A, B);
-        float seg_dist = distance(A, B);
-        float d1 = distance(circle_points.A, A);  // distance from circle intersection 1 and point A
-        float d2 = distance(circle_points.B, A);  // distance from circle intersection 2 and point A
-        float d3 = distance(circle_points.A, B);  // distance btwn circle intersection 1 and point B
-        float d4 = distance(circle_points.B, B);  // distance btwn circle intersection 2 and point B
-        /**
-         * @logic_description:
-         *  d1 + d3 is the line segment that goes from point A -> circle point 1 -> point B
-         *  if this distance is equal to the segment distance, then intersection point 1 is between points A and B, thus
-         *  the segment intersects the circle
-         */
-        if (abs(seg_dist - (d1 + d3)) < 0.0001 || abs(seg_dist - (d2 + d4)) < 0.0001 ) {
-            valid = false;  // path intersects center
-            printf("Path intersects center of leg\n");
-        } else {
-            valid = true;
-            printf("Path does not intersect center of leg\n");
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_depth, horizontal_range, waiting_time, wiggle_length, wiggle_frequency};
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
+    float corres_t = 0;
+    float r_h = rectangle_params.horizontal_range;
+    float r_v = rectangle_params.vertical_range;
+    if (t_mod <= rectangle_params.period_left)
+    {
+        corres_t = t_mod / rectangle_params.period_left;
+
+        X1 = r_h;
+        // Y1 = - r_v + r_v * corres_t;
+        Y1 = -r_v + (r_v + upper_height) * corres_t;
+        X2 = -r_h;
+        // Y2 = - r_v + r_v * corres_t;
+        Y2 = -r_v + (r_v + upper_height) * corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up)
+    {
+        corres_t = (t_mod - rectangle_params.period_left) / rectangle_params.period_up;
+
+        X1 = r_h - r_h * 2 * corres_t;
+        // Y1 = 0;
+        Y1 = upper_height;
+        X2 = -r_h + r_h * 2 * corres_t;
+        // Y2 = 0;
+        Y2 = upper_height;
+    }
+    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up) / rectangle_params.period_right;
+        X1 = -rectangle_params.horizontal_range;
+        // Y1 = - rectangle_params.vertical_range * corres_t;
+        Y1 = upper_height - (r_v + upper_height) * corres_t;
+        X2 = rectangle_params.horizontal_range;
+        // Y2 = - rectangle_params.vertical_range * corres_t;
+        Y2 = upper_height - (r_v + upper_height) * corres_t;
+    }
+
+    // ###no wiggle
+    // else              
+    // {
+
+    //     if (t_mod > rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    //     {
+    //         X1 = r_h;
+    //         Y1 = -r_v;
+    //         X2 = -r_h;
+    //         Y2 = -r_v;
+    //     }
+    //     else
+    //     {
+    //         corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+
+    //         X1 = -r_h + r_h * 2 * corres_t;
+    //         Y1 = -r_v;
+    //         X2 = r_h - r_h * 2 * corres_t;
+    //         Y2 = -r_v;
+    //     }
+    //     // corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+    //     // float r_h = rectangle_params.horizontal_range;
+    //     // float r_v = rectangle_params.vertical_range;
+    //     // X1 = r_h - r_h * 2 * corres_t;
+    //     // Y1 = - r_v;
+    //     // X2 = - r_h + r_h * 2 * corres_t;
+    //     // Y2 = - r_v;
+    // }
+
+    // wiggle
+    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {   corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+        X1 = -r_h + r_h * 2 * corres_t;
+        Y1 = -r_v;
+        X2 = r_h - r_h * 2 * corres_t;
+        Y2 = -r_v;
+
+    }
+    else
+    {
+        corres_t = fmod(t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down, rectangle_params.period_waiting_time / rectangle_params.wiggle_frequency);   //  flow of half period of wiggle
+        if (corres_t <= rectangle_params.period_waiting_time / (2 * rectangle_params.wiggle_frequency))
+        {
+            X1 = r_h - wiggle_length * corres_t;
+            Y1 = -r_v;
+            X2 = -r_h + wiggle_length * corres_t;
+            Y2 = -r_v;
         }
-    }
-    return (valid);
-}
+        else
+        {
+            X1 = r_h - wiggle_length + wiggle_length * corres_t;
+            Y1 = -r_v;
+            X2 = -r_h + wiggle_length - wiggle_length * corres_t;
+            Y2 = -r_v;
+        }
 
-Point_Pair findSwingPoints(XY_pair A, XY_pair B) {
-    float m = (B.y - A.y) / (B.x - A.x);
-    float b = ((B.x - A.x) * A.y - A.x * (B.y - A.y)) / (B.x - A.x);
-
-    float A_ = (m * m + 1);
-    float B_ = 2 * m * b;
-    float C_ = (b * b - (0.105 + L3) * (0.105 + L3));
-
-    XY_pair xvals;
-    xvals = findRoots(A_, B_, C_);
-    // Point_Pair out;
-    Point_Pair out;
-    out = findCircleIntercepts(xvals, m, b);
-    XY_pair swingA = out.A;
-    XY_pair swingB = out.B;
-
-    float distanceA = distance(A, swingA);
-    float distanceB = distance(A, swingB);
-    // swap points case
-    if (distanceB < distanceA) {
-        out.A = swingB;
-        out.B = swingA;
-    }
-    return out;
-}
-
-/**
- * ! Leg Workspace Must be validated empirically
- * Gamma must be within [0.087, 2.61] radians
- * Theta must be within [-2.47, +2.47] radians
- */
-
-/**
- * @brief Checks whether a current abstract leg position is valid
- */
-bool inBounds(float Gamma, float Theta, float L)
-{
-    if (Gamma <= 0.087 || Gamma > 3.1 ||
-        Theta < -2.47 || Theta > 2.47 ||
-        L <= (0.105 + L3) || L >= (0.29 + L3))
-    {   // ! CALCULATE PRECISE L RANGE FROM GAMMA
-        return false;
-    } else {
-        return true;
     }
 }
 
-/**
- * @brief Checks whether a toe position is in bounds
- */
-bool inBounds(float x, float y)
-{
-    float L = sqrtf(pow(x, 2) + pow(y, 2));
+void servo_angle_gait(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
 
-    if (L <= (0.105 + L3) || L >= (0.29 + L3))
-    {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-
-/**
- * @brief Checks whether a toe position is in bounds
- */
-bool inBounds(XY_pair ToeXY)
-{
+    float servo_time = turtle_.traj_data.servo_time;
+    // float pad_back_time = drag;
+   float pad_back_time = 0.35;  //speed up 
+    float insertion_angle = turtle_.traj_data.insertion_angle*180/M_PI;
+    cout << "angle outp put"<< insertion_angle << " horizontal " << horizontal_angle << endl;
+    float waiting_time = 0;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_angle, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
     
-    float L = sqrtf(pow(ToeXY.x, 2) + pow(ToeXY.y, 2));
-    printf("X: %f, Y: %f\n, L: %f", ToeXY.x, ToeXY.y, L);
-    if (L <= (0.105 + L3) || L >= (0.29 + L3))
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
+    float corres_t = 0;
+    float left_hori_servo = 100;
+    float right_hori_servo = 23;
+  
+    cout << "TMOD" << t_mod << endl;
+    // insertion_angle=insertion_angle+10
+    if (t_mod <= rectangle_params.period_up)
     {
-        return false;
-    } else {
-        return true;
+        corres_t = t_mod / rectangle_params.period_up;
+        cout << "UP corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo;
+        // Y1 = - r_v + r_v * corres_t;
+        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
+        // -r_v + (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo;
+        // Y2 = - r_v + r_v * corres_t;
+        // Y2 = -r_v + (r_v + upper_height) * corres_t;
+        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
     }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+        cout << "RIGHT corres_t" << corres_t << endl;
+        // X1 = r_h - r_h * 2 * corres_t;
+        theta1 = horizontal_angle;
+        // Y1 = 0;
+        // Y1 = upper_height;
+        gamma1 = left_hori_servo - insertion_angle * corres_t;
+        // X2 = -r_h + r_h * 2 * corres_t;
+        theta2 = -horizontal_angle;
+        
+        // Y2 = 0;
+        // Y2 = upper_height;
+        gamma2 = right_hori_servo + insertion_angle * corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+        // X1 = -rectangle_params.horizontal_range;
+        cout << "DOWN corres_t" << corres_t << endl;
+        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
+        // Y1 = - rectangle_params.vertical_range * corres_t;
+        // Y1 = upper_height - (r_v + upper_height) * corres_t;
+        gamma1 = left_hori_servo - insertion_angle;
+        // X2 = rectangle_params.horizontal_range;
+        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
+        // Y2 = - rectangle_params.vertical_range * corres_t;
+        // Y2 = upper_height - (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo + insertion_angle;
+    }
+    else{
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
+        theta1 = -horizontal_angle;
+        cout << "LEFT corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo - insertion_angle  + insertion_angle * corres_t;
+        theta2 = horizontal_angle;
+        gamma2 = right_hori_servo + insertion_angle - insertion_angle * corres_t;
+    }
+    // ###no wiggle
+    // else              
+    // {
+
+    //     if (t_mod > rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    //     {
+    //         X1 = r_h;
+    //         Y1 = -r_v;
+    //         X2 = -r_h;
+    //         Y2 = -r_v;
+    //     }
+    //     else
+    //     {
+    //         corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+
+    //         X1 = -r_h + r_h * 2 * corres_t;
+    //         Y1 = -r_v;
+    //         X2 = r_h - r_h * 2 * corres_t;
+    //         Y2 = -r_v;
+    //     }
+    //     // corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+    //     // float r_h = rectangle_params.horizontal_range;
+    //     // float r_v = rectangle_params.vertical_range;
+    //     // X1 = r_h - r_h * 2 * corres_t;
+    //     // Y1 = - r_v;
+    //     // X2 = - r_h + r_h * 2 * corres_t;
+    //     // Y2 = - r_v;
+    // }
+
+
+
+
+
+
+    // wiggle
+    // else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    // {   corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+    //     X1 = -r_h + r_h * 2 * corres_t;
+    //     Y1 = -r_v;
+    //     X2 = r_h - r_h * 2 * corres_t;
+    //     Y2 = -r_v;
+
+    // }
+    // else
+    // {
+    //     corres_t = fmod(t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down, rectangle_params.period_waiting_time / rectangle_params.wiggle_frequency);   //  flow of half period of wiggle
+    //     if (corres_t <= rectangle_params.period_waiting_time / (2 * rectangle_params.wiggle_frequency))
+    //     {
+    //         X1 = r_h - wiggle_length * corres_t;
+    //         Y1 = -r_v;
+    //         X2 = -r_h + wiggle_length * corres_t;
+    //         Y2 = -r_v;
+    //     }
+    //     else
+    //     {
+    //         X1 = r_h - wiggle_length + wiggle_length * corres_t;
+    //         Y1 = -r_v;
+    //         X2 = -r_h + wiggle_length - wiggle_length * corres_t;
+    //         Y2 = -r_v;
+    //     }
+
+    // }
+
 }
 
 
-// Finds roots of quadratic equation ax*2 + bx + x
-XY_pair findRoots(float a, float b, float c)
+
+void fixed_insertion_depth_gait(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
+
+    float servo_time = turtle_.traj_data.servo_time;
+    // float pad_back_time = drag;
+   float pad_back_time = 0.35;  //speed up 
+    float insertion_angle = turtle_.traj_data.insertion_angle*180/M_PI;
+    cout << "angle outp put"<< insertion_angle << " horizontal " << horizontal_angle << endl;
+    float waiting_time = 0;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_angle, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
+    
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
+    float corres_t = 0;
+    float left_hori_servo = 110;
+    float right_hori_servo = 17;
+      float initial_insertion_angle_rad=asin((0.06+0.015)/(0.14*cos(45*M_PI/180.0)));
+    float initial_insertion_angle_deg=initial_insertion_angle_rad*180.0/M_PI;
+    cout << "TMOD" << t_mod << endl;
+    // insertion_angle=insertion_angle+10
+    if (t_mod <= rectangle_params.period_up)
+    {
+        corres_t = t_mod / rectangle_params.period_up;
+        cout << "UP corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo;
+        // Y1 = - r_v + r_v * corres_t;
+        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
+        // -r_v + (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo;
+        // Y2 = - r_v + r_v * corres_t;
+        // Y2 = -r_v + (r_v + upper_height) * corres_t;
+        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+        cout << "RIGHT corres_t" << corres_t << endl;
+        // X1 = r_h - r_h * 2 * corres_t;
+        theta1 = horizontal_angle;
+        // Y1 = 0;
+        // Y1 = upper_height;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg * corres_t;
+        // X2 = -r_h + r_h * 2 * corres_t;
+        theta2 = -horizontal_angle;
+        
+        // Y2 = 0;
+        // Y2 = upper_height;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg* corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+        // X1 = -rectangle_params.horizontal_range;
+        cout << "DOWN corres_t" << corres_t << endl;
+        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
+        // Y1 = - rectangle_params.vertical_range * corres_t;
+        // Y1 = upper_height - (r_v + upper_height) * corres_t;
+        gamma1 = left_hori_servo - asin((0.06+0.015)/(0.14*cos(-1*theta1*M_PI/180.0)))*180/M_PI;
+        // X2 = rectangle_params.horizontal_range;
+        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
+        // Y2 = - rectangle_params.vertical_range * corres_t;
+        // Y2 = upper_height - (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo + asin((0.06+0.015)/(0.14*cos(-1*theta1*M_PI/180.0)))*180/M_PI;
+    }
+    else{
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
+        theta1 = -horizontal_angle;
+        cout << "LEFT corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg +initial_insertion_angle_deg* corres_t;
+        theta2 = horizontal_angle;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg - initial_insertion_angle_deg * corres_t;
+    }
+    
+
+}
+
+
+
+void fixed_insertion_depth_gait_lower_point(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
+
+    float servo_time = turtle_.traj_data.servo_time;
+    // float pad_back_time = drag;
+   float pad_back_time = 0.65;  //speed up 0.35
+    float insertion_angle = turtle_.traj_data.insertion_angle*180/M_PI;
+    cout << "angle outp put"<< insertion_angle << " horizontal " << horizontal_angle << endl;
+    float waiting_time = 0;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_angle, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
+    
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
+    float corres_t = 0;
+    float left_hori_servo = 94;// original 100 mannually tuned to 97
+    float right_hori_servo = 23;
+    //Fixed insertion depth parameters
+    float turtle_height=0.06;
+    float lower_point=0.05;
+    float desierd_insertion_depth=0.075;
+    // fixed insertion depth calculation
+    float initial_insertion_angle_rad=asin((turtle_height+desierd_insertion_depth)/(0.125*cos(45*M_PI/180.0)+lower_point));
+    float initial_insertion_angle_deg=initial_insertion_angle_rad*180.0/M_PI;
+    cout << "TMOD" << t_mod << endl;
+    // insertion_angle=insertion_angle+10
+    if (t_mod <= rectangle_params.period_up)
+    {
+        corres_t = t_mod / rectangle_params.period_up;
+        cout << "UP corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo;
+        // Y1 = - r_v + r_v * corres_t;
+        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
+        // -r_v + (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo;
+        // Y2 = - r_v + r_v * corres_t;
+        // Y2 = -r_v + (r_v + upper_height) * corres_t;
+        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+        cout << "RIGHT corres_t" << corres_t << endl;
+        // X1 = r_h - r_h * 2 * corres_t;
+        theta1 = horizontal_angle;
+        // Y1 = 0;
+        // Y1 = upper_height;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg * corres_t;
+        // X2 = -r_h + r_h * 2 * corres_t;
+        theta2 = -horizontal_angle;
+        
+        // Y2 = 0;
+        // Y2 = upper_height;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg* corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+        // X1 = -rectangle_params.horizontal_range;
+        cout << "DOWN corres_t" << corres_t << endl;
+        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
+        // Y1 = - rectangle_params.vertical_range * corres_t;
+        // Y1 = upper_height - (r_v + upper_height) * corres_t;
+        gamma1 = left_hori_servo - asin((turtle_height+desierd_insertion_depth)/(0.125*cos(-1*(theta1*M_PI/180.0))+lower_point))*180/M_PI;
+        // X2 = rectangle_params.horizontal_range;
+        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
+        // Y2 = - rectangle_params.vertical_range * corres_t;
+        // Y2 = upper_height - (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo + asin((turtle_height+desierd_insertion_depth)/(0.125*cos(-1*(theta1*M_PI/180.0))+lower_point))*180/M_PI;
+        cout << "swipe"  << endl;
+    }
+    else{
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
+        theta1 = -horizontal_angle;
+        cout << "LEFT corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg +initial_insertion_angle_deg* corres_t;
+        theta2 = horizontal_angle;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg - initial_insertion_angle_deg * corres_t;
+         cout << "extract"  << endl;
+    }
+    
+
+}
+
+
+
+
+float gammasolver(float flipper_l1,float flipper_l2,float insertiondepth_h, float turtleheight_a,float swiping_theta0,float adduction_gamma0, float tol, int maxIter ){
+float theta_solved=swiping_theta0;
+float gamma_solved=adduction_gamma0;
+int iter=0;
+
+while (iter<maxIter){
+float f_function=sin(gamma_solved)*flipper_l1*cos(theta_solved)+cos(gamma_solved)*flipper_l2-insertiondepth_h-turtleheight_a;
+float f_dot_gamma=cos(gamma_solved)*flipper_l1*cos(theta_solved)-sin(gamma_solved)*flipper_l2;
+
+float gamma_solved_new=gamma_solved-f_function/f_dot_gamma;
+if (fabs(gamma_solved_new-gamma_solved)<tol){
+break;
+}
+gamma_solved=gamma_solved_new;
+iter++;
+
+}
+
+
+return gamma_solved;
+}
+
+
+void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
+
+    float servo_time = turtle_.traj_data.servo_time;
+    // float pad_back_time = drag;
+   float pad_back_time = 0.65;  //speed up 0.35
+    float insertion_angle = turtle_.traj_data.insertion_angle*180/M_PI;
+    cout << "angle outp put"<< insertion_angle << " horizontal " << horizontal_angle << endl;
+    float waiting_time = 0;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_angle, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
+    
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
+    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
+    float corres_t = 0;
+    float left_hori_servo = 94;// original 100 mannually tuned to 94
+    float right_hori_servo = 23;
+
+
+    //Fixed insertion depth parameters and gamma solver paramters
+    
+    float l1=0.14;
+    float initial_gamma=0.6;
+    float turtle_height=0.06;
+    float lower_point=0.05;
+
+    // desired insertion depth input
+    float desierd_insertion_depth=0.05;
+
+
+    float tol=1e-5;
+    float initial_theta=-45*M_PI/180;
+    int maxIteration=500;
+
+    // fixed insertion depth calculation
+    float initial_insertion_angle_rad=gammasolver(l1,lower_point,desierd_insertion_depth,turtle_height,initial_theta,initial_gamma, tol, maxIteration );
+    float initial_insertion_angle_deg=initial_insertion_angle_rad*180.0/M_PI;
+    cout << "TMOD" << t_mod << endl;
+    // insertion_angle=insertion_angle+10
+    if (t_mod <= rectangle_params.period_up)
+    {
+        corres_t = t_mod / rectangle_params.period_up;
+        cout << "UP corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo;
+        // Y1 = - r_v + r_v * corres_t;
+        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
+        // -r_v + (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo;
+        // Y2 = - r_v + r_v * corres_t;
+        // Y2 = -r_v + (r_v + upper_height) * corres_t;
+        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+        cout << "RIGHT corres_t" << corres_t << endl;
+        // X1 = r_h - r_h * 2 * corres_t;
+        theta1 = horizontal_angle;
+        // Y1 = 0;
+        // Y1 = upper_height;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg * corres_t;
+        // X2 = -r_h + r_h * 2 * corres_t;
+        theta2 = -horizontal_angle;
+        
+        // Y2 = 0;
+        // Y2 = upper_height;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg* corres_t;
+    }
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+        // X1 = -rectangle_params.horizontal_range;
+        cout << "DOWN corres_t" << corres_t << endl;
+        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
+        // Y1 = - rectangle_params.vertical_range * corres_t;
+        // Y1 = upper_height - (r_v + upper_height) * corres_t;
+        gamma1 = left_hori_servo - gammasolver(l1,lower_point,desierd_insertion_depth,turtle_height,-theta1*M_PI/180,initial_gamma, tol, maxIteration )*180/M_PI;
+        cout << "solved_gamma" << gammasolver(l1,lower_point,desierd_insertion_depth,turtle_height,-theta1*M_PI/180,initial_gamma, tol, maxIteration )*180/M_PI << endl;
+        // X2 = rectangle_params.horizontal_range;
+        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
+        // Y2 = - rectangle_params.vertical_range * corres_t;
+        // Y2 = upper_height - (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo + gammasolver(l1,lower_point,desierd_insertion_depth,turtle_height,-theta1*M_PI/180,initial_gamma, tol, maxIteration )*180/M_PI;
+        cout << "swipe"  << endl;
+    }
+    else{
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
+        theta1 = -horizontal_angle;
+        cout << "LEFT corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo - initial_insertion_angle_deg +initial_insertion_angle_deg* corres_t;
+        theta2 = horizontal_angle;
+        gamma2 = right_hori_servo + initial_insertion_angle_deg - initial_insertion_angle_deg * corres_t;
+         cout << "extract"  << endl;
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @brief bouding gaits
+ * @param time
+ * @param bouding gaits
+ * @return x y : the coordinates of the toe trajectories
+ */
+
+void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1, float &beta1,
+                  float &theta2, float &gamma2, float &beta2)
 {
-    XY_pair out;
+    // float x1, y1, x2, y2;
+    // rectangle_generator(turtle_, t, x1, y1, x2, y2);
 
-    // If a is 0, then equation is not quadratic, but
-    // linear
-    if (a == 0) {
-        out.x = 0;
-        out.y = 0;
-        return out;
-    }
+    // PhysicalToAbstract(x1, y1, x2, y2, theta2, gamma1, beta1, theta1, gamma2, beta2);
 
-    float d = b * b - 4 * a * c;
-    double sqrt_val = sqrt(abs(d));
+    // for big turtle, angle movement
+    // servo_angle_gait(turtle_,t, theta2, gamma1,theta1, gamma2);
+    // fixed_insertion_depth_gait(turtle_,t, theta2, gamma1,theta1, gamma2);
+    // fixed_insertion_depth_gait_lower_point(turtle_,t, theta2, gamma1,theta1, gamma2);
+    fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle_,t, theta2, gamma1,theta1, gamma2);
 
-    if (d > 0) {    // two different real roots
-        out.x = static_cast<double>(-b + sqrt_val) / (2 * a);
-        out.y = static_cast<double>(-b - sqrt_val) / (2 * a);
-    } else if (d == 0) {    // one real root
-        out.x = -static_cast<double>(b / (2 * a));
-        out.y = -static_cast<double>(b / (2 * a));
-    } else {    // d < 0 -> complex roots
-        out.x = 0;
-        out.y = 0;
-    }
-    return out;
+    cout << " theta1: " << theta1 << " gamma1: " << gamma1 << endl;
+    cout << " theta2: " << theta2 << " gamma2: " << gamma2 << endl;
+    checkleft(gamma1, beta1, theta1);
+    checkright(gamma2, beta2, theta2);
+    cout << endl;
+    // cout << " theta1: " << theta1 << " gamma1: " << gamma1 << endl;
+    // cout << " theta2: " << theta2 << " gamma2: " << gamma2 << endl;
+    // cout << endl;
 }
 
-// Finds circle intercepts given x values for traveler
-Point_Pair findCircleIntercepts(XY_pair xvals, float m, float b) {
-    Point_Pair out;
-    out.A.x = xvals.x;
-    out.A.y = xvals.x * m + b;
-    out.B.x = xvals.y;
-    out.B.y = xvals.y * m + b;
+/**
+ * @brief rhex walking
+ * @param time
+ * @param bouding gaits
+ * @return x y : the coordinates of the toe trajectories
+ */
 
-    return out;
-}
-
-float distance(XY_pair A, XY_pair B) {
-    return sqrt((B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y));
+void rhex_walking(float t, float &theta1, float &theta2, float curr_theta1, float curr_theta2)
+{
+    float speed = 36.4;
+    theta1 = curr_theta1 - speed * 0.01;
+    theta2 = 0.2 - curr_theta1 + speed * 0.01;
+    // theta1 = 0;
+    // theta2 = 0.2;
 }

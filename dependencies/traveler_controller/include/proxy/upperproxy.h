@@ -14,12 +14,12 @@
 #include "proxy/control_data.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "traveler_msgs/msg/traveler_config.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
-#include "traveler_msgs/msg/traveler_mode.hpp"
+#include "control_msgs/msg/dynamic_joint_state.hpp"
+
 using namespace std::chrono_literals;
 using std::placeholders::_1;
-namespace traveler_namespace
+namespace turtle_namespace
 {
 	namespace control
 	{
@@ -28,24 +28,22 @@ namespace traveler_namespace
 		{
 		public:
 			upperproxy(std::string name = "upper_proxy");
-			void UpdateGuiCommand(Traveler &);
-			void PublishStatusFeedback(Traveler &);
+			void UpdateGuiCommand(turtle &);
+			void PublishStatusFeedback(turtle &);
 
 		private:
-			Traveler traveler_leg;
+			turtle turtle_inter_;
 			rclcpp::TimerBase::SharedPtr _timer;
-			// rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr
-			// 	GUI_publisher;
-			void handle_gui(const traveler_msgs::msg::TravelerConfig::SharedPtr msg);
-			void handle_start(const traveler_msgs::msg::TravelerMode::SharedPtr msg);
-			rclcpp::Subscription<traveler_msgs::msg::TravelerConfig>::SharedPtr
+			rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr
+				GUI_publisher;
+			void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
+
+			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr
 				GUI_subscriber;
-			rclcpp::Subscription<traveler_msgs::msg::TravelerMode>::SharedPtr
-				start_subscriber;
 			
 		};
 
 	} // namespace control
-} // namespace traveler_namespace
+} // namespace turtle_namespace
 
 #endif

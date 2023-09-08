@@ -1,0 +1,41 @@
+[ 35%] Built target odrive_can_interface
+[ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:76:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+   76 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K )
+      |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::UpdateJoystickStatus(turtle&)[m[K’:
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:172:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kodrive0[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  172 |     auto [01;35m[Kodrive0[m[K = turtle_inter_.turtle_chassis.left_adduction;
+      |          [01;35m[K^~~~~~~[m[K
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:173:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kodrive1[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  173 |     auto [01;35m[Kodrive1[m[K = turtle_inter_.turtle_chassis.left_sweeping;
+      |          [01;35m[K^~~~~~~[m[K
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:174:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kodrive2[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  174 |     auto [01;35m[Kodrive2[m[K = turtle_inter_.turtle_chassis.left_adduction;
+      |          [01;35m[K^~~~~~~[m[K
+[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:175:10:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Kodrive3[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  175 |     auto [01;35m[Kodrive3[m[K = turtle_inter_.turtle_chassis.left_sweeping;
+      |          [01;35m[K^~~~~~~[m[K
+[ 50%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[100%] Built target turtle_high_controller
+-- Install configuration: "Debug"
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/package.xml

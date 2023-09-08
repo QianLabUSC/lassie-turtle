@@ -9,7 +9,7 @@
 #define BASE_CONTROLLER_H_
 #include "proxy/control_data.h"
 
-namespace traveler_namespace {
+namespace turtle_namespace {
 namespace control {
 class BaseController {
  public:
@@ -19,12 +19,12 @@ class BaseController {
 
   virtual void Init() = 0;
 
-  virtual void ComputeControlCommand(Traveler &) = 0;
+  virtual void ComputeControlCommand(turtle &) = 0;
 
   virtual void Reset() = 0;
 
   virtual void Stop() = 0;
 };
 }  // namespace control
-}  // namespace traveler_namespace
+}  // namespace turtle_namespace
 #endif
