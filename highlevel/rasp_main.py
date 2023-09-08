@@ -22,6 +22,8 @@ def launch_bridge():
     return process
 
 def launch_c_node(packagename, nodename):
+    # print(packagename)
+    # print(nodename)
     process = subprocess.Popen(["ros2", "run", packagename, nodename])
     return process
 
@@ -66,10 +68,11 @@ def main():
     manager = NodeManager()
     # manager.register('bridge', None, is_bridge=True)
     # manager.register('state_estimator', './visualizer/stateEstimator.py')
-    # manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
+    manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
     # manager.register('data_sync', './multimedia/dataSync.py')
-    manager.register('gui', './LASSIE_GUI/lassie_gui.py')
-    # manager.register('video_sync', './multimedia/dataSync.py')
+    # manager.register('gui', './LASSIE_GUI/lassie_gui.py')
+    manager.register('video_sync', '/home/traveler/highlevel/multimedia/videoSync.py')
+
     # print(manager.nodes)
     manager.block()
 

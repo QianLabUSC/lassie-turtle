@@ -12,8 +12,9 @@ import os
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Bool, String
-from traveler_msgs.msg import TravelerConfig
+from traveler_msgs.msg import TravelerConfig, TravelerMode
 import datetime
+from goPro import GoProCamera
 WIDTH = 1280
 HEIGHT = 720
 WIDTH_2K = 2560
@@ -25,17 +26,18 @@ class VideoSync(Node):
         self.filename = "defaultfilename"
         self.running_scenario = "defaultscenario"
         self.video_thread = None
-
+        self.goProCamera = GoProCamera("996")
+        
         self.subscription_start = self.create_subscription(
-            Bool,
-            'traveler/start_flag',
+            TravelerMode,
+            '/traveler/start_flag',
             self.gui_callback,
             10
         )
 
         self.subscription_start = self.create_subscription(
             TravelerConfig,
-            'traveler/config',
+            '/traveler/config',
             self.config_callback,
             10
         )
@@ -50,14 +52,35 @@ class VideoSync(Node):
 
 
     def gui_callback(self, msg):            
-        
-        if msg.data and not self.is_recording:
-            self.get_logger().warn('save video start at mainboard time')
-            # self.startRecording()
-        elif not msg.data and self.is_recording:
-            self.get_logger().warn('save video stop at mainboard time')
-            # self.stopRecording()
-            # self.saveRecording()
+        if msg.traveler_mode != 4 and msg.traveler_mode != 7 :
+            if msg.start_flag and not self.is_recording:
+                self.get_logger().warn('save video start at mainboard time')
+                # self.startRecording()
+                self.is_recording = True
+                self.goProCamera.startVideo()
+            elif not msg.start_flag and self.is_recording:
+                self.get_logger().warn('save video stop at mainboard time')
+                # self.stopRecording()
+                # self.saveRecording()
+                self.is_recording = False
+                self.goProCamera.stopVideo()
+                # current_time = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                video_name = self.filename.split('/')[-1] # gets the video's save name
+                folder_name = self.filename.rstrip(video_name) # gets the parent folder
+                video_filename = folder_name + 'video/' + video_name + ".mp4" # video formats and sizes also depend and vary according to the camera used
+                print("Video Filename (videoSync.py): ", video_filename)
+                REC_FOLDER = "experiment_records/"
+                # CURR_FOLDER = os.getcwd()
+                # print(CURR_FOLDER)
+                PARAENT_FOLDER = "/home/traveler/"
+                print(PARAENT_FOLDER)
+                COMBINED_PATH = os.path.join(PARAENT_FOLDER, REC_FOLDER + video_filename)
+                print(COMBINED_PATH)
+                if not os.path.exists(os.path.dirname(COMBINED_PATH)):
+                    print("Creating directories on path...")
+                    os.makedirs(os.path.dirname(COMBINED_PATH))
+                
+                self.goProCamera.downloadVideo(COMBINED_PATH)
 
 
     def startRecording(self):

@@ -80,7 +80,7 @@ void physicalToAbstract(float X, float Y, float &theta, float &gamma)
     }
     gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
     
-    printf("X: %f, Y: %f, L: %f, theta: %f, gamma: %f\n", X, Y, L, theta, gamma);
+    // printf("X: %f, Y: %f, L: %f, theta: %f, gamma: %f\n", X, Y, L, theta, gamma);
 
 }
 

@@ -1,5 +1,5 @@
 from crustProperties import *
-from loadcell_hx711 import *
+
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
@@ -157,9 +157,9 @@ class ControlNode_Leg(Node):
         self.pp.grid(True)
         self.ppp, = self.pp.plot([], [], 'r', linewidth=3)
 
-    def calibrate_loadcell(self):
-        self.loadcell1 = loadcell()
-        self.loadcell1.setup()
+    # def calibrate_loadcell(self):
+    #     self.loadcell1 = loadcell()
+    #     self.loadcell1.setup()
 
     def calibrate(self, drag_traj, mode):
         self.start_time = time.time()
@@ -305,14 +305,16 @@ class ControlNode_Leg(Node):
 
     def download_data(self, file_name, node_id, real_time_plot, mode, config):
 
-        path = "./experiment_data/leg/" + file_name + ".csv"
-
-        if not os.path.exists(os.path.dirname(path)):
-            os.makedirs(os.path.dirname(path))
+        REC_FOLDER = "experiment_records/" 
+        CURR_FOLDER = os.getcwd()
+        PARAENT_FOLDER = os.path.dirname(CURR_FOLDER)
+        COMBINED_HIGH_PATH = os.path.join(PARAENT_FOLDER, REC_FOLDER + file_name + '.csv')
+        if not os.path.exists(os.path.dirname(COMBINED_HIGH_PATH)):
+            os.makedirs(os.path.dirname(COMBINED_HIGH_PATH))
 
         
 
-        with open(path, 'w', newline='') as f:
+        with open(COMBINED_HIGH_PATH, 'w', newline='') as f:
             writer = csv.writer(f)
 
             writer.writerow(["extrude_speed_slider", "extrude_angle_slider", "extrude_length_slider", "down_length_slider", "down_speed_slider", "delay_after_down",

@@ -1,11 +1,12 @@
 #!/bin/bash
 
 # Define the folders to copy
-folders=("docker")
+folders=("highlevel" "docker")
 
 # SSH connection details
 user="ubuntu"
-host="192.168.8.100"
+host="192.168.2.1"
+# host="192.168.137.247"
 remote_dir="/home/ubuntu/roboland"
 
 

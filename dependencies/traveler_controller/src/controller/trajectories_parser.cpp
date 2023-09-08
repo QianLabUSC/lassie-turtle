@@ -1,3 +1,5 @@
+// file last updated Aug 11 by John Bush
+
 #include "controller/trajectories_parser.h"
 
 //#define DEBUG_WORKSPACE
@@ -135,6 +137,7 @@ namespace traveler_namespace
                 float L = traveler.traj_data.extrude_depth + traveler.traj_data.ground_height;
                 // define start and end points
                 float starting_extension = max((traveler.traj_data.ground_height - 0.03f), (L2 - L1 + L3 + 0.01f));
+                printf("Penetration Trial with Angle %f degrees, L: %f, Starting Extension: %f", theta, L, starting_extension);
                 abstractToPhysical(starting_extension, theta, penetration_start);
                 abstractToPhysical(L, theta, penetration_end);
 

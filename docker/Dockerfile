@@ -81,7 +81,7 @@ RUN apt-get -y update \
   
 
 ENV DEBIAN_FRONTEND=noninteractive   
-RUN  pip3 install opencv-python \
+RUN  pip3 install opencv-python open_gopro \
     && apt-get install cpulimit
 
 
