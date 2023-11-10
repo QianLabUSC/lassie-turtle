@@ -1,6 +1,10 @@
 
 #include "can_driver/socketcan_interface.hpp"
-
+// SocketcanInterface::SocketcanInterface()
+// {
+//     // Constructor for no mask definition
+//     this->openSocket(DEFAULT_MSG_ID,DEFAULT_CAN_CHANNEL,DEFAULT_CANID_MASK, DEFAULT_READ_TIMOUT);
+// }
 SocketcanInterface::SocketcanInterface(canid_t msg_id)
 {
     // Constructor for no mask definition

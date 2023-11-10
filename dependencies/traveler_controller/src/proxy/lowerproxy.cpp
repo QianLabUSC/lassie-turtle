@@ -6,6 +6,7 @@
  */
 
 #include "proxy/lowerproxy.h"
+#include "controller/inverse_kinematics.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -81,13 +82,14 @@ void lowerproxy::calculate_position(turtle &turtle_ )
          * The controller interprets angular position in radians, but the ODrive
          * uses turns as its angular unit.
         */
-        // float axis0_pos = (-1.0f * turtle_.turtle_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
-        // float axis1_pos = (traveler_.traveler_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + M1_OFFSET) / (2 * M_PI);
-
-        // clamp both motor angles to within 1 turn;
+        //float axis0_pos = (-1.0f * turtle_.turtle_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
+        //float axis1_pos = (traveler_.traveler_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + M1_OFFSET) / (2 * M_PI);
+        
+ 
+       // clamp both motor angles to within 1 turn;
         
 
-        // auto message_channel_0 = traveler_msgs::msg::SetInputPosition();
+        // auto message_channel_0_axis0 = traveler_msgs::msg::SetInputPosition();
         // message_channel_0.can_channel = 0;
         // message_channel_0.axis = 0;
         // message_channel_0.input_position = axis0_pos;
@@ -102,52 +104,48 @@ void lowerproxy::calculate_position(turtle &turtle_ )
         // message_channel_1.vel_ff = 0;
         // message_channel_1.torque_ff = 0;
         // // instead of publiishing to ros topics, publish to local class
-        // traveler_.traveler_control.Leg_lf.axis0.set_input_position = message_channel_0;
-        // traveler_.traveler_control.Leg_lf.axis1.set_input_position = message_channel_1;
+        // turtle_.turtle_control.Leg_lf.axis0.set_input_position = message_channel_0;
+        // turtle_.turtle_control.Leg_lf.axis1.set_input_position = message_channel_1;
         // Position_publisher_channel_0->publish(message_channel_0);
         // Position_publisher_channel_1->publish(message_channel_1);
 
-        ////
-        // if(turtle_.turtle_gui.start_flag==1){
-        //         t = t + 0.01;
-        //         boundingGAIT(turtle_, t, theta1, gamma1, beta1, theta2, gamma2, beta2);
-        //         // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
+        float t;
+        if(turtle_.turtle_gui.start_flag==1){
+                t = t + 0.01;
+                float channel0_axis0_pos = turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position; 
+                float channel0_axis1_pos = turtle_.turtle_control.right_adduction.set_input_position_degree.input_position; 
+                float channel1_axis0_pos = turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position; 
+                float channel1_axis1_pos = turtle_.turtle_control.left_adduction.set_input_position_degree.input_position; 
+            boundingGAIT(turtle_, t, channel0_axis0_pos, channel1_axis1_pos, channel1_axis0_pos, channel0_axis1_pos);
+                // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
 
-        //         turtle_.turtle_control.left_limb_motor.motor_control_position = theta1;
-        //         turtle_.turtle_control.left_big_servo_command = gamma1;
-        //         turtle_.turtle_control.left_small_servo_command = beta1;
 
-        //         turtle_.turtle_control.right_limb_motor.motor_control_position = theta2;
-        //         turtle_.turtle_control.right_big_servo_command = gamma2;
-        //         turtle_.turtle_control.right_small_servo_command = beta2;
+                // turtle_.turtle_control.left_limb_motor.motor_control_position = theta1;
+                // turtle_.turtle_control.left_big_servo_command = gamma1;
+                // turtle_.turtle_control.left_small_servo_command = beta1;
 
-        //         // update the current state
-        //         turtle_.turtle_chassis.left_big_servo_pos = gamma1;
-        //         turtle_.turtle_chassis.left_small_servo_pos = beta1;
-        //         turtle_.turtle_chassis.right_big_servo_pos = gamma2;
-        //         turtle_.turtle_chassis.right_small_servo_pos = beta2;
-        //     }
-        //     else{
-        //         t = 0;
-        //         // boundingGAIT(turtle_, t, theta1, gamma1, beta1, theta2, gamma2, beta2);
-        //         // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
+                // turtle_.turtle_control.right_limb_motor.motor_control_position = theta2;
+                // turtle_.turtle_control.right_big_servo_command = gamma2;
+                // turtle_.turtle_control.right_small_servo_command = beta2;
 
-        //         // turtle_.turtle_control.left_limb_motor.motor_control_position = turtle_.turtle_chassis.left_limb_motor.position + 0.0001*(0.2 - turtle_.turtle_chassis.left_limb_motor.position);
-        //         turtle_.turtle_control.left_limb_motor.motor_control_position = 0.12;
-        //         turtle_.turtle_control.left_big_servo_command = 100;
-        //         turtle_.turtle_control.left_small_servo_command = 0;
-
-        //         // turtle_.turtle_control.right_limb_motor.motor_control_position = turtle_.turtle_chassis.right_limb_motor.position + 0.0001*(1.2 - turtle_.turtle_chassis.right_limb_motor.position);
-        //         turtle_.turtle_control.right_limb_motor.motor_control_position = 1.2;
-        //         turtle_.turtle_control.right_big_servo_command = 23;
-        //         turtle_.turtle_control.right_small_servo_command = 0;
-
-        //         // update the current state
-        //         turtle_.turtle_chassis.left_big_servo_pos = 100;
-        //         turtle_.turtle_chassis.left_small_servo_pos = 0;
-        //         turtle_.turtle_chassis.right_big_servo_pos = 23;
-        //         turtle_.turtle_chassis.right_small_servo_pos = 0;
-        //     }
+                // // update the current state
+                // turtle_.turtle_chassis.left_big_servo_pos = gamma1;
+                // turtle_.turtle_chassis.left_small_servo_pos = beta1;
+                // turtle_.turtle_chassis.right_big_servo_pos = gamma2;
+                // turtle_.turtle_chassis.right_small_servo_pos = beta2;
+            }
+            else{
+                t = 0;
+                turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = 0; 
+                turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = 0; 
+                turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = 0; 
+                turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = 0;
+                // update the current state
+                // turtle_.turtle_chassis.left_big_servo_pos = 0;
+                // turtle_.turtle_chassis.left_small_servo_pos = 0;
+                // turtle_.turtle_chassis.right_big_servo_pos = 0;
+                // turtle_.turtle_chassis.right_small_servo_pos = 0;
+            }
         
       
     }

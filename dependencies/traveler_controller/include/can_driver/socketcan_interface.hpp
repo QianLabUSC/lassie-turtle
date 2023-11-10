@@ -16,10 +16,12 @@
 #define DEFAULT_READ_TIMOUT 500 // Microseconds
 #define DEFAULT_CANID_MASK 0b11111 // Mask first 5 bits
 #define DEFAULT_CAN_CHANNEL 0
+//#define DEFAULT_MSG_ID 0
 
 class SocketcanInterface
 {
 public:
+  //SocketcanInterface();
   SocketcanInterface(canid_t msg_id);
   SocketcanInterface(canid_t msg_id, uint8_t can_channel);
   SocketcanInterface(canid_t msg_id, uint8_t can_channel, uint16_t mask);

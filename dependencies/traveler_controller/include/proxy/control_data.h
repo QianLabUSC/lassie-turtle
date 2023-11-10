@@ -41,7 +41,8 @@ struct turtle_status
 
 
 struct motor_command{
-    traveler_msgs::msg::SetInputPosition set_input_position;
+    traveler_msgs::msg::SetInputPosition set_input_position_degree;
+    traveler_msgs::msg::SetInputPosition set_input_position_radian;
 };
 
 struct trutle_command{
@@ -49,6 +50,7 @@ struct trutle_command{
     motor_command left_sweeping;
     motor_command right_adduction;
     motor_command right_sweeping;
+     
 };
 
 struct human_interface{

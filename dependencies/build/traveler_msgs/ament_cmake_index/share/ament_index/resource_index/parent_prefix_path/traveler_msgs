@@ -1,1 +1,1 @@
-/opt/ros/traveler/traveler_msgs:/home/qianlab/traveler_workspace/install/traveler_high_controller:/home/qianlab/traveler_workspace/install/odrive_pro_srvs_msgs:/home/qianlab/lassie-spirit/lassie-spirit/dependencies/spirit_msgs/install/spirit_msgs:/opt/ros/foxy
+/opt/ros/foxy

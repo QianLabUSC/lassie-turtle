@@ -1,21 +1,35 @@
-
-# Consider dependencies only in project.
-set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
-
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
+  "CXX"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/qianlab/dependencies/traveler_controller/src/can_driver/can_driver.cpp" "/home/qianlab/dependencies/build/turtle_high_controller/CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o"
+  "/home/qianlab/dependencies/traveler_controller/src/can_driver/can_suber.cpp" "/home/qianlab/dependencies/build/turtle_high_controller/CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o"
+  "/home/qianlab/dependencies/traveler_controller/src/can_driver/odrive_can.cpp" "/home/qianlab/dependencies/build/turtle_high_controller/CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o"
+  "/home/qianlab/dependencies/traveler_controller/src/can_driver/socketcan_interface.cpp" "/home/qianlab/dependencies/build/turtle_high_controller/CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o"
+  )
+set(CMAKE_CXX_COMPILER_ID "GNU")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_CXX
+  "DEFAULT_RMW_IMPLEMENTATION=rmw_fastrtps_cpp"
+  "RCUTILS_ENABLE_FAULT_INJECTION"
+  "SPDLOG_COMPILED_LIB"
   )
 
-# The set of dependency files which are needed:
-set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_publisher.cpp" "CMakeFiles/odrive_can_interface.dir/src/can_driver/can_publisher.cpp.o" "gcc" "CMakeFiles/odrive_can_interface.dir/src/can_driver/can_publisher.cpp.o.d"
-  "/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_suber.cpp" "CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o" "gcc" "CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o.d"
-  "/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/odrive_can.cpp" "CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o" "gcc" "CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o.d"
-  "/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/can_driver/socketcan_interface.cpp" "CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o" "gcc" "CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o.d"
+# The include file search paths:
+set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/home/qianlab/dependencies/traveler_controller/include"
+  "/usr/include/eigen3"
+  "/usr/local/include/qpOASES"
+  "."
+  "/home/qianlab/dependencies/install/traveler_msgs/include"
+  "/opt/ros/foxy/include"
   )
 
-# Targets to which this target links which contain Fortran sources.
-set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+# Targets to which this target links.
+set(CMAKE_TARGET_LINKED_INFO_FILES
   )
 
 # Fortran module output directory.

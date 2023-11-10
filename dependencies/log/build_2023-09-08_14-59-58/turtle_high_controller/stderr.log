@@ -1,4 +1,0 @@
-[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
-[01m[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:76:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
-   76 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K )
-      |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K

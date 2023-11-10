@@ -65,8 +65,9 @@ install(TARGETS
 ## publish a message
 add_executable(odrive_can_interface 
       src/can_driver/odrive_can.cpp
+      src/can_driver/can_driver.cpp
       # src/can_service.cpp
-      src/can_driver/can_publisher.cpp
+      # src/can_driver/can_publisher.cpp
       src/can_driver/socketcan_interface.cpp
       src/can_driver/can_suber.cpp)
 ament_target_dependencies(odrive_can_interface

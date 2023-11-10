@@ -1,5 +1,0 @@
-[ 35%] Built target odrive_can_interface
-[ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/pid_speed_controller.cpp.o[0m
-[ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
-[ 57%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
-[ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m

@@ -1,7 +1,8 @@
 #include "controller/inverse_kinematics.h"
 
 #define _USE_MATH_DEFINES
-
+#include <fstream>
+#include<iostream>
 #include <cmath>
 using namespace std;
 
@@ -721,7 +722,7 @@ return gamma_solved;
 
 
 void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
-    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+  float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
     float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
 
     float servo_time = turtle_.traj_data.servo_time;
@@ -820,6 +821,7 @@ void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle
          cout << "extract"  << endl;
     }
     
+    
 }
 
 
@@ -827,7 +829,111 @@ void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle
 
 
 
+// Fixed insertion depth verson3 analytic solution with matlab homogeneous matrix verified
 
+void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+     //get data
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
+    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
+    float servo_time = turtle_.traj_data.servo_time;
+    // float pad_back_time = drag;
+   float pad_back_time = 0.65;  //speed up 0.35
+    float insertion_angle = turtle_.traj_data.insertion_angle*180/M_PI;
+   // cout << "angle outp put"<< insertion_angle << " horizontal " << horizontal_angle << endl;
+    float waiting_time = 0;
+    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
+    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
+    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_time, servo_time, insertion_angle, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
+    
+    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+
+    float corres_t = 0;
+    float left_hori_servo = 94;// original 100 mannually tuned to 94
+    float right_hori_servo = 23;
+
+
+    //Fixed insertion depth parameters and gamma solver paramters
+    
+    double l1=0.14; // flipper length
+    double turtle_height=0.06; //height from flipper to fround
+    double lower_point=0.05;
+
+    // desired insertion depth input
+    double desierd_insertion_depth=0.05;
+
+    // fixed insertion depth initial calculation
+    double initial_insertion_angle_rad=asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-45*M_PI/180))*(l1*cos(-45*M_PI/180))+lower_point*lower_point))-atan(lower_point/(l1*cos(-45*M_PI/180)));
+    double initial_insertion_angle_deg=initial_insertion_angle_rad*180/M_PI;
+    cout << "TMOD" << t_mod << endl;
+    cout<<"Initial angle"<<initial_insertion_angle_deg<<endl;
+    // insertion_angle=insertion_angle+10
+
+    //FIRST phase gamma=0 theta=-45
+    if (t_mod <= rectangle_params.period_up)
+    {
+        corres_t = t_mod / rectangle_params.period_up;
+       // cout << "UP corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo;
+        // Y1 = - r_v + r_v * corres_t;
+        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
+        // -r_v + (r_v + upper_height) * corres_t;
+        gamma2 = right_hori_servo;
+        // Y2 = - r_v + r_v * corres_t;
+        // Y2 = -r_v + (r_v + upper_height) * corres_t;
+        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
+    }
+    //Phase2  theta=-45 gamma go to desired value
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
+    {
+        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+        //cout << "RIGHT corres_t" << corres_t << endl;
+        // X1 = r_h - r_h * 2 * corres_t;
+        theta1 = horizontal_angle;
+        // Y1 = 0;
+        // Y1 = upper_height;
+        gamma1 = left_hori_servo - initial_insertion_angle_rad*180/M_PI * corres_t;
+        // X2 = -r_h + r_h * 2 * corres_t;
+        theta2 = -horizontal_angle;
+        
+        // Y2 = 0;
+        // Y2 = upper_height;
+        gamma2 = right_hori_servo + initial_insertion_angle_rad*180/M_PI* corres_t;
+    }
+
+    //
+    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
+    {
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
+      //  cout << "DOWN corres_t" << corres_t << endl;
+        
+        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
+        gamma1 = left_hori_servo -(asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI;
+      
+        //cout << "solved_gamma" << gammasolver(l1,lower_point,desierd_insertion_depth,turtle_height,-theta1*M_PI/180,initial_gamma, tol, maxIteration )*180/M_PI << endl;
+     cout<<"theta1"<<theta1<<endl;
+       cout<<"gamma_analytic_solution"<<(asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI<<endl;
+        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
+        gamma2 = right_hori_servo + (asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI;
+       // cout << "swipe"  << endl;
+
+
+       // csv output
+    //    std::ofstream outputFile("output.csv",std::ios::app);
+    //    outputFile<< (asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI<<"\n";
+    //    outputFile.close();
+    //    std::cout<<"CSV done";
+    }
+    else{
+        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
+        theta1 = -horizontal_angle;
+        //cout << "LEFT corres_t" << corres_t << endl;
+        gamma1 = left_hori_servo -  (initial_insertion_angle_rad*180/M_PI) +(initial_insertion_angle_rad*180/M_PI)* corres_t;
+        theta2 = horizontal_angle;
+        gamma2 = right_hori_servo + (initial_insertion_angle_rad*180/M_PI) - (initial_insertion_angle_rad*180/M_PI) * corres_t;
+       //  cout << "extract"  << endl;
+    }
+    
+}
 
 
 
@@ -849,8 +955,8 @@ void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle
  * @return x y : the coordinates of the toe trajectories
  */
 
-void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1, float &beta1,
-                  float &theta2, float &gamma2, float &beta2)
+void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1,
+                  float &theta2, float &gamma2)
 {
     // float x1, y1, x2, y2;
     // rectangle_generator(turtle_, t, x1, y1, x2, y2);
@@ -861,13 +967,28 @@ void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1, float 
     // servo_angle_gait(turtle_,t, theta2, gamma1,theta1, gamma2);
     // fixed_insertion_depth_gait(turtle_,t, theta2, gamma1,theta1, gamma2);
     // fixed_insertion_depth_gait_lower_point(turtle_,t, theta2, gamma1,theta1, gamma2);
-    fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle_,t, theta2, gamma1,theta1, gamma2);
-
-    cout << " theta1: " << theta1 << " gamma1: " << gamma1 << endl;
-    cout << " theta2: " << theta2 << " gamma2: " << gamma2 << endl;
-    checkleft(gamma1, beta1, theta1);
-    checkright(gamma2, beta2, theta2);
-    cout << endl;
+    //fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle_,t, theta2, gamma1,theta1, gamma2);
+    fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_,t, theta2, gamma1,theta1, gamma2);
+    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = gamma1/360;
+    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = theta1/360;
+    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = gamma2/360;
+    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = theta2/360;
+    // used for test
+    // float left_add = (gamma1*M_PI)/180;
+    // float left_swe = (theta1*M_PI)/180;
+    // float right_add = (gamma2*M_PI)/180;
+    // float right_swe = (theta2*M_PI)/180;
+    // cout << "la"<< left_add << "ls" <<left_swe << endl;
+    // cout << "ra"<< right_add << "rs" <<right_swe << endl;
+    // cout << " theta1: " << theta1 << " gamma1: " << gamma1 << endl;
+    // cout << " theta2: " << theta2 << " gamma2: " << gamma2 << endl;
+    // //checkleft(gamma1, beta1, theta1);
+    // //checkright(gamma2, beta2, theta2);
+    // cout << endl;
     // cout << " theta1: " << theta1 << " gamma1: " << gamma1 << endl;
     // cout << " theta2: " << theta2 << " gamma2: " << gamma2 << endl;
     // cout << endl;

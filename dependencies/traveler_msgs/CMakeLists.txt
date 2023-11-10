@@ -17,6 +17,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 # Add msgs/srvs
 set(msg_files
+  "msg/OdriveStatus.msg"
   "msg/TravelerConfig.msg"
   "msg/TravelerMode.msg"
   "msg/TravelerStatus.msg"
@@ -24,7 +25,7 @@ set(msg_files
 )
 # Add msgs/srvs
 set(odrive_msg_files
-  "odrivemsg/OdriveStatus.msg"
+  
   "odrivemsg/SetInputPosition.msg"
 )
 set(odrive_srv_files

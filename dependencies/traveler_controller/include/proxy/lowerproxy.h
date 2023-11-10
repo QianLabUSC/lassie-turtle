@@ -12,11 +12,14 @@
 #include <functional>
 #include <memory>
 #include <string>
+
 #include "proxy/control_data.h"
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 #include "control_msgs/msg/dynamic_joint_state.hpp"
+#include "traveler_msgs/msg/odrive_status.hpp"
+#include "traveler_msgs/msg/set_input_position.hpp"
 // #include "travelermsgs/msg/robot_state.hpp"
 
 using namespace std::chrono_literals;

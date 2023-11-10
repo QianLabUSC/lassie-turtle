@@ -24,9 +24,10 @@ int main(int argc, char **argv)
 	// detect motor status, and publish motion command
 	std::shared_ptr<lowerproxy> Lower_proxy_ = std::make_shared<lowerproxy>();
 	std::shared_ptr<can_driver> Can_driver_  = std::make_shared<can_driver>();
-
+    
 
 	rclcpp::Rate loop_rate(1500); // renew frequence 1500HZ
+
 	while (rclcpp::ok())
 	{
 		rclcpp::spin_some(Upper_proxy_);

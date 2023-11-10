@@ -1,10 +1,10 @@
 {
   "package_name": "traveler_msgs",
   "non_idl_tuples": [
-    "/home/qianlab/lassie-turtle/dependencies/traveler_msgs:msg/TravelerConfig.msg",
-    "/home/qianlab/lassie-turtle/dependencies/traveler_msgs:msg/TravelerMode.msg",
-    "/home/qianlab/lassie-turtle/dependencies/traveler_msgs:msg/TravelerStatus.msg",
-    "/home/qianlab/lassie-turtle/dependencies/traveler_msgs:odrivemsg/OdriveStatus.msg",
-    "/home/qianlab/lassie-turtle/dependencies/traveler_msgs:odrivemsg/SetInputPosition.msg"
+    "/home/qianlab/dependencies/traveler_msgs:msg/OdriveStatus.msg",
+    "/home/qianlab/dependencies/traveler_msgs:msg/TravelerConfig.msg",
+    "/home/qianlab/dependencies/traveler_msgs:msg/TravelerMode.msg",
+    "/home/qianlab/dependencies/traveler_msgs:msg/TravelerStatus.msg",
+    "/home/qianlab/dependencies/traveler_msgs:odrivemsg/SetInputPosition.msg"
   ]
 }
