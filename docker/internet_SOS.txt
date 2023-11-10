@@ -1,9 +1,0 @@
-wlan0:
-    access-points:
-        "travelerleg_hotspot":
-        password: "12345678"
-        mode: ap
-    dhcp4: false
-    addresses:
-        - 192.168.2.1/24
-    optional: true
