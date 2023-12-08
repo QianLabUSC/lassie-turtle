@@ -15,6 +15,9 @@
 #include "proxy/upperproxy.h"
 #include "proxy/control_data.h"
 #include "can_driver/can_driver.hpp"
+#include "can_driver/can_suber.hpp"
+#include "traveler_msgs/msg/set_input_position.hpp"
+#include <chrono>
 //#include <Eigen/Dense>
 //#include <qpOASES.hpp>
 //#include <glog/logging.h>

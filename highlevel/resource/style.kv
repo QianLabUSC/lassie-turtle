@@ -1,8 +1,9 @@
 #:import Window kivy.core.window.Window
 #:import Factory kivy.factory.Factory
-#:set default_font_size "36sp"
+#:set default_font_size "18sp"
 #:set color_deep_orange "DD2C00"
-#:set color_deep_orange "000000"
+#:set color_deep_orange "455A64"
+
 #:set color_baby_blue "89CFF0"
 #:set color_black "000000"
 
@@ -652,14 +653,14 @@
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "(0.1 m/s)"
+                        text: "(0.01 m/s)"
                         height: self.texture_size[1]
             MDBoxLayout:
                 size_hint_x: 0.7
         MDSlider:
             id: Slider_4
             min: 1
-            max: 8
+            max: 150
             value: 2
             hint: False
             color: color_deep_orange
@@ -791,8 +792,8 @@
 
         MDSlider:
             id: Slider_7
-            min: 30
-            max: 60
+            min: 10
+            max: 120
             value: 45
             hint: False
             color: color_deep_orange
@@ -1485,8 +1486,8 @@
 
         MDSlider:
             id: Slider_7
-            min: 30
-            max: 60
+            min: 10
+            max: 90
             value: 45
             hint: False
             color: color_deep_orange
@@ -1728,343 +1729,9 @@ MDScreen:
                             
                               
 
-            # MDBottomNavigationItem:
-            #     name: "files_navigation"
-            #     text: "Settings"
-            #     icon: "cog"
-            #     orientation:'vertical'
-            #     adaptive_height: False
-            #     MDGridLayout:
-            #         cols: 1
-            #         rows: 8
-            #         adaptive_height: False
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start sdfsdf"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start Collection"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start sdfsdf"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start Collection"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start sdfsdf"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start Collection"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start sdfsdf"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
-            #         MDCard:
-            #             size_hint_y: 0.1
-            #             size_hint_x: 1
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [4, ]
-            #             padding: 12
-            #             height: 10 
-            #             MDBoxLayout:
-            #                 padding: 15
-            #                 spacing: 15
-            #                 pos_hint: {'center_x': .5, 'center_y': .2}
-                            
-            #                 MDBoxLayout:
-            #                     size_hint_y: 0.6
-            #                     size_hint_x: 0.4
-            #                     MDLabel:
-            #                         font_style: "Subtitle1"
-            #                         theme_text_color: "Custom"
-            #                         font_style: "Subtitle1"
-            #                         text_color:  color_deep_orange
-            #                         text: "Start Collection"
-            #                         height: self.texture_size[1]
-            #                     MDSwitch:
-            #                         id: start_collection
-            #                         widget_style: "ios"
-            #                         pos_hint: {'center_x': 1, 'center_y': 0.1}
-            #                         width: dp(30)
-            #                         height: dp(20)
-            #                         on_active: app.check_if_start()
+
                     
-
-
-
-            
-            
-            
-            # MDBottomNavigationItem:
-            #     name: "files_navigation"
-            #     text: "Trajectories Design"
-            #     icon: "lightbulb-on-outline"
-            #     orientation:'vertical'
-            #     adaptive_height: False
-            #     MDBoxLayout:
-            #         MDCard:
-            #             id: toollip
-            #             adaptive_size: True
-            #             padding: "10dp"
-            #             spacing: "10dp"
-            #             pos_hint: {"left": 1, "top": 1}
-            #             adaptive_width: True
-            #             size_hint_y: 0.05
-            #             TooltipMDIconButton:
-            #                 id: straight_line
-            #                 icon: "chart-timeline-variant"
-            #                 tooltip_text: "STRAIGHT LINE"
-            #                 theme_text_color: "Custom"
-            #                 text_color: color_deep_orange
-            #                 user_font_size: "36sp"
-            #                 on_press: app.enable_straight_line()
-            #                 pos_hint: {'center_y': 0.5}
-            #             TooltipMDIconButton:
-            #                 id: b_spline
-            #                 icon: "sine-wave"
-            #                 tooltip_text: "B-SPLINE CURVE"
-            #                 theme_text_color: "Custom"
-            #                 text_color: color_deep_orange
-            #                 user_font_size: "36sp"
-            #                 on_press: app.enable_b_spline()
-            #                 pos_hint: {'center_y': 0.5}
-            #             TooltipMDIconButton:
-            #                 id: eraser
-            #                 icon: "eraser"
-            #                 tooltip_text: "clear"
-            #                 theme_text_color: "Custom"
-            #                 text_color: color_deep_orange
-            #                 user_font_size: "36sp"
-            #                 on_press: app.clear_things()
-            #                 pos_hint: {'center_y': 0.5}
-            #             TooltipMDIconButton:
-            #                 icon: "download"
-            #                 tooltip_text: "Save Configureation File"
-            #                 theme_text_color: "Custom"
-            #                 text_color: color_deep_orange
-            #                 user_font_size: "36sp"
-            #                 on_press: app.on_download_data()
-            #                 pos_hint: {'center_y': 0.5}
-                       
-            #     MDBoxLayout:
-            #         size_hint_y: 0.95
-            #         orientation:'horizontal'
-            #         padding: "10dp"
-            #         spacing: "10dp"
-            #         MDCard:
-            #             size_hint_y: 1
-            #             id: trajectory_design_panel
-
-
-            #         MDCard:
-            #             size_hint_y: 1
-            #             size_hint_x: 0.6
-            #             orientation: "vertical" 
-            #             adaptive_height: True
-            #             elevation: 1
-            #             radius: [8, ]
-            #             padding: 8
-            #             height: 10
-                    
-                        
+                  
                         
                         
                         

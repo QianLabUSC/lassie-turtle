@@ -8,6 +8,7 @@
 #include "main.h"
 #include "rclcpp/rclcpp.hpp"
 
+
 /**
  * main - entrance of turtle robot Scontroller.
  * @param argc
@@ -19,15 +20,19 @@ int main(int argc, char **argv)
 {
 	rclcpp::init(argc, argv); // initial ros
 	// receive information from high level sensor
+	//rclcpp::executors::MultiThreadedExecutor exec;
 	std::shared_ptr<upperproxy> Upper_proxy_ = std::make_shared<upperproxy>();
 
 	// detect motor status, and publish motion command
 	std::shared_ptr<lowerproxy> Lower_proxy_ = std::make_shared<lowerproxy>();
 	std::shared_ptr<can_driver> Can_driver_  = std::make_shared<can_driver>();
+    //std::shared_ptr<CanSuber> Can_suber_ = std::make_shared<CanSuber>();
+   
+   // rclcpp::spin(Can_suber_);
+
+    //rclcpp::shutdown();
+    rclcpp::Rate loop_rate(1000); 
     
-
-	rclcpp::Rate loop_rate(1500); // renew frequence 1500HZ
-
 	while (rclcpp::ok())
 	{
 		rclcpp::spin_some(Upper_proxy_);
@@ -37,8 +42,10 @@ int main(int argc, char **argv)
 		Upper_proxy_->UpdateGuiCommand(turtle_);            
 		Lower_proxy_->calculate_position(turtle_);  
 		Can_driver_->setControl(turtle_);
+		
 		loop_rate.sleep();
+		
 	}
 
-	return 0;
+	 return 0;
 }

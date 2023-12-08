@@ -1,15 +1,24 @@
 #!/usr/bin/env python3
+import operator
 import argparse
+ 
+# Initialize parser
+parser = argparse.ArgumentParser()
+
+# Adding optional argument
+parser.add_argument("-m", "--mode", help = "running scenario   0: others ), 1: turtle, 2: others, 3: others", nargs='?', const=1, type=int, default=1)
+inputargs = parser.parse_args()
+from statistics import mean
 import sys
 import csv
+from ros2_interface_turtle import *
+sys.argv = [sys.argv[0]]
+
+
 import threading
 import time
+
 import os
-import numpy as np
-import matplotlib.pyplot as plt
-from ros2_interface_leg import *
-from ros2_interface_turtle import *
-from ros2_interface_minirhex import *
 from kivy.core.window import Window
 from kivy.config import Config
 from kivy.metrics import dp
@@ -19,6 +28,9 @@ from kivy.graphics import Color, Line
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.clock import Clock
 from kivy.graphics import *
+Config.set('input', '%(name)s', '')
+# Config.set('graphics', 'resizable', 0)
+Config.write()
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
 from kivymd.uix.list import OneLineIconListItem
@@ -26,37 +38,24 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.widget import Widget
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.button import MDIconButton
-from logi_web_camera_record import Recorder
-from logi_web_camera2_record import Recorder_2
 
-DEBUG = False
-
-# Initialize parser
-parser = argparse.ArgumentParser()
-
-# Adding optional argument
-parser.add_argument("-m", "--mode", 
-                    help="running scenario  0: leg for field trip\
-                    , 1: turtle, 2: minirhex, 3: leg with loadcell",
-                    nargs='?', const=1, type=int, default=0)
-inputargs = parser.parse_args()
-
-sys.argv = [sys.argv[0]]
 start_time = time.time()
-
-# Config.set('input', '%(name)s', '')
-# Config.set('graphics', 'resizable', 1)
-# Config.write()
+import numpy as np
+import matplotlib.pyplot as plt
+DEBUG = False
 
 class shearpenetratetab(MDCard):
     '''Implements a material design v3 card.'''
     text = StringProperty()
+
 class extrudetab(MDCard):
     '''Implements a material design v3 card.'''
     text = StringProperty()
+
 class travelerworkspacetab(MDCard):
     '''Implements a material design v3 card.'''
     text = StringProperty()
+
 class freetab(MDCard ):
     '''Implements a material design v3 card.'''
     text = StringProperty()
@@ -69,173 +68,22 @@ class turtle_tab(MDCard ):
 class minirhex_tab(MDCard ):
     '''Implements a material design v3 card.'''
     text = StringProperty()
+
+
 class IconListItem(OneLineIconListItem):
     icon = StringProperty()
+
+
 class TooltipMDIconButton(MDIconButton, MDTooltip):
     pass
 
-
-
-class DrawCanvasWidget(Widget):
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.straight_line_enable = False
-        self.b_spline_enable = False
-        self.line_width = 2
-        self.motor_mount_point = [500, 350]
-        self.upperleg = 100
-        self.lowerleg = 2 * self.upperleg
-        self.toepoint = [self.motor_mount_point[0],
-                         self.motor_mount_point[1] - self.upperleg * np.sqrt(3)]
-        self.points_list = []
-        self.trajectory_show = Line()
-        self.grapics_points_list = []
-        self.init_draw()
-
-    def init_draw(self):
-        self.canvas.add(Color(rgba=[0.64, 0.895, 0.843, 0.5]))
-        self.motor = Line(circle=(self.motor_mount_point[0],
-                                  self.motor_mount_point[1], 10), width=10)
-        self.canvas.add(self.motor)
-        self.draw_workspace()
-        out_workspace_flag, leg1point, leg2point = self.inverse_kinematics(
-            self.toepoint)
-        if out_workspace_flag == False:
-            self.leg_instruction = Line(
-                points=(self.motor_mount_point[0], self.motor_mount_point[1],
-                        leg1point[0], leg1point[1], self.toepoint[0],
-                        self.toepoint[1], leg2point[0], leg2point[1],
-                        self.motor_mount_point[0], self.motor_mount_point[1]),
-                width=5)
-            self.canvas.add(self.leg_instruction)
-            self.instruction_line_vertical = Line(
-                points=(self.toepoint[0], 0, self.toepoint[0], 800))
-            self.instruction_line_horizontal = Line(
-                points=(0, self.toepoint[1], 0.7*1400, self.toepoint[1]))
-            self.canvas.add(self.instruction_line_horizontal)
-            self.canvas.add(self.instruction_line_vertical)
-
-    def update_robot(self, x, y):
-        self.canvas.remove(self.leg_instruction)
-        self.canvas.remove(self.instruction_line_horizontal)
-        self.canvas.remove(self.instruction_line_vertical)
-        out_workspace_flag, leg1point, leg2point = self.inverse_kinematics(
-            [x, y])
-        if out_workspace_flag == False:
-            Color(0, 0, 0, mode='rgb')
-            # print(self.motor_mount_point)
-            self.leg_instruction = Line(
-                points=(self.motor_mount_point[0], self.motor_mount_point[1],
-                        leg1point[0], leg1point[1], x, y, leg2point[0],
-                        leg2point[1], self.motor_mount_point[0],
-                        self.motor_mount_point[1]), width=5)
-            self.instruction_line_vertical = Line(
-                points=(x, 0, x, 800))
-            self.instruction_line_horizontal = Line(
-                points=(0, y, 0.7*1400, y))
-            self.canvas.add(self.leg_instruction)
-            self.canvas.add(self.instruction_line_horizontal)
-            self.canvas.add(self.instruction_line_vertical)
-            with self.canvas:
-                if len(self.points_list) == 0:
-                    self.trajectory_show = Line(points=(x, y),
-                                                 width=self.line_width)
-                    self.points_list.append([x, y])
-                    self.grapics_points_list.append(
-                        Line(circle=(x, y, 5),  width=5))
-                else:
-                    self.trajectory_show.points += (x,y)
-                    self.points_list.append([x, y])
-                    self.grapics_points_list.append(Line(circle=(x,y, 5),
-                                                         width=5))
-        else:
-            print('plese select locations in the right workspace')
-
-
-    def on_touch_down(self,touch):
-        if(self.straight_line_enable == True):
-            self.update_robot(touch.x, touch.y)
-        elif(self.b_spline_enable == True):
-            pass
-    def clear_trajectories(self):
-        self.canvas.clear()
-        self.init_draw()
-
-
-
-
-    def draw_workspace(self):
-        self.boudaries_plot= Line()
-        start_angle = np.pi/4;
-        end_angle = np.pi * 1.5;
-        meanangle_range = np.linspace(start_angle, end_angle, 100)
-        for meanangle in meanangle_range:
-            self.boudaries_plot.points += (self.motor_mount_point[0] + 
-                                           (self.lowerleg - self.upperleg) 
-                                           * np.cos(meanangle), 
-                                           self.motor_mount_point[1] - 
-                                           (self.lowerleg - self.upperleg) 
-                                           * np.sin(meanangle))
-
-        low_meanangle_range = np.linspace(end_angle, start_angle, 100)
-        for meanangle in low_meanangle_range:
-            self.boudaries_plot.points += (self.motor_mount_point[0] 
-                                           + (self.lowerleg + self.upperleg) * 
-                                           np.cos(meanangle), 
-                                           self.motor_mount_point[1] - 
-                                           (self.lowerleg + self.upperleg) * 
-                                           np.sin(meanangle))
-        self.boudaries_plot.points += (self.motor_mount_point[0] + 
-                                       (self.lowerleg - self.upperleg) 
-                                       * np.cos(start_angle), 
-                                       self.motor_mount_point[1] - 
-                                       (self.lowerleg - self.upperleg) * 
-                                       np.sin(start_angle))
-        self.canvas.add(self.boudaries_plot)
-
-
-
-    def inverse_kinematics(self, toepoint):
-        delta_x = self.motor_mount_point[0] - toepoint[0]
-        delta_y = self.motor_mount_point[1] - toepoint[1]
-        variable1 = np.sqrt(delta_x**2 + delta_y**2)
-        out_workspace_flag = False
-        leg1point = [0, 0]
-        leg2point = [0, 0]
-        meanangle = np.mod(np.pi - np.arctan2(delta_y, delta_x), 2*np.pi)
-        if(variable1 >= self.upperleg + self.lowerleg or variable1 <= 
-           self.lowerleg - self.upperleg or 
-           meanangle >= np.pi * 1.5 or meanangle <= np.pi * 0.25):
-            out_workspace_flag = True
-        else:
-            diffangle = np.arccos((-(self.lowerleg**2) + 
-                self.upperleg**2 + variable1**2)/(2*variable1*self.upperleg))
-            meanangle = np.pi - np.arctan2(delta_y, delta_x)
-            legangle1 = meanangle + diffangle
-            legangle2 = meanangle - diffangle
-            leg1point[0] = self.motor_mount_point[0] + np.cos(legangle1) * self.upperleg
-            leg1point[1] = self.motor_mount_point[1] - np.sin(legangle1) * self.upperleg
-            leg2point[0] = self.motor_mount_point[0] + np.cos(legangle2) * self.upperleg
-            leg2point[1] = self.motor_mount_point[1] - np.sin(legangle2) * self.upperleg
-        if DEBUG:
-            print('leglength', variable1)
-            print('diffangle', diffangle*180/3.14)
-            print('meanangle', meanangle*180/3.14)
-            print('legangle1', legangle1*180/3.14)
-            print('legangle2', legangle2*180/3.14)
-            print('leg1point', leg1point)
-            print('leg2point', leg2point)
-        return out_workspace_flag, leg1point, leg2point
-
 class TravelerApp(MDApp):
-
     def __init__(self, node, multi_camera=False, scale_size=1, scale_size_2=1):
         super().__init__()
         self.start_robot = False
         self.drag_traj = 1
         self.theme_cls.theme_style = "Light" 
-        # self.theme_cls.primary_palette  = "DeepOrange"
-        self.theme_cls.primary_palette  = "Brown"
+        self.theme_cls.primary_palette  = "BlueGray"
         self.ground_height = 0.17
         self.multi_camera = multi_camera
         self.scale_size = scale_size
@@ -243,6 +91,7 @@ class TravelerApp(MDApp):
         self.ros_node = node
         self.updateplotflag = False
         self.frame = 0
+        self.title = 'Turtle'
         # get the absolute path of the currently running script
         script_path = os.path.abspath(__file__)
 
@@ -305,95 +154,38 @@ class TravelerApp(MDApp):
         self.screen.ids.rawForcePlot.add_widget(FigureCanvasKivyAgg(fp.get_figure()))
         self.screen.ids.positionplot.add_widget(FigureCanvasKivyAgg(pp.get_figure()))
         self.screen.ids.speedplot.add_widget(FigureCanvasKivyAgg(speed_p.get_figure()))
-        # self.trajectory_design_panel_repre = DrawCanvasWidget()
-        # self.screen.ids.trajectory_design_panel.add_widget(self.trajectory_design_panel_repre)
-
-
+       
 
         
         
 
     def change_configure_tab(self, type):
         self.set_item(type)
-        if(type == "Extrude"): # mode 1
-            self.drag_traj = 1
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.extrude_tab)
-            self.current_tab = self.extrude_tab
-        elif(type == "Penetrate and Shear"): # mode 2
-            self.drag_traj = 3
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.shear_tab)
-            self.current_tab = self.shear_tab
-        elif(type == "Traverse Workspace"): # mode 3
-            self.drag_traj = 2
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.workspace_tab)
-            self.current_tab = self.workspace_tab
-        elif(type == "Free Moving"): # mode 4
-            self.drag_traj = 4
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.free_tab)
-            self.current_tab = self.free_tab
-        elif(type == "turtle"): # mode 5
+        if(type == "turtle"): # mode 5
             self.drag_traj = 5
             self.screen.ids.configure_layout.clear_widgets()
             self.screen.ids.configure_layout.add_widget(self.turtle_tab)
             self.current_tab = self.turtle_tab
-        elif(type == "MiniRhex"): # mode 6
-            self.drag_traj = 6
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.minirhex_tab)
-            self.current_tab = self.minirhex_tab
-        elif(type == "Detect Ground"): # mode 6
-            self.drag_traj = 7
-            self.screen.ids.configure_layout.clear_widgets()
-            self.screen.ids.configure_layout.add_widget(self.ground_tab)
-            self.current_tab = self.ground_tab
+        
 
-
-    def enable_straight_line(self):
-        if(self.trajectory_design_panel_repre.straight_line_enable == True):
-            self.trajectory_design_panel_repre.straight_line_enable = False
-            self.trajectory_design_panel_repre.b_spline_enable = False
-            self.screen.ids.straight_line.text_color = "DD2C00"
-            self.screen.ids.b_spline.text_color = "DD2C00"
-        else:
-            self.trajectory_design_panel_repre.straight_line_enable = True
-            self.trajectory_design_panel_repre.b_spline_enable = False
-            self.screen.ids.straight_line.text_color = "89CFF0"
-            self.screen.ids.b_spline.text_color = "DD2C00"
-
-    def enable_b_spline(self):
-        if(self.trajectory_design_panel_repre.b_spline_enable == True):
-            self.trajectory_design_panel_repre.b_spline_enable = False
-            self.trajectory_design_panel_repre.straight_line_enable = False
-            self.screen.ids.straight_line.text_color = "DD2C00"
-            self.screen.ids.b_spline.text_color = "DD2C00"
-        else:
-            self.trajectory_design_panel_repre.b_spline_enable = True
-            self.trajectory_design_panel_repre.straight_line_enable = False
-            self.screen.ids.straight_line.text_color = "DD2C00"
-            self.screen.ids.b_spline.text_color = "89CFF0"
-
-    def clear_things(self):
-        self.trajectory_design_panel_repre.clear_trajectories()
     
     def set_item(self, text_item):
         self.screen.ids.drop_item.text = text_item
         self.menu.dismiss()
         
     def build(self):
-        Window.size = (1920,800)
+        Window.size = (1400,800)
 
         Clock.schedule_interval(self.update_force_plot, 0.01)
-
+        self.data_updator = threading.Thread(target=self.update_force_data)
+        self.data_updator.daemon = True
+        self.data_updator.start()
         self.errors_writer = threading.Thread(target=self.write_errors)
         self.errors_writer.daemon = True
         self.errors_writer.start()
-        # print(inputargs.mode == 3)
+        print(inputargs.mode == 3)
         if(inputargs.mode == 3):
-            # print(3)
+            print(3)
             self.loadcell_calibrator = threading.Thread(target=self.ros_node.calibrate_loadcell)
             self.loadcell_calibrator.daemon = True
             self.loadcell_calibrator.start()
@@ -401,23 +193,34 @@ class TravelerApp(MDApp):
 
         return self.screen
     def update_force_plot(self, *args):
-        # if(self.ros_node.id == "leg"):
-        #     if(inputargs.mode == 0):
-        #         self.ros_node.update_force_plot(False, 
-        #                                     self.updateplotflag, self.drag_traj, inputargs.mode
-        #                                     , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
-        #     else:
-        #         self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
-        #                                     self.updateplotflag, self.drag_traj, inputargs.mode
-        #                                     , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
-        # else:
-        #     self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
-        #                                     self.updateplotflag)
+        if(self.ros_node.id == "leg"):
+            if(inputargs.mode == 0):
+                self.ros_node.update_force_plot(False, 
+                                            self.updateplotflag, self.drag_traj, inputargs.mode
+                                            , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
+            else:
+                self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
+                                            self.updateplotflag, self.drag_traj, inputargs.mode
+                                            , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
+        else:
+            self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
+                                            self.updateplotflag)
         if(self.drag_traj == 7 and self.start_robot):
             height = -int(self.ros_node.toeposition_y * 1000)
             self.current_tab.ids.variable3_slider.value = height
             self.current_tab.ids.variable3.text = str(height)
+    def update_force_data(self):
+        
     
+        self.run_time = 0
+            # self.start_time_esle = time.time()
+        while(1):
+            current_time = time.time()
+            self.ros_node.update_force_data(self.updateplotflag)
+            self.frame = self.frame + 1
+            time.sleep(0.001)
+
+
 
 
     def write_errors(self):
@@ -513,111 +316,115 @@ class TravelerApp(MDApp):
     def on_stop(self):
         pass
 
-    def start_logi_usb_camera_recording(self):
-        if(self.drag_traj != 4 and self.drag_traj != 7):
-            self.recorder = Recorder(self.file_name, self.ros_node.id,  scale_size=self.scale_size)
-            self.recorder.startRecording()
-            # time.sleep(1.5)
-            if self.multi_camera:
-                self.recorder_2 = Recorder_2(self.file_name,self.ros_node.id,  scale_size=self.scale_size_2)
-                self.recorder_2.startRecording()
-            # time.sleep(1.5)
-    def stop_logi_usb_camera_recording(self):
-        if(self.drag_traj != 4 and self.drag_traj != 7):
-            self.recorder.stopRecording()
-            if self.multi_camera:
-                self.recorder_2.stopRecording()
-    def save_logi_usb_camera_recording(self):
-        if(self.drag_traj != 4 and self.drag_traj != 7):
-            self.recorder.saveRecording()
-            if self.multi_camera:
-                self.recorder_2.saveRecording()
+    # def start_logi_usb_camera_recording(self):
+    #     pass
+    # def stop_logi_usb_camera_recording(self):
+    #     self.recorder.stopRecording()
+    #     if self.multi_camera:
+    #         self.recorder_2.stopRecording()
+    # def save_logi_usb_camera_recording(self):
+    #     self.recorder.saveRecording()
+    #     if self.multi_camera:
+    #         self.recorder_2.saveRecording()
 
     def check_if_start(self):
         if(self.start_robot == True):
-            
+            print('end to sampling')
             self.start_robot = False
-            self.start_flag = False
-            self.traveler_mode = TravelerMode()
-            self.traveler_mode.start_flag = self.start_flag
-            self.traveler_mode.traveler_mode = int(self.drag_traj)
-            self.ros_node.start(self.traveler_mode)
-            print("end the traj: ", self.traveler_mode) 
+            self.start_flag = 0.0
             self.updateplotflag = False
-            self.ros_node.update_force_data(False)
-            
             # if(self.screen.ids.if_real_time_plot.active == False):
             if(self.ros_node.id == "leg"):
                 self.ros_node.update_plot(self.drag_traj, inputargs.mode, float(round(self.ground_tab.ids.variable3_slider.value)/1000))
             else:
                 self.ros_node.update_plot()
-            # self.stop_logi_usb_camera_recording()
-            # self.save_logi_usb_camera_recording()
             self.on_download_data()
-            print('end to sampling -> current time: ", time.time()-self.start_time')
-            
             
         else:
-            print('----------------------------------logging------------------------------------')
-            self.start_time = time.time()
-            
-        
+            print('start to sampling')
+
             self.trial_start_time = str(time.asctime( time.localtime(time.time()) )).replace(" ", "_").replace(":","_")
-            if('/' in self.screen.ids.filename.text):
-                self.file_name = self.screen.ids.filename.text + "_"+ self.trial_start_time 
-            else:
-                self.file_name = 'MH23_Data/' + self.screen.ids.filename.text + "_"+ self.trial_start_time
-            # self.start_logi_usb_camera_recording()
-            self.ros_node.calibrate(self.drag_traj, inputargs.mode) 
-            self.updateplotflag = True
-            self.ros_node.update_force_data(True)   
-            print("start to sampling -> current time: ", time.time()-self.start_time)       
-            
-            # Set the config
-            self.traveler_config = TravelerConfig()
-            self.traveler_config.extrude_speed = float(round(self.extrude_tab.ids.extrude_speed_slider.value)) 
-            self.traveler_config.extrude_angle = float(round(self.extrude_tab.ids.extrude_angle_slider.value)) 
-            self.traveler_config.extrude_depth = float(round(self.extrude_tab.ids.extrude_length_slider.value)) 
-            self.traveler_config.shear_penetration_depth = float(round(self.shear_tab.ids.Slider_1.value)) 
-            self.traveler_config.shear_penetration_speed = float(round(self.shear_tab.ids.Slider_2.value))
-            self.traveler_config.shear_penetration_delay = float(round(self.shear_tab.ids.Slider_3.value)) 
-            self.traveler_config.shear_length = float(round(self.shear_tab.ids.Slider_4.value)) 
-            self.traveler_config.shear_speed = float(round(self.shear_tab.ids.Slider_5.value)) 
-            self.traveler_config.shear_delay = float(round(self.shear_tab.ids.Slider_6.value)) 
-            self.traveler_config.shear_return_speed = float(round(self.shear_tab.ids.Slider_7.value)) 
-            self.traveler_config.workspace_angular_speed = float(round(self.workspace_tab.ids.moving_speed_slider.value)) 
-            self.traveler_config.workspace_moving_angle = float(round(self.workspace_tab.ids.moving_step_angle_slider.value)) 
-            self.traveler_config.workspace_time_delay = float(round(self.workspace_tab.ids.time_delay_slider.value)) 
-            self.traveler_config.static_length = float(round(self.free_tab.ids.variable1_slider.value))/10 
-            self.traveler_config.static_angle = float(round(self.free_tab.ids.variable3_slider.value))   
-            self.traveler_config.search_start = float(round(self.ground_tab.ids.variable1_slider.value)/10) 
-            self.traveler_config.search_end = float(round(self.ground_tab.ids.variable2_slider.value)/10)  
-            self.traveler_config.ground_height = float(round(self.ground_tab.ids.variable3_slider.value)/10)
-            self.traveler_config.back_speed = float(round(self.extrude_tab.ids.back_speed_slider.value))
-            self.traveler_config.filename = str(self.file_name)
+            self.file_name = self.screen.ids.filename.text +"_"+ self.trial_start_time
            
-            self.ros_node.set_config(self.traveler_config)
-            print("set the config as: ", self.traveler_config)
-    
+            if(inputargs.mode == 0 or inputargs.mode == 3):
+                self.ros_node.calibrate(self.drag_traj, inputargs.mode) 
+            else:
+                self.ros_node.calibrate()
+            self.updateplotflag = True          
+            self.start_time = time.time()
             self.frame = 0
 
             self.start_robot = True
-            self.start_flag = True
-            time.sleep(0.1)
-            self.traveler_mode = TravelerMode()
-            self.traveler_mode.start_flag = self.start_flag
-            self.traveler_mode.traveler_mode = int(self.drag_traj)
-            self.ros_node.start(self.traveler_mode)
-            print("start the traj: ", self.traveler_mode)        
+            self.start_flag = 1
+
+                  
+            
+        self.gui_message = Float64MultiArray()
+        self.gui_message.data.append(self.start_flag)                                                   #[0]: if start the robot or stop the robot
+        self.gui_message.data.append(float(self.drag_traj))                                             #[1]: add drag traj
+        if(self.ros_node.id == "leg"):
+            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_speed_slider.value)) )           # cm/s
+            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_angle_slider.value)) )           # deg
+            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_length_slider.value)) )          # cm
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_1.value)) )               # cm
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_2.value)))                # cm/s
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_3.value)) )          # seconds
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_4.value)) )              # cm
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_5.value)) )               # cm/s
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_6.value)) )         # seconds
+            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_7.value)) )                # cm/s
+            self.gui_message.data.append(float(round(self.workspace_tab.ids.moving_speed_slider.value)) )          # cm/s
+            self.gui_message.data.append(float(round(self.workspace_tab.ids.moving_step_angle_slider.value)) )     # degrees
+            self.gui_message.data.append(float(round(self.workspace_tab.ids.time_delay_slider.value)) )            # seconds
+            self.gui_message.data.append(float(round(self.free_tab.ids.variable1_slider.value))/10 )         # cm
+            self.gui_message.data.append(float(round(self.free_tab.ids.variable3_slider.value))   )               # degrees
+            self.gui_message.data.append(float(round(self.ground_tab.ids.variable1_slider.value)/10)   )
+            self.gui_message.data.append(float(round(self.ground_tab.ids.variable2_slider.value)/10)   )
+            self.gui_message.data.append(float(round(self.ground_tab.ids.variable3_slider.value)/10))
+            self.gui_message.data.append(float(round(self.extrude_tab.ids.back_speed_slider.value)))
+            print(self.gui_message.data)
+        elif(self.ros_node.id == "turtle"):
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value))  )              # cm
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/10 )                # cm/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value)))           # seconds
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/10)               # cm
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value)))                 # cm/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value)) )
+            print(self.gui_message.data)
+        elif(self.ros_node.id == "MiniRhex"):
+            # print(112312)
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_1.value))  )              # cm
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_2.value)) )                # cm/s
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_3.value)))           # seconds
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_4.value)))               # cm
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_5.value)))                # cm/s
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_6.value))   )       # seconds
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_7.value)))                 # cm/s
+            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_8.value)) )
+            print(self.gui_message.data)
+        self.ros_node.publish_gui_information(self.gui_message)
+        print("time spend: ", time.time()-self.start_time)
 
 
         
     def on_download_data(self):
-        if(self.drag_traj != 4 and self.drag_traj != 7):
-            self.ros_node.download_data(self.file_name, self.ros_node.id, self.screen.ids.if_real_time_plot.active, self.traveler_mode, self.traveler_config)
+        self.ros_node.download_data(self.file_name, self.ros_node.id, self.screen.ids.if_real_time_plot.active, self.gui_message.data)
     def save_configuration(self):
         self.gui_message = Float64MultiArray()
         self.start_flag = 0
+        #[0]: if start the robot or stop the robot
+        if(self.screen.ids.drop_item.text == "Extrude"):
+            self.drag_traj = 1.0
+        elif(self.screen.ids.drop_item.text == "Traverse Workspace"):
+            self.drag_traj = 2.0
+        elif(self.screen.ids.drop_item.text == "Penetrate and Shear"):
+            self.drag_traj = 3.0
+        elif(self.screen.ids.drop_item.text == "Free Moving"):
+            self.drag_traj = 4.0
+        else: # default trajectory value (should never occur)
+            self.drag_traj = 0.0
         self.gui_message.data.append(self.start_flag)
         self.gui_message.data.append(float(self.drag_traj))                                             #[1]: add drag traj
         if(self.ros_node.id == "leg"):
@@ -737,25 +544,15 @@ class TravelerApp(MDApp):
 
 
 def main():
-    # args = parser.parse_args()
-    # test_time_start = time.time()
-    print(inputargs.mode)
-    if(inputargs.mode == 0 or inputargs.mode == 3):
-        node_leg = ControlNode_Leg()
-        app = TravelerApp(node_leg, multi_camera=False, scale_size=1, scale_size_2=0.6)
-    elif(inputargs.mode == 1):
-        node_turtle = ControlNode_Turtle()
-        app = TravelerApp(node_turtle, multi_camera=True, scale_size=0.9, scale_size_2=0.6)
-    elif(inputargs.mode == 2):
-        node_minirhex = ControlNode_MiniRhex()
-        app = TravelerApp(node_minirhex, multi_camera=True, scale_size=0.9, scale_size_2=0.6)
-    else:
-        node_leg = ControlNode_Leg()
-        app = TravelerApp(node_leg, multi_camera=False, scale_size=1, scale_size_2=0.6)
 
+    rclpy.init()
+    
+    node_turtle = ControlNode_Turtle()
+    app = TravelerApp(node_turtle, multi_camera=True, scale_size=0.9, scale_size_2=0.6)
+    
     # print("time spend: ", time.time()-test_time_start)
     app.run()
-    # app.save_configuration()
+    app.save_configuration()
     
 
 

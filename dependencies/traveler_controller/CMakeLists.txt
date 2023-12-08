@@ -44,6 +44,7 @@ add_executable( turtle_high_controller
 
     src/can_driver/can_driver.cpp
     src/can_driver/socketcan_interface.cpp
+    src/can_driver/can_suber.cpp
 
     # src/utils/lowpassfilter.cpp
 )

@@ -15,6 +15,7 @@ public:
     can_driver(/* args */);
 
     void setControl(turtle& turtle_);
+    void setPosition_axis0(traveler_msgs::msg::SetInputPosition msg);
     void get_motor_status(turtle& turtle_);
     ~can_driver();
 
@@ -58,6 +59,6 @@ private:
     void updateChannel2StatusCallback_1();
     void updateChannel1StatusCallback_0();
     void updateChannel1StatusCallback_1();
-    void setPosition_axis0(traveler_msgs::msg::SetInputPosition msg);
+    //void setPosition_axis0(traveler_msgs::msg::SetInputPosition msg);
     void setPosition_axis1(traveler_msgs::msg::SetInputPosition msg);
 };

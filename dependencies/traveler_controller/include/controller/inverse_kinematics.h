@@ -30,8 +30,7 @@ void RadialTrajectory(float t, struct RadialGaitParams gait, float& X, float& Y)
 // void RadialLegMovement(LegConfig leg, float t, struct RadialGaitParams gait, float& theta, float& gamma);
 void RightTriangleTrajectory(float t, struct RightTriangularGaitParams gait, float& X, float& Y);
 void TriangularTrajectory(float t, struct TriangularGaitParams gait, float& X, float& Y);
-void boundingGAIT(turtle &turtle_, float t, float &theta1, float &gamma1,
-                           float &theta2, float &gamma2);
+void boundingGAIT(turtle &turtle_, float t);
 void rhex_walking(float t, float &theta1, float &theta2, float curr_theta1 , float curr_theta2);
 // Triangular Trajectory Helpers :
 void HorizontalStep(float t, struct TriangularGaitParams gait, float& X, float& Y);

@@ -487,11 +487,9 @@ class ControlNode_Turtle(Node):
 
 
     def download_data(self, file_name, node_id, real_time_plot, gui_message ):
-
+        if not os.path.exists('./experiment_data/turtle'):
+            os.makedirs('./experiment_data/turtle')
         path = "./experiment_data/turtle/" + file_name + ".csv"
-
-        if not os.path.exists(os.path.dirname(path)):
-            os.makedirs(os.path.dirname(path))
         with open(path, 'w', newline='') as f:
             
             writer=csv.writer(f)

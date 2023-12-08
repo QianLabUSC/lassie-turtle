@@ -1,2 +1,2 @@
-scenario,real_time_plot,start_flag,drag_traj,extrude_speed_slider,extrude_angle_slider,extrude_length_slider,down_length_slider,down_speed_slider,delay_after_down,shear_length,shear_speed,delay_after_shear,back_speed,moving_speed,moving_step_angle,time_delay,variable1,variable3,search_start,search_end,ground_height,extrude_back_speed
-leg,False,0.0,Extrude,1.0,0.0,6.0,4.0,1.0,3.0,17.0,1.0,0.0,1.0,10.0,5.0,0.0,15.4,0.0
+scenario,real_time_plot,lateral_angle_range,drag_speed,wiggle_time,servo_speed,extraction_height,wiggle frequency,insertion_angle,wiggle_amplitude
+turtle,True,0.0,0.0,45.0,2.5,2.0,2.0,10.0,10.0,45.0,1.0

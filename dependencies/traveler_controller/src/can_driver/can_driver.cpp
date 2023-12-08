@@ -20,10 +20,10 @@ can_driver::can_driver() : Node("can_driver"),
 {   
    // count = 0;
     now = std::chrono::system_clock::now();
-    publisher_0_axis0= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
-    publisher_0_axis1= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
-    publisher_1_axis0= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
-    publisher_1_axis1= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
+   //  publisher_0_axis0= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
+   //  publisher_0_axis1= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
+   //  publisher_1_axis0= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
+   //  publisher_1_axis1= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
     //timer_ = this->create_wall_timer(std::chrono::microseconds(1000), std::bind(&can_driver::updateChannel1StatusCallback, this));
     //timer_ = this->create_wall_timer(std::chrono::microseconds(1000), std::bind(&can_driver::updateChannel2StatusCallback, this));
     
@@ -61,7 +61,7 @@ void can_driver::updateChannel1StatusCallback_0()
         odrive_status_msg_0_axis0.iq_measured = odrive_can::can_getSignal<float>(iq_recv_frame_0_axis0, 32, 32, true);
      }
     
-    publisher_0_axis0->publish(odrive_status_msg_0_axis0);
+   //  publisher_0_axis0->publish(odrive_status_msg_0_axis0);
 } 
 
 void can_driver::updateChannel1StatusCallback_1()
@@ -91,7 +91,7 @@ void can_driver::updateChannel1StatusCallback_1()
         odrive_status_msg_0_axis1.iq_measured = odrive_can::can_getSignal<float>(iq_recv_frame_0_axis1, 32, 32, true);
      }
     
-    publisher_0_axis1->publish(odrive_status_msg_0_axis1);
+   //  publisher_0_axis1->publish(odrive_status_msg_0_axis1);
 }   
 
 void can_driver::updateChannel2StatusCallback_0(){
@@ -125,7 +125,7 @@ void can_driver::updateChannel2StatusCallback_0(){
         odrive_status_msg_1_axis0.iq_measured = odrive_can::can_getSignal<float>(iq_recv_frame_1_axis0, 32, 32, true);
  
      }
-    publisher_1_axis0->publish(odrive_status_msg_1_axis0);
+   //  publisher_1_axis0->publish(odrive_status_msg_1_axis0);
     // auto end = std::chrono::high_resolution_clock::now();
     // std::chrono::duration<double> diff = end - now; // duration in seconds as a double
     // float time_cucrr = static_cast<float>(diff.count());
@@ -163,7 +163,7 @@ void can_driver::updateChannel2StatusCallback_1(){
         odrive_status_msg_1_axis1.iq_measured = odrive_can::can_getSignal<float>(iq_recv_frame_1_axis1, 32, 32, true);
  
      }
-   publisher_1_axis1->publish(odrive_status_msg_1_axis1);
+   // publisher_1_axis1->publish(odrive_status_msg_1_axis1);
     // auto end = std::chrono::high_resolution_clock::now();
     // std::chrono::duration<double> diff = end - now; // duration in seconds as a double
     // float time_cucrr = static_cast<float>(diff.count());

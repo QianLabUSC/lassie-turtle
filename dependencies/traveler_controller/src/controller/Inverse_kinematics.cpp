@@ -831,7 +831,7 @@ void fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle& turtle
 
 // Fixed insertion depth verson3 analytic solution with matlab homogeneous matrix verified
 
-void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
+void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t){
      //get data
     float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
     float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
@@ -848,8 +848,8 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
 
     float corres_t = 0;
-    float left_hori_servo = 94;// original 100 mannually tuned to 94
-    float right_hori_servo = 23;
+    float left_hori_servo = 0;// original 100 mannually tuned to 94
+    float right_hori_servo = 0;
 
 
     //Fixed insertion depth parameters and gamma solver paramters
@@ -867,7 +867,10 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     cout << "TMOD" << t_mod << endl;
     cout<<"Initial angle"<<initial_insertion_angle_deg<<endl;
     // insertion_angle=insertion_angle+10
-
+    double gamma1 = 0;
+    double theta1 = 0;
+    double gamma2 = 0;
+    double theta2 = 0;
     //FIRST phase gamma=0 theta=-45
     if (t_mod <= rectangle_params.period_up)
     {
@@ -933,6 +936,21 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
        //  cout << "extract"  << endl;
     }
     
+    //gamma theta in deg
+
+  //adduction angle: left gamma: gamma2,right gamma:gamma2
+    
+
+      // sweeping angle:    right theta: theta2 left theta   :theta1
+    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = gamma1/360;
+    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = theta1/360;
+    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = gamma2/360;
+    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = theta2/360;
+    // used for test
 }
 
 
@@ -955,8 +973,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
  * @return x y : the coordinates of the toe trajectories
  */
 
-void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1,
-                  float &theta2, float &gamma2)
+void boundingGAIT(turtle& turtle_, float t)
 {
     // float x1, y1, x2, y2;
     // rectangle_generator(turtle_, t, x1, y1, x2, y2);
@@ -968,16 +985,9 @@ void boundingGAIT(turtle& turtle_, float t, float &theta1, float &gamma1,
     // fixed_insertion_depth_gait(turtle_,t, theta2, gamma1,theta1, gamma2);
     // fixed_insertion_depth_gait_lower_point(turtle_,t, theta2, gamma1,theta1, gamma2);
     //fixed_insertion_depth_gait_lower_point_version_2_approximate(turtle_,t, theta2, gamma1,theta1, gamma2);
-    fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_,t, theta2, gamma1,theta1, gamma2);
-    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
-    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
-    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
-    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
-    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = gamma1/360;
-    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = theta1/360;
-    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = gamma2/360;
-    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = theta2/360;
-    // used for test
+    
+    fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_,t);
+    
     // float left_add = (gamma1*M_PI)/180;
     // float left_swe = (theta1*M_PI)/180;
     // float right_add = (gamma2*M_PI)/180;
