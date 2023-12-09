@@ -114,34 +114,13 @@ void lowerproxy::calculate_position(turtle &turtle_ )
         if(turtle_.turtle_gui.start_flag==1){
                 t = t + 0.001;
                 t2=0;
-                std::cout<<"AAAAAAAAAAbbbbA"<<t<<std::endl;
+                // std::cout<<"AAAAAAAAAAbbbbA"<<t<<std::endl;
                 // turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = 0; 
                 // turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = 0; 
                 // turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = 0; 
                 // turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = 0;
                 // update the current state
                  boundingGAIT(turtle_, t);
-                //float channel0_axis0_pos = turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position; 
-                //float channel0_axis1_pos = turtle_.turtle_control.right_adduction.set_input_position_degree.input_position; 
-                //float channel1_axis0_pos = turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position; 
-               // float channel1_axis1_pos = turtle_.turtle_control.left_adduction.set_input_position_degree.input_position; 
-            
-                // cout << theta1 <<" "<< gamma1 <<" "<< beta1 <<" "<< theta2 <<" "<< gamma2 <<" "<< beta2 << endl;
-
-
-                // turtle_.turtle_control.left_limb_motor.motor_control_position = theta1;
-                // turtle_.turtle_control.left_big_servo_command = gamma1;
-                // turtle_.turtle_control.left_small_servo_command = beta1;
-
-                // turtle_.turtle_control.right_limb_motor.motor_control_position = theta2;
-                // turtle_.turtle_control.right_big_servo_command = gamma2;
-                // turtle_.turtle_control.right_small_servo_command = beta2;
-
-                // // update the current state
-                // turtle_.turtle_chassis.left_big_servo_pos = gamma1;
-                // turtle_.turtle_chassis.left_small_servo_pos = beta1;
-                // turtle_.turtle_chassis.right_big_servo_pos = gamma2;
-                // turtle_.turtle_chassis.right_small_servo_pos = beta2;
 
                 //update angle when GUI stop
                 saved_left_adduction=turtle_.turtle_chassis.left_adduction.pos_estimate;
@@ -154,15 +133,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 t2=t2+0.001;
                 std::cout<<"AAAAAAAAAAbbbbAelse"<<t;
                 goback2desiredangle(turtle_,0,0,0,0,t2,10);
-                //turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = 0; 
-               // turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = 0; 
-              //  turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = 0; 
-                //turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = 0;
-                // update the current state
-                // turtle_.turtle_chassis.left_big_servo_pos = 0;
-                // turtle_.turtle_chassis.left_small_servo_pos = 0;
-                // turtle_.turtle_chassis.right_big_servo_pos = 0;
-                // turtle_.turtle_chassis.right_small_servo_pos = 0;
+               
             }
         
       
@@ -176,7 +147,7 @@ void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction, floa
       turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= saved_left_adduction+ (left_adduction-saved_left_adduction);
       turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position  =saved_left_sweeping+ (left_sweeping-saved_left_sweeping);
       turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=saved_right_adduction + (right_adduction-saved_right_adduction);
-         turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position= saved_right_sweeping+(right_sweeping-saved_right_sweeping);
+      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position= saved_right_sweeping+(right_sweeping-saved_right_sweeping);
   
    }
    else

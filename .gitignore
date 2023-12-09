@@ -6,3 +6,6 @@ site/*
 .devcontainer/*
 .vscode/*
 experiment_records/*
+dependencies/build/*
+dependencies/devel/*
+dependencies/logs/*

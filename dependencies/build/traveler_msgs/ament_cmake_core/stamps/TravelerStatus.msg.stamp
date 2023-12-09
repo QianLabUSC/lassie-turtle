@@ -1,9 +1,0 @@
-float32 time
-float32 toeforce_x
-float32 toeforce_y
-float32 toe_pos_x
-float32 toe_pos_y
-float32 motor0_pos
-float32 motor1_pos
-float32 motor0_torque
-float32 motor1_torque

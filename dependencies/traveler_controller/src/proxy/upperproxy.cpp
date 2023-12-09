@@ -31,14 +31,14 @@ void upperproxy::handle_gui
         // int len = msg->data.size();
         turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
         turtle_inter_.turtle_gui.drag_traj = msg->data[1];
-        turtle_inter_.traj_data.lateral_angle_range = msg->data[2] * M_PI / 180.0f;
-        turtle_inter_.traj_data.drag_speed = msg->data[3] / 100.0f;
-        turtle_inter_.traj_data.wiggle_time = msg->data[4]/10.0f;
-        turtle_inter_.traj_data.servo_time = msg->data[5] / 10.0f;
-        turtle_inter_.traj_data.extraction_height = msg->data[6] / 100.0f;
+        turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
+        turtle_inter_.traj_data.drag_speed = msg->data[3];
+        turtle_inter_.traj_data.wiggle_time = msg->data[4];
+        turtle_inter_.traj_data.servo_speed = msg->data[5];
+        turtle_inter_.traj_data.extraction_height = msg->data[6];
         turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
-        turtle_inter_.traj_data.insertion_angle = msg->data[8] * M_PI / 180.0f;
-        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9] * M_PI / 180.0f;
+        turtle_inter_.traj_data.insertion_depth = msg->data[8];
+        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
         
     }
 

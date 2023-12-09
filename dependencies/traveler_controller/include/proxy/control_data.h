@@ -68,10 +68,10 @@ struct TrajectoryData
     float drag_speed;               //m/s     
     float wiggle_time;                  //s
 
-    float servo_time;        //s
+    float servo_speed;        //s
     float extraction_height;    //m     
     float wiggle_frequency;        //hz  
-    float insertion_angle;             //arc        
+    float insertion_depth;             //arc        
     float wiggle_amptitude;                 //arc     
 };
 

@@ -362,48 +362,18 @@ class TravelerApp(MDApp):
         self.gui_message = Float64MultiArray()
         self.gui_message.data.append(self.start_flag)                                                   #[0]: if start the robot or stop the robot
         self.gui_message.data.append(float(self.drag_traj))                                             #[1]: add drag traj
-        if(self.ros_node.id == "leg"):
-            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_speed_slider.value)) )           # cm/s
-            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_angle_slider.value)) )           # deg
-            self.gui_message.data.append(float(round(self.extrude_tab.ids.extrude_length_slider.value)) )          # cm
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_1.value)) )               # cm
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_2.value)))                # cm/s
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_3.value)) )          # seconds
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_4.value)) )              # cm
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_5.value)) )               # cm/s
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_6.value)) )         # seconds
-            self.gui_message.data.append(float(round(self.shear_tab.ids.Slider_7.value)) )                # cm/s
-            self.gui_message.data.append(float(round(self.workspace_tab.ids.moving_speed_slider.value)) )          # cm/s
-            self.gui_message.data.append(float(round(self.workspace_tab.ids.moving_step_angle_slider.value)) )     # degrees
-            self.gui_message.data.append(float(round(self.workspace_tab.ids.time_delay_slider.value)) )            # seconds
-            self.gui_message.data.append(float(round(self.free_tab.ids.variable1_slider.value))/10 )         # cm
-            self.gui_message.data.append(float(round(self.free_tab.ids.variable3_slider.value))   )               # degrees
-            self.gui_message.data.append(float(round(self.ground_tab.ids.variable1_slider.value)/10)   )
-            self.gui_message.data.append(float(round(self.ground_tab.ids.variable2_slider.value)/10)   )
-            self.gui_message.data.append(float(round(self.ground_tab.ids.variable3_slider.value)/10))
-            self.gui_message.data.append(float(round(self.extrude_tab.ids.back_speed_slider.value)))
-            print(self.gui_message.data)
-        elif(self.ros_node.id == "turtle"):
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value))  )              # cm
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/10 )                # cm/s
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value)))           # seconds
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/10)               # cm
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
+        
+        if(self.ros_node.id == "turtle"):
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              # cm
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/10)           # seconds
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # cm
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)                # cm/s
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value)))                 # cm/s
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value)) )
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
             print(self.gui_message.data)
-        elif(self.ros_node.id == "MiniRhex"):
-            # print(112312)
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_1.value))  )              # cm
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_2.value)) )                # cm/s
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_3.value)))           # seconds
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_4.value)))               # cm
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_5.value)))                # cm/s
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_6.value))   )       # seconds
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_7.value)))                 # cm/s
-            self.gui_message.data.append(float(round(self.minirhex_tab.ids.Slider_8.value)) )
-            print(self.gui_message.data)
+       
         self.ros_node.publish_gui_information(self.gui_message)
         print("time spend: ", time.time()-self.start_time)
 

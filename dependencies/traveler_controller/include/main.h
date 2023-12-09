@@ -9,8 +9,7 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#include "controller/controller_monitor.h"
-#include "controller/pid_speed_controller.h"
+// #include "controller/controller_monitor.h"
 #include "proxy/lowerproxy.h"
 #include "proxy/upperproxy.h"
 #include "proxy/control_data.h"
@@ -39,7 +38,7 @@ using namespace std;
 using turtle_namespace::control::lowerproxy;
 using turtle_namespace::control::upperproxy;
 // using turtle_namespace::control::visualizor;
-using turtle_namespace::control::ControllerMonitor;
+// using turtle_namespace::control::ControllerMonitor;
 
 static float init_cnt = 0;
 static int init_done = 0;

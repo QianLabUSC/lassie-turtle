@@ -34,8 +34,8 @@ include_directories(
 add_executable( turtle_high_controller
     src/main.cpp
 
-    src/controller/controller_monitor.cpp
-    src/controller/pid_speed_controller.cpp
+    # src/controller/controller_monitor.cpp
+    # src/controller/pid_speed_controller.cpp
     src/controller/Inverse_kinematics.cpp
     # src/controller/trajectories_parser.cpp
 

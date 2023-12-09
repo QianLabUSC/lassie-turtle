@@ -152,7 +152,6 @@ void can_driver::updateChannel2StatusCallback_1(){
         odrive_status_msg_1_axis1.vel_estimate = odrive_can::can_getSignal<float>(recv_frame_1_axis1, 32, 32, true);
     
      }
- 
     can_frame iq_recv_frame_1_axis1;
     if (socket_channel1_get_iq_1.readFrame(&iq_recv_frame_1_axis1) < 0)
      {
