@@ -12,9 +12,10 @@
 #include <functional>
 #include <memory>
 #include <string>
-
+#include <chrono>
 #include "proxy/control_data.h"
 #include "rclcpp/rclcpp.hpp"
+#include <cmath>
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
 #include "control_msgs/msg/dynamic_joint_state.hpp"
@@ -25,6 +26,11 @@
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
+enum class ProgramState {
+    FirstIteration,
+    GoToInitialPoint,
+    Running,
+    };
 namespace turtle_namespace{
 namespace control{
 
@@ -37,8 +43,12 @@ class lowerproxy:public rclcpp::Node{
     void Estop();
     void UpdateJoystickStatus(turtle &);
     float fmodf_mpi_pi(float);
-    void goback2desiredangle(turtle& turtle_, float left_adduction, float left_sweeping, float right_adduction, float right_sweeping,float t_decrease_time,float total_time);
-
+    void goback2desiredangle(turtle& turtle_, float left_adduction, 
+                                    float left_sweeping, float right_adduction,
+                                    float right_sweeping,  float start_left_adduction, 
+                                    float start_left_sweeping, float start_right_adduction,  
+                                    float start_right_sweeping,  
+                                    float t_decrease_time,float total_time);
   
 
   private:
@@ -69,8 +79,10 @@ class lowerproxy:public rclcpp::Node{
                                                   GUI_subscriber;                                                                                               
     rclcpp::TimerBase::SharedPtr _timer;
     float _count;
-    float t;
-    float t2;
+    std::chrono::high_resolution_clock::time_point t2;
+    double initial_phase_time = 3.0;
+    ProgramState currentState;
+    std::chrono::high_resolution_clock::time_point starting_time;
     float saved_left_adduction;
     float saved_left_sweeping;
     float saved_right_adduction;

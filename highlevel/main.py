@@ -69,6 +69,7 @@ def main():
     # manager.register('traveler_high_controller', 'traveler_high_controller', isc=True)
     # manager.register('data_sync', './multimedia/dataSync.py')
     manager.register('gui', './LASSIE_GUI/lassie_gui.py')
+    manager.register('optitrack', './traveler_optitrack/traveler_optitrack/traveler_optitrack.py')
     # manager.register('video_sync', './multimedia/dataSync.py')
     # print(manager.nodes)
     manager.block()

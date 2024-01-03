@@ -17,6 +17,10 @@
  */
 const double PI = 3.141592653589793238463;
 const double TWO_PI = PI*2;
+
+
+
+
 namespace turtle_namespace{
 namespace control{
 
@@ -112,52 +116,103 @@ void lowerproxy::calculate_position(turtle &turtle_ )
         
         
         if(turtle_.turtle_gui.start_flag==1){
-                t = t + 0.001;
-                t2=0;
-                // std::cout<<"AAAAAAAAAAbbbbA"<<t<<std::endl;
-                // turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = 0; 
-                // turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = 0; 
-                // turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = 0; 
-                // turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = 0;
-                // update the current state
-                 boundingGAIT(turtle_, t);
+                t2 = std::chrono::high_resolution_clock::now();
+                std::chrono::high_resolution_clock::time_point current_time;
+                std::chrono::duration<double> deltaTime;
+
+                std::chrono::high_resolution_clock::time_point current_time1;
+                std::chrono::duration<double> deltaTime1;
+
+                double curr_initial_phase_time;
+                double running_t;
+
+                switch (currentState) {
+                    case ProgramState::FirstIteration:
+                        starting_time = std::chrono::high_resolution_clock::now();
+                        currentState = ProgramState::GoToInitialPoint;
+                        // Additional code for first iteration
+                        std::cout << "First Interation: " << std::endl;
+                        break;
+
+                    case ProgramState::GoToInitialPoint:
+                        current_time = std::chrono::high_resolution_clock::now();
+                        deltaTime = current_time - starting_time;
+                        curr_initial_phase_time = deltaTime.count();
+                        if (curr_initial_phase_time < initial_phase_time) {
+                            goback2desiredangle(turtle_, 0, turtle_.traj_data.lateral_angle_range, 
+                                0, -turtle_.traj_data.lateral_angle_range,
+                                0, 0, 0, 0,
+                                curr_initial_phase_time, initial_phase_time);
+                        } else {
+                            currentState = ProgramState::Running;
+                        }
+                        // Additional code for first iteration
+                        std::cout << "Initial Interation: " << curr_initial_phase_time << std::endl;
+                        break;
+
+                    case ProgramState::Running:
+
+                    current_time1 = std::chrono::high_resolution_clock::now();
+                        deltaTime1 = current_time1 - starting_time;
+                        curr_initial_phase_time = deltaTime1.count();
+
+                        running_t = curr_initial_phase_time- initial_phase_time;
+                        boundingGAIT(turtle_, running_t);           
+                        std::cout << "running Interation: " << running_t << std::endl;
+                        break;
+                }
+
 
                 //update angle when GUI stop
                 saved_left_adduction=turtle_.turtle_chassis.left_adduction.pos_estimate;
                 saved_left_sweeping= turtle_.turtle_chassis.left_sweeping.pos_estimate;
                 saved_right_adduction= turtle_.turtle_chassis.right_adduction.pos_estimate;
-                saved_right_sweeping= turtle_.turtle_chassis.right_sweeping.pos_estimate;
+                saved_right_sweeping= turtle_.turtle_chassis.right_sweeping.pos_estimate;       
             }
             else{
-                t = 0;
-                t2=t2+0.001;
-                std::cout<<"AAAAAAAAAAbbbbAelse"<<t;
-                goback2desiredangle(turtle_,0,0,0,0,t2,10);
+                auto current_back_time = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> deltaTime = current_back_time - t2;
+                double back_curr_time = deltaTime.count();
+                goback2desiredangle(turtle_,0,0,0,0,
+                                    saved_left_adduction, saved_left_sweeping,
+                                    saved_right_adduction, saved_right_sweeping,
+                                        back_curr_time,initial_phase_time);
+                currentState = ProgramState::FirstIteration;
                
             }
         
       
     }
 
-void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction, float left_sweeping, float right_adduction, float right_sweeping,float t_decrease_time,float total_time)
+void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction, 
+                                    float left_sweeping, float right_adduction,
+                                    float right_sweeping,  float start_left_adduction, 
+                                    float start_left_sweeping, float start_right_adduction,  
+                                    float start_right_sweeping,  
+                                    float t_decrease_time,float total_time)
 {
+    // right and left sweeping angle is no longer for use, the desired angle is determined by GUI theta range
+    left_adduction = left_adduction/TWO_PI;
+    left_sweeping = left_sweeping/TWO_PI;
+    right_adduction = right_adduction/TWO_PI;
+    right_sweeping = right_sweeping/TWO_PI;
     if( t_decrease_time>total_time)
    {
      t_decrease_time=total_time;
-      turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= saved_left_adduction+ (left_adduction-saved_left_adduction);
-      turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position  =saved_left_sweeping+ (left_sweeping-saved_left_sweeping);
-      turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=saved_right_adduction + (right_adduction-saved_right_adduction);
-      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position= saved_right_sweeping+(right_sweeping-saved_right_sweeping);
+      turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= start_left_adduction+ (left_adduction-start_left_adduction);
+      turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position  =start_left_sweeping+ (left_sweeping-start_left_sweeping);
+      turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=start_right_adduction + (right_adduction-start_right_adduction);
+      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position= start_right_sweeping+(right_sweeping-start_right_sweeping);
   
    }
    else
    {
 
     //left_adduciton should be in turns(unit)
-    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= saved_left_adduction+ (left_adduction-saved_left_adduction)*(t_decrease_time/total_time);
-      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position  =saved_left_sweeping+ (left_sweeping-saved_left_sweeping)*(t_decrease_time/total_time);
-      turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=saved_right_adduction + (right_adduction-saved_right_adduction)*(t_decrease_time/total_time);
-         turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position= saved_right_sweeping+(right_sweeping-saved_right_sweeping)*(t_decrease_time/total_time);
+    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= start_left_adduction+ (left_adduction-start_left_adduction)*(t_decrease_time/total_time);
+      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position  =start_left_sweeping+ (left_sweeping-start_left_sweeping)*(t_decrease_time/total_time);
+      turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=start_right_adduction + (right_adduction-start_right_adduction)*(t_decrease_time/total_time);
+         turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position= start_right_sweeping+(right_sweeping-start_right_sweeping)*(t_decrease_time/total_time);
    }
 }
 
