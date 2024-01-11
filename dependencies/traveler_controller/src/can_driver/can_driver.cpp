@@ -16,8 +16,13 @@ can_driver::can_driver() : Node("can_driver"),
                                socket_topic_set_position_0_axis0(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_topic_set_position_0_axis1(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 500),
                                socket_topic_set_position_1_axis0(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
-                               socket_topic_set_position_1_axis1(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 500)
-{   
+                               socket_topic_set_position_1_axis1(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 500),
+                               socket_topic_set_state_0_axis0(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
+                               socket_topic_set_state_0_axis1(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 500),
+                               socket_topic_set_state_1_axis0(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
+                               socket_topic_set_state_1_axis1(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 500)
+
+                               {   
    // count = 0;
     now = std::chrono::system_clock::now();
    //  publisher_0_axis0= this->create_publisher<traveler_msgs::msg::OdriveStatus>("/odrive/odrive_status", 100);
@@ -27,7 +32,7 @@ can_driver::can_driver() : Node("can_driver"),
     //timer_ = this->create_wall_timer(std::chrono::microseconds(1000), std::bind(&can_driver::updateChannel1StatusCallback, this));
     //timer_ = this->create_wall_timer(std::chrono::microseconds(1000), std::bind(&can_driver::updateChannel2StatusCallback, this));
     
-};
+}
 
 can_driver::~can_driver()
 {
@@ -38,7 +43,15 @@ void can_driver::updateChannel1StatusCallback_0()
 {   
     odrive_status_msg_0_axis0.can_channel = 0;
     odrive_status_msg_0_axis0.axis = 0;
-
+    
+   //  can_frame st_recv_frame_0_axis0;
+   //  if (socket_channel0_axis0_read_.readFrame(&st_recv_frame_0_axis0) < 0) 
+   //   {
+   //      // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis0");
+   //   }
+   //    else{
+   //      odrive_status_msg_0_axis0.axis_state = odrive_can::can_getSignal<float>(st_recv_frame_0_axis0, 32, 8, true);
+   //    }
     
 
     can_frame recv_frame_0_axis0;
@@ -69,6 +82,14 @@ void can_driver::updateChannel1StatusCallback_1()
     odrive_status_msg_0_axis1.can_channel = 0;
     odrive_status_msg_0_axis1.axis = 1;
 
+   //      can_frame st_recv_frame_0_axis1;
+   //  if (socket_channel0_axis1_read_.readFrame(&st_recv_frame_0_axis1) < 0) 
+   //   {
+   //      // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis0");
+   //   }
+   //    else{
+   //      odrive_status_msg_0_axis1.axis_state = odrive_can::can_getSignal<float>(st_recv_frame_0_axis1, 32, 8, true);
+   //    }
     
 
     can_frame recv_frame_0_axis1;
@@ -102,9 +123,19 @@ void can_driver::updateChannel2StatusCallback_0(){
     // the same reason for channel 1
 
     // can_frame axis0_frame_channel1;
+   //      can_frame st_recv_frame_1_axis0;
+   //  if (socket_channel1_axis0_read_.readFrame(&st_recv_frame_1_axis0) < 0) 
+   //   {
+   //      // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis0");
+   //   }
+   //    else{
+   //      odrive_status_msg_1_axis0.axis_state = odrive_can::can_getSignal<float>(st_recv_frame_1_axis0, 32, 8, true);
+   //    }
     
     
     can_frame recv_frame_1_axis0;
+
+
     if (socket_get_encoder_estimates_1_axis0.readFrame(&recv_frame_1_axis0) < 0) 
      {
         // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel1_axis0");
@@ -140,7 +171,14 @@ void can_driver::updateChannel2StatusCallback_1(){
     // the same reason for channel 1
 
     // can_frame axis0_frame_channel1;
-    
+   // can_frame st_recv_frame_1_axis1;
+   //  if (socket_channel1_axis1_read_.readFrame(&st_recv_frame_1_axis1) < 0) 
+   //   {
+   //      // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis0");
+   //   }
+   //    else{
+   //      odrive_status_msg_1_axis1.axis_state = odrive_can::can_getSignal<float>(st_recv_frame_1_axis1, 32, 8, true);
+   //    }
     
     can_frame recv_frame_1_axis1;
     if (socket_get_encoder_estimates_1_axis1.readFrame(&recv_frame_1_axis1) < 0) 
@@ -175,10 +213,12 @@ void can_driver::get_motor_status(turtle& turtle_){
       updateChannel1StatusCallback_1();
       updateChannel2StatusCallback_0();
       updateChannel2StatusCallback_1();
+   
       turtle_.turtle_chassis.left_adduction = odrive_status_msg_1_axis1;
       turtle_.turtle_chassis.left_sweeping = odrive_status_msg_0_axis0;
       turtle_.turtle_chassis.right_adduction = odrive_status_msg_0_axis1;
       turtle_.turtle_chassis.right_sweeping = odrive_status_msg_1_axis0;
+
 }
 
 void can_driver::setControl(turtle& turtle_){
@@ -191,6 +231,102 @@ void can_driver::setControl(turtle& turtle_){
    setPosition_axis0(turtle_.turtle_control.left_sweeping.set_input_position_radian);
    setPosition_axis1(turtle_.turtle_control.right_adduction.set_input_position_radian);
    setPosition_axis0(turtle_.turtle_control.right_sweeping.set_input_position_radian);
+}
+
+void can_driver::change_odrive_state(turtle &turtle_)
+{  
+   // std::cout<<"idle"<<turtle_gui.if_idle<<std::endl;
+    if (turtle_.turtle_gui.start_flag==1){
+      std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
+        if (turtle_.turtle_chassis.if_idle_count > 0)
+        {   
+            
+            turtle_.turtle_control.left_adduction.set_state.can_channel = 1;
+            turtle_.turtle_control.left_sweeping.set_state.can_channel = 1;
+            turtle_.turtle_control.right_adduction.set_state.can_channel = 0;
+            turtle_.turtle_control.right_sweeping.set_state.can_channel = 0;
+            turtle_.turtle_control.left_adduction.set_state.set_state = 8;
+            turtle_.turtle_control.left_sweeping.set_state.set_state = 8;
+            turtle_.turtle_control.right_adduction.set_state.set_state = 8;
+            turtle_.turtle_control.right_sweeping.set_state.set_state = 8;
+            setstate_axis1(turtle_.turtle_control.left_adduction.set_state);
+            setstate_axis0(turtle_.turtle_control.left_sweeping.set_state);
+            setstate_axis1(turtle_.turtle_control.right_adduction.set_state);
+            setstate_axis0(turtle_.turtle_control.right_sweeping.set_state);
+            std::cout << "set to close loop control" << std::endl;
+            turtle_.turtle_chassis.if_idle_count = turtle_.turtle_chassis.if_idle_count - 1;
+            std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
+        }
+    
+         }
+      else 
+      {
+       if (turtle_.turtle_chassis.if_idle_count < 3)
+        {
+            turtle_.turtle_control.left_adduction.set_state.can_channel = 1;
+            turtle_.turtle_control.left_sweeping.set_state.can_channel = 1;
+            turtle_.turtle_control.right_adduction.set_state.can_channel = 0;
+            turtle_.turtle_control.right_sweeping.set_state.can_channel = 0;
+            turtle_.turtle_control.left_adduction.set_state.set_state = 1;
+            turtle_.turtle_control.left_sweeping.set_state.set_state = 1;
+            turtle_.turtle_control.right_adduction.set_state.set_state = 1;
+            turtle_.turtle_control.right_sweeping.set_state.set_state = 1;
+            setstate_axis1(turtle_.turtle_control.left_adduction.set_state);
+            setstate_axis0(turtle_.turtle_control.left_sweeping.set_state);
+            setstate_axis1(turtle_.turtle_control.right_adduction.set_state);
+            setstate_axis0(turtle_.turtle_control.right_sweeping.set_state);
+            turtle_.turtle_chassis.if_idle_count = turtle_.turtle_chassis.if_idle_count + 1;
+            std::cout << "set to idle" << std::endl;
+        }
+      }
+
+
+        
+    }
+
+
+void can_driver::setstate_axis1(traveler_msgs::msg::SetState msg)
+{
+   // RCLCPP_INFO(this->get_logger(), "Do Encoder Response Received");
+   // std::cout<<"hahahaha"<<std::endl;
+   can_frame send_frame;
+   send_frame.can_dlc = 4;
+   std::memcpy(&send_frame.data[0], &msg.set_state, sizeof(msg.set_state));
+
+
+   send_frame.can_id = odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_1_ID;
+   if (msg.can_channel == 0)
+   {
+      socket_topic_set_state_0_axis1.writeFrame(send_frame);
+   }
+   else
+   {
+      socket_topic_set_state_1_axis1.writeFrame(send_frame);
+      return;
+   }
+   // socket_generic_write_.writeFrame(send_frame);
+}
+
+void can_driver::setstate_axis0(traveler_msgs::msg::SetState msg)
+{
+   // RCLCPP_INFO(this->get_logger(), "Do Encoder Response Received");
+   // std::cout<<"hahahaha"<<std::endl;
+   can_frame send_frame;
+   send_frame.can_dlc = 4;
+   std::memcpy(&send_frame.data[0], &msg.set_state, sizeof(msg.set_state));
+
+
+   send_frame.can_id = odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_0_ID;
+   if (msg.can_channel == 0)
+   {
+      socket_topic_set_state_0_axis1.writeFrame(send_frame);
+   }
+   else
+   {
+      socket_topic_set_state_1_axis1.writeFrame(send_frame);
+      return;
+   }
+   // socket_generic_write_.writeFrame(send_frame);
 }
 
 void can_driver::setPosition_axis0(traveler_msgs::msg::SetInputPosition msg)
@@ -223,9 +359,6 @@ void can_driver::setPosition_axis1(traveler_msgs::msg::SetInputPosition msg)
    can_frame send_frame;
    send_frame.can_dlc = 8;
    std::memcpy(&send_frame.data[0], &msg.input_position, sizeof(msg.input_position));
-   std::memcpy(&send_frame.data[4], &msg.vel_ff, sizeof(msg.vel_ff));
-   std::memcpy(&send_frame.data[6], &msg.torque_ff, sizeof(msg.torque_ff));
-
    send_frame.can_id = odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_1_ID;
    if (msg.can_channel == 0)
    {

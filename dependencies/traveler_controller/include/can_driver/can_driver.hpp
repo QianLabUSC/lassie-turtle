@@ -8,6 +8,7 @@
 
 #include "traveler_msgs/msg/odrive_status.hpp"
 #include "traveler_msgs/msg/set_input_position.hpp"
+#include "traveler_msgs/msg/set_state.hpp"
 
 class can_driver : public rclcpp::Node
 {
@@ -17,6 +18,7 @@ public:
     void setControl(turtle& turtle_);
     void setPosition_axis0(traveler_msgs::msg::SetInputPosition msg);
     void get_motor_status(turtle& turtle_);
+    void change_odrive_state(turtle& turtle_);
     ~can_driver();
 
 private:
@@ -38,6 +40,10 @@ private:
     SocketcanInterface socket_topic_set_position_0_axis1;
     SocketcanInterface socket_topic_set_position_1_axis0;
     SocketcanInterface socket_topic_set_position_1_axis1;
+    SocketcanInterface socket_topic_set_state_0_axis0;
+    SocketcanInterface socket_topic_set_state_0_axis1;
+    SocketcanInterface socket_topic_set_state_1_axis0;
+    SocketcanInterface socket_topic_set_state_1_axis1;
     traveler_msgs::msg::OdriveStatus odrive_status_msg_0_axis0;
     traveler_msgs::msg::OdriveStatus odrive_status_msg_0_axis1;
     traveler_msgs::msg::OdriveStatus odrive_status_msg_1_axis0;
@@ -61,4 +67,6 @@ private:
     void updateChannel1StatusCallback_1();
     //void setPosition_axis0(traveler_msgs::msg::SetInputPosition msg);
     void setPosition_axis1(traveler_msgs::msg::SetInputPosition msg);
+    void setstate_axis1(traveler_msgs::msg::SetState msg);
+    void setstate_axis0(traveler_msgs::msg::SetState msg);
 };

@@ -12,6 +12,7 @@
 #include <vector>
 #include "traveler_msgs/msg/odrive_status.hpp"
 #include "traveler_msgs/msg/set_input_position.hpp"
+#include "traveler_msgs/msg/set_state.hpp"
 struct motor_status{
     float error;
     float effort;
@@ -35,6 +36,10 @@ struct turtle_status
     traveler_msgs::msg::OdriveStatus left_sweeping;
     traveler_msgs::msg::OdriveStatus right_adduction;
     traveler_msgs::msg::OdriveStatus right_sweeping;
+    // gait state flag
+    float gait_state = 0; // 0: prepare, 1: backing, 2: penetrating, 3: penetrate, 4: shear, 5: stop
+    // maximum idle/close_loop_control set count
+    int if_idle_count = 3;
     
     
 };
@@ -43,6 +48,7 @@ struct turtle_status
 struct motor_command{
     traveler_msgs::msg::SetInputPosition set_input_position_degree;
     traveler_msgs::msg::SetInputPosition set_input_position_radian;
+    traveler_msgs::msg::SetState set_state;
 };
 
 struct trutle_command{
@@ -58,7 +64,11 @@ struct human_interface{
 
     // Trajectory Start Flag (run state = true or false)
     int start_flag = 0;
+
+    // unused
     bool status_update_flag = false;
+
+    
 };
 // struct that defines the behavior of trajectories
 struct TrajectoryData

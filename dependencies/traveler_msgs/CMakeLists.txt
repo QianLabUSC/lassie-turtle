@@ -21,11 +21,12 @@ set(msg_files
   "msg/TravelerConfig.msg"
   "msg/TravelerMode.msg"
   "msg/TravelerStatus.msg"
+ 
 
 )
 # Add msgs/srvs
 set(odrive_msg_files
-  
+  "odrivemsg/SetState.msg"
   "odrivemsg/SetInputPosition.msg"
 )
 set(odrive_srv_files

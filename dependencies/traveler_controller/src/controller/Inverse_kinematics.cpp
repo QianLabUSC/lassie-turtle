@@ -586,6 +586,8 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         // Y2 = - r_v + r_v * corres_t;
         // Y2 = -r_v + (r_v + upper_height) * corres_t;
         theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
+        // set turtle gait state flag:
+        turtle_.turtle_chassis.gait_state = 1;
     }
     //Phase2  theta=-45 gamma go to desired value
     else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
@@ -603,6 +605,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         // Y2 = 0;
         // Y2 = upper_height;
         gamma2 = right_hori_servo + initial_insertion_depth_rad*180/M_PI* corres_t;
+        turtle_.turtle_chassis.gait_state = 2;
     }
 
     //
@@ -619,6 +622,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         //cout<<"gamma_analytic_solution"<<(asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI<<endl;
         theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
         gamma2 = right_hori_servo + (asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(-theta1*M_PI/180))*(l1*cos(-theta1*M_PI/180)+lower_point*lower_point))-atan(lower_point/(l1*cos(-theta1*M_PI/180)))))*180/M_PI;
+        turtle_.turtle_chassis.gait_state = 3;
          // cout << "swipe"  << endl;
 
 
@@ -635,6 +639,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         gamma1 = left_hori_servo -  (initial_insertion_depth_rad*180/M_PI) +(initial_insertion_depth_rad*180/M_PI)* corres_t;
         theta2 = horizontal_angle;
         gamma2 = right_hori_servo + (initial_insertion_depth_rad*180/M_PI) - (initial_insertion_depth_rad*180/M_PI) * corres_t;
+        turtle_.turtle_chassis.gait_state = 4;
        //  cout << "extract"  << endl;
     }
     

@@ -64,16 +64,25 @@ class NatNetClient:
             if( len( data ) > 0 ):
             # Send information to any listener.
                 rot_pos = pickle.loads(data)
-                rot = rot_pos[0:4]
-                pos = rot_pos[4:7]
+                id = rot_pos[0]
+                rot = rot_pos[1:5]
+                pos = rot_pos[5:8]
             else:
                 print(i)
                 if(i%200 == 0):
                     print('no data received')
             if self.ros_publisher is not None:
                 if(i%200 == 0):
-                    print('rot: ', rot, 'pos: ', pos)
-                self.ros_publisher.publish_motion_msg(rot, pos)
+                    if(id == 1):
+                        id_name = 'robot'
+                    elif(id == 2):
+                        id_name = 'left flipper'
+                    elif(id==3):
+                        id_name = 'right flipper'
+                    else:
+                        id_name = 'invalid id'
+                    print('id:', id_name, 'rot: ', rot, 'pos: ', pos)
+                self.ros_publisher.publish_motion_msg(id, rot, pos)
                 
     def run( self ):
         # Create the data socket
@@ -91,11 +100,13 @@ class OptitrackNode(Node):
 
     def __init__(self):
         super().__init__('OptitrackNode')
-        self.publisher_ = self.create_publisher(Pose, '/optitrack', 10)
+        self.publisher_ = self.create_publisher(Pose, '/optitrack_body', 10)
+        self.publisher_1 = self.create_publisher(Pose, '/optitrack_left_flipper', 10)
+        self.publisher_2 = self.create_publisher(Pose, '/optitrack_right_flipper', 10)
         self.robot_pose = Pose()
         
 
-    def publish_motion_msg(self, rotation, position):   
+    def publish_motion_msg(self, id, rotation, position):   
         current = time.time()
         if current - start > 5:
             # print( "Received frame for rigid body", id )
@@ -103,6 +114,7 @@ class OptitrackNode(Node):
             rot = np.array(rotation)
             pos = np.array(position)
             # print(rot, pos)
+            
             self.robot_pose.position.x = pos[0]
             self.robot_pose.position.y = pos[1]
             self.robot_pose.position.z = pos[2]
@@ -110,7 +122,12 @@ class OptitrackNode(Node):
             self.robot_pose.orientation.y = rot[1]
             self.robot_pose.orientation.z = rot[2]
             self.robot_pose.orientation.w = rot[3]
-            self.publisher_.publish(self.robot_pose)
+            if(id == 1):  # robot body
+                self.publisher_.publish(self.robot_pose)
+            elif(id == 2):
+                self.publisher_1.publish(self.robot_pose)
+            elif(id == 3):
+                self.publisher_2.publish(self.robot_pose)
 
 
 def main(args=None):

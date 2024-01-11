@@ -28,37 +28,14 @@ namespace control{
 lowerproxy::lowerproxy(std::string name) : Node(name){
     std::cout<<"Start to create the ros node subscriber and publisher"
                 <<std::endl;
-    // create a list of low level position command publisher 
-    joint0_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/joint0_position_controller/commands", 10);
-    joint1_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/joint1_position_controller/commands", 10);
-    // replace previous servo topics with current direct drive topic
-    servo0_publisher_dd = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/servo0_controller/commands", 10);
-    servo1_publisher_dd = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/servo1_controller/commands", 10);
-
-    servo0_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/traveler_servo_big_1", 10);
-    servo1_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/traveler_servo_big_2", 10);
-    servo2_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/traveler_servo_small_1", 10);
-    servo3_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/traveler_servo_small_2", 10);
+   
     controller_state_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/controller", 10);
-    // Robot_state_publisher = this->create_publisher<travelermsgs::msg::RobotState>
-    //     ("/robot_state", 10);
-    // Leg1_subscriber = this->create_subscription
-    //                     <control_msgs::msg::DynamicJointState>
-    //     ("/dynamic_joint_states", 10, std::bind(&lowerproxy::handle_joint_state, this, _1));
-
+        ("/robot_state", 10);
+    
 
     _count = 0;
 
-    // RCLCPP_INFO(this->get_logger(), "Publisher created!!");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+    RCLCPP_INFO(this->get_logger(), "Publisher created!!");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
 }
 
 float lowerproxy::fmodf_mpi_pi(float f)
@@ -74,6 +51,8 @@ float lowerproxy::fmodf_mpi_pi(float f)
 void lowerproxy::terrain_estimation(){
 
 }
+
+
 
 /// @brief calculate the motor command using different controller:
 ///        default: inverse kinematic controller
@@ -127,17 +106,21 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 double running_t;
 
                 switch (currentState) {
-                    case ProgramState::FirstIteration:
-                        starting_time = std::chrono::high_resolution_clock::now();
-                        currentState = ProgramState::GoToInitialPoint;
+                    case ProgramState::FirstIteration:                       
+                        turtle_.turtle_chassis.gait_state = 0;
                         // Additional code for first iteration
                         std::cout << "First Interation: " << std::endl;
+                        if(turtle_.turtle_chassis.if_idle_count <= 0){
+                            currentState = ProgramState::GoToInitialPoint;
+                        }
+                        starting_time = std::chrono::high_resolution_clock::now();
                         break;
 
                     case ProgramState::GoToInitialPoint:
                         current_time = std::chrono::high_resolution_clock::now();
                         deltaTime = current_time - starting_time;
                         curr_initial_phase_time = deltaTime.count();
+                        turtle_.turtle_chassis.gait_state = 0;
                         if (curr_initial_phase_time < initial_phase_time) {
                             goback2desiredangle(turtle_, 0, turtle_.traj_data.lateral_angle_range, 
                                 0, -turtle_.traj_data.lateral_angle_range,
@@ -173,6 +156,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 auto current_back_time = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<double> deltaTime = current_back_time - t2;
                 double back_curr_time = deltaTime.count();
+                turtle_.turtle_chassis.gait_state = 5;
                 goback2desiredangle(turtle_,0,0,0,0,
                                     saved_left_adduction, saved_left_sweeping,
                                     saved_right_adduction, saved_right_sweeping,
@@ -221,12 +205,10 @@ void lowerproxy::Estop(){
 }
 
 void lowerproxy::UpdateJoystickStatus(turtle& turtle_){
-    turtle_.turtle_control = turtle_inter_.turtle_control;
-    turtle_.turtle_gui = turtle_inter_.turtle_gui;
 
     // instead of reading message from ros2, directly call the function 
     // in odrivepro drive to get the message
-
+    // use the intermediate structure instead of the raw turtle_ to avoid messy
     turtle_inter_ = turtle_;
 
     // get raw encoder estimate from ODrive in unit of turns
@@ -252,6 +234,28 @@ void lowerproxy::UpdateJoystickStatus(turtle& turtle_){
 
     // to be implemented
     terrain_estimation();
+
+
+    // to publish information back to gui
+    auto robot_state = std_msgs::msg::Float64MultiArray();
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.gait_state); // state flag
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.left_adduction.pos_estimate); //left adduction motor position status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.left_sweeping.pos_estimate); //left sweeping motor position status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.right_adduction.pos_estimate); //right adduction motor position status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.right_sweeping.pos_estimate); //right sweeping motor position status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.left_adduction.iq_setpoint); //left adduction motor torque status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.left_sweeping.iq_setpoint); //left sweeping motor torque status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.right_adduction.iq_setpoint); //right sweeping motor torque status
+    robot_state.data.push_back(turtle_inter_.turtle_chassis.right_sweeping.iq_setpoint); //left adduction motor torque status
+    
+    // add more information that related to robot state here
+    /*
+    something important
+    */
+    
+    controller_state_publisher->publish(robot_state);
+
+
 
     
     

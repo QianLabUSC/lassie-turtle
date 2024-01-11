@@ -39,7 +39,9 @@ int main(int argc, char **argv)
 		rclcpp::spin_some(Lower_proxy_);
 		Can_driver_->get_motor_status(turtle_);
 		Lower_proxy_->UpdateJoystickStatus(turtle_);
-		Upper_proxy_->UpdateGuiCommand(turtle_);            
+		Upper_proxy_->UpdateGuiCommand(turtle_); 
+		
+        Can_driver_->change_odrive_state(turtle_);
 		Lower_proxy_->calculate_position(turtle_);  
 		Can_driver_->setControl(turtle_);
 		
