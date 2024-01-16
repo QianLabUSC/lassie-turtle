@@ -96,72 +96,96 @@ void lowerproxy::calculate_position(turtle &turtle_ )
         
         if(turtle_.turtle_gui.start_flag==1){
                 t2 = std::chrono::high_resolution_clock::now();
+                std::chrono::high_resolution_clock::time_point current_time_pre;
+                std::chrono::duration<double> deltaTime_pre;
+
                 std::chrono::high_resolution_clock::time_point current_time;
                 std::chrono::duration<double> deltaTime;
 
                 std::chrono::high_resolution_clock::time_point current_time1;
                 std::chrono::duration<double> deltaTime1;
-
+                
+                double pre_t;
                 double curr_initial_phase_time;
                 double running_t;
 
                 switch (currentState) {
                     case ProgramState::FirstIteration:                       
-                        turtle_.turtle_chassis.gait_state = 0;
+                        turtle_.turtle_chassis.gait_state = -1;
                         // Additional code for first iteration
                         std::cout << "First Interation: " << std::endl;
-                        if(turtle_.turtle_chassis.if_idle_count <= 0){
+                        starting_time = std::chrono::high_resolution_clock::now();
+                        currentState = ProgramState::SetToControlAndCalibrate;
+                        turtle_.turtle_control.if_control = false;
+                        break;
+
+                    case ProgramState::SetToControlAndCalibrate:
+                        current_time_pre = std::chrono::high_resolution_clock::now();
+                        deltaTime_pre = current_time_pre - starting_time;
+                        pre_t = deltaTime_pre.count();
+                        if(turtle_.turtle_chassis.if_idle_count <= 0 && pre_t > set_close_control_time){
                             currentState = ProgramState::GoToInitialPoint;
                         }
-                        starting_time = std::chrono::high_resolution_clock::now();
+                        std::cout << "waiting Interation: " << std::endl;
+                        saved_left_adduction=turtle_.turtle_chassis.left_adduction.pos_estimate;
+                        saved_left_sweeping= turtle_.turtle_chassis.left_sweeping.pos_estimate;
+                        saved_right_adduction= turtle_.turtle_chassis.right_adduction.pos_estimate;
+                        saved_right_sweeping= turtle_.turtle_chassis.right_sweeping.pos_estimate; 
+                        std::cout << "saved_left_sweeping" << saved_left_sweeping << std::endl;
+                        std::cout << "saved_left_adduction" << saved_left_adduction << std::endl;
+                        std::cout << "saved_right_sweeping" << saved_right_sweeping << std::endl;
+                        std::cout << "saved_right_adduction" << saved_right_adduction << std::endl;
+                        turtle_.turtle_control.if_control = false;
                         break;
+                        
 
                     case ProgramState::GoToInitialPoint:
                         current_time = std::chrono::high_resolution_clock::now();
                         deltaTime = current_time - starting_time;
-                        curr_initial_phase_time = deltaTime.count();
+                        curr_initial_phase_time = deltaTime.count() - set_close_control_time;
                         turtle_.turtle_chassis.gait_state = 0;
+                        turtle_.turtle_control.if_control = true;
                         if (curr_initial_phase_time < initial_phase_time) {
-                            goback2desiredangle(turtle_, 0, turtle_.traj_data.lateral_angle_range, 
-                                0, -turtle_.traj_data.lateral_angle_range,
-                                0, 0, 0, 0,
+                            goback2desiredangle(turtle_, 0, -turtle_.traj_data.lateral_angle_range, 
+                                0, turtle_.traj_data.lateral_angle_range,
+                                saved_left_adduction, saved_left_sweeping,
+                                saved_right_adduction, saved_right_sweeping,
                                 curr_initial_phase_time, initial_phase_time);
                         } else {
                             currentState = ProgramState::Running;
                         }
                         // Additional code for first iteration
-                        std::cout << "Initial Interation: " << curr_initial_phase_time << std::endl;
+                        std::cout << "go to initial point Interation: " << curr_initial_phase_time << std::endl;
                         break;
 
                     case ProgramState::Running:
 
-                    current_time1 = std::chrono::high_resolution_clock::now();
+                        current_time1 = std::chrono::high_resolution_clock::now();
                         deltaTime1 = current_time1 - starting_time;
                         curr_initial_phase_time = deltaTime1.count();
-
-                        running_t = curr_initial_phase_time- initial_phase_time;
+                        turtle_.turtle_control.if_control = true;
+                        running_t = curr_initial_phase_time- initial_phase_time - set_close_control_time;
                         boundingGAIT(turtle_, running_t);           
                         std::cout << "running Interation: " << running_t << std::endl;
                         break;
                 }
 
-
-                //update angle when GUI stop
-                saved_left_adduction=turtle_.turtle_chassis.left_adduction.pos_estimate;
-                saved_left_sweeping= turtle_.turtle_chassis.left_sweeping.pos_estimate;
-                saved_right_adduction= turtle_.turtle_chassis.right_adduction.pos_estimate;
-                saved_right_sweeping= turtle_.turtle_chassis.right_sweeping.pos_estimate;       
+       
             }
             else{
+                turtle_.turtle_chassis.gait_state = 5;
+                currentState = ProgramState::FirstIteration;
+                turtle_.turtle_control.if_control = false;
+                // probably not used 
                 auto current_back_time = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<double> deltaTime = current_back_time - t2;
                 double back_curr_time = deltaTime.count();
-                turtle_.turtle_chassis.gait_state = 5;
-                goback2desiredangle(turtle_,0,0,0,0,
-                                    saved_left_adduction, saved_left_sweeping,
-                                    saved_right_adduction, saved_right_sweeping,
-                                        back_curr_time,initial_phase_time);
-                currentState = ProgramState::FirstIteration;
+                
+                // goback2desiredangle(turtle_,0,0,0,0,
+                //                     saved_left_adduction, saved_left_sweeping,
+                //                     saved_right_adduction, saved_right_sweeping,
+                //                         back_curr_time,initial_phase_time);
+                
                
             }
         
@@ -180,6 +204,7 @@ void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction,
     left_sweeping = left_sweeping/TWO_PI;
     right_adduction = right_adduction/TWO_PI;
     right_sweeping = right_sweeping/TWO_PI;
+    total_time = total_time/2;
     if( t_decrease_time>total_time)
    {
      t_decrease_time=total_time;
@@ -194,9 +219,9 @@ void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction,
 
     //left_adduciton should be in turns(unit)
     turtle_.turtle_control.left_adduction.set_input_position_radian.input_position= start_left_adduction+ (left_adduction-start_left_adduction)*(t_decrease_time/total_time);
-      turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position  =start_left_sweeping+ (left_sweeping-start_left_sweeping)*(t_decrease_time/total_time);
-      turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=start_right_adduction + (right_adduction-start_right_adduction)*(t_decrease_time/total_time);
-         turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position= start_right_sweeping+(right_sweeping-start_right_sweeping)*(t_decrease_time/total_time);
+    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position  =start_left_sweeping+ (left_sweeping-start_left_sweeping)*(t_decrease_time/total_time);
+    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position=start_right_adduction + (right_adduction-start_right_adduction)*(t_decrease_time/total_time);
+    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position= start_right_sweeping+(right_sweeping-start_right_sweeping)*(t_decrease_time/total_time);
    }
 }
 
@@ -247,6 +272,10 @@ void lowerproxy::UpdateJoystickStatus(turtle& turtle_){
     robot_state.data.push_back(turtle_inter_.turtle_chassis.left_sweeping.iq_setpoint); //left sweeping motor torque status
     robot_state.data.push_back(turtle_inter_.turtle_chassis.right_adduction.iq_setpoint); //right sweeping motor torque status
     robot_state.data.push_back(turtle_inter_.turtle_chassis.right_sweeping.iq_setpoint); //left adduction motor torque status
+    robot_state.data.push_back(turtle_inter_.turtle_control.left_adduction.set_input_position_radian.input_position);
+    robot_state.data.push_back(turtle_inter_.turtle_control.left_sweeping.set_input_position_radian.input_position);
+    robot_state.data.push_back(turtle_inter_.turtle_control.right_adduction.set_input_position_radian.input_position);
+    robot_state.data.push_back(turtle_inter_.turtle_control.right_sweeping.set_input_position_radian.input_position);
     
     // add more information that related to robot state here
     /*

@@ -559,7 +559,7 @@
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "25"
+                        text: "100"
                         height: self.texture_size[1]
                     MDLabel:
                         font_style: "Subtitle1"
@@ -585,7 +585,7 @@
             id: Slider_2
             min: 1
             max: 500
-            value: 25
+            value: 100
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_2()
@@ -637,7 +637,7 @@
                     theme_text_color: "Custom"
                     font_style: "Subtitle1"
                     text_color:  color_black
-                    text: "Servo speed: "
+                    text: "Servo time: "
                     height: self.texture_size[1]
                 MDBoxLayout:
                     MDLabel:
@@ -646,22 +646,22 @@
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "2"
+                        text: "110"
                         height: self.texture_size[1]
                     MDLabel:
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "(mm/s)"
+                        text: "(ms)"
                         height: self.texture_size[1]
             MDBoxLayout:
                 size_hint_x: 0.7
         MDSlider:
             id: Slider_4
-            min: 1
-            max: 500
-            value: 25
+            min: 100
+            max: 2000
+            value: 110
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_4()
@@ -768,7 +768,7 @@
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "30"
+                        text: "10"
                         height: self.texture_size[1]
                     MDLabel:
                         font_style: "Subtitle1"
@@ -794,7 +794,7 @@
             id: Slider_7
             min: 1
             max: 100
-            value: 30
+            value: 10
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_7()

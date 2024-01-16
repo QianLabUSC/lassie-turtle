@@ -39,7 +39,7 @@ struct turtle_status
     // gait state flag
     float gait_state = 0; // 0: prepare, 1: backing, 2: penetrating, 3: penetrate, 4: shear, 5: stop
     // maximum idle/close_loop_control set count
-    int if_idle_count = 3;
+    int if_idle_count = 1;
     
     
 };
@@ -52,6 +52,7 @@ struct motor_command{
 };
 
 struct trutle_command{
+    bool if_control;
     motor_command left_adduction;
     motor_command left_sweeping;
     motor_command right_adduction;

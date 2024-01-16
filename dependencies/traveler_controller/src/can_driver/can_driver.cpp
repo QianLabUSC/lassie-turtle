@@ -1,10 +1,10 @@
 #include "can_driver/can_driver.hpp"
 
 can_driver::can_driver() : Node("can_driver"),
-                               socket_channel0_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
-                               socket_channel0_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
-                               socket_channel1_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
-                               socket_channel1_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 110000),
+                              //  socket_channel0_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
+                              //  socket_channel0_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
+                              //  socket_channel1_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
+                              //  socket_channel1_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 110000),
                                socket_channel0_get_iq_0(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_channel0_get_iq_1(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
                                socket_channel1_get_iq_0(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_0_ID,1, 0x7FF, 500),
@@ -214,30 +214,34 @@ void can_driver::get_motor_status(turtle& turtle_){
       updateChannel2StatusCallback_0();
       updateChannel2StatusCallback_1();
    
-      turtle_.turtle_chassis.left_adduction = odrive_status_msg_1_axis1;
+      turtle_.turtle_chassis.left_adduction = odrive_status_msg_0_axis1;
       turtle_.turtle_chassis.left_sweeping = odrive_status_msg_0_axis0;
-      turtle_.turtle_chassis.right_adduction = odrive_status_msg_0_axis1;
+      turtle_.turtle_chassis.right_adduction = odrive_status_msg_1_axis1;
       turtle_.turtle_chassis.right_sweeping = odrive_status_msg_1_axis0;
+
 
 }
 
 void can_driver::setControl(turtle& turtle_){
-   turtle_.turtle_control.left_adduction.set_input_position_radian.can_channel = 1;
-   turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 1;
-   turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 0;
-   turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 0;
+   turtle_.turtle_control.left_adduction.set_input_position_radian.can_channel = 0;
+   turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 0;
+   turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 1;
+   turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 1;
+   std::cout<<"ifcontrol:" << turtle_.turtle_control.if_control<<std::endl;
    
-   setPosition_axis1(turtle_.turtle_control.left_adduction.set_input_position_radian);
-   setPosition_axis0(turtle_.turtle_control.left_sweeping.set_input_position_radian);
-   setPosition_axis1(turtle_.turtle_control.right_adduction.set_input_position_radian);
-   setPosition_axis0(turtle_.turtle_control.right_sweeping.set_input_position_radian);
+   if(turtle_.turtle_control.if_control){
+      setPosition_axis1(turtle_.turtle_control.left_adduction.set_input_position_radian);
+      setPosition_axis0(turtle_.turtle_control.left_sweeping.set_input_position_radian);
+      setPosition_axis1(turtle_.turtle_control.right_adduction.set_input_position_radian);
+      setPosition_axis0(turtle_.turtle_control.right_sweeping.set_input_position_radian);
+   }
 }
 
 void can_driver::change_odrive_state(turtle &turtle_)
 {  
    // std::cout<<"idle"<<turtle_gui.if_idle<<std::endl;
     if (turtle_.turtle_gui.start_flag==1){
-      std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
+      // std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
         if (turtle_.turtle_chassis.if_idle_count > 0)
         {   
             
@@ -255,13 +259,13 @@ void can_driver::change_odrive_state(turtle &turtle_)
             setstate_axis0(turtle_.turtle_control.right_sweeping.set_state);
             std::cout << "set to close loop control" << std::endl;
             turtle_.turtle_chassis.if_idle_count = turtle_.turtle_chassis.if_idle_count - 1;
-            std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
+            // std::cout << turtle_.turtle_chassis.if_idle_count << std::endl;
         }
     
          }
       else 
       {
-       if (turtle_.turtle_chassis.if_idle_count < 3)
+       if (turtle_.turtle_chassis.if_idle_count < 1)
         {
             turtle_.turtle_control.left_adduction.set_state.can_channel = 1;
             turtle_.turtle_control.left_sweeping.set_state.can_channel = 1;

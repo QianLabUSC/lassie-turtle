@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 		
         Can_driver_->change_odrive_state(turtle_);
 		Lower_proxy_->calculate_position(turtle_);  
+		
 		Can_driver_->setControl(turtle_);
 		
 		loop_rate.sleep();

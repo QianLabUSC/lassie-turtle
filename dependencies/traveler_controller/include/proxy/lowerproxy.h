@@ -28,6 +28,7 @@ using namespace std::chrono_literals;
 using std::placeholders::_1;
 enum class ProgramState {
     FirstIteration,
+    SetToControlAndCalibrate,
     GoToInitialPoint,
     Running,
     };
@@ -81,6 +82,7 @@ class lowerproxy:public rclcpp::Node{
     float _count;
     std::chrono::high_resolution_clock::time_point t2;
     double initial_phase_time = 3.0;
+    double set_close_control_time = 2.0;
     ProgramState currentState;
     std::chrono::high_resolution_clock::time_point starting_time;
     float saved_left_adduction;

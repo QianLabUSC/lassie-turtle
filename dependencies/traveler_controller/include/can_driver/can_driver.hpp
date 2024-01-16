@@ -24,10 +24,10 @@ public:
 private:
     rmw_qos_profile_t qos_profile = rmw_qos_profile_sensor_data;
 
-    SocketcanInterface socket_channel0_axis0_read_;
-    SocketcanInterface socket_channel0_axis1_read_;
-    SocketcanInterface socket_channel1_axis0_read_;
-    SocketcanInterface socket_channel1_axis1_read_;
+    // SocketcanInterface socket_channel0_axis0_read_;
+    // SocketcanInterface socket_channel0_axis1_read_;
+    // SocketcanInterface socket_channel1_axis0_read_;
+    // SocketcanInterface socket_channel1_axis1_read_;
     SocketcanInterface socket_channel0_get_iq_0;
     SocketcanInterface socket_channel0_get_iq_1;
     SocketcanInterface socket_channel1_get_iq_0;

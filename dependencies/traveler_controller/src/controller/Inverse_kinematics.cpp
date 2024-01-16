@@ -549,8 +549,8 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
 
     //Fixed insertion depth parameters and gamma solver paramters
     
-    double l1=0.14; // flipper length
-    double turtle_height=0.06; //height from flipper to fround
+    double l1=0.145; // flipper length
+    double turtle_height=0.055; //height from flipper to fround
     double lower_point=0.05;
 
     // desired insertion depth input

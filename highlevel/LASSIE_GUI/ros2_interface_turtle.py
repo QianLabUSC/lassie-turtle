@@ -97,7 +97,7 @@ class ControlNode_Turtle(Node):
 
         self.turtle_subscriber = self.create_subscription(
             Float64MultiArray,
-            '/turtle_status',
+            '/robot_state',
             self.turtle_status,
             10)
 
@@ -449,10 +449,10 @@ class ControlNode_Turtle(Node):
         self.leftsweeping_pos = msg.data[2]
         self.rightadduction_pos = msg.data[3]
         self.rightsweeping_pos = msg.data[4]
-        self.leftadduction_torque = msg.data[5]
-        self.leftsweeping_torque = msg.data[6]
-        self.rightadduction_torque = msg.data[7]
-        self.rightsweeping_torque = msg.data[8]
+        self.leftadduction_curr = msg.data[5]
+        self.leftsweeping_curr = msg.data[6]
+        self.rightadduction_curr = msg.data[7]
+        self.rightsweeping_curr = msg.data[8]
 
 
     def OptitrackState(self, msg):

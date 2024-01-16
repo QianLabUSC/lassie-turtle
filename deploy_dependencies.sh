@@ -5,7 +5,7 @@ folders=("dependencies")
 
 # SSH connection details
 user="ubuntu"
-host="192.168.2.203"
+host="192.168.8.203"
 remote_dir="/home/ubuntu/roboland"
 
 # Sync folders to the remote directory
