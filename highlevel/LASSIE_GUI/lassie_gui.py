@@ -368,7 +368,7 @@ class TravelerApp(MDApp):
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/10)           # seconds
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # cm
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)                # cm/s
+            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
@@ -456,7 +456,7 @@ class TravelerApp(MDApp):
                                     self.gui_message.data[6],self.gui_message.data[7],self.gui_message.data[8],self.gui_message.data[9],
                                     self.gui_message.data[10],self.gui_message.data[11],self.gui_message.data[12],self.gui_message.data[13],self.gui_message.data[14],self.gui_message.data[15],self.gui_message.data[16]])
             if(self.ros_node.id == "turtle"):
-                writer.writerow(["scenario","real_time_plot", "lateral_angle_range","drag_speed", "wiggle_time", "servo_speed", "extraction_height", "wiggle frequency",
+                writer.writerow(["scenario","real_time_plot", "lateral_angle_range","drag_speed", "wiggle_time", "servo_speed", "extraction_angle", "wiggle frequency",
                                 "insertion_angle", "wiggle_amplitude"])
                 writer.writerow([self.ros_node.id, self.screen.ids.if_real_time_plot.active, self.gui_message.data[0], self.gui_message.data[1],self.gui_message.data[2],self.gui_message.data[3],self.gui_message.data[4],self.gui_message.data[5],
                                     self.gui_message.data[6],self.gui_message.data[7], self.gui_message.data[8],self.gui_message.data[9]])

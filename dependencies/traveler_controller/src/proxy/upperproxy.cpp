@@ -35,7 +35,7 @@ void upperproxy::handle_gui
         turtle_inter_.traj_data.drag_speed = msg->data[3];
         turtle_inter_.traj_data.wiggle_time = msg->data[4];
         turtle_inter_.traj_data.servo_speed = msg->data[5];
-        turtle_inter_.traj_data.extraction_height = msg->data[6];
+        turtle_inter_.traj_data.extraction_angle = msg->data[6];
         turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
         turtle_inter_.traj_data.insertion_depth = msg->data[8];
         turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];

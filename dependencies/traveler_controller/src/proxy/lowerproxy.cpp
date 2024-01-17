@@ -146,8 +146,11 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         turtle_.turtle_chassis.gait_state = 0;
                         turtle_.turtle_control.if_control = true;
                         if (curr_initial_phase_time < initial_phase_time) {
-                            goback2desiredangle(turtle_, 0, -turtle_.traj_data.lateral_angle_range, 
-                                0, turtle_.traj_data.lateral_angle_range,
+                            goback2desiredangle(turtle_, 
+                                turtle_.traj_data.extraction_angle, 
+                                -turtle_.traj_data.lateral_angle_range, 
+                                -turtle_.traj_data.extraction_angle, 
+                                turtle_.traj_data.lateral_angle_range,
                                 saved_left_adduction, saved_left_sweeping,
                                 saved_right_adduction, saved_right_sweeping,
                                 curr_initial_phase_time, initial_phase_time);
@@ -200,9 +203,9 @@ void lowerproxy::goback2desiredangle(turtle& turtle_, float left_adduction,
                                     float t_decrease_time,float total_time)
 {
     // right and left sweeping angle is no longer for use, the desired angle is determined by GUI theta range
-    left_adduction = left_adduction/TWO_PI;
+    left_adduction = left_adduction/360;
     left_sweeping = left_sweeping/TWO_PI;
-    right_adduction = right_adduction/TWO_PI;
+    right_adduction = right_adduction/360;
     right_sweeping = right_sweeping/TWO_PI;
     total_time = total_time/2;
     if( t_decrease_time>total_time)

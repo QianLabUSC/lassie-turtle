@@ -1,6 +1,7 @@
 build/*
 devel/*
 logs/*
+install/*
 site/*
 .catkin_tools/*
 .devcontainer/*
@@ -9,3 +10,4 @@ experiment_records/*
 dependencies/build/*
 dependencies/devel/*
 dependencies/logs/*
+highlevel/experiment_data/*

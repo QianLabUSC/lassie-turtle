@@ -545,6 +545,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float corres_t = 0;
     float left_hori_servo = 0;// original 100 mannually tuned to 94
     float right_hori_servo = 0;
+    float extraction_angle = turtle_.traj_data.extraction_angle;
 
 
     //Fixed insertion depth parameters and gamma solver paramters
@@ -578,11 +579,11 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     {
         corres_t = t_mod / rectangle_params.period_up;
        // cout << "UP corres_t" << corres_t << endl;
-        gamma1 = left_hori_servo;
+        gamma1 = left_hori_servo + extraction_angle;
         // Y1 = - r_v + r_v * corres_t;
         theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
         // -r_v + (r_v + upper_height) * corres_t;
-        gamma2 = right_hori_servo;
+        gamma2 = right_hori_servo - extraction_angle;
         // Y2 = - r_v + r_v * corres_t;
         // Y2 = -r_v + (r_v + upper_height) * corres_t;
         theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
@@ -598,13 +599,15 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         theta1 = horizontal_angle;
         // Y1 = 0;
         // Y1 = upper_height;
-        gamma1 = left_hori_servo - initial_insertion_depth_rad*180/M_PI * corres_t;
+        gamma1 = left_hori_servo + extraction_angle - 
+                    (initial_insertion_depth_rad*180/M_PI + extraction_angle) * corres_t;
         // X2 = -r_h + r_h * 2 * corres_t;
         theta2 = -horizontal_angle;
         
         // Y2 = 0;
         // Y2 = upper_height;
-        gamma2 = right_hori_servo + initial_insertion_depth_rad*180/M_PI* corres_t;
+        gamma2 = right_hori_servo - extraction_angle + 
+                    (initial_insertion_depth_rad*180/M_PI + extraction_angle) * corres_t;
         turtle_.turtle_chassis.gait_state = 2;
     }
 
@@ -636,9 +639,9 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
         corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
         theta1 = -horizontal_angle;
         //cout << "LEFT corres_t" << corres_t << endl;
-        gamma1 = left_hori_servo -  (initial_insertion_depth_rad*180/M_PI) +(initial_insertion_depth_rad*180/M_PI)* corres_t;
+        gamma1 = left_hori_servo -  (initial_insertion_depth_rad*180/M_PI) +(initial_insertion_depth_rad*180/M_PI + extraction_angle)* corres_t;
         theta2 = horizontal_angle;
-        gamma2 = right_hori_servo + (initial_insertion_depth_rad*180/M_PI) - (initial_insertion_depth_rad*180/M_PI) * corres_t;
+        gamma2 = right_hori_servo + (initial_insertion_depth_rad*180/M_PI) - (initial_insertion_depth_rad*180/M_PI + extraction_angle) * corres_t;
         turtle_.turtle_chassis.gait_state = 4;
        //  cout << "extract"  << endl;
     }

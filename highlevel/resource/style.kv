@@ -673,7 +673,7 @@
                     theme_text_color: "Custom"
                     font_style: "Subtitle1"
                     text_color:  color_black
-                    text: "Extraction height: "
+                    text: "Extraction upper angle: "
                     height: self.texture_size[1]
                 MDBoxLayout:
                     MDLabel:
@@ -682,14 +682,14 @@
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "10"
+                        text: "0"
                         height: self.texture_size[1]
                     MDLabel:
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         font_style: "Subtitle1"
                         text_color:  color_black
-                        text: "(mm)"
+                        text: "(C)"
                         height: self.texture_size[1]
             MDBoxLayout:
                 size_hint_x: 0.7
@@ -705,9 +705,9 @@
                     on_press: app.on_plus_speed_click('Variable_5', -1)
         MDSlider:
             id: Slider_5
-            min: -50
-            max: 50
-            value: 10
+            min: 0
+            max: 30
+            value: 0
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_5()

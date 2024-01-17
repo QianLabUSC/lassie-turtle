@@ -80,7 +80,7 @@ struct TrajectoryData
     float wiggle_time;                  //s
 
     float servo_speed;        //s
-    float extraction_height;    //m     
+    float extraction_angle;    //arc     
     float wiggle_frequency;        //hz  
     float insertion_depth;             //arc        
     float wiggle_amptitude;                 //arc     
