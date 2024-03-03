@@ -149,378 +149,6 @@ void AbstractToPhysical(float L, float Theta, float gamma, float &x, float &y)
  * @return x y : the coordinates of the toe trajectories
  */
 
-void oval_generator(float t, float &X1, float &Y1, float &X2, float &Y2)
-{
-    OvalParams oval_params = {0.3f, .3f, 0.17f, 0.17f};
-    float t_mod = fmod(t, (oval_params.period_down + oval_params.period_up));
-    float corres_angle = 0;
-    if (t_mod < oval_params.period_down)
-    {
-        corres_angle = M_PI + M_PI * t_mod / oval_params.period_down;
-    }
-    else
-    {
-        // corres_angle = M_PI;
-        corres_angle = M_PI * ((t_mod - oval_params.period_down) / oval_params.period_up);
-    }
-
-    if (corres_angle == M_PI / 2)
-    {
-        X1 = 0;
-        Y1 = 0;
-        X2 = 0;
-        Y2 = 0;
-    }
-    if (corres_angle == 3 * M_PI / 2)
-    {
-        X1 = 0;
-        Y1 = -oval_params.vertical_range;
-        X2 = 0;
-        Y2 = -oval_params.vertical_range;
-    }
-    // else if(corres_angle == 3*M_PI/2){
-    //     X = 0;
-    //     Y = - oval_params.vertical_range;
-    // }
-    // else if(corres_angle > M_PI/2 && corres_angle < 3*M_PI/2){
-    //     float r_h = oval_params.horizontal_range;
-    //     float r_v = oval_params.vertical_range;
-    //     X = - r_h * r_v / sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
-    //     Y = - r_h * r_v * tanf(corres_angle)/sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
-    // }
-    // else{
-    //     float r_h = oval_params.horizontal_range;
-    //     float r_v = oval_params.vertical_range;
-    //     X = r_h * r_v / sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
-    //     Y = r_h * r_v * tanf(corres_angle)/sqrt(r_v*r_v + r_h*r_h*tanf(corres_angle)*tanf(corres_angle));
-    // }
-    else if (corres_angle > 0 && corres_angle < M_PI / 2)
-    {
-        float r_h = oval_params.horizontal_range;
-        float r_v = oval_params.vertical_range;
-        X1 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y1 = 0;
-        X2 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y2 = 0;
-    }
-
-    else if (corres_angle > M_PI / 2 && corres_angle < M_PI)
-    {
-        float r_h = oval_params.horizontal_range;
-        float r_v = oval_params.vertical_range;
-        X1 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y1 = 0;
-        X2 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y2 = 0;
-    }
-
-    else if (corres_angle > M_PI && corres_angle < 3 * M_PI / 2)
-    {
-        float r_h = oval_params.horizontal_range;
-        float r_v = oval_params.vertical_range;
-        X1 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y1 = -r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        ;
-        X2 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y2 = -r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        ;
-    }
-
-    else if (corres_angle > 3 * M_PI / 2 && corres_angle < 2 * M_PI)
-    {
-        float r_h = oval_params.horizontal_range;
-        float r_v = oval_params.vertical_range;
-        X1 = r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y1 = r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        ;
-        X2 = -r_h * r_v / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        Y2 = r_h * r_v * tanf(corres_angle) / sqrt(r_v * r_v + r_h * r_h * tanf(corres_angle) * tanf(corres_angle));
-        ;
-    }
-    X1 = -X1;
-    X2 = -X2;
-}
-
-void rectangle_generator(turtle turtle_, float t, float &X1, float &Y1, float &X2, float &Y2)
-{
-    // float temp = 2.5f;
-    // float idle = 8.0f;
-    // float servo_speed = 0.25f;
-    // float period = 1.25;
-
-    // please change this value to control the turtle
-    // turtle_.traj_data.drag_speed;
-    // turtle_.traj_data.extraction_height;
-    // turtle_.traj_data.insertion_depth;
-    // turtle_.traj_data.lateral_angle_range;
-    // turtle_.traj_data.servo_speed;
-    // turtle_.traj_data.wiggle_amptitude;
-    // turtle_.traj_data.wiggle_frequency;
-    // turtle_.traj_data.wiggle_time;
-
-    // please use these two variables to start the robot and stop the robot
-    // turtle_.turtle_gui.drag_traj; //5
-    // turtle_.turtle_gui.start_flag; //1 or 0
-    float horizontal_range = 0.14 * tanf(turtle_.traj_data.lateral_angle_range);
-    float drag = horizontal_range/turtle_.traj_data.drag_speed;
-
-    float servo_speed = turtle_.traj_data.servo_speed;
-    float pad_back_time = drag;
-
-    float upper_height = 0.05;
-    float insertion_depth = 0.14*sinf(turtle_.traj_data.insertion_depth);
-    
-    float waiting_time = turtle_.traj_data.wiggle_time;
-    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
-    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
-
-    // cout << "horizontal_range" << horizontal_range << "drag" <<drag<<"servo_speed"<<servo_speed<<"insertion_depth"<<insertion_depth<<"waiting_time"<<waiting_time<<"wiggle_length"<<wiggle_length<<"wiggle_frequency"<<wiggle_frequency<<endl;
-
-
-    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_speed, servo_speed, insertion_depth, horizontal_range, waiting_time, wiggle_length, wiggle_frequency};
-    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
-    float corres_t = 0;
-    float r_h = rectangle_params.horizontal_range;
-    float r_v = rectangle_params.vertical_range;
-    if (t_mod <= rectangle_params.period_left)
-    {
-        corres_t = t_mod / rectangle_params.period_left;
-
-        X1 = r_h;
-        // Y1 = - r_v + r_v * corres_t;
-        Y1 = -r_v + (r_v + upper_height) * corres_t;
-        X2 = -r_h;
-        // Y2 = - r_v + r_v * corres_t;
-        Y2 = -r_v + (r_v + upper_height) * corres_t;
-    }
-    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up)
-    {
-        corres_t = (t_mod - rectangle_params.period_left) / rectangle_params.period_up;
-
-        X1 = r_h - r_h * 2 * corres_t;
-        // Y1 = 0;
-        Y1 = upper_height;
-        X2 = -r_h + r_h * 2 * corres_t;
-        // Y2 = 0;
-        Y2 = upper_height;
-    }
-    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right)
-    {
-        corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up) / rectangle_params.period_right;
-        X1 = -rectangle_params.horizontal_range;
-        // Y1 = - rectangle_params.vertical_range * corres_t;
-        Y1 = upper_height - (r_v + upper_height) * corres_t;
-        X2 = rectangle_params.horizontal_range;
-        // Y2 = - rectangle_params.vertical_range * corres_t;
-        Y2 = upper_height - (r_v + upper_height) * corres_t;
-    }
-
-    // ###no wiggle
-    // else              
-    // {
-
-    //     if (t_mod > rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
-    //     {
-    //         X1 = r_h;
-    //         Y1 = -r_v;
-    //         X2 = -r_h;
-    //         Y2 = -r_v;
-    //     }
-    //     else
-    //     {
-    //         corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-
-    //         X1 = -r_h + r_h * 2 * corres_t;
-    //         Y1 = -r_v;
-    //         X2 = r_h - r_h * 2 * corres_t;
-    //         Y2 = -r_v;
-    //     }
-    //     // corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-    //     // float r_h = rectangle_params.horizontal_range;
-    //     // float r_v = rectangle_params.vertical_range;
-    //     // X1 = r_h - r_h * 2 * corres_t;
-    //     // Y1 = - r_v;
-    //     // X2 = - r_h + r_h * 2 * corres_t;
-    //     // Y2 = - r_v;
-    // }
-
-    // wiggle
-    else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
-    {   corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-        X1 = -r_h + r_h * 2 * corres_t;
-        Y1 = -r_v;
-        X2 = r_h - r_h * 2 * corres_t;
-        Y2 = -r_v;
-
-    }
-    else
-    {
-        corres_t = fmod(t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down, rectangle_params.period_waiting_time / rectangle_params.wiggle_frequency);   //  flow of half period of wiggle
-        if (corres_t <= rectangle_params.period_waiting_time / (2 * rectangle_params.wiggle_frequency))
-        {
-            X1 = r_h - wiggle_length * corres_t;
-            Y1 = -r_v;
-            X2 = -r_h + wiggle_length * corres_t;
-            Y2 = -r_v;
-        }
-        else
-        {
-            X1 = r_h - wiggle_length + wiggle_length * corres_t;
-            Y1 = -r_v;
-            X2 = -r_h + wiggle_length - wiggle_length * corres_t;
-            Y2 = -r_v;
-        }
-
-    }
-}
-
-void servo_angle_gait(turtle& turtle_, float t, float& theta2, float& gamma1,float& theta1, float& gamma2){
-    float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
-    float drag = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
-
-    float servo_speed = turtle_.traj_data.servo_speed;
-    // float pad_back_time = drag;
-   float pad_back_time = 0.35;  //speed up 
-    float insertion_depth = turtle_.traj_data.insertion_depth*180/M_PI;
-    cout << "angle outp put"<< insertion_depth << " horizontal " << horizontal_angle << endl;
-    float waiting_time = 0;
-    float wiggle_length = turtle_.traj_data.wiggle_amptitude;
-    float wiggle_frequency = turtle_.traj_data.wiggle_frequency;
-    Rectangle_Params rectangle_params = {drag, pad_back_time, servo_speed, servo_speed, insertion_depth, horizontal_angle, waiting_time, wiggle_length, wiggle_frequency};
-    
-    float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + 0.5 * rectangle_params.period_down;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right;
-    // t_mod = rectangle_params.period_left + rectangle_params.period_up;
-    float corres_t = 0;
-    float left_hori_servo = 100;
-    float right_hori_servo = 23;
-  
-    cout << "TMOD" << t_mod << endl;
-    // insertion_depth=insertion_depth+10
-    if (t_mod <= rectangle_params.period_up)
-    {
-        corres_t = t_mod / rectangle_params.period_up;
-        cout << "UP corres_t" << corres_t << endl;
-        gamma1 = left_hori_servo;
-        // Y1 = - r_v + r_v * corres_t;
-        theta1 = - horizontal_angle + 2*horizontal_angle*corres_t;
-        // -r_v + (r_v + upper_height) * corres_t;
-        gamma2 = right_hori_servo;
-        // Y2 = - r_v + r_v * corres_t;
-        // Y2 = -r_v + (r_v + upper_height) * corres_t;
-        theta2 = horizontal_angle - 2*horizontal_angle*corres_t;
-    }
-    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right)
-    {
-        corres_t = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
-        cout << "RIGHT corres_t" << corres_t << endl;
-        // X1 = r_h - r_h * 2 * corres_t;
-        theta1 = horizontal_angle;
-        // Y1 = 0;
-        // Y1 = upper_height;
-        gamma1 = left_hori_servo - insertion_depth * corres_t;
-        // X2 = -r_h + r_h * 2 * corres_t;
-        theta2 = -horizontal_angle;
-        
-        // Y2 = 0;
-        // Y2 = upper_height;
-        gamma2 = right_hori_servo + insertion_depth * corres_t;
-    }
-    else if (t_mod <= rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
-    {
-        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-        // X1 = -rectangle_params.horizontal_range;
-        cout << "DOWN corres_t" << corres_t << endl;
-        theta1 = horizontal_angle - 2*horizontal_angle*corres_t;
-        // Y1 = - rectangle_params.vertical_range * corres_t;
-        // Y1 = upper_height - (r_v + upper_height) * corres_t;
-        gamma1 = left_hori_servo - insertion_depth;
-        // X2 = rectangle_params.horizontal_range;
-        theta2 = -horizontal_angle + 2*horizontal_angle*corres_t;
-        // Y2 = - rectangle_params.vertical_range * corres_t;
-        // Y2 = upper_height - (r_v + upper_height) * corres_t;
-        gamma2 = right_hori_servo + insertion_depth;
-    }
-    else{
-        corres_t = (t_mod - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down) / rectangle_params.period_left;
-        theta1 = -horizontal_angle;
-        cout << "LEFT corres_t" << corres_t << endl;
-        gamma1 = left_hori_servo - insertion_depth  + insertion_depth * corres_t;
-        theta2 = horizontal_angle;
-        gamma2 = right_hori_servo + insertion_depth - insertion_depth * corres_t;
-    }
-    // ###no wiggle
-    // else              
-    // {
-
-    //     if (t_mod > rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
-    //     {
-    //         X1 = r_h;
-    //         Y1 = -r_v;
-    //         X2 = -r_h;
-    //         Y2 = -r_v;
-    //     }
-    //     else
-    //     {
-    //         corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-
-    //         X1 = -r_h + r_h * 2 * corres_t;
-    //         Y1 = -r_v;
-    //         X2 = r_h - r_h * 2 * corres_t;
-    //         Y2 = -r_v;
-    //     }
-    //     // corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-    //     // float r_h = rectangle_params.horizontal_range;
-    //     // float r_v = rectangle_params.vertical_range;
-    //     // X1 = r_h - r_h * 2 * corres_t;
-    //     // Y1 = - r_v;
-    //     // X2 = - r_h + r_h * 2 * corres_t;
-    //     // Y2 = - r_v;
-    // }
-
-
-
-
-
-
-    // wiggle
-    // else if (t_mod <= rectangle_params.period_left + rectangle_params.period_up + rectangle_params.period_right + rectangle_params.period_down)
-    // {   corres_t = (t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right) / rectangle_params.period_down;
-    //     X1 = -r_h + r_h * 2 * corres_t;
-    //     Y1 = -r_v;
-    //     X2 = r_h - r_h * 2 * corres_t;
-    //     Y2 = -r_v;
-
-    // }
-    // else
-    // {
-    //     corres_t = fmod(t_mod - rectangle_params.period_left - rectangle_params.period_up - rectangle_params.period_right - rectangle_params.period_down, rectangle_params.period_waiting_time / rectangle_params.wiggle_frequency);   //  flow of half period of wiggle
-    //     if (corres_t <= rectangle_params.period_waiting_time / (2 * rectangle_params.wiggle_frequency))
-    //     {
-    //         X1 = r_h - wiggle_length * corres_t;
-    //         Y1 = -r_v;
-    //         X2 = -r_h + wiggle_length * corres_t;
-    //         Y2 = -r_v;
-    //     }
-    //     else
-    //     {
-    //         X1 = r_h - wiggle_length + wiggle_length * corres_t;
-    //         Y1 = -r_v;
-    //         X2 = -r_h + wiggle_length - wiggle_length * corres_t;
-    //         Y2 = -r_v;
-    //     }
-
-    // }
-
-}
-
-
 
 
 
@@ -529,19 +157,32 @@ void servo_angle_gait(turtle& turtle_, float t, float& theta2, float& gamma1,flo
 
 // Fixed insertion depth verson3 analytic solution with matlab homogeneous matrix verified
 
-void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t){
+void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t)git {
      //get data
      float horizontal_angle = turtle_.traj_data.lateral_angle_range*180/M_PI;
     Rectangle_Params rectangle_params;
     rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * 0.14 * 2/turtle_.traj_data.drag_speed;
     rectangle_params.period_up = 0.35; //customize back phase time
     rectangle_params.period_left = turtle_.traj_data.servo_speed;
-    rectangle_params.period_right = turtle_.traj_data.servo_speed;
+    rectangle_params.period_right = turtle_.traj_data.servo_speed * 8;
     rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depend on insertion depth
     rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range*180/M_PI;
     rectangle_params.period_waiting_time = 0;
     float t_mod = fmod(t, (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time));
+ turtle_.turtle_chassis.step_count=(t-t_mod)/ (rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + rectangle_params.period_waiting_time);
+    
+    double desierd_insertion_depth=turtle_.traj_data.insertion_depth;
 
+//adaptation insertion depth
+    // if  (turtle_.turtle_chassis.step_count>3)
+    // {
+    //     desierd_insertion_depth=0.05;
+
+
+    // }
+
+
+    
     float corres_t = 0;
     float left_hori_servo = 0;// original 100 mannually tuned to 94
     float right_hori_servo = 0;
@@ -550,20 +191,19 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
 
     //Fixed insertion depth parameters and gamma solver paramters
     
-    double l1=0.145; // flipper length
+    double l1=0.145-0.025; // flipper length-new shorter flipper
     double turtle_height=0.055; //height from flipper to fround
     double lower_point=0.05;
 
     // desired insertion depth input
 
-    double desierd_insertion_depth=turtle_.traj_data.insertion_depth;
+ 
     if (desierd_insertion_depth>0.07)
    { desierd_insertion_depth=0.07;
    }
     
 
      cout << "desired insertion depth(m)"<<  desierd_insertion_depth<< endl;// m
-
     // fixed insertion depth initial calculation
     double initial_insertion_depth_rad=asin((desierd_insertion_depth+turtle_height)/sqrt((l1*cos(horizontal_angle*M_PI/180))*(l1*cos(horizontal_angle*M_PI/180))+lower_point*lower_point))-atan(lower_point/(l1*cos(horizontal_angle*M_PI/180)));
     double initial_insertion_depth_deg=initial_insertion_depth_rad*180/M_PI;
@@ -656,10 +296,10 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
     turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
-    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = gamma1/360;
-    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = theta1/360;
-    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = gamma2/360;
-    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = theta2/360;
+    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1/360;
+    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1/360;
+    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2/360;
+    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2/360;
     // used for test
 }
 

@@ -1,2 +1,2 @@
-scenario,real_time_plot,lateral_angle_range,drag_speed,wiggle_time,servo_speed,extraction_height,wiggle frequency,insertion_angle,wiggle_amplitude
-turtle,True,0.0,0.0,45.0,10.0,2.0,110.0,10.0,10.0,10.0,1.0
+scenario,real_time_plot,lateral_angle_range,drag_speed,wiggle_time,servo_speed,extraction_angle,wiggle frequency,insertion_angle,wiggle_amplitude
+turtle,True,0.0,0.0,24.0,60.7,2.0,658.0,0.0,10.0,10.0,6.0

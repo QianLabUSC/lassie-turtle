@@ -147,10 +147,10 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         turtle_.turtle_control.if_control = true;
                         if (curr_initial_phase_time < initial_phase_time) {
                             goback2desiredangle(turtle_, 
-                                turtle_.traj_data.extraction_angle, 
-                                -turtle_.traj_data.lateral_angle_range, 
                                 -turtle_.traj_data.extraction_angle, 
-                                turtle_.traj_data.lateral_angle_range,
+                                turtle_.traj_data.lateral_angle_range, 
+                                turtle_.traj_data.extraction_angle, 
+                                -turtle_.traj_data.lateral_angle_range,
                                 saved_left_adduction, saved_left_sweeping,
                                 saved_right_adduction, saved_right_sweeping,
                                 curr_initial_phase_time, initial_phase_time);
@@ -183,7 +183,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 auto current_back_time = std::chrono::high_resolution_clock::now();
                 std::chrono::duration<double> deltaTime = current_back_time - t2;
                 double back_curr_time = deltaTime.count();
-                
+                turtle_.turtle_chassis.step_count=0;
                 // goback2desiredangle(turtle_,0,0,0,0,
                 //                     saved_left_adduction, saved_left_sweeping,
                 //                     saved_right_adduction, saved_right_sweeping,

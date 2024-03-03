@@ -40,6 +40,7 @@ struct turtle_status
     float gait_state = 0; // 0: prepare, 1: backing, 2: penetrating, 3: penetrate, 4: shear, 5: stop
     // maximum idle/close_loop_control set count
     int if_idle_count = 1;
+       int step_count=0;
     
     
 };

@@ -1,0 +1,32 @@
+[0.169s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller -- -j12 -l12
+[0.207s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.218s] [ 38%] Built target odrive_can_interface
+[0.227s] [ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.446s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[0.446s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:209:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.446s]   209 |     double [01;35m[Kinitial_insertion_depth_deg[m[K=initial_insertion_depth_rad*180/M_PI;
+[0.446s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.499s] [ 53%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[0.842s] [100%] Built target turtle_high_controller
+[0.849s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller -- -j12 -l12
+[0.870s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller
+[0.876s] -- Install configuration: "Debug"
+[0.876s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+[0.882s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+[0.882s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+[0.883s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+[0.883s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+[0.884s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+[0.884s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+[0.884s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.xml
+[0.884s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller

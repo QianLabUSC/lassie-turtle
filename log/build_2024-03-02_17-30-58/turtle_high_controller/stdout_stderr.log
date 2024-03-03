@@ -1,0 +1,28 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 38%] Built target odrive_can_interface
+[ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:209:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  209 |     double [01;35m[Kinitial_insertion_depth_deg[m[K=initial_insertion_depth_rad*180/M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[ 53%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[100%] Built target turtle_high_controller
+-- Install configuration: "Debug"
+-- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+-- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+-- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+-- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.xml
