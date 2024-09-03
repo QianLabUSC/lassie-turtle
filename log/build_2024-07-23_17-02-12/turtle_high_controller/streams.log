@@ -1,0 +1,75 @@
+[0.010s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.038s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.051s] [ 38%] Built target odrive_can_interface
+[0.056s] [ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.268s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[0.268s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:82:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcorres_t[m[K’ was not declared in this scope
+[0.268s]    82 |         [01;31m[Kcorres_t[m[K = t_mod / rectangle_params.period_up;
+[0.268s]       |         [01;31m[K^~~~~~~~[m[K
+[0.268s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:83:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.268s]    83 |         gamma1 = [01;31m[Kleft_hori_servo[m[K + extraction_angle;
+[0.268s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.269s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:83:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kextraction_angle[m[K’ was not declared in this scope
+[0.269s]    83 |         gamma1 = left_hori_servo + [01;31m[Kextraction_angle[m[K;
+[0.269s]       |                                    [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.269s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:85:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.269s]    85 |         gamma2 = [01;31m[Kright_hori_servo[m[K - extraction_angle;
+[0.270s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.270s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:91:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcorres_t[m[K’ was not declared in this scope
+[0.270s]    91 |         [01;31m[Kcorres_t[m[K = (t_mod - rectangle_params.period_up) / rectangle_params.period_right;
+[0.270s]       |         [01;31m[K^~~~~~~~[m[K
+[0.271s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:93:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.271s]    93 |         gamma1 = [01;31m[Kleft_hori_servo[m[K + extraction_angle - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+[0.271s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.271s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:93:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kextraction_angle[m[K’ was not declared in this scope
+[0.271s]    93 |         gamma1 = left_hori_servo + [01;31m[Kextraction_angle[m[K - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+[0.271s]       |                                    [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.272s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:95:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.272s]    95 |         gamma2 = [01;31m[Kright_hori_servo[m[K - extraction_angle + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+[0.272s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.273s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:101:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.273s]   101 |         gamma1 = [01;31m[Kleft_hori_servo[m[K + extraction_angle - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle);
+[0.273s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.274s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:101:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kextraction_angle[m[K’ was not declared in this scope
+[0.274s]   101 |         gamma1 = left_hori_servo + [01;31m[Kextraction_angle[m[K - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle);
+[0.274s]       |                                    [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.274s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:103:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.274s]   103 |         gamma2 = [01;31m[Kright_hori_servo[m[K - extraction_angle + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle);
+[0.275s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.275s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:109:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcorres_t[m[K’ was not declared in this scope
+[0.275s]   109 |         [01;31m[Kcorres_t[m[K = (t_mod - rectangle_params.period_up - rectangle_params.period_right - hold_time_1) / rectangle_params.period_down;
+[0.275s]       |         [01;31m[K^~~~~~~~[m[K
+[0.276s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:111:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.276s]   111 |         gamma1 = [01;31m[Kleft_hori_servo[m[K - (asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+[0.276s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.277s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:113:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.277s]   113 |         gamma2 = [01;31m[Kright_hori_servo[m[K + (asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+[0.277s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.278s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:120:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.278s]   120 |         gamma1 = [01;31m[Kleft_hori_servo[m[K - (asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+[0.278s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.278s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:122:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.278s]   122 |         gamma2 = [01;31m[Kright_hori_servo[m[K + (asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+[0.278s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.279s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:127:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcorres_t[m[K’ was not declared in this scope
+[0.279s]   127 |         [01;31m[Kcorres_t[m[K = (t_mod - rectangle_params.period_up - rectangle_params.period_right - hold_time_1 - rectangle_params.period_down - hold_time_2) / rectangle_params.period_left;
+[0.279s]       |         [01;31m[K^~~~~~~~[m[K
+[0.280s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:129:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kleft_hori_servo[m[K’ was not declared in this scope
+[0.280s]   129 |         gamma1 = [01;31m[Kleft_hori_servo[m[K - (initial_insertion_depth_rad * 180 / M_PI) + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+[0.280s]       |                  [01;31m[K^~~~~~~~~~~~~~~[m[K
+[0.280s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:129:125:[m[K [01;31m[Kerror: [m[K‘[01m[Kextraction_angle[m[K’ was not declared in this scope
+[0.280s]   129 |         gamma1 = left_hori_servo - (initial_insertion_depth_rad * 180 / M_PI) + (initial_insertion_depth_rad * 180 / M_PI + [01;31m[Kextraction_angle[m[K) * corres_t;
+[0.280s]       |                                                                                                                             [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.281s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:131:18:[m[K [01;31m[Kerror: [m[K‘[01m[Kright_hori_servo[m[K’ was not declared in this scope
+[0.281s]   131 |         gamma2 = [01;31m[Kright_hori_servo[m[K + (initial_insertion_depth_rad * 180 / M_PI) - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+[0.281s]       |                  [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.281s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:142:1:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[K}[m[K’ token
+[0.281s]   142 | [01;31m[K}[m[K
+[0.281s]       | [01;31m[K^[m[K
+[0.281s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:72:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.281s]    72 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+[0.281s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.303s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:76: CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o] Error 1
+[0.303s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[0.303s] make: *** [Makefile:141: all] Error 2
+[0.305s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
