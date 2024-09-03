@@ -1,0 +1,30 @@
+[0.160s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller -- -j12 -l12
+[0.189s] [35m[1mScanning dependencies of target odrive_can_interface[0m
+[0.190s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.211s] [  7%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[0.212s] [ 15%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[1.023s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[1.023s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+[1.023s]   278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+[1.023s]       |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.023s]       |             [32m[Ksetstate_r[m[K
+[1.023s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[1.023s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+[1.024s]   278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+[1.024s]       |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.024s]       |             [32m[Ksetstate_r[m[K
+[1.025s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+[1.025s]   279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+[1.025s]       |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.025s]       |             [32m[Ksetstate_r[m[K
+[1.025s] [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+[1.025s]   279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+[1.025s]       |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.025s]       |             [32m[Ksetstate_r[m[K
+[1.354s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+[1.354s] make[2]: *** [CMakeFiles/odrive_can_interface.dir/build.make:76: CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o] Error 1
+[1.354s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[1.354s] make[1]: *** Waiting for unfinished jobs....
+[1.354s] make[1]: *** [CMakeFiles/Makefile2:80: CMakeFiles/odrive_can_interface.dir/all] Error 2
+[1.354s] make: *** [Makefile:141: all] Error 2
+[1.356s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/turtle_high_controller -- -j12 -l12

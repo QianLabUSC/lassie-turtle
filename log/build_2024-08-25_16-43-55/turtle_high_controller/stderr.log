@@ -1,0 +1,4 @@
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:201:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  201 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K

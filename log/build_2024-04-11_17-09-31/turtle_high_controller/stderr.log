@@ -1,0 +1,24 @@
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[2]: *** [CMakeFiles/odrive_can_interface.dir/build.make:76: CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:80: CMakeFiles/odrive_can_interface.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

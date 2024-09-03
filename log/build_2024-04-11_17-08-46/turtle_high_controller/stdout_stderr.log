@@ -1,0 +1,72 @@
+[35m[1mScanning dependencies of target odrive_can_interface[0m
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[  7%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[ 15%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[ 23%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o[0m
+[ 76%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o[0m
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:209:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  209 |     double [01;35m[Kinitial_insertion_depth_deg[m[K=initial_insertion_depth_rad*180/M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:256:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  256 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:257:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  257 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+make[2]: *** [CMakeFiles/odrive_can_interface.dir/build.make:76: CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:185:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  185 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+      |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::change_odrive_state(turtle&)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:256:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  256 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:257:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  257 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:278:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis1[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  278 |             [01;31m[Ksetstate_axis1[m[K(turtle_.turtle_control.left_adduction.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:279:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ksetstate_axis0[m[K’ was not declared in this scope; did you mean ‘[01m[Ksetstate_r[m[K’?
+  279 |             [01;31m[Ksetstate_axis0[m[K(turtle_.turtle_control.left_sweeping.set_state);
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+      |             [32m[Ksetstate_r[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+In file included from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+      |              [01;35m[K^~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   44 | static int [01;35m[Kinit_done[m[K = 0;
+      |            [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   43 | static float [01;35m[Kinit_cnt[m[K = 0;
+      |              [01;35m[K^~~~~~~~[m[K
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:80: CMakeFiles/odrive_can_interface.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

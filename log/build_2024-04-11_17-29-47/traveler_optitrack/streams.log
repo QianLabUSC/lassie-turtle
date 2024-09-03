@@ -1,0 +1,21 @@
+[0.673s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/prefix_override:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/build install --record /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed
+[0.817s] running egg_info
+[0.818s] writing ../../build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.818s] writing dependency_links to ../../build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.818s] writing entry points to ../../build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.818s] writing requirements to ../../build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.818s] writing top-level names to ../../build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.841s] reading manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.842s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.843s] running build
+[0.843s] running build_py
+[0.844s] running install
+[0.844s] running install_lib
+[0.845s] running install_data
+[0.845s] running install_egg_info
+[0.845s] removing '/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info' (and everything under it)
+[0.846s] Copying ../../build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.847s] running install_scripts
+[0.859s] Installing traveler_optitrack script to /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack/lib/traveler_optitrack
+[0.860s] writing list of installed files to '/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/install.log'
+[0.964s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/prefix_override:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/build install --record /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed

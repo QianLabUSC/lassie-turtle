@@ -1,0 +1,142 @@
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In constructor ‘[01m[Kcan_driver::can_driver()[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:18:32:[m[K [01;31m[Kerror: [m[Kclass ‘[01m[Kcan_driver[m[K’ does not have any field named ‘[01m[Ksocket_topic_set_position_1_axis3[m[K’
+   18 |                                [01;31m[Ksocket_topic_set_position_1_axis3[m[K(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
+      |                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:19:32:[m[K [01;31m[Kerror: [m[Kclass ‘[01m[Kcan_driver[m[K’ does not have any field named ‘[01m[Ksocket_topic_set_position_1_axis2[m[K’
+   19 |                                [01;31m[Ksocket_topic_set_position_1_axis2[m[K(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500),
+      |                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:23:152:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+   23 | ate_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+      |                                                                                                      [01;31m[K^[m[K
+
+In file included from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+                 from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+   28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+   27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+   26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+   25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+   21 | class [01;36m[KSocketcanInterface[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:23:152:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+   23 | ate_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+      |                                                                                                      [01;31m[K^[m[K
+
+In file included from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+                 from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+   28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+   27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+   26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+   25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+   21 | class [01;36m[KSocketcanInterface[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setPosition_right_adduction(traveler_msgs::msg::SetInputPosition)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:389:4:[m[K [01;31m[Kerror: [m[K‘[01m[Ksocket_topic_set_position_1_axis2[m[K’ was not declared in this scope; did you mean ‘[01m[Ksocket_topic_set_position_1_axis0[m[K’?
+  389 |    [01;31m[Ksocket_topic_set_position_1_axis2[m[K.writeFrame(send_frame);
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |    [32m[Ksocket_topic_set_position_1_axis0[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setPosition_right_sweeping(traveler_msgs::msg::SetInputPosition)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:402:4:[m[K [01;31m[Kerror: [m[K‘[01m[Ksocket_topic_set_position_1_axis3[m[K’ was not declared in this scope; did you mean ‘[01m[Ksocket_topic_set_position_1_axis0[m[K’?
+  402 |    [01;31m[Ksocket_topic_set_position_1_axis3[m[K.writeFrame(send_frame);
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |    [32m[Ksocket_topic_set_position_1_axis0[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In constructor ‘[01m[Kcan_driver::can_driver()[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:18:32:[m[K [01;31m[Kerror: [m[Kclass ‘[01m[Kcan_driver[m[K’ does not have any field named ‘[01m[Ksocket_topic_set_position_1_axis3[m[K’
+   18 |                                [01;31m[Ksocket_topic_set_position_1_axis3[m[K(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
+      |                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:19:32:[m[K [01;31m[Kerror: [m[Kclass ‘[01m[Kcan_driver[m[K’ does not have any field named ‘[01m[Ksocket_topic_set_position_1_axis2[m[K’
+   19 |                                [01;31m[Ksocket_topic_set_position_1_axis2[m[K(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500),
+      |                                [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:23:152:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+   23 |                                socket_topic_set_state_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+      |                                                                                                                                                        [01;31m[K^[m[K
+In file included from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+                 from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+   28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+   27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+   26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+   25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+   21 | class [01;36m[KSocketcanInterface[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:23:152:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+   23 |                                socket_topic_set_state_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+      |                                                                                                                                                        [01;31m[K^[m[K
+In file included from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+                 from [01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+   28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+   27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+   26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+   25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+      |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+   21 | class [01;36m[KSocketcanInterface[m[K
+      |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setPosition_right_adduction(traveler_msgs::msg::SetInputPosition)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:389:4:[m[K [01;31m[Kerror: [m[K‘[01m[Ksocket_topic_set_position_1_axis2[m[K’ was not declared in this scope; did you mean ‘[01m[Ksocket_topic_set_position_1_axis0[m[K’?
+  389 |    [01;31m[Ksocket_topic_set_position_1_axis2[m[K.writeFrame(send_frame);
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |    [32m[Ksocket_topic_set_position_1_axis0[m[K
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setPosition_right_sweeping(traveler_msgs::msg::SetInputPosition)[m[K’:
+[01m[K/home/qianlab/Turtle_workspace/lassie-turtle/dependencies/traveler_controller/src/can_driver/can_driver.cpp:402:4:[m[K [01;31m[Kerror: [m[K‘[01m[Ksocket_topic_set_position_1_axis3[m[K’ was not declared in this scope; did you mean ‘[01m[Ksocket_topic_set_position_1_axis0[m[K’?
+  402 |    [01;31m[Ksocket_topic_set_position_1_axis3[m[K.writeFrame(send_frame);
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+      |    [32m[Ksocket_topic_set_position_1_axis0[m[K
+make[2]: *** [CMakeFiles/odrive_can_interface.dir/build.make:76: CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:80: CMakeFiles/odrive_can_interface.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

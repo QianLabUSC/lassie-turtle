@@ -1,0 +1,240 @@
+[0.014s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs -- -j12 -l12
+[0.060s] [  1%] Built target traveler_msgs__cpp
+[0.063s] [ 12%] Built target traveler_msgs__rosidl_generator_c
+[0.076s] [ 23%] Built target traveler_msgs__rosidl_typesupport_cpp
+[0.083s] [ 35%] Built target traveler_msgs__rosidl_typesupport_c
+[0.083s] [ 46%] Built target traveler_msgs__rosidl_typesupport_introspection_cpp
+[0.085s] [ 57%] Built target traveler_msgs__rosidl_typesupport_introspection_c
+[0.087s] [ 59%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[0.144s] [ 69%] Built target traveler_msgs__rosidl_typesupport_fastrtps_cpp
+[0.163s] [ 70%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[0.219s] [ 80%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c
+[0.233s] [ 80%] Built target traveler_msgs
+[0.250s] [ 81%] Built target traveler_msgs__py
+[0.260s] [35m[1mScanning dependencies of target traveler_msgs__python[0m
+[0.284s] [ 83%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_odrive_status_s.c.o[0m
+[0.286s] [ 85%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_set_state_s.c.o[0m
+[0.286s] [ 85%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_config_s.c.o[0m
+[0.287s] [ 87%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_status_s.c.o[0m
+[0.287s] [ 88%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_set_input_position_s.c.o[0m
+[0.288s] [ 90%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_mode_s.c.o[0m
+[0.385s] [ 91%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/libtraveler_msgs__python.so[0m
+[0.414s] [ 91%] Built target traveler_msgs__python
+[0.424s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_fastrtps_c__pyext[0m
+[0.424s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_introspection_c__pyext[0m
+[0.426s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_c__pyext[0m
+[0.437s] [ 92%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[0.441s] [ 94%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[0.442s] [ 95%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[0.500s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so[0m
+[0.505s] [ 98%] [32m[1mLinking CXX shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so[0m
+[0.526s] [ 98%] Built target traveler_msgs__rosidl_typesupport_introspection_c__pyext
+[0.530s] [100%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so[0m
+[0.550s] [100%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c__pyext
+[0.557s] [100%] Built target traveler_msgs__rosidl_typesupport_c__pyext
+[0.568s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake --build /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs -- -j12 -l12
+[0.637s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs': CMAKE_PREFIX_PATH=/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake --install /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs
+[0.644s] -- Install configuration: ""
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/ament_index/resource_index/rosidl_interfaces/traveler_msgs
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/rosidl_generator_c__visibility_control.h
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/set_state.h
+[0.644s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_mode.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/odrive_status.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_config.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_status.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/set_input_position.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__struct.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__struct.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__struct.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__functions.c
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__functions.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__functions.c
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__functions.h
+[0.645s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__functions.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__functions.c
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__struct.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__functions.c
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__struct.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__functions.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__functions.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__functions.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.h
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__functions.c
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__functions.c
+[0.646s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__struct.h
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.h
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.h
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.h
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/library_path.sh
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/library_path.dsv
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_c.so
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[0.647s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_c.h
+[0.648s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so
+[0.648s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.648s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/dds_fastrtps
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_cpp.hpp
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[0.649s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so
+[0.649s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[0.649s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_c.h
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.c
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_c.so
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_c.so
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.650s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/set_state.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_status.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_mode.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/traveler_config.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/set_input_position.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/odrive_status.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__builder.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__builder.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__traits.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__builder.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__traits.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__struct.hpp
+[0.651s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__traits.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__builder.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__struct.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__builder.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__traits.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__struct.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__struct.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__builder.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__struct.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__traits.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__struct.hpp
+[0.652s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__traits.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.cpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_cpp.hpp
+[0.653s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_cpp.so
+[0.654s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_cpp.so
+[0.654s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.sh
+[0.654s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.dsv
+[0.654s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/__init__.py
+[0.672s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg
+[0.672s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_input_position_s.c
+[0.672s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_mode.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_odrive_status_s.c
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_mode_s.c
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_status.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_input_position.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_odrive_status.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_config_s.c
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_state_s.c
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_status_s.c
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_config.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_state.py
+[0.673s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/__init__.py
+[0.673s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so
+[0.674s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so" to ""
+[0.674s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so
+[0.674s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so" to ""
+[0.675s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so
+[0.675s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so" to ""
+[0.676s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__python.so
+[0.676s] -- Set runtime path of "/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/lib/libtraveler_msgs__python.so" to ""
+[0.676s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.idl
+[0.676s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.idl
+[0.676s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.idl
+[0.676s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.idl
+[0.676s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/SetState.idl
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/SetInputPosition.idl
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetState.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetInputPosition.msg
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/ament_index/resource_index/package_run_dependencies/traveler_msgs
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/ament_index/resource_index/parent_prefix_path/traveler_msgs
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.sh
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.dsv
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/path.sh
+[0.677s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/environment/path.dsv
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/local_setup.bash
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/local_setup.sh
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/local_setup.zsh
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/local_setup.dsv
+[0.678s] -- Installing: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/package.dsv
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/ament_index/resource_index/packages/traveler_msgs
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cExport.cmake
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cExport-noconfig.cmake
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport.cmake
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport.cmake
+[0.678s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cppExport.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake-extras.cmake
+[0.679s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig-version.cmake
+[0.680s] -- Up-to-date: /home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs/share/traveler_msgs/package.xml
+[0.683s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake --install /home/qianlab/Turtle_workspace/lassie-turtle/build/traveler_msgs

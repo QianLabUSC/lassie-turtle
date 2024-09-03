@@ -1,0 +1,4 @@
+[35m[1mScanning dependencies of target odrive_can_interface[0m
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[  7%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[ 15%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
