@@ -8,530 +8,46 @@
 #:set color_black "000000"
 
 
-<extrudetab>
-    MDCard:
-        size_hint_x: 1
-        orientation: "vertical" 
-        adaptive_height: True
-        elevation: 1
-        radius: [4, ]
-        padding: 12
-        height: 10   
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Extrude Angle: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: extrude_angle
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(C)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: extrude_angle_slider
-            min: -60
-            max: 60
-            value: 0
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_extrude_angle()
-
-
-        MDBoxLayout:
-            padding: [30, 40, 0, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Extrude Speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: extrude_speed
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: extrude_speed_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('extrude_speed', 1)
-                MDIconButton:
-                    id: extrude_speed_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('extrude_speed', -1)
-        MDSlider:
-            id: extrude_speed_slider
-            min: 1
-            max: 500
-            value: 1
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_extrude_speed()
-
-        MDBoxLayout:
-            padding: [30, 40, 0, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Back Speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: back_speed
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: back_speed_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('back_speed', 1)
-                MDIconButton:
-                    id: back_speed_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('back_speed', -1)
-        MDSlider:
-            id: back_speed_slider
-            min: 1
-            max: 500
-            value: 1
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_back_speed()
-
-
-
-        
-        
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Extrude length: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: extrude_length
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "4"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: extrude_length_slider
-            min: 0
-            max: 10
-            value: 4
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_extrude_length()
-
-<shearpenetratetab>
-    MDCard:
-        size_hint_x: 1
-        orientation: "vertical" 
-        adaptive_height: True
-        elevation: 1
-        radius: [4, ]
-        padding: 20
-        height: 10   
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Down length: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_1
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "4"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_1
-            min: 0
-            max: 10
-            value: 4
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_1()
-
-
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Down speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_2
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_2_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', 1)
-                MDIconButton:
-                    id: Variable_2_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', -1)
-                
-        MDSlider:
-            id: Slider_2
-            min: 1
-            max: 500
-            value: 1
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_2()
-
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Delay after down: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_3
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "3"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_3
-            min: 0
-            max: 10
-            value: 3
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_3()
-
-        
-        
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Shear length: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_4
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "17"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_4
-            min: 0
-            max: 30
-            value: 17
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_4()
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Shear speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_5
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_5_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', 1)
-                MDIconButton:
-                    id: Variable_5_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', -1)
-        MDSlider:
-            id: Slider_5
-            min: 1
-            max: 500
-            value: 1
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_5()
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Delay after shear "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_6
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_6
-            min: 0
-            max: 10
-            value: 0
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_6()
-
-   
-        
-        
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Back speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_7
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_7_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', 1)
-                MDIconButton:
-                    id: Variable_7_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', -1)
-
-        MDSlider:
-            id: Slider_7
-            min: 1
-            max: 500
-            value: 1
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_7()
-
-
 <turtle_tab>
     MDCard:
         size_hint_x: 1
         orientation: "vertical" 
         adaptive_height: True
         elevation: 1
-        radius: [4, ]
+        radius: [4,]
         padding: 20
         height: 10   
+        
+        # First Slider: Lateral angle range
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
+                    text_color: color_black
                     text: "Lateral angle range: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_1
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "45"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(c)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_1
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "45"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(c)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_1
             min: 5
@@ -541,46 +57,36 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_1()
 
-
+        # Second Slider: Drag speed
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Drag speed "
+                    text_color: color_black
+                    text: "Drag speed: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_2
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "100"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(mm/s)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_2_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', 1)
-                MDIconButton:
-                    id: Variable_2_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', -1)
-                
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_2
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "100"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(mm/s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_2
             min: 1
@@ -590,34 +96,36 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_2()
 
+        # Third Slider: Wiggle time
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
+                    text_color: color_black
                     text: "Wiggle time: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_3
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "2"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(0.1s)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_3
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "2"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(0.1s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_3
             min: 0
@@ -627,36 +135,36 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_3()
 
-        
-        
+        # Fourth Slider: Servo time
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
+                    text_color: color_black
                     text: "Servo time: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_4
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "110"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(ms)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_4
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "110"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(ms)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_4
             min: 100
@@ -665,44 +173,37 @@
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_4()
+
+        # Fifth Slider: Extraction upper angle
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
+                    text_color: color_black
                     text: "Extraction upper angle: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_5
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(C)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_5_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', 1)
-                MDIconButton:
-                    id: Variable_5_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', -1)
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_5
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "0"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(C)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_5
             min: 0
@@ -711,34 +212,37 @@
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Variable_5()
+
+        # Sixth Slider: Wiggle frequency
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Wiggle frequency "
+                    text_color: color_black
+                    text: "Wiggle frequency: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_6
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "10"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(hz)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_6
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "10"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(hz)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_6
             min: 0
@@ -748,48 +252,36 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_6()
 
-   
-        
-        
+        # Seventh Slider: Insertion depth
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Insertion depth "
+                    text_color: color_black
+                    text: "Insertion depth: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_7
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "10"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(mm)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_7_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', 1)
-                MDIconButton:
-                    id: Variable_7_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', -1)
-
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_7
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "10"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(mm)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_7
             min: 1
@@ -799,45 +291,36 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_7()
 
+        # Eighth Slider: Wiggle amplitude
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
+            padding: [10, -10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.5
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Wiggle amplitude"
+                    text_color: color_black
+                    text: "Wiggle amplitude: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_8
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_8_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_8', 1)
-                MDIconButton:
-                    id: Variable_8_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_8', -1)
-
+                size_hint_x: 0.2
+                MDLabel:
+                    id: Variable_8
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "1"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                    text: "(cm)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
             id: Slider_8
             min: 0
@@ -847,703 +330,263 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_8()
 
-
-<travelerworkspacetab>
-    MDCard:
-        size_hint_x: 1
-        orientation: "vertical" 
-        adaptive_height: True
-        elevation: 1
-        radius: [4, ]
-        padding: 12
-        height: 10   
-        MDBoxLayout:
-            padding: [30, 40, 0, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Moving speed: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: moving_speed
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "10"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm/s)"
-                        height: self.texture_size[1]
-            
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: moving_speed_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('moving_speed', 1)
-                MDIconButton:
-                    id: moving_speed_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('moving_speed', -1)
-        MDSlider:
-            id: moving_speed_slider
-            min: 5
-            max: 100
-            value: 10
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_moving_speed()
-
-
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Moving step angle "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: moving_step_angle
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "3"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(C)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: moving_step_angle_slider
-            min: 1
-            max: 20
-            value: 5
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_moving_step_angle()
-
-
-
         
-        
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Time Delay: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: time_delay
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: time_delay_slider
-            min: 0
-            max: 30
-            value: 0
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_time_delay()
-
-<freetab>
+<turtle_optimize_tab>
     MDCard:
         size_hint_x: 1
-        orientation: "vertical" 
+        orientation: "vertical"
         adaptive_height: True
         elevation: 1
-        radius: [4, ]
-        padding: 12
-        height: 10   
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Virtual leg length: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: variable1
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "180"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(mm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: variable1_slider
-            min: 120
-            max: 280
-            value: 180
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_variable1()
-
-
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Mean Angle: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: variable3
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(C)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: variable3_slider
-            min: -90
-            max: 90
-            value: 0
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_variable3()
-
-<groundtab>
-    MDCard:
-        size_hint_x: 1
-        orientation: "vertical" 
-        adaptive_height: True
-        elevation: 1
-        radius: [4, ]
-        padding: 12
-        height: 10   
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "search start: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: variable1
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "180"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(mm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: variable1_slider
-            min: 120
-            max: 280
-            value: 180
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_variable1()
-
-
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "search end: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: variable2
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "270"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(mm)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: variable2_slider
-            min: 120
-            max: 280
-            value: 270
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_variable2()
-
-        MDBoxLayout:
-            padding: 30
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Current Ground Height Set"
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: variable3
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "170"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "mm"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: variable3_slider
-            min: 110
-            max: 300
-            value: 170
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_variable3()
-
-<minirhex_tab>
-    MDCard:
-        size_hint_x: 1
-        orientation: "vertical" 
-        adaptive_height: True
-        elevation: 1
-        radius: [4, ]
+        radius: [4,]
         padding: 20
-        height: 10   
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "gait_shift_fr: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_1
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "50"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(%)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_1
-            min: 0
-            max: 100
-            value: 50
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_1()
-
+        height: 10
 
         MDBoxLayout:
             padding: [10,-10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.4
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
                     font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "gait_shift_br "
+                    text_color: color_black
+                    text: "Sweeping range: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_2
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "50"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(%)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_2_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', 1)
-                MDIconButton:
-                    id: Variable_2_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_2', -1)
-                
-        MDSlider:
-            id: Slider_2
-            min: 0
-            max: 100
-            value: 50
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_2()
-
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_1
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "45"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(C)"
+                    height: self.texture_size[1]
         MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "gait_shift_bl: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_3
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "0"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(%)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
+            size_hint_x: 0.7
         MDSlider:
-            id: Slider_3
-            min: 0
-            max: 100
-            value: 0
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_3()
-
-        
-        
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "gait_period: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_4
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "2"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(0.1 s)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_4
-            min: 1
-            max: 100
-            value: 2
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_4()
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "buehler_clock: "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_5
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "10"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(%)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_5_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', 1)
-                MDIconButton:
-                    id: Variable_5_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_5', -1)
-        MDSlider:
-            id: Slider_5
-            min: 0
-            max: 20
-            value: 10
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_5()
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Wiggle frequency "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_6
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "10"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(hz)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-        MDSlider:
-            id: Slider_6
-            min: 0
-            max: 20
-            value: 10
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_6()
-
-   
-        
-        
-        MDBoxLayout:
-            padding: [10,-10, 30, 0]
-            MDBoxLayout:
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Insertion angle "
-                    height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_7
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "45"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(C)"
-                        height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_7_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', 1)
-                MDIconButton:
-                    id: Variable_7_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_7', -1)
-
-        MDSlider:
-            id: Slider_7
-            min: 10
-            max: 90
+            id: Slider_optimize_1
+            min: 5
+            max: 60
             value: 45
             hint: False
             color: color_deep_orange
-            on_active: app.on_change_Variable_7()
+            on_active: app.on_change_Optimize_Variable_1()
 
         MDBoxLayout:
             padding: [10,-10, 30, 0]
             MDBoxLayout:
+                size_hint_x: 0.4
                 MDLabel:
                     font_style: "Subtitle1"
                     theme_text_color: "Custom"
                     font_style: "Subtitle1"
-                    text_color:  color_black
-                    text: "Wiggle amplitude"
+                    text_color: color_black
+                    text: "Insertion depth: "
                     height: self.texture_size[1]
-                MDBoxLayout:
-                    MDLabel:
-                        id: Variable_8
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "1"
-                        height: self.texture_size[1]
-                    MDLabel:
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        font_style: "Subtitle1"
-                        text_color:  color_black
-                        text: "(cm)"
-                        height: self.texture_size[1]
             MDBoxLayout:
-                size_hint_x: 0.7
-                MDIconButton:
-                    id: Variable_8_plus
-                    icon: "plus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_8', 1)
-                MDIconButton:
-                    id: Variable_8_minus
-                    icon: "minus"
-                    icon_size: "16sp"
-                    on_press: app.on_plus_speed_click('Variable_8', -1)
-
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_2
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "10"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(mm)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
         MDSlider:
-            id: Slider_8
-            min: 0
-            max: 10
-            value: 1
+            id: Slider_optimize_2
+            min: 1
+            max: 50
+            value: 20
             hint: False
             color: color_deep_orange
-            on_active: app.on_change_Variable_8()
+            on_active: app.on_change_Optimize_Variable_2()
 
+        MDBoxLayout:
+            padding: [10,-10, 30, 0]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "Penetration velocity: "
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_3
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "100"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(mm/s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
+        MDSlider:
+            id: Slider_optimize_3
+            min: 1
+            max: 500
+            value: 100
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Optimize_Variable_3()
 
-        
-        
+        MDBoxLayout:
+            padding: [10,-10, 30, 0]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "Sweeping velocity: "
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_4
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "150"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(mm/s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
+        MDSlider:
+            id: Slider_optimize_4
+            min: 1
+            max: 500
+            value: 150
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Optimize_Variable_4()
+
+        MDBoxLayout:
+            padding: [10,-10, 30, 0]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "Extraction velocity: "
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_5
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "120"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(mm/s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
+        MDSlider:
+            id: Slider_optimize_5
+            min: 1
+            max: 500
+            value: 120
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Optimize_Variable_5()
+
+        MDBoxLayout:
+            padding: [10,-10, 30, 0]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "Swing velocity: "
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.3
+                MDLabel:
+                    id: Optimize_Variable_6
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "180"
+                    height: self.texture_size[1]
+            MDBoxLayout:
+                size_hint_x: 0.4
+                MDLabel:
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    font_style: "Subtitle1"
+                    text_color: color_black
+                    text: "(mm/s)"
+                    height: self.texture_size[1]
+        MDBoxLayout:
+            size_hint_x: 0.7
+        MDSlider:
+            id: Slider_optimize_6
+            min: 1
+            max: 500
+            value: 180
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Optimize_Variable_6()
+  
 
 
 MDScreen:
@@ -1569,7 +612,7 @@ MDScreen:
                         spacing:20
                         padding: 20
                         orientation: "vertical"                    
-                        
+                        size_hint_x: 0.7
                         MDBoxLayout:
                             spacing:20
                             size_hint_y: 0.6
@@ -1607,7 +650,7 @@ MDScreen:
                         spacing:20
                         padding: 20
                         orientation: "vertical"     
-                        size_hint_x: 0.7               
+                        size_hint_x: 0.3               
                         
 
                         MDCard:

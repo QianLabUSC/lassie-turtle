@@ -12,6 +12,8 @@ from statistics import mean
 import sys
 import csv
 from ros2_interface_turtle import *
+from terrain_senser import *
+from gait_optimizer import *
 sys.argv = [sys.argv[0]]
 
 
@@ -38,36 +40,20 @@ from kivymd.uix.menu import MDDropdownMenu
 from kivy.uix.widget import Widget
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.button import MDIconButton
-
+from kivymd.uix.tab import MDTabs
 start_time = time.time()
 import numpy as np
 import matplotlib.pyplot as plt
 DEBUG = False
 
-class shearpenetratetab(MDCard):
-    '''Implements a material design v3 card.'''
-    text = StringProperty()
 
-class extrudetab(MDCard):
-    '''Implements a material design v3 card.'''
-    text = StringProperty()
-
-class travelerworkspacetab(MDCard):
-    '''Implements a material design v3 card.'''
-    text = StringProperty()
-
-class freetab(MDCard ):
-    '''Implements a material design v3 card.'''
-    text = StringProperty()
-class groundtab(MDCard ):
-    '''Implements a material design v3 card.'''
-    text = StringProperty()
 class turtle_tab(MDCard ):
     '''Implements a material design v3 card.'''
     text = StringProperty()
-class minirhex_tab(MDCard ):
+class turtle_optimize_tab(MDCard ):
     '''Implements a material design v3 card.'''
     text = StringProperty()
+
 
 
 class IconListItem(OneLineIconListItem):
@@ -117,23 +103,13 @@ class TravelerApp(MDApp):
                 "on_release": lambda x=self.ros_node.tab_control[ii]: self.change_configure_tab(x)
                 }
             )
-        ## set tab items
-        if(self.ros_node.id == "leg"):
-            self.extrude_tab = extrudetab()
-            self.shear_tab = shearpenetratetab()
-            self.workspace_tab = travelerworkspacetab()
-            self.free_tab = freetab()
-            self.ground_tab = groundtab()
-            self.screen.ids.configure_layout.add_widget(self.extrude_tab)
-            self.current_tab = self.extrude_tab
-        elif(self.ros_node.id == "turtle"):
+       
+        if(self.ros_node.id == "turtle"):
             self.turtle_tab = turtle_tab()
+            self.turtle_optimize_tab = turtle_optimize_tab()
             self.screen.ids.configure_layout.add_widget(self.turtle_tab)
             self.current_tab = self.turtle_tab
-        elif(self.ros_node.id == "MiniRhex"):
-            self.minirhex_tab = minirhex_tab()
-            self.screen.ids.configure_layout.add_widget(self.minirhex_tab)
-            self.current_tab = self.minirhex_tab
+    
 
         
             
@@ -161,11 +137,17 @@ class TravelerApp(MDApp):
 
     def change_configure_tab(self, type):
         self.set_item(type)
-        if(type == "turtle"): # mode 5
+        if(type == "Preset_gait"): # mode 5
             self.drag_traj = 5
             self.screen.ids.configure_layout.clear_widgets()
             self.screen.ids.configure_layout.add_widget(self.turtle_tab)
             self.current_tab = self.turtle_tab
+        elif("Optimized_gait"):
+            self.drag_traj = 6
+            self.screen.ids.configure_layout.clear_widgets()
+            self.screen.ids.configure_layout.add_widget(self.turtle_optimize_tab)
+            self.current_tab = self.turtle_optimize_tab
+
         
 
     
@@ -174,7 +156,7 @@ class TravelerApp(MDApp):
         self.menu.dismiss()
         
     def build(self):
-        Window.size = (1400,800)
+        Window.size = (1400,1200)
 
         Clock.schedule_interval(self.update_force_plot, 0.01)
         self.data_updator = threading.Thread(target=self.update_force_data)
@@ -193,17 +175,7 @@ class TravelerApp(MDApp):
 
         return self.screen
     def update_force_plot(self, *args):
-        if(self.ros_node.id == "leg"):
-            if(inputargs.mode == 0):
-                self.ros_node.update_force_plot(False, 
-                                            self.updateplotflag, self.drag_traj, inputargs.mode
-                                            , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
-            else:
-                self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
-                                            self.updateplotflag, self.drag_traj, inputargs.mode
-                                            , float(round(self.ground_tab.ids.variable3_slider.value)/1000))
-        else:
-            self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
+        self.ros_node.update_force_plot(self.screen.ids.if_real_time_plot.active, 
                                             self.updateplotflag)
         if(self.drag_traj == 7 and self.start_robot):
             height = -int(self.ros_node.toeposition_y * 1000)
@@ -227,20 +199,30 @@ class TravelerApp(MDApp):
         while(True):
             rclpy.spin_once(self.ros_node)
 
-    def on_change_extrude_speed(self):
-        self.extrude_tab.ids.extrude_speed.text = str(round(self.extrude_tab.ids.extrude_speed_slider.value))
-    def on_change_back_speed(self):
-        self.extrude_tab.ids.back_speed.text = str(round(self.extrude_tab.ids.back_speed_slider.value))
-    def on_change_extrude_angle(self):
-        self.extrude_tab.ids.extrude_angle.text = str(round(self.extrude_tab.ids.extrude_angle_slider.value))
+    # Callback functions for turtle optimize tab
+    def on_change_Optimize_Variable_1(self):
+        self.current_tab.ids.Optimize_Variable_1.text = str(round(self.current_tab.ids.Slider_optimize_1.value))
 
-    def on_change_extrude_length(self):
-        self.extrude_tab.ids.extrude_length.text = str(round(self.extrude_tab.ids.extrude_length_slider.value))
+    def on_change_Optimize_Variable_2(self):
+        self.current_tab.ids.Optimize_Variable_2.text = str(round(self.current_tab.ids.Slider_optimize_2.value))
 
+    def on_change_Optimize_Variable_3(self):
+        self.current_tab.ids.Optimize_Variable_3.text = str(round(self.current_tab.ids.Slider_optimize_3.value))
+
+    def on_change_Optimize_Variable_4(self):
+        self.current_tab.ids.Optimize_Variable_4.text = str(round(self.current_tab.ids.Slider_optimize_4.value))
+
+    def on_change_Optimize_Variable_5(self):
+        self.current_tab.ids.Optimize_Variable_5.text = str(round(self.current_tab.ids.Slider_optimize_5.value))
+
+    def on_change_Optimize_Variable_6(self):
+        self.current_tab.ids.Optimize_Variable_6.text = str(round(self.current_tab.ids.Slider_optimize_6.value))
+
+
+    # call back for turtle preset gait
     def on_change_Variable_1(self):
         self.current_tab.ids.Variable_1.text = str(round(self.current_tab.ids.Slider_1.value))
         
-    
     def on_change_Variable_2(self):
         self.current_tab.ids.Variable_2.text = str(round(self.current_tab.ids.Slider_2.value))
         
@@ -263,28 +245,9 @@ class TravelerApp(MDApp):
 
         self.current_tab.ids.Variable_7.text = str(round(self.current_tab.ids.Slider_7.value))
         
-
-    def on_change_moving_speed(self):
-        self.current_tab.ids.moving_speed.text = str(round(self.workspace_tab.ids.moving_speed_slider.value))
-    
-    def on_change_moving_step_angle(self):
-        self.current_tab.ids.moving_step_angle.text = str(round(self.workspace_tab.ids.moving_step_angle_slider.value))
-    
-    def on_change_time_delay(self):
-        self.current_tab.ids.time_delay.text = str(round(self.workspace_tab.ids.time_delay_slider.value))
-
-    def on_change_variable1(self):
-        self.current_tab.ids.variable1.text = str(round(self.current_tab.ids.variable1_slider.value))
-    def on_change_variable2(self):
-        self.current_tab.ids.variable2.text = str(round(self.current_tab.ids.variable2_slider.value))
-    def on_change_variable3(self):
-        self.ground_height  = float(round(self.ground_tab.ids.variable3_slider.value)/1000)
-        self.current_tab.ids.variable3.text = str(round(self.current_tab.ids.variable3_slider.value))
-
     def on_change_Variable_8(self):
         self.current_tab.ids.Variable_8.text = str(round(self.turtle_tab.ids.Slider_8.value))
         
-    
     def on_plus_speed_click(self, id, sign):
         # print(id)
         if(id == "moving_speed"):
@@ -333,11 +296,8 @@ class TravelerApp(MDApp):
             self.start_robot = False
             self.start_flag = 0.0
             self.updateplotflag = False
-            # if(self.screen.ids.if_real_time_plot.active == False):
-            if(self.ros_node.id == "leg"):
-                self.ros_node.update_plot(self.drag_traj, inputargs.mode, float(round(self.ground_tab.ids.variable3_slider.value)/1000))
-            else:
-                self.ros_node.update_plot()
+    
+            self.ros_node.update_plot()
             self.on_download_data()
             
         else:
@@ -345,11 +305,6 @@ class TravelerApp(MDApp):
 
             self.trial_start_time = str(time.asctime( time.localtime(time.time()) )).replace(" ", "_").replace(":","_")
             self.file_name = self.screen.ids.filename.text +"_"+ self.trial_start_time
-           
-            if(inputargs.mode == 0 or inputargs.mode == 3):
-                self.ros_node.calibrate(self.drag_traj, inputargs.mode) 
-            else:
-                self.ros_node.calibrate()
             self.updateplotflag = True          
             self.start_time = time.time()
             self.frame = 0
@@ -364,18 +319,31 @@ class TravelerApp(MDApp):
         self.gui_message.data.append(float(self.drag_traj))                                             #[1]: add drag traj
         
         if(self.ros_node.id == "turtle"):
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              # cm
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/10)           # seconds
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # cm
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
-            self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
-            print(self.gui_message.data)
+            if(self.drag_traj == 5):
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              # cm
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/10)           # seconds
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # cm
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
+                print("start preset gait without adaptation: ", self.gui_message.data)
+                self.ros_node.start_preset_gait(self.gui_message)
+                
+            elif(self.drag_traj == 6):
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/1000)           # tranlate into m/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # tranlate into m/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)               # tranlate into m/s
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)       # seconds
+                print("start optimizing gait with initial: ", self.gui_message.data)
+                self.ros_node.start_gait_optimization(self.gui_message)
+ 
+
        
-        self.ros_node.publish_gui_information(self.gui_message)
-        print("time spend: ", time.time()-self.start_time)
+        
 
 
         
@@ -516,8 +484,9 @@ class TravelerApp(MDApp):
 def main():
 
     rclpy.init()
-    
-    node_turtle = ControlNode_Turtle()
+    gait_optimizer = GaitOptimizer()
+    terrain_sensor = TerrainSensor()
+    node_turtle = ControlNodeTurtle(gait_optimizer, terrain_sensor)
     app = TravelerApp(node_turtle, multi_camera=True, scale_size=0.9, scale_size_2=0.6)
     
     # print("time spend: ", time.time()-test_time_start)
