@@ -348,8 +348,7 @@ class ControlNodeTurtle(Node):
           
             writer.writerow(["scenario","real_time_plot", "lateral_angle_range","drag_speed", "wiggle_time", "servo_speed", "extraction_height", "wiggle frequency",
                             "insertion_angle", "wiggle_amplitude"])
-            writer.writerow([node_id, real_time_plot, gui_message[2],gui_message[3],gui_message[4],gui_message[5],
-                                 gui_message[6],gui_message[7],gui_message[8],gui_message[9]])
+            writer.writerow([node_id, real_time_plot] + list(gui_message[2:]))
             
             writer.writerow(["time", "turtle_state",
                                 "leftadduction_pos", "leftsweeping_pos",
@@ -434,7 +433,7 @@ class ControlNodeTurtle(Node):
         self.timer = self.create_timer(0.1, self.optimize_gait)
 
     def optimize_gait(self):
-        self.tem_message = Float64MultiArray
+        self.tem_message = Float64MultiArray()
         self.tem_message.data.append(True)                                                 
         self.tem_message.data.append(6) #this does matter, since in high controller, check this value, and assign different gait parameters
         # check if it is in a new back phase

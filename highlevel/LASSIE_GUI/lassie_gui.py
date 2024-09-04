@@ -41,11 +41,16 @@ from kivy.uix.widget import Widget
 from kivymd.uix.tooltip import MDTooltip
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.tab import MDTabs
+from kivymd.uix.floatlayout import MDFloatLayout
+from kivymd.uix.tab import MDTabsBase
 start_time = time.time()
 import numpy as np
 import matplotlib.pyplot as plt
 DEBUG = False
 
+
+class Tab(MDFloatLayout, MDTabsBase):
+    pass
 
 class turtle_tab(MDCard ):
     '''Implements a material design v3 card.'''
