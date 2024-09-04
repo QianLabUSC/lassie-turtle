@@ -16,85 +16,22 @@ from std_msgs.msg import Float32
 from control_msgs.msg import DynamicJointState
 from std_msgs.msg import Float64MultiArray
 from geometry_msgs.msg import Pose
-from kivy.config import Config
-from kivy.metrics import dp
-from kivy.lang import Builder
-from kivy.factory import Factory
-from kivy.uix.image import Image
-from kivy.properties import StringProperty
-from kivy.uix.slider import Slider
-from kivy.graphics import Color, Bezier, Line
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-from kivy.clock import Clock
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.graphics import *
-
-Config.set('graphics', 'width', '2736')
-Config.set('graphics', 'height', '1824')
-from kivymd.app import MDApp
-from kivymd.uix.card import MDCard
-from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
-from kivymd.uix.list import OneLineIconListItem
-from kivymd.uix.menu import MDDropdownMenu
-from kivymd.uix.list import IRightBodyTouch, ILeftBody
-from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.tab import MDTabsBase
-from kivymd.uix.label import MDLabel
-from kivymd.uix.list import TwoLineAvatarListItem
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.selectioncontrol import MDCheckbox
-from kivymd.uix.list import TwoLineAvatarListItem
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.selectioncontrol import MDCheckbox
-
-
-
-
-
-
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 
-# class Card(MDCard, RoundedRectangularElevationBehavior):
-#     '''Implements a material design v3 card.'''
-
-#     text = StringProperty()
-
-# class IconListItem(OneLineIconListItem):
-#     icon = StringProperty()
-
-# class MyCheckbox(IRightBodyTouch, MDCheckbox):
-#     pass
-
-# class LeftCheckbox(ILeftBody,MDCheckbox):
-#     pass
-
-# class MyAvatar(ILeftBody, Image):
-#     pass
-
-
-
-class Tab(MDFloatLayout, MDTabsBase):
-    pass
 
 
 
 
 
 
-
-
-class ControlNode_Turtle(Node):
-    def __init__(self):
+class ControlNodeTurtle(Node):
+    def __init__(self, gait_optimizer, terrain_sensor):
         super().__init__('control_node')
         self.id = "turtle"
         self.publisher_ = self.create_publisher(Float64MultiArray, '/Gui_information', 10)
-
+        self.previous_turtle_state = -1
         self.turtle_subscriber = self.create_subscription(
             Float64MultiArray,
             '/robot_state',
@@ -119,7 +56,9 @@ class ControlNode_Turtle(Node):
         
 
         ## some parameters to specify here
-        self.tab_control = ['turtle']
+        self.tab_control = ["Preset_gait" , "Optimized_gait"]
+        self.gait_optimizer_ = gait_optimizer
+        self.terrain_sensor_ = terrain_sensor
 
         
         
@@ -471,6 +410,8 @@ class ControlNode_Turtle(Node):
         self.LeftFlipperOrientation_y = msg.orientation.y
         self.LeftFlipperOrientation_z = msg.orientation.z
         self.LeftFlipperOrientation_w = msg.orientation.w
+
+
     def RightFlipperState(self, msg):
         self.RightFlipperPosition_x = msg.position.x
         self.RightFlipperPosition_y = msg.position.y
@@ -483,16 +424,28 @@ class ControlNode_Turtle(Node):
         
 
 
-    def publish_gui_information(self, msg):
+    def start_preset_gait(self, msg):
         self.publisher_.publish(msg)
 
 
+    def start_gait_optimization(self, msg):
+        self.control_gait = msg
+        self.publisher_.publish(msg)
+        self.timer = self.create_timer(0.1, self.optimize_gait)
+
+    def optimize_gait(self):
+        self.tem_message = Float64MultiArray
+        self.tem_message.data.append(True)                                                 
+        self.tem_message.data.append(6) #this does matter, since in high controller, check this value, and assign different gait parameters
+        # check if it is in a new back phase
+        if self.turtle_state == 1 and self.previous_turtle_state != 1:
+            self.k_p_, self.k_s_, self.k_e_= self.terrain_sensor_.estimate_terrain(self.rightsweeping_pos_array, self.rightadduction_pos_array, 
+                                                                                   self.rightsweeping_curr_array, -self.rightadduction_curr_array,
+                                                                                   self.turtle_state_list)
+            self.gait_u_ = self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait[2:8])
+            self.tem_message.data.extend(self.gait_u_)
+            self.publisher_.publish(self.tem_message)
+            self.control_gait = self.tem_message
 
 
 
-
-def main(args=None):
-    pass
-
-if __name__ == '__main__':
-    main()
