@@ -7,7 +7,7 @@ class GaitOptimizer:
                  max_motor_torque=0.75, motor_acceleration_time=0.1, 
                  extrude_depth=0.01, extrude_width=0.01,
                  k_v = 0.1, 
-                 bounds=[(0.5, 5), (0.5, 5), (0.5, 5), (0.5, 5), (0.001, 0.05), (np.pi/6, np.pi/6)]):
+                 bounds=[(0.5, 5), (0.5, 5), (0.5, 5), (0.5, 0.5), (0.03, 0.03), (np.pi/6, np.pi/6)]):
         # Initialize robot and terrain constants
         self.ROBOT_WEIGHT = robot_weight
         self.FLIPPER_LENGTH = flipper_length
@@ -88,6 +88,7 @@ class GaitOptimizer:
         # Check if the optimization was successful
         if result.success:
             optimal_mu = result.x
+            optimal_mu[0] = optimal_mu[2]
             control_vector_u = {
                 't_p': optimal_mu[0],
                 't_s': optimal_mu[1],
