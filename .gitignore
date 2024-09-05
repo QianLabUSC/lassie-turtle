@@ -11,3 +11,4 @@ dependencies/build/*
 dependencies/devel/*
 dependencies/logs/*
 highlevel/experiment_data/*
+highlevel/LASSIE_GUI/__pycache__

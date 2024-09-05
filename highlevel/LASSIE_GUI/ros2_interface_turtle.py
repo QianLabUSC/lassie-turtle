@@ -430,21 +430,38 @@ class ControlNodeTurtle(Node):
     def start_gait_optimization(self, msg):
         self.control_gait = msg
         self.publisher_.publish(msg)
-        self.timer = self.create_timer(0.1, self.optimize_gait)
+
+        # also start or stop the gait optimizer
+        if(msg.data[0] == True):
+            self.timer = self.create_timer(0.1, self.optimize_gait)
+        else:
+            if self.timer is not None:
+                self.timer.cancel()
 
     def optimize_gait(self):
         self.tem_message = Float64MultiArray()
         self.tem_message.data.append(True)                                                 
         self.tem_message.data.append(6) #this does matter, since in high controller, check this value, and assign different gait parameters
         # check if it is in a new back phase
+        
         if self.turtle_state == 1 and self.previous_turtle_state != 1:
-            self.k_p_, self.k_s_, self.k_e_= self.terrain_sensor_.estimate_terrain(self.rightsweeping_pos_array, self.rightadduction_pos_array, 
-                                                                                   self.rightsweeping_curr_array, -self.rightadduction_curr_array,
-                                                                                   self.turtle_state_list)
-            self.gait_u_ = self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait[2:8])
+            
+            self.k_p_, self.k_s_, self.k_e_ = self.terrain_sensor_.estimate_terrain(
+                                                np.array(self.rightsweeping_pos_array),
+                                                np.array(self.rightadduction_pos_array),
+                                                np.array(self.rightsweeping_curr_array),
+                                                -np.array(self.rightadduction_curr_array),
+                                                np.array(self.turtle_state_list)
+                                            )
+            print("optimizing")
+            print(self.control_gait.data)
+            print(self.control_gait.data[2:8])
+            print(self.k_s_)
+            self.gait_u_, predict_speed= self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait.data[2:8])
+            print(self.gait_u_)
             self.tem_message.data.extend(self.gait_u_)
             self.publisher_.publish(self.tem_message)
             self.control_gait = self.tem_message
-
+        self.previous_turtle_state = self.turtle_state
 
 

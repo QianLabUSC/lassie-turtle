@@ -1,0 +1,819 @@
+[0.000000] (-) TimerEvent: {}
+[0.000207] (traveler_msgs) JobQueued: {'identifier': 'traveler_msgs', 'dependencies': OrderedDict()}
+[0.000245] (turtle_high_controller) JobQueued: {'identifier': 'turtle_high_controller', 'dependencies': OrderedDict([('traveler_msgs', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs')])}
+[0.000271] (traveler_msgs) JobStarted: {'identifier': 'traveler_msgs'}
+[0.009279] (traveler_msgs) JobProgress: {'identifier': 'traveler_msgs', 'progress': 'cmake'}
+[0.009996] (traveler_msgs) Command: {'cmd': ['/usr/local/bin/cmake', '/home/qianlab/lassie-turtle/dependencies/traveler_msgs', '-DCMAKE_INSTALL_PREFIX=/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[0.098625] (-) TimerEvent: {}
+[0.199182] (-) TimerEvent: {}
+[0.207662] (traveler_msgs) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[0.299306] (-) TimerEvent: {}
+[0.399643] (-) TimerEvent: {}
+[0.499982] (-) TimerEvent: {}
+[0.558354] (traveler_msgs) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[0.600108] (-) TimerEvent: {}
+[0.700507] (-) TimerEvent: {}
+[0.801007] (-) TimerEvent: {}
+[0.855393] (traveler_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[0.901144] (-) TimerEvent: {}
+[0.992385] (traveler_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[0.999711] (traveler_msgs) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[1.000193] (traveler_msgs) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.000983] (traveler_msgs) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.001263] (-) TimerEvent: {}
+[1.051187] (traveler_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.101449] (-) TimerEvent: {}
+[1.190891] (traveler_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.198492] (traveler_msgs) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[1.198748] (traveler_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.199136] (traveler_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.201610] (-) TimerEvent: {}
+[1.218655] (traveler_msgs) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[1.301779] (-) TimerEvent: {}
+[1.332529] (traveler_msgs) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[1.401916] (-) TimerEvent: {}
+[1.431853] (traveler_msgs) StdoutLine: {'line': b'-- Found rclcpp: 16.0.10 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[1.502061] (-) TimerEvent: {}
+[1.572996] (traveler_msgs) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[1.580424] (traveler_msgs) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[1.594902] (traveler_msgs) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[1.602171] (-) TimerEvent: {}
+[1.619911] (traveler_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.644370] (traveler_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[1.702308] (-) TimerEvent: {}
+[1.711631] (traveler_msgs) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[1.717412] (traveler_msgs) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[1.802442] (-) TimerEvent: {}
+[1.902797] (-) TimerEvent: {}
+[2.003176] (-) TimerEvent: {}
+[2.103640] (-) TimerEvent: {}
+[2.204153] (-) TimerEvent: {}
+[2.300817] (traveler_msgs) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[2.304255] (-) TimerEvent: {}
+[2.404603] (-) TimerEvent: {}
+[2.504957] (-) TimerEvent: {}
+[2.605360] (-) TimerEvent: {}
+[2.705703] (-) TimerEvent: {}
+[2.806184] (-) TimerEvent: {}
+[2.870669] (traveler_msgs) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[2.906297] (-) TimerEvent: {}
+[3.006653] (-) TimerEvent: {}
+[3.107057] (-) TimerEvent: {}
+[3.207453] (-) TimerEvent: {}
+[3.307830] (-) TimerEvent: {}
+[3.408193] (-) TimerEvent: {}
+[3.508708] (-) TimerEvent: {}
+[3.609443] (-) TimerEvent: {}
+[3.710053] (-) TimerEvent: {}
+[3.810610] (-) TimerEvent: {}
+[3.911222] (-) TimerEvent: {}
+[3.965249] (traveler_msgs) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[3.986793] (traveler_msgs) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[4.011602] (-) TimerEvent: {}
+[4.112253] (-) TimerEvent: {}
+[4.123330] (traveler_msgs) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[4.125136] (traveler_msgs) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[4.212508] (-) TimerEvent: {}
+[4.241261] (traveler_msgs) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)\n'}
+[4.312712] (-) TimerEvent: {}
+[4.413167] (-) TimerEvent: {}
+[4.513521] (-) TimerEvent: {}
+[4.611768] (traveler_msgs) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)\n'}
+[4.613604] (-) TimerEvent: {}
+[4.713980] (-) TimerEvent: {}
+[4.814355] (-) TimerEvent: {}
+[4.914712] (-) TimerEvent: {}
+[5.015071] (-) TimerEvent: {}
+[5.115523] (-) TimerEvent: {}
+[5.139510] (traveler_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[5.215663] (-) TimerEvent: {}
+[5.316048] (-) TimerEvent: {}
+[5.346929] (traveler_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[5.350657] (traveler_msgs) StderrLine: {'line': b'\x1b[33mCMake Warning (dev) at /opt/ros/humble/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:20 (find_package):\n'}
+[5.350790] (traveler_msgs) StderrLine: {'line': b'  Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules\n'}
+[5.350845] (traveler_msgs) StderrLine: {'line': b'  are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use\n'}
+[5.350891] (traveler_msgs) StderrLine: {'line': b'  the cmake_policy command to set the policy and suppress this warning.\n'}
+[5.350935] (traveler_msgs) StderrLine: {'line': b'\n'}
+[5.350976] (traveler_msgs) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[5.351018] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[5.351109] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)\n'}
+[5.351170] (traveler_msgs) StderrLine: {'line': b'  CMakeLists.txt:60 (rosidl_generate_interfaces)\n'}
+[5.351217] (traveler_msgs) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[5.351265] (traveler_msgs) StderrLine: {'line': b'\x1b[0m\n'}
+[5.414048] (traveler_msgs) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") \n'}
+[5.416164] (-) TimerEvent: {}
+[5.417164] (traveler_msgs) StdoutLine: {'line': b'-- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)\n'}
+[5.418338] (traveler_msgs) StderrLine: {'line': b'\x1b[33mCMake Warning (dev) at /opt/ros/humble/share/python_cmake_module/cmake/Modules/FindPythonExtra.cmake:52 (find_package):\n'}
+[5.418454] (traveler_msgs) StderrLine: {'line': b'  Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules\n'}
+[5.418518] (traveler_msgs) StderrLine: {'line': b'  are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use\n'}
+[5.418575] (traveler_msgs) StderrLine: {'line': b'  the cmake_policy command to set the policy and suppress this warning.\n'}
+[5.418627] (traveler_msgs) StderrLine: {'line': b'\n'}
+[5.418687] (traveler_msgs) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[5.418738] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:23 (find_package)\n'}
+[5.418790] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[5.418840] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)\n'}
+[5.418891] (traveler_msgs) StderrLine: {'line': b'  CMakeLists.txt:60 (rosidl_generate_interfaces)\n'}
+[5.418941] (traveler_msgs) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[5.418991] (traveler_msgs) StderrLine: {'line': b'\x1b[0m\n'}
+[5.437374] (traveler_msgs) StderrLine: {'line': b'\x1b[33mCMake Warning (dev) at /opt/ros/humble/share/python_cmake_module/cmake/Modules/FindPythonExtra.cmake:140 (find_package):\n'}
+[5.437791] (traveler_msgs) StderrLine: {'line': b'  Policy CMP0148 is not set: The FindPythonInterp and FindPythonLibs modules\n'}
+[5.437878] (traveler_msgs) StderrLine: {'line': b'  are removed.  Run "cmake --help-policy CMP0148" for policy details.  Use\n'}
+[5.437964] (traveler_msgs) StderrLine: {'line': b'  the cmake_policy command to set the policy and suppress this warning.\n'}
+[5.438030] (traveler_msgs) StderrLine: {'line': b'\n'}
+[5.438092] (traveler_msgs) StderrLine: {'line': b'Call Stack (most recent call first):\n'}
+[5.438155] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_generator_py/cmake/rosidl_generator_py_generate_interfaces.cmake:23 (find_package)\n'}
+[5.438218] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/ament_cmake_core/cmake/core/ament_execute_extensions.cmake:48 (include)\n'}
+[5.438280] (traveler_msgs) StderrLine: {'line': b'  /opt/ros/humble/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:286 (ament_execute_extensions)\n'}
+[5.438341] (traveler_msgs) StderrLine: {'line': b'  CMakeLists.txt:60 (rosidl_generate_interfaces)\n'}
+[5.438403] (traveler_msgs) StderrLine: {'line': b'This warning is for project developers.  Use -Wno-dev to suppress it.\n'}
+[5.438463] (traveler_msgs) StderrLine: {'line': b'\x1b[0m\n'}
+[5.516303] (-) TimerEvent: {}
+[5.616743] (-) TimerEvent: {}
+[5.624376] (traveler_msgs) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") \n'}
+[5.624825] (traveler_msgs) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[5.624910] (traveler_msgs) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10\n'}
+[5.624995] (traveler_msgs) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so\n'}
+[5.643899] (traveler_msgs) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[5.698889] (traveler_msgs) StdoutLine: {'line': b'-- Found ament_lint_auto: 0.12.11 (/opt/ros/humble/share/ament_lint_auto/cmake)\n'}
+[5.716862] (-) TimerEvent: {}
+[5.732491] (traveler_msgs) StdoutLine: {'line': b"-- Added test 'lint_cmake' to check CMake code style\n"}
+[5.735833] (traveler_msgs) StdoutLine: {'line': b"-- Added test 'xmllint' to check XML markup files\n"}
+[5.740516] (traveler_msgs) StdoutLine: {'line': b'-- Configuring done (5.7s)\n'}
+[5.788227] (traveler_msgs) StdoutLine: {'line': b'-- Generating done (0.0s)\n'}
+[5.791125] (traveler_msgs) StdoutLine: {'line': b'-- Build files have been written to: /home/qianlab/lassie-turtle/dependencies/build/traveler_msgs\n'}
+[5.804549] (traveler_msgs) CommandEnded: {'returncode': 0}
+[5.805448] (traveler_msgs) JobProgress: {'identifier': 'traveler_msgs', 'progress': 'build'}
+[5.806278] (traveler_msgs) Command: {'cmd': ['/usr/local/bin/cmake', '--build', '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs', '--', '-j16', '-l16'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[5.817041] (-) TimerEvent: {}
+[5.822886] (traveler_msgs) StdoutLine: {'line': b'[  1%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[5.826608] (traveler_msgs) StdoutLine: {'line': b'[  2%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[5.828820] (traveler_msgs) StdoutLine: {'line': b'[  2%] Built target ament_cmake_python_copy_traveler_msgs\n'}
+[5.917194] (-) TimerEvent: {}
+[6.017585] (-) TimerEvent: {}
+[6.027317] (traveler_msgs) StdoutLine: {'line': b'running egg_info\n'}
+[6.027926] (traveler_msgs) StdoutLine: {'line': b'creating traveler_msgs.egg-info\n'}
+[6.028373] (traveler_msgs) StdoutLine: {'line': b'writing traveler_msgs.egg-info/PKG-INFO\n'}
+[6.028562] (traveler_msgs) StdoutLine: {'line': b'writing dependency_links to traveler_msgs.egg-info/dependency_links.txt\n'}
+[6.028744] (traveler_msgs) StdoutLine: {'line': b'writing top-level names to traveler_msgs.egg-info/top_level.txt\n'}
+[6.028942] (traveler_msgs) StdoutLine: {'line': b"writing manifest file 'traveler_msgs.egg-info/SOURCES.txt'\n"}
+[6.031028] (traveler_msgs) StdoutLine: {'line': b"reading manifest file 'traveler_msgs.egg-info/SOURCES.txt'\n"}
+[6.031420] (traveler_msgs) StdoutLine: {'line': b"writing manifest file 'traveler_msgs.egg-info/SOURCES.txt'\n"}
+[6.055569] (traveler_msgs) StdoutLine: {'line': b'[  2%] Built target ament_cmake_python_build_traveler_msgs_egg\n'}
+[6.117757] (-) TimerEvent: {}
+[6.218135] (-) TimerEvent: {}
+[6.318476] (-) TimerEvent: {}
+[6.327208] (traveler_msgs) StdoutLine: {'line': b'[  2%] Built target traveler_msgs__cpp\n'}
+[6.332432] (traveler_msgs) StdoutLine: {'line': b'[  5%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[6.333019] (traveler_msgs) StdoutLine: {'line': b'[  5%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[6.333189] (traveler_msgs) StdoutLine: {'line': b'[  7%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[6.345900] (traveler_msgs) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/odrive_status__functions.c.o\x1b[0m\n'}
+[6.346266] (traveler_msgs) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_config__functions.c.o\x1b[0m\n'}
+[6.346461] (traveler_msgs) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_status__functions.c.o\x1b[0m\n'}
+[6.346525] (traveler_msgs) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_mode__functions.c.o\x1b[0m\n'}
+[6.346576] (traveler_msgs) StdoutLine: {'line': b'[ 14%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/set_state__functions.c.o\x1b[0m\n'}
+[6.346774] (traveler_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/set_input_position__functions.c.o\x1b[0m\n'}
+[6.399456] (traveler_msgs) StdoutLine: {'line': b'[ 16%] \x1b[32m\x1b[1mLinking C shared library libtraveler_msgs__rosidl_generator_c.so\x1b[0m\n'}
+[6.418592] (-) TimerEvent: {}
+[6.459254] (traveler_msgs) StdoutLine: {'line': b'[ 16%] Built target traveler_msgs__rosidl_generator_c\n'}
+[6.462930] (traveler_msgs) StdoutLine: {'line': b'[ 19%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[6.463109] (traveler_msgs) StdoutLine: {'line': b'[ 19%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[6.463220] (traveler_msgs) StdoutLine: {'line': b'[ 21%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[6.518720] (-) TimerEvent: {}
+[6.619104] (-) TimerEvent: {}
+[6.719565] (-) TimerEvent: {}
+[6.720335] (traveler_msgs) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/odrive_status__type_support.cpp.o\x1b[0m\n'}
+[6.720729] (traveler_msgs) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_config__type_support.cpp.o\x1b[0m\n'}
+[6.721027] (traveler_msgs) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_mode__type_support.cpp.o\x1b[0m\n'}
+[6.721141] (traveler_msgs) StdoutLine: {'line': b'[ 26%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_status__type_support.cpp.o\x1b[0m\n'}
+[6.721305] (traveler_msgs) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/set_state__type_support.cpp.o\x1b[0m\n'}
+[6.721498] (traveler_msgs) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/set_input_position__type_support.cpp.o\x1b[0m\n'}
+[6.774274] (traveler_msgs) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/odrive_status__type_support.cpp.o\x1b[0m\n'}
+[6.774688] (traveler_msgs) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_config__type_support.cpp.o\x1b[0m\n'}
+[6.774802] (traveler_msgs) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_mode__type_support.cpp.o\x1b[0m\n'}
+[6.774893] (traveler_msgs) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_status__type_support.cpp.o\x1b[0m\n'}
+[6.775164] (traveler_msgs) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/set_state__type_support.cpp.o\x1b[0m\n'}
+[6.775296] (traveler_msgs) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/set_input_position__type_support.cpp.o\x1b[0m\n'}
+[6.819726] (-) TimerEvent: {}
+[6.892859] (traveler_msgs) StdoutLine: {'line': b'[ 39%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/odrive_status__type_support.cpp.o\x1b[0m\n'}
+[6.919889] (-) TimerEvent: {}
+[6.988759] (traveler_msgs) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/odrive_status__type_support.cpp.o\x1b[0m\n'}
+[7.021533] (-) TimerEvent: {}
+[7.067102] (traveler_msgs) StdoutLine: {'line': b'[ 42%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_config__type_support.cpp.o\x1b[0m\n'}
+[7.097685] (traveler_msgs) StdoutLine: {'line': b'[ 43%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/odrive_status__type_support.c.o\x1b[0m\n'}
+[7.119713] (traveler_msgs) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_mode__type_support.cpp.o\x1b[0m\n'}
+[7.121680] (-) TimerEvent: {}
+[7.135597] (traveler_msgs) StdoutLine: {'line': b'[ 46%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/odrive_status__type_support_c.cpp.o\x1b[0m\n'}
+[7.155455] (traveler_msgs) StdoutLine: {'line': b'[ 49%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_config__type_support.c.o\x1b[0m\n'}
+[7.155912] (traveler_msgs) StdoutLine: {'line': b'[ 49%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_status__type_support.cpp.o\x1b[0m\n'}
+[7.200526] (traveler_msgs) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/set_state__type_support.cpp.o\x1b[0m\n'}
+[7.200910] (traveler_msgs) StdoutLine: {'line': b'[ 52%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_mode__type_support.c.o\x1b[0m\n'}
+[7.221976] (-) TimerEvent: {}
+[7.232008] (traveler_msgs) StdoutLine: {'line': b'[ 53%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/set_input_position__type_support.cpp.o\x1b[0m\n'}
+[7.234874] (traveler_msgs) StdoutLine: {'line': b'[ 56%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_config__type_support_c.cpp.o\x1b[0m\n'}
+[7.235232] (traveler_msgs) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_status__type_support.c.o\x1b[0m\n'}
+[7.235369] (traveler_msgs) StdoutLine: {'line': b'[ 57%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_config__type_support.cpp.o\x1b[0m\n'}
+[7.238500] (traveler_msgs) StdoutLine: {'line': b'[ 59%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_mode__type_support.cpp.o\x1b[0m\n'}
+[7.245223] (traveler_msgs) StdoutLine: {'line': b'[ 60%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_mode__type_support_c.cpp.o\x1b[0m\n'}
+[7.250987] (traveler_msgs) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/set_state__type_support.c.o\x1b[0m\n'}
+[7.252637] (traveler_msgs) StdoutLine: {'line': b'[ 63%] \x1b[32m\x1b[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[7.265115] (traveler_msgs) StdoutLine: {'line': b'[ 64%] \x1b[32m\x1b[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_c.so\x1b[0m\n'}
+[7.285387] (traveler_msgs) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/set_input_position__type_support.c.o\x1b[0m\n'}
+[7.290559] (traveler_msgs) StdoutLine: {'line': b'[ 67%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_status__type_support_c.cpp.o\x1b[0m\n'}
+[7.322110] (-) TimerEvent: {}
+[7.329995] (traveler_msgs) StdoutLine: {'line': b'[ 69%] \x1b[32m\x1b[1mLinking C shared library libtraveler_msgs__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[7.384513] (traveler_msgs) StdoutLine: {'line': b'[ 69%] Built target traveler_msgs__rosidl_typesupport_cpp\n'}
+[7.388216] (traveler_msgs) StdoutLine: {'line': b'[ 70%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/set_state__type_support_c.cpp.o\x1b[0m\n'}
+[7.396447] (traveler_msgs) StdoutLine: {'line': b'[ 70%] Built target traveler_msgs__rosidl_typesupport_c\n'}
+[7.400352] (traveler_msgs) StdoutLine: {'line': b'[ 71%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/set_input_position__type_support_c.cpp.o\x1b[0m\n'}
+[7.412181] (traveler_msgs) StdoutLine: {'line': b'[ 73%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_status__type_support.cpp.o\x1b[0m\n'}
+[7.416926] (traveler_msgs) StdoutLine: {'line': b'[ 73%] Built target traveler_msgs__rosidl_typesupport_introspection_c\n'}
+[7.417263] (traveler_msgs) StdoutLine: {'line': b'[ 74%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/set_state__type_support.cpp.o\x1b[0m\n'}
+[7.420260] (traveler_msgs) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/set_input_position__type_support.cpp.o\x1b[0m\n'}
+[7.422229] (-) TimerEvent: {}
+[7.473731] (traveler_msgs) StdoutLine: {'line': b'[ 77%] \x1b[32m\x1b[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[7.522416] (-) TimerEvent: {}
+[7.623007] (-) TimerEvent: {}
+[7.638719] (traveler_msgs) StdoutLine: {'line': b'[ 77%] Built target traveler_msgs__rosidl_typesupport_introspection_cpp\n'}
+[7.723174] (-) TimerEvent: {}
+[7.800531] (traveler_msgs) StdoutLine: {'line': b'[ 78%] \x1b[32m\x1b[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[7.823309] (-) TimerEvent: {}
+[7.860468] (traveler_msgs) StdoutLine: {'line': b'[ 80%] \x1b[32m\x1b[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[7.889434] (traveler_msgs) StdoutLine: {'line': b'[ 80%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c\n'}
+[7.923486] (-) TimerEvent: {}
+[7.937499] (traveler_msgs) StdoutLine: {'line': b'[ 80%] Built target traveler_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[7.944938] (traveler_msgs) StdoutLine: {'line': b'[ 80%] Built target traveler_msgs\n'}
+[7.951992] (traveler_msgs) StdoutLine: {'line': b'[ 81%] \x1b[34m\x1b[1mGenerating Python code for ROS interfaces\x1b[0m\n'}
+[8.023643] (-) TimerEvent: {}
+[8.123982] (-) TimerEvent: {}
+[8.224319] (-) TimerEvent: {}
+[8.324671] (-) TimerEvent: {}
+[8.425020] (-) TimerEvent: {}
+[8.525396] (-) TimerEvent: {}
+[8.625801] (-) TimerEvent: {}
+[8.720567] (traveler_msgs) StdoutLine: {'line': b'[ 81%] Built target traveler_msgs__py\n'}
+[8.725903] (-) TimerEvent: {}
+[8.727417] (traveler_msgs) StdoutLine: {'line': b'[ 83%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_odrive_status_s.c.o\x1b[0m\n'}
+[8.727760] (traveler_msgs) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_config_s.c.o\x1b[0m\n'}
+[8.728073] (traveler_msgs) StdoutLine: {'line': b'[ 85%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_mode_s.c.o\x1b[0m\n'}
+[8.728222] (traveler_msgs) StdoutLine: {'line': b'[ 88%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_status_s.c.o\x1b[0m\n'}
+[8.728291] (traveler_msgs) StdoutLine: {'line': b'[ 88%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_set_state_s.c.o\x1b[0m\n'}
+[8.729191] (traveler_msgs) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_py.dir/rosidl_generator_py/traveler_msgs/msg/_set_input_position_s.c.o\x1b[0m\n'}
+[8.826047] (-) TimerEvent: {}
+[8.869148] (traveler_msgs) StdoutLine: {'line': b'[ 91%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/traveler_msgs/libtraveler_msgs__rosidl_generator_py.so\x1b[0m\n'}
+[8.926203] (-) TimerEvent: {}
+[8.927986] (traveler_msgs) StdoutLine: {'line': b'[ 91%] Built target traveler_msgs__rosidl_generator_py\n'}
+[8.934597] (traveler_msgs) StdoutLine: {'line': b'[ 94%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[8.934793] (traveler_msgs) StdoutLine: {'line': b'[ 94%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[8.934991] (traveler_msgs) StdoutLine: {'line': b'[ 95%] \x1b[32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[9.010846] (traveler_msgs) StdoutLine: {'line': b'[ 98%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[9.011030] (traveler_msgs) StdoutLine: {'line': b'[ 98%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[9.015806] (traveler_msgs) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\x1b[0m\n'}
+[9.026320] (-) TimerEvent: {}
+[9.055539] (traveler_msgs) StdoutLine: {'line': b'[100%] Built target traveler_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[9.055812] (traveler_msgs) StdoutLine: {'line': b'[100%] Built target traveler_msgs__rosidl_typesupport_c__pyext\n'}
+[9.067354] (traveler_msgs) StdoutLine: {'line': b'[100%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[9.074772] (traveler_msgs) CommandEnded: {'returncode': 0}
+[9.126448] (-) TimerEvent: {}
+[9.200446] (traveler_msgs) JobProgress: {'identifier': 'traveler_msgs', 'progress': 'install'}
+[9.204929] (traveler_msgs) Command: {'cmd': ['/usr/local/bin/cmake', '--install', '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/opt/ros/humble')]), 'shell': False}
+[9.207201] (traveler_msgs) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[9.208556] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/rosidl_interfaces/traveler_msgs\n'}
+[9.208740] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.209511] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.211428] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/set_state.h\n'}
+[9.211564] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/odrive_status.h\n'}
+[9.211891] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_status.h\n'}
+[9.211988] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_config.h\n'}
+[9.212053] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.212184] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__functions.c\n'}
+[9.212343] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__functions.c\n'}
+[9.212525] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__type_support.h\n'}
+[9.212834] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__struct.h\n'}
+[9.212902] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__type_support.h\n'}
+[9.213023] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__struct.h\n'}
+[9.213154] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__type_support.h\n'}
+[9.213380] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__struct.h\n'}
+[9.213654] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__functions.h\n'}
+[9.213744] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__functions.c\n'}
+[9.213982] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__functions.h\n'}
+[9.214052] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__type_support.h\n'}
+[9.214200] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__type_support.h\n'}
+[9.214480] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__type_support.h\n'}
+[9.214731] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__functions.c\n'}
+[9.214865] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__struct.h\n'}
+[9.214995] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__functions.h\n'}
+[9.215162] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__functions.h\n'}
+[9.215403] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__functions.h\n'}
+[9.215536] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__functions.c\n'}
+[9.215662] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__functions.c\n'}
+[9.215723] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__functions.h\n'}
+[9.215770] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__struct.h\n'}
+[9.215813] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__struct.h\n'}
+[9.215855] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/rosidl_generator_c__visibility_control.h\n'}
+[9.215896] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/set_input_position.h\n'}
+[9.215936] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_mode.h\n'}
+[9.215976] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/library_path.sh\n'}
+[9.216017] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/library_path.dsv\n'}
+[9.216134] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_c.so\n'}
+[9.216482] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_c.so" to ""\n'}
+[9.216747] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.217078] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.217282] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[9.217502] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.217613] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_c.h\n'}
+[9.217770] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_c.h\n'}
+[9.217919] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_c.h\n'}
+[9.218064] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_c.h\n'}
+[9.218208] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_c.h\n'}
+[9.218357] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_c.h\n'}
+[9.218501] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so\n'}
+[9.218698] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[9.218846] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.218990] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.219134] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_mode.hpp\n'}
+[9.219363] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/set_state.hpp\n'}
+[9.219447] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_config.hpp\n'}
+[9.219590] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.219733] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__builder.hpp\n'}
+[9.219899] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__builder.hpp\n'}
+[9.220044] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__struct.hpp\n'}
+[9.220304] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__struct.hpp\n'}
+[9.220424] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__struct.hpp\n'}
+[9.220571] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__struct.hpp\n'}
+[9.220716] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__struct.hpp\n'}
+[9.220956] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__traits.hpp\n'}
+[9.221110] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__traits.hpp\n'}
+[9.221235] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__builder.hpp\n'}
+[9.221379] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__traits.hpp\n'}
+[9.221536] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__struct.hpp\n'}
+[9.221682] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__traits.hpp\n'}
+[9.221863] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__traits.hpp\n'}
+[9.222010] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__builder.hpp\n'}
+[9.222164] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__builder.hpp\n'}
+[9.222308] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__builder.hpp\n'}
+[9.222453] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__traits.hpp\n'}
+[9.222598] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/set_input_position.hpp\n'}
+[9.222826] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/traveler_status.hpp\n'}
+[9.222952] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/odrive_status.hpp\n'}
+[9.223121] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.223266] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.223502] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[9.223602] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.223673] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.223848] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.223928] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/dds_fastrtps\n'}
+[9.223993] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.224147] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.224347] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.224438] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[9.224584] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so\n'}
+[9.224734] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[9.224883] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.225105] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.225159] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[9.225404] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.225566] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_c.h\n'}
+[9.225727] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__type_support.c\n'}
+[9.225880] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__type_support.c\n'}
+[9.226034] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__type_support.c\n'}
+[9.226181] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_c.h\n'}
+[9.226328] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_c.h\n'}
+[9.226470] (-) TimerEvent: {}
+[9.226794] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__type_support.c\n'}
+[9.226906] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__type_support.c\n'}
+[9.226988] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_c.h\n'}
+[9.227059] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__type_support.c\n'}
+[9.227130] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_c.h\n'}
+[9.227190] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_c.h\n'}
+[9.227249] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_c.so\n'}
+[9.227308] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_c.so" to ""\n'}
+[9.227367] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_c.so\n'}
+[9.227430] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_c.so" to ""\n'}
+[9.227488] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs\n'}
+[9.227546] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg\n'}
+[9.227604] (traveler_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail\n'}
+[9.227663] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.227721] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.227779] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.227838] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_input_position__type_support.cpp\n'}
+[9.228021] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__type_support.cpp\n'}
+[9.228242] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__type_support.cpp\n'}
+[9.228409] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.228550] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__type_support.cpp\n'}
+[9.228611] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.228732] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_config__type_support.cpp\n'}
+[9.228861] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/set_state__type_support.cpp\n'}
+[9.229004] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_cpp.hpp\n'}
+[9.229152] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_cpp.so\n'}
+[9.229402] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[9.229534] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_cpp.so\n'}
+[9.229702] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_cpp.so" to ""\n'}
+[9.229809] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.sh\n'}
+[9.229933] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.dsv\n'}
+[9.230079] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs-0.0.0-py3.10.egg-info\n'}
+[9.230225] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs-0.0.0-py3.10.egg-info/PKG-INFO\n'}
+[9.230371] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs-0.0.0-py3.10.egg-info/dependency_links.txt\n'}
+[9.230517] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs-0.0.0-py3.10.egg-info/SOURCES.txt\n'}
+[9.230663] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs-0.0.0-py3.10.egg-info/top_level.txt\n'}
+[9.230809] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs\n'}
+[9.230955] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/libtraveler_msgs__rosidl_generator_py.so\n'}
+[9.231101] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/__init__.py\n'}
+[9.231246] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.231392] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg\n'}
+[9.231538] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/__init__.py\n'}
+[9.231720] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_mode.py\n'}
+[9.231774] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_state_s.c\n'}
+[9.231826] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_odrive_status_s.c\n'}
+[9.231867] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_odrive_status.py\n'}
+[9.231907] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_input_position.py\n'}
+[9.231948] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_config.py\n'}
+[9.231991] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_status_s.c\n'}
+[9.232045] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_input_position_s.c\n'}
+[9.232113] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_mode_s.c\n'}
+[9.232162] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_config_s.c\n'}
+[9.232205] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_state.py\n'}
+[9.232246] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_status.py\n'}
+[9.232291] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.232335] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.232374] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_c.c\n'}
+[9.232414] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_fastrtps_c.c\n'}
+[9.232454] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_introspection_c.c\n'}
+[9.263463] (traveler_msgs) StdoutLine: {'line': b"Listing '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs'...\n"}
+[9.263777] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/__init__.py'...\n"}
+[9.263845] (traveler_msgs) StdoutLine: {'line': b"Listing '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg'...\n"}
+[9.263946] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/__init__.py'...\n"}
+[9.264017] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_odrive_status.py'...\n"}
+[9.264077] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_input_position.py'...\n"}
+[9.264133] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_set_state.py'...\n"}
+[9.264187] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_config.py'...\n"}
+[9.264240] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_mode.py'...\n"}
+[9.264303] (traveler_msgs) StdoutLine: {'line': b"Compiling '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/msg/_traveler_status.py'...\n"}
+[9.272495] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.272794] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[9.272979] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.273312] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[9.273508] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so\n'}
+[9.273776] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""\n'}
+[9.274059] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_py.so\n'}
+[9.274271] (traveler_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_py.so" to ""\n'}
+[9.274818] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.idl\n'}
+[9.274942] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.idl\n'}
+[9.275053] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.idl\n'}
+[9.275228] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.idl\n'}
+[9.275381] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/SetState.idl\n'}
+[9.275515] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/SetInputPosition.idl\n'}
+[9.275671] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.msg\n'}
+[9.275938] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.msg\n'}
+[9.276104] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.msg\n'}
+[9.276173] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.msg\n'}
+[9.276309] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetState.msg\n'}
+[9.276452] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetInputPosition.msg\n'}
+[9.276700] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/package_run_dependencies/traveler_msgs\n'}
+[9.276987] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/parent_prefix_path/traveler_msgs\n'}
+[9.277208] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.sh\n'}
+[9.277335] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.dsv\n'}
+[9.277487] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/path.sh\n'}
+[9.277645] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/path.dsv\n'}
+[9.277805] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.bash\n'}
+[9.278030] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.sh\n'}
+[9.278343] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.zsh\n'}
+[9.278420] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.dsv\n'}
+[9.278471] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/package.dsv\n'}
+[9.278621] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/packages/traveler_msgs\n'}
+[9.278855] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_generator_cExport.cmake\n'}
+[9.279049] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_generator_cExport-noconfig.cmake\n'}
+[9.279300] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_typesupport_fastrtps_cExport.cmake\n'}
+[9.279382] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake\n'}
+[9.279594] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_generator_cppExport.cmake\n'}
+[9.279669] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_typesupport_fastrtps_cppExport.cmake\n'}
+[9.279944] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake\n'}
+[9.280105] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport.cmake\n'}
+[9.280329] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[9.280543] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport.cmake\n'}
+[9.280613] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[9.280812] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[9.280899] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[9.281056] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport.cmake\n'}
+[9.281227] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[9.281377] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_generator_pyExport.cmake\n'}
+[9.281631] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/export_traveler_msgs__rosidl_generator_pyExport-noconfig.cmake\n'}
+[9.281699] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake-extras.cmake\n'}
+[9.281847] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[9.281997] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[9.282255] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[9.282313] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[9.282435] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[9.282585] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[9.282738] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig.cmake\n'}
+[9.282798] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig-version.cmake\n'}
+[9.282843] (traveler_msgs) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/package.xml\n'}
+[9.284971] (traveler_msgs) CommandEnded: {'returncode': 0}
+[9.326601] (-) TimerEvent: {}
+[9.427097] (-) TimerEvent: {}
+[9.435131] (traveler_msgs) JobEnded: {'identifier': 'traveler_msgs', 'rc': 0}
+[9.437352] (turtle_high_controller) JobStarted: {'identifier': 'turtle_high_controller'}
+[9.484443] (turtle_high_controller) JobProgress: {'identifier': 'turtle_high_controller', 'progress': 'cmake'}
+[9.484709] (turtle_high_controller) Command: {'cmd': ['/usr/local/bin/cmake', '/home/qianlab/lassie-turtle/dependencies/traveler_controller', '-DCMAKE_INSTALL_PREFIX=/home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble')]), 'shell': False}
+[9.527287] (-) TimerEvent: {}
+[9.567405] (turtle_high_controller) StdoutLine: {'line': b'-- The C compiler identification is GNU 11.4.0\n'}
+[9.627473] (-) TimerEvent: {}
+[9.728037] (-) TimerEvent: {}
+[9.828461] (-) TimerEvent: {}
+[9.893576] (turtle_high_controller) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 11.4.0\n'}
+[9.928636] (-) TimerEvent: {}
+[10.029081] (-) TimerEvent: {}
+[10.129668] (-) TimerEvent: {}
+[10.179781] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[10.229823] (-) TimerEvent: {}
+[10.310917] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[10.318483] (turtle_high_controller) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc - skipped\n'}
+[10.318730] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[10.319047] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[10.329929] (-) TimerEvent: {}
+[10.367139] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[10.430098] (-) TimerEvent: {}
+[10.502287] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[10.510397] (turtle_high_controller) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ - skipped\n'}
+[10.510659] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[10.511051] (turtle_high_controller) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[10.513320] (turtle_high_controller) StdoutLine: {'line': b'-- Found ament_cmake: 1.3.10 (/opt/ros/humble/share/ament_cmake/cmake)\n'}
+[10.530237] (-) TimerEvent: {}
+[10.619083] (turtle_high_controller) StdoutLine: {'line': b'-- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter \n'}
+[10.630359] (-) TimerEvent: {}
+[10.692071] (turtle_high_controller) StdoutLine: {'line': b'-- Found rclcpp: 16.0.10 (/opt/ros/humble/share/rclcpp/cmake)\n'}
+[10.730530] (-) TimerEvent: {}
+[10.792493] (turtle_high_controller) StdoutLine: {'line': b'-- Found rosidl_generator_c: 3.1.5 (/opt/ros/humble/share/rosidl_generator_c/cmake)\n'}
+[10.796574] (turtle_high_controller) StdoutLine: {'line': b'-- Found rosidl_adapter: 3.1.5 (/opt/ros/humble/share/rosidl_adapter/cmake)\n'}
+[10.803399] (turtle_high_controller) StdoutLine: {'line': b'-- Found rosidl_generator_cpp: 3.1.5 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)\n'}
+[10.813585] (turtle_high_controller) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[10.827212] (turtle_high_controller) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[10.830616] (-) TimerEvent: {}
+[10.868742] (turtle_high_controller) StdoutLine: {'line': b'-- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)\n'}
+[10.870747] (turtle_high_controller) StdoutLine: {'line': b'-- Found rmw_fastrtps_cpp: 6.2.7 (/opt/ros/humble/share/rmw_fastrtps_cpp/cmake)\n'}
+[10.930769] (-) TimerEvent: {}
+[11.031219] (-) TimerEvent: {}
+[11.131709] (-) TimerEvent: {}
+[11.232064] (-) TimerEvent: {}
+[11.332431] (-) TimerEvent: {}
+[11.405532] (turtle_high_controller) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "3.0.2")  \n'}
+[11.432534] (-) TimerEvent: {}
+[11.532841] (-) TimerEvent: {}
+[11.633224] (-) TimerEvent: {}
+[11.733600] (-) TimerEvent: {}
+[11.833946] (-) TimerEvent: {}
+[11.934328] (-) TimerEvent: {}
+[11.977643] (turtle_high_controller) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/humble/include  \n'}
+[12.034499] (-) TimerEvent: {}
+[12.134916] (-) TimerEvent: {}
+[12.235325] (-) TimerEvent: {}
+[12.335725] (-) TimerEvent: {}
+[12.436071] (-) TimerEvent: {}
+[12.536491] (-) TimerEvent: {}
+[12.637123] (-) TimerEvent: {}
+[12.737682] (-) TimerEvent: {}
+[12.838098] (-) TimerEvent: {}
+[12.938578] (-) TimerEvent: {}
+[12.998722] (turtle_high_controller) StdoutLine: {'line': b"-- Using RMW implementation 'rmw_fastrtps_cpp' as default\n"}
+[13.006080] (turtle_high_controller) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD\n'}
+[13.038744] (-) TimerEvent: {}
+[13.096509] (turtle_high_controller) StdoutLine: {'line': b'-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success\n'}
+[13.097435] (turtle_high_controller) StdoutLine: {'line': b'-- Found Threads: TRUE  \n'}
+[13.138921] (-) TimerEvent: {}
+[13.152907] (turtle_high_controller) StdoutLine: {'line': b'-- Found control_msgs: 4.6.0 (/opt/ros/humble/share/control_msgs/cmake)\n'}
+[13.239065] (-) TimerEvent: {}
+[13.315952] (turtle_high_controller) StdoutLine: {'line': b'-- Found traveler_msgs: 0.0.0 (/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake)\n'}
+[13.339195] (-) TimerEvent: {}
+[13.384088] (turtle_high_controller) StdoutLine: {'line': b'-- Configuring done (3.9s)\n'}
+[13.401424] (turtle_high_controller) StdoutLine: {'line': b'-- Generating done (0.0s)\n'}
+[13.403025] (turtle_high_controller) StdoutLine: {'line': b'-- Build files have been written to: /home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller\n'}
+[13.413661] (turtle_high_controller) CommandEnded: {'returncode': 0}
+[13.414371] (turtle_high_controller) JobProgress: {'identifier': 'turtle_high_controller', 'progress': 'build'}
+[13.415102] (turtle_high_controller) Command: {'cmd': ['/usr/local/bin/cmake', '--build', '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller', '--', '-j16', '-l16'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble')]), 'shell': False}
+[13.431811] (turtle_high_controller) StdoutLine: {'line': b'[  7%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o\x1b[0m\n'}
+[13.432073] (turtle_high_controller) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o\x1b[0m\n'}
+[13.432148] (turtle_high_controller) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o\x1b[0m\n'}
+[13.432297] (turtle_high_controller) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o\x1b[0m\n'}
+[13.432395] (turtle_high_controller) StdoutLine: {'line': b'[ 38%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o\x1b[0m\n'}
+[13.432578] (turtle_high_controller) StdoutLine: {'line': b'[ 46%] \x1b[32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o\x1b[0m\n'}
+[13.432815] (turtle_high_controller) StdoutLine: {'line': b'[ 53%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o\x1b[0m\n'}
+[13.433447] (turtle_high_controller) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o\x1b[0m\n'}
+[13.433542] (turtle_high_controller) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o\x1b[0m\n'}
+[13.433605] (turtle_high_controller) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o\x1b[0m\n'}
+[13.433660] (turtle_high_controller) StdoutLine: {'line': b'[ 84%] \x1b[32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o\x1b[0m\n'}
+[13.439356] (-) TimerEvent: {}
+[13.539796] (-) TimerEvent: {}
+[13.640188] (-) TimerEvent: {}
+[13.740609] (-) TimerEvent: {}
+[13.841088] (-) TimerEvent: {}
+[13.941583] (-) TimerEvent: {}
+[14.042035] (-) TimerEvent: {}
+[14.100086] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:\x1b[m\x1b[K In function \xe2\x80\x98\x1b[01m\x1b[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[14.100359] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:201:12:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused variable \xe2\x80\x98\x1b[01m\x1b[Kinitial_insertion_depth_deg\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[14.100446] (turtle_high_controller) StderrLine: {'line': b'  201 |     double \x1b[01;35m\x1b[Kinitial_insertion_depth_deg\x1b[m\x1b[K = initial_insertion_depth_rad * 180 / M_PI;\n'}
+[14.100512] (turtle_high_controller) StderrLine: {'line': b'      |            \x1b[01;35m\x1b[K^~~~~~~~~~~~~~~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[14.142202] (-) TimerEvent: {}
+[14.242641] (-) TimerEvent: {}
+[14.343095] (-) TimerEvent: {}
+[14.443622] (-) TimerEvent: {}
+[14.544128] (-) TimerEvent: {}
+[14.644608] (-) TimerEvent: {}
+[14.745060] (-) TimerEvent: {}
+[14.845560] (-) TimerEvent: {}
+[14.946065] (-) TimerEvent: {}
+[15.046507] (-) TimerEvent: {}
+[15.146997] (-) TimerEvent: {}
+[15.247487] (-) TimerEvent: {}
+[15.348021] (-) TimerEvent: {}
+[15.448474] (-) TimerEvent: {}
+[15.548933] (-) TimerEvent: {}
+[15.649410] (-) TimerEvent: {}
+[15.749898] (-) TimerEvent: {}
+[15.850425] (-) TimerEvent: {}
+[15.951103] (-) TimerEvent: {}
+[16.052057] (-) TimerEvent: {}
+[16.152527] (-) TimerEvent: {}
+[16.253005] (-) TimerEvent: {}
+[16.353527] (-) TimerEvent: {}
+[16.454043] (-) TimerEvent: {}
+[16.554541] (-) TimerEvent: {}
+[16.655343] (-) TimerEvent: {}
+[16.755794] (-) TimerEvent: {}
+[16.856233] (-) TimerEvent: {}
+[16.956693] (-) TimerEvent: {}
+[17.057162] (-) TimerEvent: {}
+[17.157736] (-) TimerEvent: {}
+[17.258271] (-) TimerEvent: {}
+[17.358803] (-) TimerEvent: {}
+[17.459287] (-) TimerEvent: {}
+[17.559770] (-) TimerEvent: {}
+[17.660203] (-) TimerEvent: {}
+[17.760694] (-) TimerEvent: {}
+[17.861104] (-) TimerEvent: {}
+[17.961508] (-) TimerEvent: {}
+[18.061926] (-) TimerEvent: {}
+[18.162343] (-) TimerEvent: {}
+[18.262745] (-) TimerEvent: {}
+[18.363150] (-) TimerEvent: {}
+[18.463559] (-) TimerEvent: {}
+[18.563954] (-) TimerEvent: {}
+[18.664429] (-) TimerEvent: {}
+[18.764869] (-) TimerEvent: {}
+[18.865331] (-) TimerEvent: {}
+[18.965748] (-) TimerEvent: {}
+[19.066146] (-) TimerEvent: {}
+[19.166578] (-) TimerEvent: {}
+[19.267001] (-) TimerEvent: {}
+[19.367459] (-) TimerEvent: {}
+[19.470972] (-) TimerEvent: {}
+[19.571528] (-) TimerEvent: {}
+[19.671968] (-) TimerEvent: {}
+[19.772446] (-) TimerEvent: {}
+[19.872952] (-) TimerEvent: {}
+[19.974672] (-) TimerEvent: {}
+[20.075644] (-) TimerEvent: {}
+[20.176134] (-) TimerEvent: {}
+[20.276704] (-) TimerEvent: {}
+[20.549223] (-) TimerEvent: {}
+[20.649735] (-) TimerEvent: {}
+[20.724533] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:\x1b[m\x1b[K In member function \xe2\x80\x98\x1b[01m\x1b[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)\x1b[m\x1b[K\xe2\x80\x99:\n'}
+[20.731994] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:185:24:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[Kunused variable \xe2\x80\x98\x1b[01m\x1b[Kback_curr_time\x1b[m\x1b[K\xe2\x80\x99 [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[20.732535] (turtle_high_controller) StderrLine: {'line': b'  185 |                 double \x1b[01;35m\x1b[Kback_curr_time\x1b[m\x1b[K = deltaTime.count();\n'}
+[20.732865] (turtle_high_controller) StderrLine: {'line': b'      |                        \x1b[01;35m\x1b[K^~~~~~~~~~~~~~\x1b[m\x1b[K\n'}
+[20.749892] (-) TimerEvent: {}
+[20.850341] (-) TimerEvent: {}
+[20.950815] (-) TimerEvent: {}
+[21.051260] (-) TimerEvent: {}
+[21.151724] (-) TimerEvent: {}
+[21.252203] (-) TimerEvent: {}
+[21.352657] (-) TimerEvent: {}
+[21.453109] (-) TimerEvent: {}
+[21.553522] (-) TimerEvent: {}
+[21.654315] (-) TimerEvent: {}
+[21.755222] (-) TimerEvent: {}
+[21.855678] (-) TimerEvent: {}
+[21.956117] (-) TimerEvent: {}
+[22.056576] (-) TimerEvent: {}
+[22.157016] (-) TimerEvent: {}
+[22.203470] (turtle_high_controller) StderrLine: {'line': b'In file included from \x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8\x1b[m\x1b[K:\n'}
+[22.204051] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:46:14:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Ktimer\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[22.204324] (turtle_high_controller) StderrLine: {'line': b'   46 | static float \x1b[01;35m\x1b[Ktimer\x1b[m\x1b[K[10] = { 0 };\n'}
+[22.204399] (turtle_high_controller) StderrLine: {'line': b'      |              \x1b[01;35m\x1b[K^~~~~\x1b[m\x1b[K\n'}
+[22.204458] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:44:12:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kinit_done\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[22.204509] (turtle_high_controller) StderrLine: {'line': b'   44 | static int \x1b[01;35m\x1b[Kinit_done\x1b[m\x1b[K = 0;\n'}
+[22.204554] (turtle_high_controller) StderrLine: {'line': b'      |            \x1b[01;35m\x1b[K^~~~~~~~~\x1b[m\x1b[K\n'}
+[22.204599] (turtle_high_controller) StderrLine: {'line': b'\x1b[01m\x1b[K/home/qianlab/lassie-turtle/dependencies/traveler_controller/include/main.h:43:14:\x1b[m\x1b[K \x1b[01;35m\x1b[Kwarning: \x1b[m\x1b[K\xe2\x80\x98\x1b[01m\x1b[Kinit_cnt\x1b[m\x1b[K\xe2\x80\x99 defined but not used [\x1b[01;35m\x1b[K\x1b]8;;https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wunused-variable\x07-Wunused-variable\x1b]8;;\x07\x1b[m\x1b[K]\n'}
+[22.204763] (turtle_high_controller) StderrLine: {'line': b'   43 | static float \x1b[01;35m\x1b[Kinit_cnt\x1b[m\x1b[K = 0;\n'}
+[22.204834] (turtle_high_controller) StderrLine: {'line': b'      |              \x1b[01;35m\x1b[K^~~~~~~~\x1b[m\x1b[K\n'}
+[22.257192] (-) TimerEvent: {}
+[22.357648] (-) TimerEvent: {}
+[22.458080] (-) TimerEvent: {}
+[22.558556] (-) TimerEvent: {}
+[22.659084] (-) TimerEvent: {}
+[22.759617] (-) TimerEvent: {}
+[22.860058] (-) TimerEvent: {}
+[22.960502] (-) TimerEvent: {}
+[23.060970] (-) TimerEvent: {}
+[23.161408] (-) TimerEvent: {}
+[23.261829] (-) TimerEvent: {}
+[23.362287] (-) TimerEvent: {}
+[23.462706] (-) TimerEvent: {}
+[23.563086] (-) TimerEvent: {}
+[23.663558] (-) TimerEvent: {}
+[23.764063] (-) TimerEvent: {}
+[23.864494] (-) TimerEvent: {}
+[23.964916] (-) TimerEvent: {}
+[24.065321] (-) TimerEvent: {}
+[24.165688] (-) TimerEvent: {}
+[24.266079] (-) TimerEvent: {}
+[24.366470] (-) TimerEvent: {}
+[24.466880] (-) TimerEvent: {}
+[24.567266] (-) TimerEvent: {}
+[24.667669] (-) TimerEvent: {}
+[24.768064] (-) TimerEvent: {}
+[24.868444] (-) TimerEvent: {}
+[24.968844] (-) TimerEvent: {}
+[25.069270] (-) TimerEvent: {}
+[25.169697] (-) TimerEvent: {}
+[25.270122] (-) TimerEvent: {}
+[25.370560] (-) TimerEvent: {}
+[25.470992] (-) TimerEvent: {}
+[25.571460] (-) TimerEvent: {}
+[25.671870] (-) TimerEvent: {}
+[25.772262] (-) TimerEvent: {}
+[25.872701] (-) TimerEvent: {}
+[25.973111] (-) TimerEvent: {}
+[26.073535] (-) TimerEvent: {}
+[26.173930] (-) TimerEvent: {}
+[26.274366] (-) TimerEvent: {}
+[26.374789] (-) TimerEvent: {}
+[26.475349] (-) TimerEvent: {}
+[26.575828] (-) TimerEvent: {}
+[26.676181] (-) TimerEvent: {}
+[26.776542] (-) TimerEvent: {}
+[26.876931] (-) TimerEvent: {}
+[26.977353] (-) TimerEvent: {}
+[27.077736] (-) TimerEvent: {}
+[27.178125] (-) TimerEvent: {}
+[27.278543] (-) TimerEvent: {}
+[27.378935] (-) TimerEvent: {}
+[27.479327] (-) TimerEvent: {}
+[27.579744] (-) TimerEvent: {}
+[27.680255] (-) TimerEvent: {}
+[27.780793] (-) TimerEvent: {}
+[27.881182] (-) TimerEvent: {}
+[27.981568] (-) TimerEvent: {}
+[28.081946] (-) TimerEvent: {}
+[28.182361] (-) TimerEvent: {}
+[28.282752] (-) TimerEvent: {}
+[28.383145] (-) TimerEvent: {}
+[28.483572] (-) TimerEvent: {}
+[28.584005] (-) TimerEvent: {}
+[28.684387] (-) TimerEvent: {}
+[28.784817] (-) TimerEvent: {}
+[28.885238] (-) TimerEvent: {}
+[28.985646] (-) TimerEvent: {}
+[29.086049] (-) TimerEvent: {}
+[29.186466] (-) TimerEvent: {}
+[29.251039] (turtle_high_controller) StdoutLine: {'line': b'[ 92%] \x1b[32m\x1b[1mLinking CXX executable odrive_can_interface\x1b[0m\n'}
+[29.286605] (-) TimerEvent: {}
+[29.387023] (-) TimerEvent: {}
+[29.459855] (turtle_high_controller) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX executable turtle_high_controller\x1b[0m\n'}
+[29.487166] (-) TimerEvent: {}
+[29.588515] (-) TimerEvent: {}
+[29.689011] (-) TimerEvent: {}
+[29.703869] (turtle_high_controller) StdoutLine: {'line': b'[100%] Built target odrive_can_interface\n'}
+[29.789185] (-) TimerEvent: {}
+[29.889652] (-) TimerEvent: {}
+[29.990052] (-) TimerEvent: {}
+[30.090516] (-) TimerEvent: {}
+[30.191094] (-) TimerEvent: {}
+[30.291506] (-) TimerEvent: {}
+[30.323245] (turtle_high_controller) StdoutLine: {'line': b'[100%] Built target turtle_high_controller\n'}
+[30.343847] (turtle_high_controller) CommandEnded: {'returncode': 0}
+[30.386814] (turtle_high_controller) JobProgress: {'identifier': 'turtle_high_controller', 'progress': 'install'}
+[30.389001] (turtle_high_controller) Command: {'cmd': ['/usr/local/bin/cmake', '--install', '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller'], 'cwd': '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'qianlab'), ('GIT_ASKPASS', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass.sh'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/lib:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib'), ('MOTD_SHOWN', 'update-motd'), ('HOME', '/home/qianlab'), ('CONDA_SHLVL', '0'), ('OLDPWD', '/home/qianlab/lassie-turtle'), ('TERM_PROGRAM_VERSION', '1.92.2'), ('NVM_BIN', '/home/qianlab/.nvm/versions/node/v20.14.0/bin'), ('VSCODE_IPC_HOOK_CLI', '/run/user/1000/vscode-ipc-7ab5ff78-17b1-4590-8006-fe9ed8bf6c1c.sock'), ('NVM_INC', '/home/qianlab/.nvm/versions/node/v20.14.0/include/node'), ('ROS_PYTHON_VERSION', '3'), ('OPENAI_API_KEY', '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'), ('VSCODE_GIT_ASKPASS_MAIN', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/extensions/git/dist/askpass-main.js'), ('VSCODE_GIT_ASKPASS_NODE', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/node'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLORTERM', 'truecolor'), ('_CE_M', ''), ('WSL_DISTRO_NAME', 'Ubuntu-22.04'), ('NVM_DIR', '/home/qianlab/.nvm'), ('WAYLAND_DISPLAY', 'wayland-0'), ('ROS_DISTRO', 'humble'), ('LOGNAME', 'qianlab'), ('NAME', 'qianlab'), ('WSL_INTEROP', '/run/WSL/416_interop'), ('PULSE_SERVER', 'unix:/mnt/wslg/PulseServer'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('TERM', 'xterm-256color'), ('_CE_CONDA', ''), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/qianlab/.vscode-server/bin/fee1edb8d6d72a0ddff41e5f71a671c23ed924b9/bin/remote-cli:/home/qianlab/.local/bin:/home/qianlab/.nvm/versions/node/v20.14.0/bin:/home/qianlab/.cargo/bin:/opt/ros/humble/bin:/home/qianlab/miniconda3/condabin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/wsl/lib:/mnt/c/Windows/system32:/mnt/c/Windows:/mnt/c/Windows/System32/Wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Program Files/MATLAB/R2024a/bin:/mnt/c/Users/qianl/miniconda3:/mnt/c/Users/qianl/miniconda3/Library/mingw-w64/bin:/mnt/c/Users/qianl/miniconda3/Library/usr/bin:/mnt/c/Users/qianl/miniconda3/Library/bin:/mnt/c/Users/qianl/miniconda3/Scripts:/mnt/c/Users/qianl/AppData/Local/Microsoft/WindowsApps:/mnt/c/Users/qianl/AppData/Local/Programs/Microsoft VS Code/bin:/mnt/c/Users/qianl/Downloads/ffmpeg-master-latest-win64-gpl/ffmpeg-master-latest-win64-gpl/bin/ffmpeg.exe:/mnt/c/Users/qianl/AppData/Local/Programs/Ollama:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000/'), ('DISPLAY', ':0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('VSCODE_GIT_IPC_HANDLE', '/run/user/1000/vscode-git-c62e4516df.sock'), ('TERM_PROGRAM', 'vscode'), ('AMENT_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble'), ('CONDA_PYTHON_EXE', '/home/qianlab/miniconda3/bin/python'), ('SHELL', '/bin/bash'), ('GIT_DISCOVERY_ACROSS_FILESYSTEM', '1'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('VSCODE_GIT_ASKPASS_EXTRA_ARGS', ''), ('PWD', '/home/qianlab/lassie-turtle/dependencies/build/turtle_high_controller'), ('CONDA_EXE', '/home/qianlab/miniconda3/bin/conda'), ('NVM_CD_FLAGS', ''), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs/local/lib/python3.10/dist-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages'), ('COLCON', '1'), ('WSL2_GUI_APPS_ENABLED', '1'), ('HOSTTYPE', 'x86_64'), ('WSLENV', 'VSCODE_WSL_EXT_LOCATION/up'), ('CMAKE_PREFIX_PATH', '/home/qianlab/lassie-turtle/dependencies/install/traveler_msgs:/opt/ros/humble')]), 'shell': False}
+[30.391027] (turtle_high_controller) StdoutLine: {'line': b'-- Install configuration: "Debug"\n'}
+[30.391579] (-) TimerEvent: {}
+[30.391913] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller\n'}
+[30.420089] (turtle_high_controller) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""\n'}
+[30.420449] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface\n'}
+[30.439246] (turtle_high_controller) StdoutLine: {'line': b'-- Set runtime path of "/home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""\n'}
+[30.440336] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller\n'}
+[30.440675] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller\n'}
+[30.441290] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh\n'}
+[30.441559] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv\n'}
+[30.441751] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh\n'}
+[30.442006] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv\n'}
+[30.442163] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash\n'}
+[30.442672] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh\n'}
+[30.442775] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh\n'}
+[30.442836] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv\n'}
+[30.442884] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/package.dsv\n'}
+[30.443051] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller\n'}
+[30.443203] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake\n'}
+[30.443372] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake\n'}
+[30.443512] (turtle_high_controller) StdoutLine: {'line': b'-- Installing: /home/qianlab/lassie-turtle/dependencies/install/turtle_high_controller/share/turtle_high_controller/package.xml\n'}
+[30.446769] (turtle_high_controller) CommandEnded: {'returncode': 0}
+[30.491708] (-) TimerEvent: {}
+[30.506270] (turtle_high_controller) JobEnded: {'identifier': 'turtle_high_controller', 'rc': 0}
+[30.509756] (-) EventReactorShutdown: {}

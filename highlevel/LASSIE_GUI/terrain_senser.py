@@ -5,9 +5,15 @@ class TerrainSensor:
                  torque_constant=0.083, 
                  flipper_length=0.111, 
                  flipper_depth=0.055, 
-                 motor_center_to_surface=0.068):
+                 motor_center_to_surface=0.068,
+                 k_p=1e6,
+                 k_s=1e6,
+                 k_e=1e6
+                 ):
         
-
+        self.k_p = k_p
+        self.k_s = k_s
+        self.k_e = k_e
         self.torque_constant = torque_constant
         self.flipper_length = flipper_length
         self.flipper_depth = flipper_depth
@@ -20,24 +26,51 @@ class TerrainSensor:
                          right_adduction_curr, 
                          turtle_state_list):
         # Calculate forces, insertion depths, and terrain properties
-        seg_adduction_force_adjust, \
-            seg_sweeping_force_adjust, \
-                seg_insertion_depth = self.calculate_forces_and_depth(right_sweeping_pos, 
-                                                                      right_adduction_pos, 
-                                                                      right_sweeping_curr, 
-                                                                      right_adduction_curr)
-        penetration_slope = self.calculate_penetration_slope(seg_adduction_force_adjust, 
-                                                                                           seg_insertion_depth, 
-                                                                                           turtle_state_list)
-        max_extraction_force = self.calculate_max_extraction_force(seg_adduction_force_adjust, 
-                                                                   turtle_state_list)
-        avg_shear_force = self.calculate_average_shear_force(seg_sweeping_force_adjust, 
-                                                             turtle_state_list)
+        segments4 = self.get_segments(turtle_state_list, 4)
 
-        return penetration_slope, max_extraction_force, avg_shear_force
+        if len(segments4) > 0:
+
+            seg_adduction_force_adjust, \
+                seg_sweeping_force_adjust, \
+                    seg_insertion_depth = self.calculate_forces_and_depth(right_sweeping_pos, 
+                                                                        right_adduction_pos, 
+                                                                        right_sweeping_curr, 
+                                                                        right_adduction_curr)
+            penetration_slope = self.calculate_penetration_slope(seg_adduction_force_adjust, 
+                                                                                            seg_insertion_depth, 
+                                                                                            turtle_state_list)
+            max_extraction_force = self.calculate_max_extraction_force(seg_adduction_force_adjust, 
+                                                                    turtle_state_list)
+            avg_shear_force = self.calculate_average_shear_force(seg_sweeping_force_adjust, 
+                                                                turtle_state_list)
+            self.k_p = penetration_slope/1e-5
+            self.k_s = avg_shear_force/1e-5
+            self.k_e = avg_shear_force/1e-5
+
+            if(self.k_p <= 1e3 ):
+                self.k_p = 1e3
+            if(self.k_s <= 1e3 ):
+                self.k_s = 1e3
+            if(self.k_e <= 1e3 ):
+                self.k_e = 1e3
+        else:
+            print("no trial tested yet")
+            pass
+        
+        
+
+        return self.k_p, self.k_s, self.k_e
     
 
     def calculate_forces_and_depth(self, sweeping_pos, adduction_pos, sweeping_curr, adduction_curr):
+        min_length = min(len(sweeping_pos), len(adduction_pos), len(sweeping_curr), len(adduction_curr))
+
+        # Step 2: Slice each array to the minimum length
+        sweeping_pos = sweeping_pos[:min_length]
+        adduction_pos = adduction_pos[:min_length]
+        sweeping_curr = sweeping_curr[:min_length]
+        adduction_curr = adduction_curr[:min_length]
+
         # Calculate forces
         seg_adduction_force = (adduction_curr * self.torque_constant) / self.flipper_length
         seg_sweeping_force = (sweeping_curr * self.torque_constant) / self.flipper_length
@@ -86,7 +119,7 @@ class TerrainSensor:
         return avg_shear_force
 
 
-    def get_segments(array, value):
+    def get_segments(self, array, value):
         segments = []
         start = None
         for i, v in enumerate(array):

@@ -72,7 +72,7 @@ class TravelerApp(MDApp):
     def __init__(self, node, multi_camera=False, scale_size=1, scale_size_2=1):
         super().__init__()
         self.start_robot = False
-        self.drag_traj = 1
+        self.drag_traj = 5
         self.theme_cls.theme_style = "Light" 
         self.theme_cls.primary_palette  = "BlueGray"
         self.ground_height = 0.17
@@ -333,7 +333,10 @@ class TravelerApp(MDApp):
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
-                print("start preset gait without adaptation: ", self.gui_message.data)
+                if(self.start_flag):
+                    print("start preset gait without adaptation: ", self.gui_message.data)
+                else:
+                    print("end preset gait ")
                 self.ros_node.start_preset_gait(self.gui_message)
                 
             elif(self.drag_traj == 6):
@@ -343,7 +346,10 @@ class TravelerApp(MDApp):
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # tranlate into m/s
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)               # tranlate into m/s
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)       # seconds
-                print("start optimizing gait with initial: ", self.gui_message.data)
+                if(self.start_flag):
+                    print("start optimizing gait with initial: ", self.gui_message.data)
+                else:
+                    print("end optimizing gait ")    
                 self.ros_node.start_gait_optimization(self.gui_message)
  
 
@@ -357,17 +363,6 @@ class TravelerApp(MDApp):
     def save_configuration(self):
         self.gui_message = Float64MultiArray()
         self.start_flag = 0
-        #[0]: if start the robot or stop the robot
-        if(self.screen.ids.drop_item.text == "Extrude"):
-            self.drag_traj = 1.0
-        elif(self.screen.ids.drop_item.text == "Traverse Workspace"):
-            self.drag_traj = 2.0
-        elif(self.screen.ids.drop_item.text == "Penetrate and Shear"):
-            self.drag_traj = 3.0
-        elif(self.screen.ids.drop_item.text == "Free Moving"):
-            self.drag_traj = 4.0
-        else: # default trajectory value (should never occur)
-            self.drag_traj = 0.0
         self.gui_message.data.append(self.start_flag)
         self.gui_message.data.append(float(self.drag_traj))                                             #[1]: add drag traj
         if(self.ros_node.id == "leg"):
