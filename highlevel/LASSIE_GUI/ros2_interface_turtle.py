@@ -456,7 +456,7 @@ class ControlNodeTurtle(Node):
             print("optimizing")
             print(self.control_gait.data[2:8])
             print(self.k_s_)
-            self.gait_u_, predict_speed= self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait.data[2:8])
+            self.gait_u_= self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait.data[2:8])
             print(self.gait_u_)
             self.tem_message.data.extend(self.gait_u_)
             self.publisher_.publish(self.tem_message)
