@@ -1,0 +1,40 @@
+[0.460s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/highlevel/traveler_optitrack': PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/prefix_override:/home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build install --record /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[0.603s] running egg_info
+[0.603s] creating ../../build/traveler_optitrack/traveler_optitrack.egg-info
+[0.603s] writing ../../build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.603s] writing dependency_links to ../../build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.603s] writing entry points to ../../build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.603s] writing requirements to ../../build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.603s] writing top-level names to ../../build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.606s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.626s] reading manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.627s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.627s] running build
+[0.627s] running build_py
+[0.627s] creating /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build
+[0.627s] creating /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib
+[0.627s] creating /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.627s] copying traveler_optitrack/traveler_optitrack.py -> /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.627s] copying traveler_optitrack/import socket.py -> /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.627s] copying traveler_optitrack/__init__.py -> /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.627s] running install
+[0.628s] running install_lib
+[0.629s] creating /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.629s] copying /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack/traveler_optitrack.py -> /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.629s] copying /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack/import socket.py -> /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.629s] copying /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build/lib/traveler_optitrack/__init__.py -> /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.629s] byte-compiling /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/traveler_optitrack.py to traveler_optitrack.cpython-38.pyc
+[0.630s] byte-compiling /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/import socket.py to import socket.cpython-38.pyc
+[0.631s] byte-compiling /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/__init__.py to __init__.cpython-38.pyc
+[0.631s] running install_data
+[0.631s] creating /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/share/ament_index
+[0.631s] creating /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/share/ament_index/resource_index
+[0.631s] creating /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/share/ament_index/resource_index/packages
+[0.631s] copying resource/traveler_optitrack -> /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/share/ament_index/resource_index/packages
+[0.631s] copying package.xml -> /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/share/traveler_optitrack
+[0.631s] running install_egg_info
+[0.632s] Copying ../../build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.633s] running install_scripts
+[0.644s] Installing traveler_optitrack script to /home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/traveler_optitrack
+[0.644s] writing list of installed files to '/home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/install.log'
+[0.659s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/highlevel/traveler_optitrack' returned '0': PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/prefix_override:/home/qianlab/Desktop/lassie-turtle/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/build install --record /home/qianlab/Desktop/lassie-turtle/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data

@@ -1,0 +1,103 @@
+[0.009s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller -DCMAKE_INSTALL_PREFIX=/home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller
+[0.053s] -- The C compiler identification is GNU 9.4.0
+[0.086s] -- The CXX compiler identification is GNU 9.4.0
+[0.089s] -- Check for working C compiler: /usr/bin/cc
+[0.135s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.136s] -- Detecting C compiler ABI info
+[0.182s] -- Detecting C compiler ABI info - done
+[0.193s] -- Detecting C compile features
+[0.193s] -- Detecting C compile features - done
+[0.196s] -- Check for working CXX compiler: /usr/bin/c++
+[0.248s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.249s] -- Detecting CXX compiler ABI info
+[0.302s] -- Detecting CXX compiler ABI info - done
+[0.314s] -- Detecting CXX compile features
+[0.314s] -- Detecting CXX compile features - done
+[0.317s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.334s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.335s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.462s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.490s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.494s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.545s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.564s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.612s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.648s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.648s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.649s] -- Looking for pthread.h
+[0.694s] -- Looking for pthread.h - found
+[0.695s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.746s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[0.746s] -- Looking for pthread_create in pthreads
+[0.784s] -- Looking for pthread_create in pthreads - not found
+[0.784s] -- Looking for pthread_create in pthread
+[0.836s] -- Looking for pthread_create in pthread - found
+[0.837s] -- Found Threads: TRUE  
+[0.948s] -- Found control_msgs: 2.5.1 (/opt/ros/foxy/share/control_msgs/cmake)
+[1.191s] -- Found traveler_msgs: 0.0.0 (/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/share/traveler_msgs/cmake)
+[1.237s] -- Configuring done
+[1.245s] -- Generating done
+[1.246s] -- Build files have been written to: /home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller
+[1.252s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller -DCMAKE_INSTALL_PREFIX=/home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller
+[1.255s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller -- -j12 -l12
+[1.281s] [35m[1mScanning dependencies of target odrive_can_interface[0m
+[1.282s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[1.315s] [ 30%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/socketcan_interface.cpp.o[0m
+[1.315s] [ 30%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[1.315s] [ 30%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o[0m
+[1.316s] [ 30%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[1.320s] [ 38%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[1.322s] [ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o[0m
+[1.322s] [ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[1.322s] [ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o[0m
+[1.322s] [ 69%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[1.323s] [ 76%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[1.337s] [ 84%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[1.834s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[1.834s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:200:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.835s]   200 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+[1.835s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[3.169s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[3.169s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:126:24:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Krunning_t[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+[3.169s]   126 |                 double [01;35m[Krunning_t[m[K;
+[3.169s]       |                        [01;35m[K^~~~~~~~~[m[K
+[3.170s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:377:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[3.170s]   377 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+[3.170s]       |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[3.224s] In file included from [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[3.224s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.224s]    46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[3.224s]       |              [01;35m[K^~~~~[m[K
+[3.224s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.224s]    44 | static int [01;35m[Kinit_done[m[K = 0;
+[3.224s]       |            [01;35m[K^~~~~~~~~[m[K
+[3.224s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.224s]    43 | static float [01;35m[Kinit_cnt[m[K = 0;
+[3.224s]       |              [01;35m[K^~~~~~~~[m[K
+[6.985s] [ 92%] [32m[1mLinking CXX executable odrive_can_interface[0m
+[7.258s] [ 92%] Built target odrive_can_interface
+[7.456s] [100%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[7.791s] [100%] Built target turtle_high_controller
+[7.800s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller -- -j12 -l12
+[7.825s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller
+[7.831s] -- Install configuration: "Debug"
+[7.831s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+[7.838s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+[7.838s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+[7.841s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""
+[7.842s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+[7.842s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+[7.843s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+[7.844s] -- Installing: /home/qianlab/Desktop/lassie-turtle/install/turtle_high_controller/share/turtle_high_controller/package.xml
+[7.846s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/Desktop/lassie-turtle/build/turtle_high_controller

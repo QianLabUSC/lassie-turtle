@@ -1,0 +1,27 @@
+[0.008s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12
+[0.040s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.052s] [ 38%] Built target odrive_can_interface
+[0.070s] [ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.070s] [ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.070s] [ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.369s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[0.369s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:200:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.369s]   200 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+[0.369s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.997s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[0.997s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:126:24:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Krunning_t[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+[0.997s]   126 |                 double [01;35m[Krunning_t[m[K;
+[0.997s]       |                        [01;35m[K^~~~~~~~~[m[K
+[0.997s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:378:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.997s]   378 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+[0.997s]       |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[1.107s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::upperproxy::handle_gui(std_msgs::msg::Float64MultiArray_<std::allocator<void> >::SharedPtr)[m[K’:
+[1.107s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/upperproxy.cpp:34:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ktmsg[m[K’ was not declared in this scope; did you mean ‘[01m[Kmsg[m[K’?
+[1.107s]    34 |         if ([01;31m[Ktmsg[m[K->data[1] == 5){
+[1.107s]       |             [01;31m[K^~~~[m[K
+[1.108s]       |             [32m[Kmsg[m[K
+[2.074s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:102: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+[2.074s] make[2]: *** Waiting for unfinished jobs....
+[2.316s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[2.317s] make: *** [Makefile:141: all] Error 2
+[2.319s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12

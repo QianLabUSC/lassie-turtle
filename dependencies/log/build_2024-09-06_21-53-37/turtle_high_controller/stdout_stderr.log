@@ -1,0 +1,25 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 38%] Built target odrive_can_interface
+[ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[ 61%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:200:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  200 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:126:24:[m[K [01;35m[Kwarning: [m[Kvariable ‘[01m[Krunning_t[m[K’ set but not used [[01;35m[K-Wunused-but-set-variable[m[K]
+  126 |                 double [01;35m[Krunning_t[m[K;
+      |                        [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:378:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  378 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+      |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::upperproxy::handle_gui(std_msgs::msg::Float64MultiArray_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/upperproxy.cpp:34:13:[m[K [01;31m[Kerror: [m[K‘[01m[Ktmsg[m[K’ was not declared in this scope; did you mean ‘[01m[Kmsg[m[K’?
+   34 |         if ([01;31m[Ktmsg[m[K->data[1] == 5){
+      |             [01;31m[K^~~~[m[K
+      |             [32m[Kmsg[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:102: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2
