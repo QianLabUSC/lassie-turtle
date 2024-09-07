@@ -104,10 +104,27 @@ void lowerproxy::calculate_position(turtle &turtle_ )
 
                 std::chrono::high_resolution_clock::time_point current_time1;
                 std::chrono::duration<double> deltaTime1;
-                
+
+                std::chrono::high_resolution_clock::time_point TurtleBackCurrentTime;
+                std::chrono::duration<double> TurtleBackRunningTime;
+                double TurtleBackRunningTimeCount;
+
+                std::chrono::high_resolution_clock::time_point TurtlePenetrationCurrentTime;
+                std::chrono::duration<double> TurtlePenetrationRunningTime;
+                double TurtlePenetrationRunningTimeCount;   
+
+                std::chrono::high_resolution_clock::time_point TurtleSweepingCurrentTime;
+                std::chrono::duration<double> TurtleSweepingRunningTime;
+                double TurtleSweepingRunningTimeCount;   
+
+                std::chrono::high_resolution_clock::time_point TurtleExtractionCurrentTime;
+                std::chrono::duration<double> TurtleExtractionRunningTime;
+                double TurtleExtractionRunningTimeCount;      
+
                 double pre_t;
                 double curr_initial_phase_time;
                 double running_t;
+                double corres_t;
 
                 switch (currentState) {
                     case ProgramState::FirstIteration:                       
@@ -168,8 +185,177 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         curr_initial_phase_time = deltaTime1.count();
                         turtle_.turtle_control.if_control = true;
                         running_t = curr_initial_phase_time- initial_phase_time - set_close_control_time;
-                        boundingGAIT(turtle_, running_t);           
-                        std::cout << "running Interation: " << running_t << std::endl;
+                        double gamma1 = 0;
+                        double theta1 = 0;
+                        double gamma2 = 0;
+                        double theta2 = 0;
+                        float left_hori_servo = 0; // 原始值 100 手动调整为 94
+                        float right_hori_servo = 0;
+                      
+
+                        Rectangle_Params rectangle_params;
+                        
+                        switch(TurtleCurrentPhase){
+                        
+                            case Turtlephase::GetTurtleGUICommand:
+                                //Fixed insertion depth parameters and gamma solver parameters
+
+
+                                //get data this is slow version 
+                                // float horizontal_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
+                             
+                                rectangle_params.l1 = 0.120; // flipper length-new shorter flipper
+                                rectangle_params.turtle_height = 0.0645; //height from flipper to ground
+                                rectangle_params.lower_point = 0.05;
+                                rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * rectangle_params.l1 * 2 / turtle_.traj_data.drag_speed;
+                                rectangle_params.period_up = 0.8; //customize back phase time
+                                rectangle_params.period_left = turtle_.traj_data.servo_speed;
+                                rectangle_params.period_right = turtle_.traj_data.servo_speed;
+                                rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depend on insertion depth
+                                rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
+                                rectangle_params.period_waiting_time = 0;
+                                rectangle_params.extraction_angle = turtle_.traj_data.extraction_angle;
+                                if (rectangle_params.vertical_range > 0.07) {
+                                    rectangle_params.vertical_range = 0.07;
+                                }
+
+                                std::cout << "desired insertion depth(m)" << rectangle_params.vertical_range << std::endl; // m
+
+                                
+                                // fixed insertion depth initial calculation
+                                rectangle_params.initial_insertion_depth_rad = asin((rectangle_params.vertical_range + rectangle_params.turtle_height) / sqrt((rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)) * (rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)) + rectangle_params.lower_point * rectangle_params.lower_point)) - atan(rectangle_params.lower_point / (rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)));
+                                rectangle_params.initial_insertion_depth_deg = rectangle_params.initial_insertion_depth_rad * 180 / M_PI;
+                                // cout << "TMOD" << t_mod << endl;
+
+                                TurtleRunningstarting_time= std::chrono::high_resolution_clock::now();
+                                TurtleCurrentPhase=Turtlephase::TurleBack;
+                                break;
+                            case Turtlephase::TurleBack:
+                                TurtleBackCurrentTime = std::chrono::high_resolution_clock::now();
+                                TurtleBackRunningTime =TurtleBackCurrentTime-TurtleRunningstarting_time;
+                                TurtleBackRunningTimeCount=TurtleBackRunningTime.count();
+
+                                if(TurtleBackRunningTimeCount<=rectangle_params.period_up){
+                                    corres_t = TurtleBackRunningTimeCount / rectangle_params.period_up;
+                                    gamma1 = left_hori_servo + rectangle_params.extraction_angle;
+                                    theta1 = - rectangle_params.horizontal_range + 2 * rectangle_params.horizontal_range * corres_t;
+                                    gamma2 = right_hori_servo - rectangle_params.extraction_angle;
+                                    theta2 = rectangle_params.horizontal_range - 2 * rectangle_params.horizontal_range * corres_t;
+                                    turtle_.turtle_chassis.gait_state = 1;
+                                    std::cout << "BackPhase" << std::endl;
+
+                                    // 设置伺服位置
+                                    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+                                    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+                                    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
+                                    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+                                }else{
+                                    TurtleCurrentPhase = Turtlephase::TurtlePentration;
+                                }
+                                break;
+
+
+
+                            case Turtlephase::TurtlePentration:
+                                TurtlePenetrationCurrentTime = std::chrono::high_resolution_clock::now();
+                                TurtlePenetrationRunningTime =TurtlePenetrationCurrentTime-TurtleRunningstarting_time;
+                                TurtlePenetrationRunningTimeCount=TurtlePenetrationRunningTime.count()-rectangle_params.period_up;
+
+                                if(TurtlePenetrationRunningTimeCount<=rectangle_params.period_right){
+                                    corres_t = TurtlePenetrationRunningTimeCount / rectangle_params.period_right;
+                                    theta1 = rectangle_params.horizontal_range;
+                                    gamma1 = left_hori_servo + rectangle_params.extraction_angle - (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
+                                    theta2 = -rectangle_params.horizontal_range;
+                                    gamma2 = right_hori_servo - rectangle_params.extraction_angle + (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
+                                    turtle_.turtle_chassis.gait_state = 2;
+                                    std::cout << "PenetrationPhase" << std::endl;
+
+                                    // 设置伺服位置
+                                    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+                                    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+                                    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
+                                    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+                                }else{
+                                    TurtleCurrentPhase = Turtlephase::TurtleSweeping;
+                                }
+                                break;
+
+                            case Turtlephase::TurtleSweeping:
+
+                                TurtleSweepingCurrentTime = std::chrono::high_resolution_clock::now();
+                                TurtleSweepingRunningTime =TurtleSweepingCurrentTime-TurtleRunningstarting_time;
+                                TurtleSweepingRunningTimeCount=TurtleSweepingRunningTime.count()-rectangle_params.period_up-rectangle_params.period_right;
+
+                                if(TurtleSweepingRunningTimeCount<=rectangle_params.period_down){
+                                    corres_t = TurtleSweepingRunningTimeCount / rectangle_params.period_down;
+
+                                    theta1 = rectangle_params.horizontal_range - 2 * rectangle_params.horizontal_range * corres_t;
+                                    gamma1 = left_hori_servo - (asin((rectangle_params.vertical_range + rectangle_params.turtle_height) / sqrt((rectangle_params.l1 * cos(-theta1 * M_PI / 180)) * (rectangle_params.l1 * cos(-theta1 * M_PI / 180)) + rectangle_params.lower_point * rectangle_params.lower_point)) - atan(rectangle_params.lower_point / (rectangle_params.l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+                                    theta2 = -rectangle_params.horizontal_range + 2 * rectangle_params.horizontal_range * corres_t;
+                                    gamma2 = right_hori_servo + (asin((rectangle_params.vertical_range + rectangle_params.turtle_height) / sqrt((rectangle_params.l1 * cos(-theta1 * M_PI / 180)) * (rectangle_params.l1 * cos(-theta1 * M_PI / 180)) + rectangle_params.lower_point * rectangle_params.lower_point)) - atan(rectangle_params.lower_point / (rectangle_params.l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+                                    turtle_.turtle_chassis.gait_state = 3;
+                                    std::cout << "SweepingPhase" << std::endl;
+
+                                    // 设置伺服位置
+                                    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+                                    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+                                    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
+                                    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+                                }else{
+                                    TurtleCurrentPhase = Turtlephase::TurtleExtraction;
+                                }
+                                break;
+                            
+
+                            case Turtlephase::TurtleExtraction:
+
+                                TurtleExtractionCurrentTime = std::chrono::high_resolution_clock::now();
+                                TurtleExtractionRunningTime =TurtleExtractionCurrentTime-TurtleRunningstarting_time;
+                                TurtleExtractionRunningTimeCount=TurtleExtractionRunningTime.count()-rectangle_params.period_up-rectangle_params.period_right-rectangle_params.period_down;
+
+                                if(TurtleExtractionRunningTimeCount<=rectangle_params.period_left){
+                                    corres_t = TurtleExtractionRunningTimeCount / rectangle_params.period_left;
+
+                                    theta1 = -rectangle_params.horizontal_range;
+                                    gamma1 = left_hori_servo - (rectangle_params.initial_insertion_depth_rad * 180 / M_PI) + (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
+                                    theta2 = rectangle_params.horizontal_range;
+                                    gamma2 = right_hori_servo + (rectangle_params.initial_insertion_depth_rad * 180 / M_PI) - (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
+                                    turtle_.turtle_chassis.gait_state = 4;
+                                    std::cout << "ExtractionPhase" << std::endl;
+
+                                    // 设置伺服位置
+                                    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
+                                    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+                                    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
+                                    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
+                                    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
+                                    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+                                }else{
+                                    TurtleCurrentPhase = Turtlephase::GetTurtleGUICommand;
+                                }
+                                break;
+        
+    
+
+                            
+                        }
+
+                        // boundingGAIT(turtle_, running_t);           
+                        // std::cout << "running Interation: " << running_t << std::endl;
                         break;
                 }
 
@@ -178,6 +364,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
             else{
                 turtle_.turtle_chassis.gait_state = 5;
                 currentState = ProgramState::FirstIteration;
+                TurtleCurrentPhase = Turtlephase::GetTurtleGUICommand;
                 turtle_.turtle_control.if_control = false;
                 // probably not used 
                 auto current_back_time = std::chrono::high_resolution_clock::now();

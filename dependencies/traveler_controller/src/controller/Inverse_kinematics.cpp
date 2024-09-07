@@ -177,6 +177,12 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depend on insertion depth
     rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
     rectangle_params.period_waiting_time = 0;
+    double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
+    if (desierd_insertion_depth > 0.07) {
+        desierd_insertion_depth = 0.07;
+    }
+
+    cout << "desired insertion depth(m)" << desierd_insertion_depth << endl; // m
 
     float hold_time_1 = 0; // 新阶段1的保持时间
     float hold_time_2 = 0; // 新阶段2的保持时间
@@ -188,13 +194,6 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float t_mod = fmod(t, total_period);
     turtle_.turtle_chassis.step_count = (t - t_mod) / total_period;
 
-    double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
-
-    if (desierd_insertion_depth > 0.07) {
-        desierd_insertion_depth = 0.07;
-    }
-
-    cout << "desired insertion depth(m)" << desierd_insertion_depth << endl; // m
 
     // fixed insertion depth initial calculation
     double initial_insertion_depth_rad = asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(horizontal_angle * M_PI / 180)) * (l1 * cos(horizontal_angle * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(horizontal_angle * M_PI / 180)));
