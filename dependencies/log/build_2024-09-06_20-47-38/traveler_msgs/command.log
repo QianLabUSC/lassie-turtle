@@ -1,0 +1,4 @@
+Invoking command in '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/traveler_msgs -- -j16 -l16
+Invoked command in '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --build /home/qianlab/lassie-turtle/dependencies/build/traveler_msgs -- -j16 -l16
+Invoking command in '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/qianlab/lassie-turtle/dependencies/build/traveler_msgs
+Invoked command in '/home/qianlab/lassie-turtle/dependencies/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/local/bin/cmake --install /home/qianlab/lassie-turtle/dependencies/build/traveler_msgs
