@@ -338,12 +338,12 @@ class TravelerApp(MDApp):
                 self.ros_node.start_preset_gait(self.gui_message)
                 
             elif(self.drag_traj == 6):
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_3.value))/1000)           
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_4.value))/1000)              
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_5.value))/1000)               
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_6.value))/1000)  
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_2.value))/1000 )    
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_1.value)) * np.pi / 180  )              
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_3.value))/1000)           
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_4.value))/1000)              
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_5.value))/1000)               
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_6.value))/1000)  
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_2.value))/1000 )    
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_1.value)) * np.pi / 180  )              
                         
                      
                 if(self.start_flag):

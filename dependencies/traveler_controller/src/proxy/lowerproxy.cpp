@@ -6,7 +6,6 @@
  */
 
 #include "proxy/lowerproxy.h"
-#include "controller/inverse_kinematics.h"
 #include <fstream>
 #include <iostream>
 #include <iomanip>
@@ -193,11 +192,11 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         float right_hori_servo = 0;
                       
 
-                        Rectangle_Params rectangle_params;
                         
                         switch(TurtleCurrentPhase){
                         
                             case Turtlephase::GetTurtleGUICommand:
+
                                 //Fixed insertion depth parameters and gamma solver parameters
 
 
@@ -209,8 +208,8 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                 rectangle_params.lower_point = 0.05;
                                 rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * rectangle_params.l1 * 2 / turtle_.traj_data.drag_speed;
                                 rectangle_params.period_up = turtle_.traj_data.lateral_angle_range * rectangle_params.l1 * 2 / turtle_.traj_data.back_speed ;
-                                rectangle_params.period_left = turtle_.traj_data.insertion_depth/turtle_.traj_data.penetration_speed;
-                                rectangle_params.period_right = turtle_.traj_data.insertion_depth/turtle_.traj_data.servo_speed;
+                                rectangle_params.period_left = turtle_.traj_data.insertion_depth/turtle_.traj_data.servo_speed;
+                                rectangle_params.period_right = turtle_.traj_data.insertion_depth/turtle_.traj_data.penetration_speed;
                                 rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depend on insertion depth
                                 rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
                                 rectangle_params.period_waiting_time = 0;
@@ -220,8 +219,13 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                 }
 
                                 std::cout << "desired insertion depth(m)" << rectangle_params.vertical_range << std::endl; // m
+                                // std::cout << "rectangle_params.l1" << rectangle_params.l1<< std::endl; // m
+                                std::cout << "sweepingtime" << rectangle_params.period_down<< std::endl; // m
+                                std::cout << "backtime" << rectangle_params.period_up<< std::endl; // m
+                                std::cout << "extraction time" << rectangle_params.period_left<< std::endl; // m
+                                std::cout << "penetration time" << rectangle_params.period_right<< std::endl; // m
 
-                                
+                                std::cout << "rectangle_params.horizontal_range" <<rectangle_params.horizontal_range<< std::endl; // m
                                 // fixed insertion depth initial calculation
                                 rectangle_params.initial_insertion_depth_rad = asin((rectangle_params.vertical_range + rectangle_params.turtle_height) / sqrt((rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)) * (rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)) + rectangle_params.lower_point * rectangle_params.lower_point)) - atan(rectangle_params.lower_point / (rectangle_params.l1 * cos(rectangle_params.horizontal_range * M_PI / 180)));
                                 rectangle_params.initial_insertion_depth_deg = rectangle_params.initial_insertion_depth_rad * 180 / M_PI;
@@ -243,8 +247,13 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     theta2 = rectangle_params.horizontal_range - 2 * rectangle_params.horizontal_range * corres_t;
                                     turtle_.turtle_chassis.gait_state = 1;
                                     std::cout << "BackPhase" << std::endl;
-
-                                    
+                                    std::cout << "sweeping range" << rectangle_params.horizontal_range<< std::endl; 
+                                    std::cout << "Backtime" << rectangle_params.period_up<< std::endl; 
+                                    std::cout << "theta_left" << theta1<< std::endl; 
+                                    std::cout << "theta_right" << theta2<< std::endl; 
+                                    // std::cout << "gamma_left" << gamma1<< std::endl; 
+                                    // std::cout << "gamma_right" << gamma2<< std::endl; 
+                                    std::cout << "CurrentBacktime" << TurtleBackRunningTimeCount<< std::endl; 
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
                                     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
                                     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
@@ -273,6 +282,10 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     gamma2 = right_hori_servo - rectangle_params.extraction_angle + (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
                                     turtle_.turtle_chassis.gait_state = 2;
                                     std::cout << "PenetrationPhase" << std::endl;
+                                    std::cout << "theta_left" << theta1<< std::endl; 
+                                    std::cout << "theta_right" << theta2<< std::endl; 
+                                    std::cout << "gamma_left" << gamma1<< std::endl; 
+                                    std::cout << "gamma_right" << gamma2<< std::endl; 
 
                                  
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
@@ -303,6 +316,10 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     gamma2 = right_hori_servo + (asin((rectangle_params.vertical_range + rectangle_params.turtle_height) / sqrt((rectangle_params.l1 * cos(-theta1 * M_PI / 180)) * (rectangle_params.l1 * cos(-theta1 * M_PI / 180)) + rectangle_params.lower_point * rectangle_params.lower_point)) - atan(rectangle_params.lower_point / (rectangle_params.l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
                                     turtle_.turtle_chassis.gait_state = 3;
                                     std::cout << "SweepingPhase" << std::endl;
+                                    std::cout << "theta_left" << theta1<< std::endl; 
+                                    std::cout << "theta_right" << theta2<< std::endl; 
+                                    std::cout << "gamma_left" << gamma1<< std::endl; 
+                                    std::cout << "gamma_right" << gamma2<< std::endl; 
 
                                    
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
@@ -334,6 +351,10 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     gamma2 = right_hori_servo + (rectangle_params.initial_insertion_depth_rad * 180 / M_PI) - (rectangle_params.initial_insertion_depth_rad * 180 / M_PI + rectangle_params.extraction_angle) * corres_t;
                                     turtle_.turtle_chassis.gait_state = 4;
                                     std::cout << "ExtractionPhase" << std::endl;
+                                    std::cout << "theta_left" << theta1<< std::endl; 
+                                    std::cout << "theta_right" << theta2<< std::endl; 
+                                    std::cout << "gamma_left" << gamma1<< std::endl; 
+                                    std::cout << "gamma_right" << gamma2<< std::endl; 
 
                                    
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;

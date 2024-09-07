@@ -22,6 +22,7 @@
 #include "traveler_msgs/msg/odrive_status.hpp"
 #include "traveler_msgs/msg/set_input_position.hpp"
 #include "proxy/control_data.h"
+#include "controller/inverse_kinematics.h"
 // #include "travelermsgs/msg/robot_state.hpp"
 
 using namespace std::chrono_literals;
@@ -99,6 +100,8 @@ class lowerproxy:public rclcpp::Node{
     float saved_right_adduction;
     float saved_right_sweeping;
     turtle turtle_inter_;
+
+    Rectangle_Params rectangle_params;
     // void handle_joint_state(const control_msgs::msg::DynamicJointState::SharedPtr msg);
     void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 };

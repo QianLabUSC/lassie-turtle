@@ -1,0 +1,42 @@
+[0.010s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12
+[0.050s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.058s] [ 38%] Built target odrive_can_interface
+[0.092s] [ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[1.137s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.137s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:238:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+[1.137s]   238 |                             case Turtlephase::[01;31m[KTurleBack[m[K:
+[1.137s]       |                                               [01;31m[K^~~~~~~~~[m[K
+[1.138s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+[1.138s]   206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+[1.138s]       |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[1.138s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:273:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+[1.138s]   273 |                             case Turtlephase::[01;31m[KTurtlePentration[m[K:
+[1.138s]       |                                               [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.138s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+[1.138s]   206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+[1.138s]       |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[1.139s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:305:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+[1.139s]   305 |                             case Turtlephase::[01;31m[KTurtleSweeping[m[K:
+[1.139s]       |                                               [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.139s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+[1.139s]   206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+[1.139s]       |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[1.139s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:340:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+[1.139s]   340 |                             case Turtlephase::[01;31m[KTurtleExtraction[m[K:
+[1.140s]       |                                               [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[1.140s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+[1.140s]   206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+[1.140s]       |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[1.140s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurleBack[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[1.140s]   198 |                         switch[01;35m[K([m[KTurtleCurrentPhase){
+[1.140s]       |                               [01;35m[K^[m[K
+[1.140s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtlePentration[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[1.140s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtleSweeping[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[1.140s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtleExtraction[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[1.141s] [01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:394:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.141s]   394 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+[1.141s]       |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+[1.733s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+[1.734s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[1.734s] make: *** [Makefile:141: all] Error 2
+[1.738s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/turtle_high_controller -- -j12 -l12

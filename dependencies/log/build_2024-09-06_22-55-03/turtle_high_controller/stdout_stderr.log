@@ -1,0 +1,40 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 38%] Built target odrive_can_interface
+[ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:238:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+  238 |                             case Turtlephase::[01;31m[KTurleBack[m[K:
+      |                                               [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+  206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+      |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:273:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+  273 |                             case Turtlephase::[01;31m[KTurtlePentration[m[K:
+      |                                               [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+  206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+      |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:305:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+  305 |                             case Turtlephase::[01;31m[KTurtleSweeping[m[K:
+      |                                               [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+  206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+      |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:340:47:[m[K [01;31m[Kerror: [m[Kjump to case label
+  340 |                             case Turtlephase::[01;31m[KTurtleExtraction[m[K:
+      |                                               [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:206:50:[m[K [01;36m[Knote: [m[K  crosses initialization of ‘[01m[KRectangle_Params rectangle_params[m[K’
+  206 |                                 Rectangle_Params [01;36m[Krectangle_params[m[K;
+      |                                                  [01;36m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurleBack[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+  198 |                         switch[01;35m[K([m[KTurtleCurrentPhase){
+      |                               [01;35m[K^[m[K
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtlePentration[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtleSweeping[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:198:31:[m[K [01;35m[Kwarning: [m[Kenumeration value ‘[01m[KTurtleExtraction[m[K’ not handled in switch [[01;35m[K-Wswitch[m[K]
+[01m[K/home/qianlab/Desktop/lassie-turtle/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:394:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  394 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+      |                        [01;35m[K^~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

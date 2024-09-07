@@ -1,0 +1,3 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 38%] Built target odrive_can_interface
+[ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
