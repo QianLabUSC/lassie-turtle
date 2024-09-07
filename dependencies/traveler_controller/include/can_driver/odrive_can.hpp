@@ -20,8 +20,12 @@ enum AXIS
 {
     AXIS_0 = 0,
     AXIS_1 = 1,
+    AXIS_2 = 2,
+    AXIS_3 = 3,
     AXIS_0_ID = 0 << NUM_CMD_ID_BITS,
     AXIS_1_ID = 1 << NUM_CMD_ID_BITS,
+    AXIS_2_ID = 2 << NUM_CMD_ID_BITS,
+    AXIS_3_ID = 3 << NUM_CMD_ID_BITS,
 };
 
 struct Msg

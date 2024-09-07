@@ -32,6 +32,13 @@ enum class ProgramState {
     GoToInitialPoint,
     Running,
     };
+enum class Turtlephase {
+    GetTurtleGUICommand,
+    TurleBack,
+    TurtlePentration,
+    TurtleSweeping,
+    TurtleExtraction,
+    };
 namespace turtle_namespace{
 namespace control{
 
@@ -84,7 +91,9 @@ class lowerproxy:public rclcpp::Node{
     double initial_phase_time = 3.0;
     double set_close_control_time = 2.0;
     ProgramState currentState;
+    Turtlephase TurtleCurrentPhase;
     std::chrono::high_resolution_clock::time_point starting_time;
+    std::chrono::high_resolution_clock::time_point TurtleRunningstarting_time;
     float saved_left_adduction;
     float saved_left_sweeping;
     float saved_right_adduction;

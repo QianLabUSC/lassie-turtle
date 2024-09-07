@@ -57,5 +57,11 @@ struct Rectangle_Params {
     float period_waiting_time = 0.5f; // time
     float wiggle_length = 0.2f;
     float wiggle_frequency = 10.0;
+    float l1 = 3.0f; // flipper length (fixed insertion depth)
+    float turtle_height = 3.0f; // turtle height (fixed insertion depth)
+    float lower_point = 3.0f; // flipper lower point length (fixed insertion depth)
+    float initial_insertion_depth_rad = 3.0f; //initial insertion depth adduction angle in rad
+    float initial_insertion_depth_deg = 3.0f; //initial insertion depth adduction angle in deg
+    float extraction_angle = 3.0f;
 };
 
