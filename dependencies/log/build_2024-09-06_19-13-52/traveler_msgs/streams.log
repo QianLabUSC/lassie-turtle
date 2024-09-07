@@ -1,0 +1,370 @@
+[0.010s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake /home/qianlab/Desktop/lassie-turtle/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs
+[0.077s] -- The C compiler identification is GNU 9.4.0
+[0.131s] -- The CXX compiler identification is GNU 9.4.0
+[0.137s] -- Check for working C compiler: /usr/bin/cc
+[0.184s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.185s] -- Detecting C compiler ABI info
+[0.231s] -- Detecting C compiler ABI info - done
+[0.240s] -- Detecting C compile features
+[0.240s] -- Detecting C compile features - done
+[0.243s] -- Check for working CXX compiler: /usr/bin/c++
+[0.295s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.296s] -- Detecting CXX compiler ABI info
+[0.349s] -- Detecting CXX compiler ABI info - done
+[0.361s] -- Detecting CXX compile features
+[0.361s] -- Detecting CXX compile features - done
+[0.368s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.390s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.390s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.558s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.599s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.608s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.671s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.701s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.757s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.797s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.798s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.799s] -- Looking for pthread.h
+[0.847s] -- Looking for pthread.h - found
+[0.847s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.896s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[0.896s] -- Looking for pthread_create in pthreads
+[0.942s] -- Looking for pthread_create in pthreads - not found
+[0.942s] -- Looking for pthread_create in pthread
+[0.994s] -- Looking for pthread_create in pthread - found
+[0.995s] -- Found Threads: TRUE  
+[1.106s] -- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)
+[1.130s] -- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+[1.233s] -- Found ament_cmake_ros: 0.9.2 (/opt/ros/foxy/share/ament_cmake_ros/cmake)
+[1.307s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.313s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.330s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3.5") 
+[1.333s] -- Found python_cmake_module: 0.8.1 (/opt/ros/foxy/share/python_cmake_module/cmake)
+[1.353s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.8.so (found suitable version "3.8.10", minimum required is "3.5") 
+[1.353s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.353s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8
+[1.353s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.8.so
+[1.369s] -- Found PythonExtra: .so  
+[1.398s] -- Found ament_lint_auto: 0.9.8 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+[1.415s] -- Added test 'lint_cmake' to check CMake code style
+[1.416s] -- Added test 'xmllint' to check XML markup files
+[1.419s] -- Configuring done
+[1.443s] -- Generating done
+[1.444s] -- Build files have been written to: /home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs
+[1.452s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake /home/qianlab/Desktop/lassie-turtle/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs
+[1.455s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs -- -j12 -l12
+[1.494s] [  1%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.494s] [35m[1mScanning dependencies of target traveler_msgs__cpp[0m
+[1.505s] [  2%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.820s] [  2%] Built target traveler_msgs__cpp
+[1.827s] [  5%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[1.827s] [  5%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[1.828s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_generator_c[0m
+[1.829s] [  7%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[1.841s] [  8%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/odrive_status__functions.c.o[0m
+[1.842s] [ 14%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_mode__functions.c.o[0m
+[1.842s] [ 14%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_config__functions.c.o[0m
+[1.842s] [ 14%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/traveler_status__functions.c.o[0m
+[1.842s] [ 14%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/set_state__functions.c.o[0m
+[1.843s] [ 15%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msgs/msg/detail/set_input_position__functions.c.o[0m
+[1.885s] [ 16%] [32m[1mLinking C shared library libtraveler_msgs__rosidl_generator_c.so[0m
+[1.910s] [ 16%] Built target traveler_msgs__rosidl_generator_c
+[1.917s] [ 18%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[1.920s] [ 19%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.114s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_fastrtps_cpp[0m
+[2.130s] [ 26%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_mode__type_support.cpp.o[0m
+[2.130s] [ 28%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/odrive_status__type_support.cpp.o[0m
+[2.130s] [ 28%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_status__type_support.cpp.o[0m
+[2.131s] [ 28%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/set_state__type_support.cpp.o[0m
+[2.131s] [ 28%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/traveler_config__type_support.cpp.o[0m
+[2.131s] [ 28%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/traveler_msgs/msg/detail/dds_fastrtps/set_input_position__type_support.cpp.o[0m
+[2.174s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_cpp[0m
+[2.190s] [ 29%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/odrive_status__type_support.cpp.o[0m
+[2.192s] [ 30%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_config__type_support.cpp.o[0m
+[2.203s] [ 32%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_mode__type_support.cpp.o[0m
+[2.271s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_introspection_c[0m
+[2.303s] [ 33%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/odrive_status__type_support.c.o[0m
+[2.320s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_introspection_cpp[0m
+[2.334s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_c[0m
+[2.341s] [ 35%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_config__type_support.c.o[0m
+[2.344s] [ 36%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/odrive_status__type_support.cpp.o[0m
+[2.356s] [ 38%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/odrive_status__type_support.cpp.o[0m
+[2.381s] [ 39%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_mode__type_support.c.o[0m
+[2.422s] [ 40%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_config__type_support.cpp.o[0m
+[2.432s] [ 42%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/traveler_status__type_support.c.o[0m
+[2.468s] [ 43%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_mode__type_support.cpp.o[0m
+[2.475s] [ 45%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/set_state__type_support.c.o[0m
+[2.508s] [ 46%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/traveler_status__type_support.cpp.o[0m
+[2.516s] [ 47%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/traveler_msgs/msg/detail/set_input_position__type_support.c.o[0m
+[2.523s] [ 50%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/traveler_status__type_support.cpp.o[0m
+[2.523s] [ 50%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_config__type_support.cpp.o[0m
+[2.542s] [ 52%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/set_input_position__type_support.cpp.o[0m
+[2.542s] [ 53%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/traveler_msgs/msg/set_state__type_support.cpp.o[0m
+[2.560s] [ 54%] [32m[1mLinking C shared library libtraveler_msgs__rosidl_typesupport_introspection_c.so[0m
+[2.577s] [ 56%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_mode__type_support.cpp.o[0m
+[2.584s] [ 57%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/set_state__type_support.cpp.o[0m
+[2.595s] [ 57%] Built target traveler_msgs__rosidl_typesupport_introspection_c
+[2.606s] [ 59%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/traveler_msgs/msg/set_input_position__type_support.cpp.o[0m
+[2.618s] [ 60%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_c.so[0m
+[2.674s] [ 61%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/set_state__type_support.cpp.o[0m
+[2.681s] [ 63%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/set_input_position__type_support.cpp.o[0m
+[2.685s] [ 63%] Built target traveler_msgs__rosidl_typesupport_c
+[2.695s] [ 64%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/traveler_msgs/msg/detail/traveler_status__type_support.cpp.o[0m
+[2.733s] [ 66%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[2.836s] [ 66%] Built target traveler_msgs__rosidl_typesupport_fastrtps_cpp
+[2.847s] [ 67%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[2.926s] [ 69%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_cpp.so[0m
+[2.955s] [ 69%] Built target traveler_msgs__rosidl_typesupport_cpp
+[2.988s] [ 70%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[3.029s] [ 70%] Built target traveler_msgs__rosidl_typesupport_introspection_cpp
+[3.114s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_fastrtps_c[0m
+[3.127s] [ 71%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/odrive_status__type_support_c.cpp.o[0m
+[3.130s] [ 76%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_status__type_support_c.cpp.o[0m
+[3.130s] [ 76%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_mode__type_support_c.cpp.o[0m
+[3.130s] [ 77%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/set_state__type_support_c.cpp.o[0m
+[3.130s] [ 77%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/traveler_config__type_support_c.cpp.o[0m
+[3.130s] [ 78%] [32mBuilding CXX object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/traveler_msgs/msg/detail/set_input_position__type_support_c.cpp.o[0m
+[3.461s] [ 80%] [32m[1mLinking CXX shared library libtraveler_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[3.515s] [ 80%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c
+[3.522s] [35m[1mScanning dependencies of target traveler_msgs[0m
+[3.529s] [ 80%] Built target traveler_msgs
+[3.536s] [35m[1mScanning dependencies of target traveler_msgs__py[0m
+[3.544s] [ 81%] [34m[1mGenerating Python code for ROS interfaces[0m
+[4.070s] [ 81%] Built target traveler_msgs__py
+[4.077s] [35m[1mScanning dependencies of target traveler_msgs__python[0m
+[4.097s] [ 83%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_status_s.c.o[0m
+[4.097s] [ 84%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_odrive_status_s.c.o[0m
+[4.098s] [ 85%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_config_s.c.o[0m
+[4.099s] [ 87%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_traveler_mode_s.c.o[0m
+[4.099s] [ 88%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_set_state_s.c.o[0m
+[4.100s] [ 90%] [32mBuilding C object CMakeFiles/traveler_msgs__python.dir/rosidl_generator_py/traveler_msgs/msg/_set_input_position_s.c.o[0m
+[4.189s] [ 91%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/libtraveler_msgs__python.so[0m
+[4.219s] [ 91%] Built target traveler_msgs__python
+[4.226s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_introspection_c__pyext[0m
+[4.226s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_c__pyext[0m
+[4.228s] [35m[1mScanning dependencies of target traveler_msgs__rosidl_typesupport_fastrtps_c__pyext[0m
+[4.238s] [ 92%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[4.241s] [ 94%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[4.245s] [ 95%] [32mBuilding C object CMakeFiles/traveler_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/traveler_msgs/_traveler_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[4.297s] [ 97%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.320s] [ 97%] Built target traveler_msgs__rosidl_typesupport_c__pyext
+[4.330s] [ 98%] [32m[1mLinking C shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.334s] [100%] [32m[1mLinking CXX shared library rosidl_generator_py/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.364s] [100%] Built target traveler_msgs__rosidl_typesupport_introspection_c__pyext
+[4.376s] [100%] Built target traveler_msgs__rosidl_typesupport_fastrtps_c__pyext
+[4.384s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake --build /home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs -- -j12 -l12
+[4.457s] Invoking command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake --install /home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs
+[4.463s] -- Install configuration: ""
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/rosidl_interfaces/traveler_msgs
+[4.463s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/rosidl_generator_c__visibility_control.h
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/set_state.h
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_mode.h
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/odrive_status.h
+[4.463s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_config.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_status.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/set_input_position.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__struct.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__struct.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__struct.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__functions.c
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__functions.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__functions.c
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__functions.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__functions.h
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__functions.c
+[4.464s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__struct.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__functions.c
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__struct.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__functions.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__functions.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__functions.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__functions.c
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__functions.c
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__struct.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.h
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/library_path.sh
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/library_path.dsv
+[4.465s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_c.so
+[4.465s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_generator_c.so" to ""
+[4.465s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.466s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[4.466s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_c.h
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_c.h
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_c.h
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_c.h
+[4.466s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_c.h
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_c.h
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so
+[4.467s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[4.467s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.467s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.467s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_fastrtps_cpp.hpp
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_fastrtps_cpp.hpp
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_fastrtps_cpp.hpp
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/dds_fastrtps
+[4.467s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_fastrtps_cpp.hpp
+[4.468s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_fastrtps_cpp.hpp
+[4.468s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_fastrtps_cpp.hpp
+[4.468s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[4.468s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so
+[4.469s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[4.469s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.469s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.469s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[4.469s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.469s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_c.h
+[4.469s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_c.h
+[4.469s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.c
+[4.469s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_c.h
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_c.h
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_c.h
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.c
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.c
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_c.h
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.c
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.c
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.c
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_c.so
+[4.470s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_c.so" to ""
+[4.470s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_c.so
+[4.470s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_c.so" to ""
+[4.471s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.471s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/set_state.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_status.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_mode.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/traveler_config.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/set_input_position.hpp
+[4.471s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/odrive_status.hpp
+[4.472s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__builder.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__builder.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__traits.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__builder.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__traits.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__struct.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__traits.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__builder.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__struct.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__builder.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.hpp
+[4.472s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__traits.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__struct.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__struct.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__builder.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__struct.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__traits.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__struct.hpp
+[4.473s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__traits.hpp
+[4.473s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs
+[4.473s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg
+[4.473s] -- Up-to-date: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_status__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_mode__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_state__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/set_input_position__type_support.cpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/include/traveler_msgs/msg/detail/traveler_config__rosidl_typesupport_introspection_cpp.hpp
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_cpp.so
+[4.474s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[4.474s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_cpp.so
+[4.474s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__rosidl_typesupport_cpp.so" to ""
+[4.475s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.sh
+[4.475s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/pythonpath.dsv
+[4.475s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/__init__.py
+[4.495s] Compiling '/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/__init__.py'...
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_input_position_s.c
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_mode.py
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_odrive_status_s.c
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_mode_s.c
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_status.py
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_input_position.py
+[4.498s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_odrive_status.py
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_config_s.c
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_state_s.c
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_status_s.c
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_traveler_config.py
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/_set_state.py
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/msg/__init__.py
+[4.499s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so
+[4.499s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so" to ""
+[4.500s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so
+[4.500s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so" to ""
+[4.500s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so
+[4.501s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/python3.8/site-packages/traveler_msgs/traveler_msgs_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so" to ""
+[4.501s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__python.so
+[4.501s] -- Set runtime path of "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/lib/libtraveler_msgs__python.so" to ""
+[4.501s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/SetState.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/SetInputPosition.idl
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/OdriveStatus.msg
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerConfig.msg
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerMode.msg
+[4.502s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/msg/TravelerStatus.msg
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetState.msg
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/odrivemsg/SetInputPosition.msg
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/package_run_dependencies/traveler_msgs
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/parent_prefix_path/traveler_msgs
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.sh
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/ament_prefix_path.dsv
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/path.sh
+[4.503s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/environment/path.dsv
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.bash
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.sh
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.zsh
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/local_setup.dsv
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/package.dsv
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/ament_index/resource_index/packages/traveler_msgs
+[4.504s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cExport.cmake
+[4.505s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cExport-noconfig.cmake
+[4.505s] -- Old export file "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport.cmake" will be replaced.  Removing files [/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake].
+[4.505s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport.cmake
+[4.505s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[4.505s] -- Old export file "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport.cmake" will be replaced.  Removing files [/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport-noconfig.cmake].
+[4.506s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport.cmake
+[4.506s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[4.506s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_generator_cppExport.cmake
+[4.506s] -- Old export file "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport.cmake" will be replaced.  Removing files [/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake].
+[4.506s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[4.506s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[4.507s] -- Old export file "/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport.cmake" will be replaced.  Removing files [/home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport-noconfig.cmake].
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake-extras.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[4.507s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[4.508s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[4.508s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[4.508s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig.cmake
+[4.508s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/cmake/traveler_msgsConfig-version.cmake
+[4.508s] -- Installing: /home/qianlab/Desktop/lassie-turtle/dependencies/install/traveler_msgs/share/traveler_msgs/package.xml
+[4.511s] Invoked command in '/home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy /usr/bin/cmake --install /home/qianlab/Desktop/lassie-turtle/dependencies/build/traveler_msgs

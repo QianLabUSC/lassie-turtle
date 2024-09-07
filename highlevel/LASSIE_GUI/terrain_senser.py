@@ -43,9 +43,9 @@ class TerrainSensor:
                                                                     turtle_state_list)
             avg_shear_force = self.calculate_average_shear_force(seg_sweeping_force_adjust, 
                                                                 turtle_state_list)
-            self.k_p = penetration_slope/1e-5
-            self.k_s = avg_shear_force/1e-5
-            self.k_e = avg_shear_force/1e-5
+            self.k_p = (penetration_slope)/(0.005*0.025*0.866)
+            self.k_s = avg_shear_force/(0.025*0.03*0.015)
+            self.k_e = max_extraction_force/(0.005*0.025*0.03)
 
             if(self.k_p <= 1e3 ):
                 self.k_p = 1e3

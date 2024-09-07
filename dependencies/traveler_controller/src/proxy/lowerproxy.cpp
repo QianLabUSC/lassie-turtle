@@ -189,7 +189,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         double theta1 = 0;
                         double gamma2 = 0;
                         double theta2 = 0;
-                        float left_hori_servo = 0; // 原始值 100 手动调整为 94
+                        float left_hori_servo = 0; 
                         float right_hori_servo = 0;
                       
 
@@ -208,9 +208,9 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                 rectangle_params.turtle_height = 0.0645; //height from flipper to ground
                                 rectangle_params.lower_point = 0.05;
                                 rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * rectangle_params.l1 * 2 / turtle_.traj_data.drag_speed;
-                                rectangle_params.period_up = 0.8; //customize back phase time
-                                rectangle_params.period_left = turtle_.traj_data.servo_speed;
-                                rectangle_params.period_right = turtle_.traj_data.servo_speed;
+                                rectangle_params.period_up = turtle_.traj_data.lateral_angle_range * rectangle_params.l1 * 2 / turtle_.traj_data.back_speed ;
+                                rectangle_params.period_left = turtle_.traj_data.insertion_depth/turtle_.traj_data.penetration_speed;
+                                rectangle_params.period_right = turtle_.traj_data.insertion_depth/turtle_.traj_data.servo_speed;
                                 rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depend on insertion depth
                                 rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
                                 rectangle_params.period_waiting_time = 0;
@@ -244,7 +244,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     turtle_.turtle_chassis.gait_state = 1;
                                     std::cout << "BackPhase" << std::endl;
 
-                                    // 设置伺服位置
+                                    
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
                                     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
                                     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
@@ -274,7 +274,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     turtle_.turtle_chassis.gait_state = 2;
                                     std::cout << "PenetrationPhase" << std::endl;
 
-                                    // 设置伺服位置
+                                 
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
                                     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
                                     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
@@ -304,7 +304,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     turtle_.turtle_chassis.gait_state = 3;
                                     std::cout << "SweepingPhase" << std::endl;
 
-                                    // 设置伺服位置
+                                   
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
                                     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
                                     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
@@ -335,7 +335,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                                     turtle_.turtle_chassis.gait_state = 4;
                                     std::cout << "ExtractionPhase" << std::endl;
 
-                                    // 设置伺服位置
+                                   
                                     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
                                     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
                                     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;

@@ -84,7 +84,10 @@ struct TrajectoryData
     float extraction_angle;    //arc     
     float wiggle_frequency;        //hz  
     float insertion_depth;             //arc        
-    float wiggle_amptitude;                 //arc     
+    float wiggle_amptitude;                 //arc   
+
+    float penetration_speed;
+    float back_speed;  
 };
 
 struct turtle{

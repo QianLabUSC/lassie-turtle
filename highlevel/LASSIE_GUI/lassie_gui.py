@@ -161,7 +161,7 @@ class TravelerApp(MDApp):
         self.menu.dismiss()
         
     def build(self):
-        Window.size = (1400,1200)
+        Window.size = (1400,1000)
 
         Clock.schedule_interval(self.update_force_plot, 0.01)
         self.data_updator = threading.Thread(target=self.update_force_data)

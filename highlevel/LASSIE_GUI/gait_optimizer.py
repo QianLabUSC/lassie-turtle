@@ -3,7 +3,7 @@ from scipy.optimize import minimize
 
 
 class GaitOptimizer:
-    def __init__(self, robot_weight=2.5, flipper_length=0.12, flipper_width=0.02, 
+    def __init__(self, robot_weight=2.5, flipper_length=0.12, flipper_width=0.025, 
                  max_motor_torque=0.75, motor_acceleration_time=0.1, 
                  extrude_depth=0.01, extrude_width=0.01,
                  k_v = 0.1, 
@@ -22,7 +22,7 @@ class GaitOptimizer:
         self.bounds = bounds
 
     def _shear_force(self, d, k_s_average,t_s):
-        return k_s_average * 0.5 * d**2 * self.FLIPPER_WIDTH + self.k_v * (d/t_s)**2
+        return k_s_average * 0.5 * d**2 * self.FLIPPER_WIDTH
 
     def _resistance_force(self, k_s_average):
         return k_s_average * 0.5 * self.EXTRUDE_DEPTH * self.EXTRUDE_DEPTH * self.EXTRUDE_WIDTH
@@ -32,9 +32,9 @@ class GaitOptimizer:
     
 
     def _penetration_force(self, d, t_p, k_p):
-        return k_p * d + self.k_v* (d/t_p)**2
+        return k_p * d * self.FLIPPER_LENGTH  * 0.005 + self.k_v* (d/t_p)**2
     def _extraction_force(self, d, t_e, k_e):
-        return k_e * d + self.k_v* (d/t_e)**2
+        return k_e * d * self.FLIPPER_LENGTH  * 0.005+ self.k_v* (d/t_e)**2
 
     def _step_length(self, d, alpha, t_s, k_s_average):
         f_s = self._shear_force(d, k_s_average, t_s)
@@ -43,6 +43,13 @@ class GaitOptimizer:
         sqrt_term = np.sqrt(1 - ((f_r + k_alpha_t_s) / (2 * f_s))**2)
         return 2 * self.FLIPPER_LENGTH * min(alpha, sqrt_term)
 
+    def _effective_angle(self, d, alpha, t_s, k_s_average):
+        f_s = self._shear_force(d, k_s_average, t_s)
+        f_r = self._resistance_force(k_s_average)
+        f_a = self._acceleration_force(alpha, t_s)
+        
+        effective_angle = np.arccos((f_r + f_a)/(2*f_s))
+        return effective_angle
     def _forward_speed(self, mu, k_s_average):
         t_p, t_s, t_e, t_b, d, alpha = mu
         S_e = self._step_length(d, alpha, t_s, k_s_average)
@@ -52,20 +59,36 @@ class GaitOptimizer:
         return -self._forward_speed(mu, k_s_average)  # Negative for minimization
 
     def _constraint1(self, mu, k_s_average):
-        return self._step_length(mu[4], mu[5], mu[1], k_s_average) - self.FLIPPER_LENGTH / 2
+        # determine the sweeping velocity
+        return self._effective_angle(mu[4], mu[5], mu[1], k_s_average) - mu[5]
 
-    def _constraint2(self, mu, k_s_average):
-        return self.fm - self._shear_force(mu[4], k_s_average,mu[1])
+    # def _constraint2(self, mu, k_s_average):
+    #     return self.fm - self._shear_force(mu[4], k_s_average,mu[1])
 
-    def _constraint3(self, mu, k_s_average):
-        return self.fm - self._resistance_force(k_s_average) - self._acceleration_force(mu[6], mu[1])
+    # def _constraint3(self, mu, k_s_average):
+    #     return self.fm - self._resistance_force(k_s_average) - self._acceleration_force(mu[6], mu[1])
     
     def _constraint4(self, mu, k_e):
+        # determin the extraction velocity
         return self.fm - self._extraction_force(mu[4], mu[2], k_e) 
     
     def _constraint5(self, mu, k_p):
         return self.fm - self._penetration_force(mu[4], mu[0], k_p) 
 
+
+    def validate(self, k_p, k_s, k_e, mu0 ):
+        t_p, t_s, t_e, t_b, d, alpha = mu0
+        f_s = self._shear_force(d, k_s_average, t_s)
+        f_r = self._resistance_force(k_s_average)
+        f_a = self._acceleration_force(alpha, t_s)
+        
+        effective_angle = np.arccos((f_r + f_a)/(2*f_s))
+        speed = self._forward_speed(mu0, k_s)
+        print("f_s", f_s)
+        print("f_r", f_r)
+        print("f_a", f_a)
+        print("effective angle", effective_angle)
+        print("speed", speed)
 
     def optimize(self, k_p, k_s, k_e, mu0=[1, 1, 1, 1, 0.02, np.pi/12]):
 
@@ -75,8 +98,8 @@ class GaitOptimizer:
         # Define constraints in a dictionary form
         constraints = [
             {'type': 'ineq', 'fun': lambda mu: self._constraint1(mu, k_s)},
-            {'type': 'ineq', 'fun': lambda mu: self._constraint2(mu, k_s)},
-            {'type': 'ineq', 'fun': lambda mu: self._constraint3(mu, k_s)},
+            # {'type': 'ineq', 'fun': lambda mu: self._constraint2(mu, k_s)},
+            # {'type': 'ineq', 'fun': lambda mu: self._constraint3(mu, k_s)},
             {'type': 'ineq', 'fun': lambda mu: self._constraint4(mu, k_e)},
             {'type': 'ineq', 'fun': lambda mu: self._constraint5(mu, k_p)},
         ]
@@ -105,17 +128,19 @@ class GaitOptimizer:
 
 # Example usage of the GaitOptimizer class with default bounds
 if __name__ == "__main__":
-    k_s_average = 1.0  # example value
-    k_body = 1.0       # example value
-    k_alpha = 1.0      # example value
+    k_s_average = 1.4 * 1e6  # example value
+    k_p = 1.0 * 1e6      # example value
+    k_e = 1.1 * 1e6      # example value
 
     # Use default bounds
     optimizer = GaitOptimizer()
-    control_vector = optimizer.optimize(k_s_average, k_body, k_alpha)
+    control_vector, speed = optimizer.optimize(k_p, k_s_average, k_e)
     print(control_vector)
 
+    optimizer.validate(k_p, k_s_average, k_e, control_vector)
+
     # Example with custom bounds
-    custom_bounds = [(0.5, 4), (0.5, 3), (0.5, 2), (0.5, 2), (0, 0.03), (0, np.pi/8)]
+    custom_bounds = [(0.5, 4), (0.5, 3), (0.5, 2), (0.5, 2), (0.03, 0.03), (np.pi/6, np.pi/6)]
     optimizer_custom = GaitOptimizer(bounds=custom_bounds)
-    control_vector_custom = optimizer_custom.optimize(k_s_average, k_body, k_alpha)
+    control_vector_custom = optimizer_custom.optimize(k_p, k_s_average, k_e)
     print(control_vector_custom)

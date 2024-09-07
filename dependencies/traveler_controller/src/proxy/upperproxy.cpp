@@ -29,16 +29,38 @@ upperproxy::upperproxy(std::string name) : Node(name){
 void upperproxy::handle_gui
     (const std_msgs::msg::Float64MultiArray::SharedPtr msg){
         // int len = msg->data.size();
-        turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
-        turtle_inter_.turtle_gui.drag_traj = msg->data[1];
-        turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
-        turtle_inter_.traj_data.drag_speed = msg->data[3];
-        turtle_inter_.traj_data.wiggle_time = msg->data[4];
-        turtle_inter_.traj_data.servo_speed = msg->data[5];
-        turtle_inter_.traj_data.extraction_angle = msg->data[6];
-        turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
-        turtle_inter_.traj_data.insertion_depth = msg->data[8];
-        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+
+        if (turtle_inter_.turtle_gui.drag_traj == 5){
+            turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
+            turtle_inter_.turtle_gui.drag_traj = msg->data[1];
+            turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
+            turtle_inter_.traj_data.drag_speed = msg->data[3];
+            turtle_inter_.traj_data.wiggle_time = msg->data[4];
+            turtle_inter_.traj_data.servo_speed = msg->data[5];
+            turtle_inter_.traj_data.extraction_angle = msg->data[6];
+            turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
+            turtle_inter_.traj_data.insertion_depth = msg->data[8];
+            turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+
+        }
+        else{
+            std::cout << "trajectroy 6" << std::endl;
+            
+            turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
+            turtle_inter_.turtle_gui.drag_traj = msg->data[1];
+            turtle_inter_.traj_data.lateral_angle_range = msg->data[7];
+            turtle_inter_.traj_data.insertion_depth = msg->data[6];
+            turtle_inter_.traj_data.penetration_speed = msg->data[2];
+            turtle_inter_.traj_data.drag_speed = msg->data[3];
+            turtle_inter_.traj_data.servo_speed = msg->data[4];
+            turtle_inter_.traj_data.back_speed = msg->data[5];
+
+            // turtle_inter_.traj_data.extraction_angle = msg->data[6];
+            // turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
+            
+            // turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+        }
+        
         
     }
 
