@@ -325,14 +325,12 @@ class TravelerApp(MDApp):
         
         if(self.ros_node.id == "turtle"):
             if(self.drag_traj == 5):
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              # cm
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/10)           # seconds
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # cm
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value)))                # cm/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))   )       # seconds
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value))/1000)                 # cm/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value))/100 )
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/1000)           
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)              
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)               
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)  
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )    
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )   
                 if(self.start_flag):
                     print("start preset gait without adaptation: ", self.gui_message.data)
                 else:
@@ -340,12 +338,14 @@ class TravelerApp(MDApp):
                 self.ros_node.start_preset_gait(self.gui_message)
                 
             elif(self.drag_traj == 6):
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180  )              
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000 )            # tranlate into m/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/1000)           # tranlate into m/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)               # tranlate into m/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)               # tranlate into m/s
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)       # seconds
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_3.value))/1000)           
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_4.value))/1000)              
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_5.value))/1000)               
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_6.value))/1000)  
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_2.value))/1000 )    
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_optimize_1.value)) * np.pi / 180  )              
+                        
+                     
                 if(self.start_flag):
                     print("start optimizing gait with initial: ", self.gui_message.data)
                 else:
