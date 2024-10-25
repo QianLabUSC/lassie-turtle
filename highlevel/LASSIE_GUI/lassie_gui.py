@@ -316,7 +316,7 @@ class TravelerApp(MDApp):
 
             self.start_robot = True
             self.start_flag = 1
-
+            self.ros_node.calibrate()
                   
             
         self.gui_message = Float64MultiArray()

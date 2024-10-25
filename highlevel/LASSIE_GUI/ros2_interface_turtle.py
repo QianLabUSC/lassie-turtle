@@ -153,7 +153,8 @@ class ControlNodeTurtle(Node):
         self.RightFlipperOrientation_y_list = []
         self.RightFlipperOrientation_z_list = []
         self.RightFlipperOrientation_w_list = []
-
+        self.insertion_depth_list = []
+        self.insertion_depth = 0.03
         self.turtle_state_list = []
 
         self.fpx = None
@@ -239,6 +240,9 @@ class ControlNodeTurtle(Node):
         self.RightFlipperOrientation_z_list = []
         self.RightFlipperOrientation_w_list = []
 
+        self.insertion_depth_list = []
+        self.insertion_depth = 0.03
+
 
         self.turtle_state_list = []
 
@@ -296,7 +300,7 @@ class ControlNodeTurtle(Node):
         if(updateplotflag):
             current_time = time.time() - self.start_time
             self.time_list.append(current_time)
-
+            self.insertion_depth_list.append(self.insertion_depth)
             self.leftadduction_pos_array.append(self.leftadduction_pos)
             self.leftsweeping_pos_array.append(self.leftsweeping_pos)  
             self.rightadduction_pos_array.append(self.rightadduction_pos)  
@@ -354,7 +358,7 @@ class ControlNodeTurtle(Node):
                                 "leftadduction_pos", "leftsweeping_pos",
                                 "rightadduction_pos", "rightsweeping_pos",
                                 "leftadduction_curr", "leftsweeping_curr",
-                                "rightadduction_curr", "rightsweeping_curr",
+                                "rightadduction_curr", "rightsweeping_curr", "insertiondepth",
                                 "OptitrackPosition_x","OptitrackPosition_y","OptitrackPosition_z",
                                 "OptitrackOrientation_x", "OptitrackOrientation_y", "OptitrackOrientation_z", "OptitrackOrientation_w",
                                 "LeftFlipperPosition_x","LeftFlipperPosition_y","LeftFlipperPosition_z",
@@ -369,7 +373,7 @@ class ControlNodeTurtle(Node):
                                 self.leftadduction_pos_array[i], self.leftsweeping_pos_array[i],
                                 self.rightadduction_pos_array[i], self.rightsweeping_pos_array[i],
                                 self.leftadduction_curr_array[i], self.leftsweeping_curr_array[i],
-                                self.rightadduction_curr_array[i], self.rightsweeping_curr_array[i],
+                                self.rightadduction_curr_array[i], self.rightsweeping_curr_array[i],self.insertion_depth_list[i],
                                 self.OptitrackPosition_x_list[i],self.OptitrackPosition_y_list[i],self.OptitrackPosition_z_list[i],
                                 self.OptitrackOrientation_x_list[i], self.OptitrackOrientation_y_list[i],
                                 self.OptitrackOrientation_z_list[i], self.OptitrackOrientation_w_list[i], 
@@ -394,6 +398,7 @@ class ControlNodeTurtle(Node):
 
 
     def OptitrackState(self, msg):
+        print(msg)
         self.OptitrackPosition_x = msg.position.x
         self.OptitrackPosition_y = msg.position.y
         self.OptitrackPosition_z = msg.position.z
@@ -451,12 +456,14 @@ class ControlNodeTurtle(Node):
                                                 np.array(self.rightadduction_pos_array),
                                                 np.array(self.rightsweeping_curr_array),
                                                 -np.array(self.rightadduction_curr_array),
-                                                np.array(self.turtle_state_list)
-                                            )
+                                                np.array(self.turtle_state_list),
+                                                self.insertion_depth)
+                                            
             print("optimizing")
             print(self.control_gait.data[2:8])
             print(self.k_s_)
             self.gait_u_= self.gait_optimizer_.optimize(self.k_p_, self.k_s_, self.k_e_, self.control_gait.data[2:8])
+            self.insertion_depth = self.gait_u_[4]
             print(self.gait_u_)
             self.tem_message.data.extend(self.gait_u_)
             self.publisher_.publish(self.tem_message)

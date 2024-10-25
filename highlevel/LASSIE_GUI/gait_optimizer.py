@@ -4,9 +4,9 @@ from scipy.optimize import minimize
 
 class GaitOptimizer:
     def __init__(self, robot_weight=3, flipper_length=0.12, flipper_width=0.025, 
-                 max_motor_torque=1.5, motor_acceleration_time=0.08, 
+                 max_motor_torque=1.5, motor_acceleration_time=0.1, 
                  extrude_depth=0.015, extrude_width=0.015,
-                 k_v = 200, 
+                 k_v = 8, 
                  bounds=[(0.15, 1.2), (0.15, 1.2), (0.15, 1.2), (0.3, 0.3), (0.03, 0.03), (np.pi/6, np.pi/6)]):
         # Initialize robot and terrain constants
         self.ROBOT_WEIGHT = robot_weight
@@ -28,16 +28,16 @@ class GaitOptimizer:
         return k_s_average * 0.5 * self.EXTRUDE_DEPTH * self.EXTRUDE_DEPTH * self.EXTRUDE_WIDTH
 
     def _acceleration_force(self, alpha, t_s):
-        return self.ROBOT_WEIGHT * alpha * self.FLIPPER_LENGTH / (self.MOTOR_ACCELERATION_TIME * t_s)
+        return self.ROBOT_WEIGHT * alpha * t_s / (self.MOTOR_ACCELERATION_TIME)
     
 
     def _penetration_force(self, d, t_p, k_p):
         # print("static:", k_p * d * self.FLIPPER_WIDTH  * 0.005)
         # print(self.k_v* (d/t_p)**2)
-        return k_p * d * self.FLIPPER_WIDTH  * 0.005 + self.k_v* (d/t_p)**2 * k_p * d * self.FLIPPER_WIDTH  * 0.005
+        return k_p * d * self.FLIPPER_WIDTH  * 0.005 + self.k_v* (t_p)**2 * k_p * d * self.FLIPPER_WIDTH  * 0.005
     def _extraction_force(self, d, t_e, k_e):
         # print("static:", k_e * d * self.FLIPPER_WIDTH  * 0.005)
-        return k_e * d * self.FLIPPER_WIDTH  * 0.005+ self.k_v* (d/t_e)**2 * k_p * d * self.FLIPPER_WIDTH  * 0.005
+        return k_e * d * self.FLIPPER_WIDTH  * 0.005+ self.k_v* (t_e)**2 * k_e * d * self.FLIPPER_WIDTH  * 0.005
 
     def _step_length(self, d, alpha, t_s, k_s_average):
         # f_s = self._shear_force(d, k_s_average, t_s)
@@ -66,7 +66,7 @@ class GaitOptimizer:
 
     def _constraint1(self, mu, k_s_average):
         # determine the sweeping velocity
-        return (-self._effective_angle(mu[4], mu[5], mu[1], k_s_average) + np.cos(mu[5]))/1000
+        return np.max([(-self._effective_angle(mu[4], mu[5], mu[1], k_s_average) + np.cos(mu[5])), 0])
 
     # def _constraint2(self, mu, k_s_average):
     #     return self.fm - self._shear_force(mu[4], k_s_average,mu[1])
@@ -77,8 +77,8 @@ class GaitOptimizer:
     def _constraint4(self, mu, k_e):
         # determin the extraction velocity
         # print(mu[4], mu[2], k_e)
-        print((self.fm - self._extraction_force(mu[4], mu[2], k_e) ))
-        return (self.fm - self._extraction_force(mu[4], mu[2], k_e) )
+        # print((self.fm - self._extraction_force(mu[4], mu[2], k_e) ))
+        return np.max([(self.fm - self._extraction_force(mu[4], mu[2], k_e) ), 0])
     
     def _constraint5(self, mu, k_p):
         # print(mu[4], mu[0], k_p)
@@ -87,8 +87,8 @@ class GaitOptimizer:
 
     def validate(self, k_p, k_s, k_e, mu0 ):
         t_p, t_s, t_e, t_b, d, alpha = mu0
-        f_s = self._shear_force(d, k_s_average, t_s)
-        f_r = self._resistance_force(k_s_average)
+        f_s = self._shear_force(d, k_s, t_s)
+        f_r = self._resistance_force(k_s)
         f_a = self._acceleration_force(alpha, t_s)
         f_e = self._extraction_force(d, t_e, k_e)
         f_p = self._penetration_force(d, t_p, k_p)
@@ -154,30 +154,80 @@ class GaitOptimizer:
         
         print(f"Maximum valid sweeping velocity (mu[1]): {max_mu1}")
         return max_mu1
-    def optimize(self, k_p, k_s, k_e, mu0=[1, 1, 1, 1, 0.03, np.pi/6]):
+
+    def find_insertion_depth(self, mu0, k_e, k_s, tolerance=1e-6):
+        """Find the optimal insertion depth such that both constraints are satisfied for fixed velocities."""
+        
+        # Assume velocities are given in mu0[1] (v_s) and mu0[2] (v_e)
+        v_s = mu0[1]
+        v_e = mu0[2]
+        
+        lower_bound = 0.01  # Lower bound for insertion depth
+        upper_bound = 0.05  # Upper bound for insertion depth
+        optimal_insertion_depth_sweeping = lower_bound
+        
+        step_size = 0.001  # Step size for insertion depth
+        
+        for insertion_depth in np.arange(lower_bound, upper_bound, step_size):
+            # Check if both constraints are satisfied for the current insertion depth
+            constraint_satisfied_1 = self._constraint1([0.1, 0.5, 0.5, 0.5, insertion_depth, mu0[5]], k_s)
+            # constraint_satisfied_4 = self._constraint4([0.1, 0.5, 0.5, 0.5, insertion_depth, mu0[5]], k_e)
+            print("sweeping", constraint_satisfied_1)
+            # print("extraction", constraint_satisfied_4)
+            # If both constraints are satisfied, we have found a valid insertion depth
+            if constraint_satisfied_1 > 0.000:
+                optimal_insertion_depth_sweeping = insertion_depth
+                break
+        optimal_insertion_depth_extracting = upper_bound
+        for insertion_depth in np.arange(upper_bound, lower_bound, -step_size):
+            # Check if both constraints are satisfied for the current insertion depth
+            # constraint_satisfied_1 = self._constraint1([0.1, 0.5, 0.5, 0.5, insertion_depth, mu0[5]], k_s)
+            constraint_satisfied_4 = self._constraint4([0.1, 0.5, 0.5, 0.5, insertion_depth, mu0[5]], k_e)
+            # print("sweeping", constraint_satisfied_1)
+            print("extraction", constraint_satisfied_4)
+            # If both constraints are satisfied, we have found a valid insertion depth
+            if constraint_satisfied_4 > 0.0:
+                optimal_insertion_depth_extracting = insertion_depth
+                break
+
+        if(optimal_insertion_depth_extracting >= optimal_insertion_depth_sweeping):
+            optimal_insertion_depth = (optimal_insertion_depth_extracting + optimal_insertion_depth_sweeping)/2
+        elif(optimal_insertion_depth_extracting < optimal_insertion_depth_sweeping):
+            optimal_insertion_depth = optimal_insertion_depth_extracting
+        if(optimal_insertion_depth == 0.01):
+            if(constraint_satisfied_1 <= 0):
+                optimal_insertion_depth = 0.5
+            if(constraint_satisfied_4 <= 0):
+                optimal_insertion_depth = 0.3
+
+        
+        
+        print(f"Optimal insertion depth: {optimal_insertion_depth}")
+        return optimal_insertion_depth
+
+
+
+
+    def optimize(self, k_p, k_s, k_e, mu0=[0.1, 0.5, 0.5, 0.5, 0.03, np.pi/6]):
 
         print(f"k_p: {k_p}")
         print(f"k_s: {k_s}")
         print(f"k_e: {k_e}")
         optimal_mu = mu0
+
         
-        optimal_mu[2] = self.find_max_extraction_velocity(mu0, k_e)
-        optimal_mu[1] = self.find_max_sweeping_velocity(mu0, k_s)
-    
-        optimal_mu[3] = self.bounds[3][1]
-        optimal_mu[0] = optimal_mu[2]
-        optimal_mu[4] = self.bounds[4][1]
-        optimal_mu[5] = self.bounds[5][1]
+        optimal_mu[4] = self.find_insertion_depth(mu0, k_e, k_s)
+     
         print("gait time", optimal_mu)
 
 
 
         
-        optimal_mu[0] = optimal_mu[4]/optimal_mu[0]
-        optimal_mu[1] = optimal_mu[5]/optimal_mu[1] * self.FLIPPER_LENGTH
-        optimal_mu[2] = optimal_mu[4]/optimal_mu[2]
-        optimal_mu[3] = optimal_mu[5]/optimal_mu[3] * self.FLIPPER_LENGTH
-        print("gait speed", optimal_mu)
+        # optimal_mu[0] = optimal_mu[4]/optimal_mu[0]
+        # optimal_mu[1] = optimal_mu[5]/optimal_mu[1] * self.FLIPPER_LENGTH
+        # optimal_mu[2] = optimal_mu[4]/optimal_mu[2]
+        # optimal_mu[3] = optimal_mu[5]/optimal_mu[3] * self.FLIPPER_LENGTH
+        # print("gait speed", optimal_mu)
         # # Define constraints in a dictionary form
         # constraints = [
         #     {'type': 'ineq', 'fun': lambda mu: self._constraint1(mu, k_s)},
@@ -224,9 +274,9 @@ class GaitOptimizer:
 
 # Example usage of the GaitOptimizer class with default bounds
 if __name__ == "__main__":
-    k_s_average = 0.3 * 1e6  # example value
-    k_p = 1.0 * 1e6      # example value
-    k_e = 2 * 1e6      # example value
+    k_s = 0.3 * 1e6  # example value
+    k_p = 0.3 * 1e6      # example value
+    k_e = 0.4 * 1e6      # example value
 
     # Use default bounds
     optimizer = GaitOptimizer()
@@ -234,59 +284,80 @@ if __name__ == "__main__":
 
 
     # ploting
-#     import matplotlib.pyplot as plt
-#     k_p_values = np.linspace(0.2, 2, 10) * 1e6
+    import matplotlib.pyplot as plt
+    k_p_values = np.linspace(0.3, 0.92, 10) * 1e6
 
-#    # Update to vary penetration velocity from 0.3 to 7 instead of keeping it fixed
+   # Update to vary penetration velocity from 0.3 to 7 instead of keeping it fixed
 
-#     # Define the range for penetration velocities
-#     penetration_velocity_values = np.linspace(0.025, 0.2, 10)
+    # Define the range for penetration velocities
+    variables = np.linspace(0.01, 0.05, 10)
 
-#     # Store results for constraints for each penetration velocity
-#     cons1_results = []
-#     cons4_results = []
-#     cons5_results = []
+    # Store results for constraints for each penetration velocity
+    cons1_results = []
+    cons4_results = []
+    cons5_results = []
 
-#     # Loop over different k_p values and penetration velocities
-#     for k_p in k_p_values:
-#         cons1_kp = []
-#         cons4_kp = []
-#         cons5_kp = []
-#         for penetration_velocity in penetration_velocity_values:
-#             _, _, _, _, _, cons1, cons4, cons5 = optimizer.validate(k_p, k_p, k_p, [1,1, 0.03/penetration_velocity, 0.3, 0.03, np.pi / 6])
-#             cons1_kp.append(cons1)
-#             cons4_kp.append(cons4)
-#             cons5_kp.append(cons5)
-#         cons1_results.append(cons1_kp)
-#         cons4_results.append(cons4_kp)
-#         cons5_results.append(cons5_kp)
+    # Loop over different k_p values and penetration velocities
+    for k in k_p_values:
+        cons1_kp = []
+        cons4_kp = []
+        cons5_kp = []
+        for i in variables:
+            _, _, _, _, _, cons1, cons4, cons5 = optimizer.validate(k_p, k, k_e, [0.1,   0.5,  0.5, 0.5, i, np.pi / 6])
+            cons1_kp.append(cons1)
+            cons4_kp.append(cons4)
+            cons5_kp.append(cons5)
+        cons1_results.append(cons1_kp)
+        cons4_results.append(cons4_kp)
+        cons5_results.append(cons5_kp)
 
-#     # Plotting
-#     plt.figure(figsize=(10, 6))
+    # Plotting
+    plt.figure(figsize=(10, 6))
 
-#     # Plot cons1 vs penetration velocity with different colors for k_p
-#     # for idx, k_p in enumerate(k_p_values):
-#     #     plt.plot(penetration_velocity_values, cons1_results[idx], 'o-', label=f'k_p={k_p}', color=plt.cm.viridis(idx / len(k_p_values)))
+    # Plot cons1 vs penetration velocity with different colors for k_p
+    # for idx, k_p in enumerate(k_p_values):
+    #     plt.plot(penetration_velocity_values, cons1_results[idx], 'o-', label=f'k_p={k_p}', color=plt.cm.viridis(idx / len(k_p_values)))
 
-#     # # Plot cons4 vs penetration velocity
-#     # for idx, k_p in enumerate(k_p_values):
-#     #     plt.plot(penetration_velocity_values, cons4_results[idx], 'x-', label=f'k_p={k_p}', color=plt.cm.plasma(idx / len(k_p_values)))
+    # # Plot cons4 vs penetration velocity
+    for idx, k_p in enumerate(k_p_values):
+        plt.plot(variables, cons1_results[idx], 'x-', label=f'k_p={k_p}', color=plt.cm.plasma(idx / len(k_p_values)))
 
-#     # Plot cons5 vs penetration velocity
-#     for idx, k_p in enumerate(k_p_values):
-#         plt.plot(penetration_velocity_values, cons4_results[idx], 's-', label=f'k_p={k_p}', color=plt.cm.cividis(idx / len(k_p_values)))
+    plt.title('sweeping failure vs Penetration Velocity (Varying k_p)')
+    plt.legend()
+    k_p_values = np.linspace(0.4, 0.98, 10) * 1e6
+    cons1_results = []
+    cons4_results = []
+    cons5_results = []
+    # Loop over different k_p values and penetration velocities
+    for k in k_p_values:
+        cons1_kp = []
+        cons4_kp = []
+        cons5_kp = []
+        for i in variables:
+            _, _, _, _, _, cons1, cons4, cons5 = optimizer.validate(k_p, k_s, k, [0.1,   0.5,  0.5, 0.5, i, np.pi / 6])
+            cons1_kp.append(cons1)
+            cons4_kp.append(cons4)
+            cons5_kp.append(cons5)
+        cons1_results.append(cons1_kp)
+        cons4_results.append(cons4_kp)
+        cons5_results.append(cons5_kp)
 
-#     plt.title('Constraints vs Penetration Velocity (Varying k_p)')
-#     plt.xlabel('Penetration Velocity')
-#     plt.ylabel('Constraint Values')
-#     plt.legend()
-#     plt.grid(True)
-#     plt.show()
+    plt.figure(figsize=(10, 6))
+    # Plot cons5 vs penetration velocity
+    for idx, k_p in enumerate(k_p_values):
+        plt.plot(variables, cons4_results[idx], 's-', label=f'k_p={k_p}', color=plt.cm.cividis(idx / len(k_p_values)))
 
-    control_vector = optimizer.optimize(k_p, k_s_average, k_e)
-    # print(control_vector)
+    plt.title('extraction failure vs Penetration Velocity (Varying k_p)')
+    plt.xlabel('Penetration Velocity')
+    plt.ylabel('Constraint Values')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
 
-    optimizer.validate(k_p, k_s_average, k_e, control_vector)
+    control_vector = optimizer.optimize(k_p, k_s, k_e)
+    print(control_vector)
+
+    optimizer.validate(k_p, k_s, k_e, control_vector)
 
     # # Example with custom bounds
     # custom_bounds = [(0.5, 4), (0.5, 3), (0.5, 2), (0.5, 2), (0.03, 0.03), (np.pi/6, np.pi/6)]

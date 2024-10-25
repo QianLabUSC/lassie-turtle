@@ -241,7 +241,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
 
                                 if(TurtleBackRunningTimeCount<=rectangle_params.period_up){
                                     corres_t = TurtleBackRunningTimeCount / rectangle_params.period_up;
-                                    gamma1 = left_hori_servo + rectangle_params.extraction_angle;
+                                    gamgma1 = left_hori_servo + rectangle_params.extraction_angle;
                                     theta1 = - rectangle_params.horizontal_range + 2 * rectangle_params.horizontal_range * corres_t;
                                     gamma2 = right_hori_servo - rectangle_params.extraction_angle;
                                     theta2 = rectangle_params.horizontal_range - 2 * rectangle_params.horizontal_range * corres_t;

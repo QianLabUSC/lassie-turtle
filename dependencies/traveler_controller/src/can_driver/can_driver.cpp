@@ -388,6 +388,7 @@ void can_driver::setPosition_right_adduction(traveler_msgs::msg::SetInputPositio
    send_frame.can_id = odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID;
    socket_topic_set_position_1_axis2.writeFrame(send_frame);
 }
+
 void can_driver::setPosition_right_sweeping(traveler_msgs::msg::SetInputPosition msg)
 {
    // RCLCPP_INFO(this->get_logger(), "Do Encoder Response Received");

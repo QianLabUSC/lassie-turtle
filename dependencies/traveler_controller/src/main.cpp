@@ -47,6 +47,7 @@ int main(int argc, char **argv)
 		Can_driver_->setControl(turtle_);
 		
 		loop_rate.sleep();
+		// for test
 		
 	}
 
