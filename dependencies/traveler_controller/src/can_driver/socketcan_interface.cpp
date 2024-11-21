@@ -42,13 +42,7 @@ int SocketcanInterface::openSocket(canid_t msg_id, uint8_t can_channel, uint16_t
         return -1;
     }
         if (can_channel == 0)
-        {
-            strcpy(ifr.ifr_name, "can0");
-            ioctl(s, SIOCGIFINDEX, &ifr);
-        }
-        else 
-        {
-            strcpy(ifr.ifr_name, "can1");
+
             ioctl(s, SIOCGIFINDEX, &ifr);
         }
     can_filter filt;
