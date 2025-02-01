@@ -1,0 +1,3 @@
+[console_scripts]
+traveler_optitrack = traveler_optitrack.traveler_optitrack:main
+

@@ -1,0 +1,40 @@
+[0.550s] Invoking command in '/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack': PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/prefix_override:/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/traveler_optitrack build --build-base /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build install --record /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed
+[0.671s] running egg_info
+[0.671s] creating build/traveler_optitrack/traveler_optitrack.egg-info
+[0.671s] writing build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.671s] writing dependency_links to build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.671s] writing entry points to build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.671s] writing requirements to build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.673s] writing top-level names to build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.674s] writing manifest file 'build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.692s] reading manifest file 'build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.693s] writing manifest file 'build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.693s] running build
+[0.693s] running build_py
+[0.693s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build
+[0.693s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib
+[0.693s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.693s] copying traveler_optitrack/traveler_optitrack.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.693s] copying traveler_optitrack/import socket.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.693s] copying traveler_optitrack/__init__.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack
+[0.693s] running install
+[0.693s] running install_lib
+[0.694s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.694s] copying /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack/traveler_optitrack.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.694s] copying /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack/import socket.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.694s] copying /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build/lib/traveler_optitrack/__init__.py -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack
+[0.694s] byte-compiling /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/traveler_optitrack.py to traveler_optitrack.cpython-38.pyc
+[0.695s] byte-compiling /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/import socket.py to import socket.cpython-38.pyc
+[0.695s] byte-compiling /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack/__init__.py to __init__.cpython-38.pyc
+[0.695s] running install_data
+[0.696s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/share/ament_index
+[0.696s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/share/ament_index/resource_index
+[0.696s] creating /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/share/ament_index/resource_index/packages
+[0.696s] copying resource/traveler_optitrack -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/share/ament_index/resource_index/packages
+[0.696s] copying package.xml -> /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/share/traveler_optitrack
+[0.696s] running install_egg_info
+[0.697s] Copying build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.698s] running install_scripts
+[0.708s] Installing traveler_optitrack script to /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/traveler_optitrack
+[0.708s] writing list of installed files to '/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/install.log'
+[0.721s] Invoked command in '/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack' returned '0': PYTHONPATH=/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/prefix_override:/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 setup.py egg_info --egg-base build/traveler_optitrack build --build-base /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/build install --record /home/qianlab/Turtle_workspace/lassie-turtle/highlevel/traveler_optitrack/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed

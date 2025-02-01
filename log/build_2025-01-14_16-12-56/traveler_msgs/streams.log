@@ -1,0 +1,71 @@
+[0.012s] Invoking command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/qianlab/single_turtle_workspace/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/single_turtle_workspace/install/traveler_msgs
+[0.021s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.033s] -- Found PythonInterp: /home/qianlab/miniconda3/bin/python3 (found suitable version "3.12.1", minimum required is "3") 
+[0.033s] -- Using PYTHON_EXECUTABLE: /home/qianlab/miniconda3/bin/python3
+[0.123s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.148s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.150s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.251s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.282s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.283s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.376s] -- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)
+[0.393s] -- Found PythonInterp: /home/qianlab/miniconda3/bin/python3 (found version "3.12.1") 
+[0.431s] CMake Error at /opt/ros/foxy/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:60 (message):
+[0.431s]   execute_process(/home/qianlab/miniconda3/bin/python3 -m rosidl_adapter
+[0.431s]   --package-name traveler_msgs --arguments-file
+[0.431s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter__arguments__traveler_msgs.json
+[0.431s]   --output-dir
+[0.431s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter/traveler_msgs
+[0.431s]   --output-file
+[0.431s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter/traveler_msgs.idls)
+[0.431s]   returned error code 1:
+[0.431s] 
+[0.431s]   AttributeError processing template 'msg.idl.em'
+[0.431s] 
+[0.431s]   Traceback (most recent call last):
+[0.432s] 
+[0.432s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/resource/__init__.py", line 51, in evaluate_template
+[0.432s]       em.BUFFERED_OPT: True,
+[0.432s]       ^^^^^^^^^^^^^^^
+[0.432s] 
+[0.432s]   AttributeError: module 'em' has no attribute 'BUFFERED_OPT'
+[0.432s] 
+[0.432s]   
+[0.432s] 
+[0.432s]   During handling of the above exception, another exception occurred:
+[0.432s] 
+[0.432s]   
+[0.433s] 
+[0.433s]   Traceback (most recent call last):
+[0.433s] 
+[0.433s]     File "<frozen runpy>", line 198, in _run_module_as_main
+[0.433s]     File "<frozen runpy>", line 88, in _run_code
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/__main__.py", line 19, in <module>
+[0.433s]       sys.exit(main())
+[0.433s]                ^^^^^^
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/main.py", line 53, in main
+[0.433s]       abs_idl_file = convert_to_idl(
+[0.433s]                      ^^^^^^^^^^^^^^^
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/__init__.py", line 19, in convert_to_idl
+[0.433s]       return convert_msg_to_idl(
+[0.433s]              ^^^^^^^^^^^^^^^^^^^
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/msg/__init__.py", line 39, in convert_msg_to_idl
+[0.433s]       expand_template('msg.idl.em', data, output_file, encoding='iso-8859-1')
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/resource/__init__.py", line 23, in expand_template
+[0.433s]       content = evaluate_template(template_name, data)
+[0.433s]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[0.433s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/resource/__init__.py", line 69, in evaluate_template
+[0.433s]       _interpreter.shutdown()
+[0.433s]       ^^^^^^^^^^^^^^^^^^^^^
+[0.433s] 
+[0.433s]   AttributeError: 'NoneType' object has no attribute 'shutdown'
+[0.433s] 
+[0.433s] Call Stack (most recent call first):
+[0.433s]   /opt/ros/foxy/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+[0.433s]   CMakeLists.txt:60 (rosidl_generate_interfaces)
+[0.433s] 
+[0.433s] 
+[0.433s] -- Configuring incomplete, errors occurred!
+[0.433s] See also "/home/qianlab/single_turtle_workspace/build/traveler_msgs/CMakeFiles/CMakeOutput.log".
+[0.433s] See also "/home/qianlab/single_turtle_workspace/build/traveler_msgs/CMakeFiles/CMakeError.log".
+[0.439s] Invoked command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/qianlab/single_turtle_workspace/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/single_turtle_workspace/install/traveler_msgs

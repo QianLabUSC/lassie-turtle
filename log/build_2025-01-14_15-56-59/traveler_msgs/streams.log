@@ -1,0 +1,75 @@
+[0.018s] Invoking command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/qianlab/single_turtle_workspace/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/single_turtle_workspace/install/traveler_msgs
+[0.186s] -- The C compiler identification is GNU 9.4.0
+[0.186s] -- The CXX compiler identification is GNU 9.4.0
+[0.187s] -- Check for working C compiler: /usr/bin/cc
+[0.223s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.224s] -- Detecting C compiler ABI info
+[0.278s] -- Detecting C compiler ABI info - done
+[0.287s] -- Detecting C compile features
+[0.288s] -- Detecting C compile features - done
+[0.290s] -- Check for working CXX compiler: /usr/bin/c++
+[0.341s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.342s] -- Detecting CXX compiler ABI info
+[0.397s] -- Detecting CXX compiler ABI info - done
+[0.405s] -- Detecting CXX compile features
+[0.405s] -- Detecting CXX compile features - done
+[0.409s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.425s] -- Found PythonInterp: /home/qianlab/miniconda3/bin/python3 (found suitable version "3.12.1", minimum required is "3") 
+[0.425s] -- Using PYTHON_EXECUTABLE: /home/qianlab/miniconda3/bin/python3
+[0.560s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.607s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.614s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.681s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.711s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.767s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.806s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.807s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.808s] -- Looking for pthread.h
+[0.856s] -- Looking for pthread.h - found
+[0.856s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.905s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[0.905s] -- Looking for pthread_create in pthreads
+[0.945s] -- Looking for pthread_create in pthreads - not found
+[0.945s] -- Looking for pthread_create in pthread
+[0.992s] -- Looking for pthread_create in pthread - found
+[0.993s] -- Found Threads: TRUE  
+[1.097s] -- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)
+[1.116s] -- Found PythonInterp: /home/qianlab/miniconda3/bin/python3 (found version "3.12.1") 
+[1.147s] CMake Error at /opt/ros/foxy/share/rosidl_adapter/cmake/rosidl_adapt_interfaces.cmake:60 (message):
+[1.147s]   execute_process(/home/qianlab/miniconda3/bin/python3 -m rosidl_adapter
+[1.147s]   --package-name traveler_msgs --arguments-file
+[1.147s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter__arguments__traveler_msgs.json
+[1.147s]   --output-dir
+[1.147s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter/traveler_msgs
+[1.148s]   --output-file
+[1.148s]   /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_adapter/traveler_msgs.idls)
+[1.148s]   returned error code 1:
+[1.148s] 
+[1.148s]   Traceback (most recent call last):
+[1.148s] 
+[1.148s]     File "<frozen runpy>", line 198, in _run_module_as_main
+[1.148s]     File "<frozen runpy>", line 88, in _run_code
+[1.148s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/__main__.py", line 19, in <module>
+[1.148s]       sys.exit(main())
+[1.148s]                ^^^^^^
+[1.148s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/main.py", line 53, in main
+[1.148s]       abs_idl_file = convert_to_idl(
+[1.149s]                      ^^^^^^^^^^^^^^^
+[1.149s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/__init__.py", line 18, in convert_to_idl
+[1.149s]       from rosidl_adapter.msg import convert_msg_to_idl
+[1.149s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/msg/__init__.py", line 16, in <module>
+[1.149s]       from rosidl_adapter.resource import expand_template
+[1.149s]     File "/opt/ros/foxy/lib/python3.8/site-packages/rosidl_adapter/resource/__init__.py", line 19, in <module>
+[1.149s]       import em
+[1.149s] 
+[1.149s]   ModuleNotFoundError: No module named 'em'
+[1.149s] 
+[1.149s] Call Stack (most recent call first):
+[1.149s]   /opt/ros/foxy/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:130 (rosidl_adapt_interfaces)
+[1.149s]   CMakeLists.txt:60 (rosidl_generate_interfaces)
+[1.149s] 
+[1.149s] 
+[1.150s] -- Configuring incomplete, errors occurred!
+[1.150s] See also "/home/qianlab/single_turtle_workspace/build/traveler_msgs/CMakeFiles/CMakeOutput.log".
+[1.150s] See also "/home/qianlab/single_turtle_workspace/build/traveler_msgs/CMakeFiles/CMakeError.log".
+[1.155s] Invoked command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) /usr/bin/cmake /home/qianlab/single_turtle_workspace/dependencies/traveler_msgs -DCMAKE_INSTALL_PREFIX=/home/qianlab/single_turtle_workspace/install/traveler_msgs

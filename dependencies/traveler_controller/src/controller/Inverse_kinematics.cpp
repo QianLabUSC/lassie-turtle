@@ -306,4 +306,3 @@ void boundingGAIT(turtle& turtle_, float t)
 {
     fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_,t);
 }
-

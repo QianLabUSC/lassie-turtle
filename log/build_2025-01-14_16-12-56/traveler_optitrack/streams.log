@@ -1,0 +1,20 @@
+[0.416s] Invoking command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[0.550s] running egg_info
+[0.550s] writing ../../build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.550s] writing dependency_links to ../../build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.550s] writing entry points to ../../build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.550s] writing requirements to ../../build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.550s] writing top-level names to ../../build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.569s] reading manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.569s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.570s] running build
+[0.570s] running build_py
+[0.570s] running install
+[0.570s] running install_lib
+[0.571s] running install_data
+[0.571s] running install_egg_info
+[0.572s] removing '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info' (and everything under it)
+[0.572s] Copying ../../build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.573s] running install_scripts
+[0.584s] Installing traveler_optitrack script to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/traveler_optitrack
+[0.584s] writing list of installed files to '/home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log'

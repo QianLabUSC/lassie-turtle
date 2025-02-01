@@ -1,4 +1,0 @@
-[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
-[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:185:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
-  185 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
-      |                        [01;35m[K^~~~~~~~~~~~~~[m[K
