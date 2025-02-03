@@ -182,7 +182,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float hold_time_2 = 3.0; // 新阶段2的保持时间
     float hold_time_3 = 3.0; // 新阶段3的保持时间
     float end_delay = 3.0;   // 延迟时间在结束阶段
-
+ 
     float total_period = rectangle_params.period_down + rectangle_params.period_up + rectangle_params.period_left + rectangle_params.period_right + hold_time_1 + hold_time_2 + hold_time_3 + end_delay + rectangle_params.period_waiting_time;
 
     float t_mod = fmod(t, total_period);
