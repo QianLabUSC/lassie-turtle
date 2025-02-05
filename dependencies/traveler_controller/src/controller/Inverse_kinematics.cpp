@@ -39,7 +39,7 @@ using namespace std;
  * @param turtle_  The turtle object (contains trajectory data and control handles)
  * @param t        The current time (in seconds)
  */
-void fixed_insertion_depth_gait_lower_point_curved_extraction(turtle& turtle_, float t) {
+void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t) {
 
 
     double l1 = 0.130;        // flipper length (new shorter flipper)
@@ -137,4 +137,16 @@ void fixed_insertion_depth_gait_lower_point_curved_extraction(turtle& turtle_, f
     turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
     turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
     turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+}
+
+/**
+ * @brief bouding gaits
+ * @param time
+ * @param bouding gaits
+ * @return x y : the coordinates of the toe trajectories
+ */
+
+void boundingGAIT(turtle& turtle_, float t)
+{
+    fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_,t);
 }
