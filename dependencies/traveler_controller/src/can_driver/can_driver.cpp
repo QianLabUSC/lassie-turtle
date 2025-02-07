@@ -227,7 +227,7 @@ void can_driver::setControl(turtle& turtle_){
    // turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 0;
    turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 1;
    turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 1;
-   std::cout<<"ifcontrol:" << turtle_.turtle_control.if_control<<std::endl;
+   // std::cout<<"ifcontrol:" << turtle_.turtle_control.if_control<<std::endl;
    
    if(turtle_.turtle_control.if_control){
       // setPosition_left_adduction(turtle_.turtle_control.left_adduction.set_input_position_radian);

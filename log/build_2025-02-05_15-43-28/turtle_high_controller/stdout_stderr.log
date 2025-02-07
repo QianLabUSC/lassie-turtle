@@ -1,0 +1,26 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 38%] Built target odrive_can_interface
+[ 46%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_curved_extraction(turtle&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:62:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_1[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   62 |     float [01;35m[Khold_time_1[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:63:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_2[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   63 |     float [01;35m[Khold_time_2[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:64:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_3[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   64 |     float [01;35m[Khold_time_3[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:65:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kend_delay[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   65 |     float [01;35m[Kend_delay[m[K    = 3.0; // delay at the end (unused here)
+      |           [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:84:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   84 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[ 53%] [32m[1mLinking CXX executable turtle_high_controller[0m
+/usr/bin/ld: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o: in function `turtle_namespace::control::lowerproxy::calculate_position(turtle&)':
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:171: undefined reference to `boundingGAIT(turtle&, float)'
+collect2: error: ld returned 1 exit status
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:251: turtle_high_controller] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

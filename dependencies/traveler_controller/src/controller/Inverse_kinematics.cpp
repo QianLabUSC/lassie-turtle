@@ -99,7 +99,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float curve_offset_deg = 30.0f;  // turtle_.traj_data.curve_angle
 
     // Normalize the time within the combined phase (0 to 1)
-    corres_t = t_mod / combined_duration;
+    
 
     // For the sweeping angle (theta):
     //   We start at the “extracted” (or fully inserted) position which in the original code for Phase 4 is:
@@ -107,21 +107,43 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     //   Then we add a shear offset that increases with time.
     //   Thus at corres_t=0, theta1 = -horizontal_angle,
     //        and at corres_t=1, theta1 = -horizontal_angle + curve_offset_deg.
-    theta1 = -horizontal_angle + curve_offset_deg * corres_t;
-    theta2 = horizontal_angle - curve_offset_deg * corres_t;  // mirror for the right flipper
+    if(t_mod < rectangle_params.period_down){
+        corres_t = t_mod / rectangle_params.period_down;
+        // theta1 = horizontal_angle - curve_offset_deg * corres_t;
+        theta2 = horizontal_angle - curve_offset_deg * corres_t;  // mirror for the right flipper
 
-    // For the extraction (adduction) angle (gamma):
-    //   Phase 4 formula which linearly interpolates between:
-    //      left_hori_servo - (initial_insertion_depth_deg)   at start (fully inserted)
-    //   and left_hori_servo + extraction_angle              at end (extracted).
-    gamma1 = left_hori_servo - (initial_insertion_depth_rad * 180 / M_PI)
-             + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
-    gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI)
-             - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+        // For the extraction (adduction) angle (gamma):
+        //   Phase 4 formula which linearly interpolates between:
+        //      left_hori_servo - (initial_insertion_depth_deg)   at start (fully inserted)
+        //   and left_hori_servo + extraction_angle              at end (extracted).
+        // gamma1 = left_hori_servo - (initial_insertion_depth_rad * 180 / M_PI)
+        //         + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+        gamma2 = right_hori_servo - extraction_angle + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+
+       
+        // theta2 = -horizontal_angle + 2 * horizontal_angle * corres_t;
+        // gamma2 = right_hori_servo + (asin((desierd_insertion_depth + turtle_height) / sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) - atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
+        
+    }
+    else{
+        corres_t = (t_mod -  rectangle_params.period_down )/ rectangle_params.period_left;
+        // theta1 = horizontal_angle - curve_offset_deg * corres_t; 
+        theta2 = horizontal_angle - curve_offset_deg +  (curve_offset_deg * corres_t);  // mirror for the right flipper
+
+        // For the extraction (adduction) angle (gamma):
+        //   Phase 4 formula which linearly interpolates between:
+        //      left_hori_servo - (initial_insertion_depth_deg)   at start (fully inserted)
+        //   and left_hori_servo + extraction_angle              at end (extracted).
+        // gamma1 = left_hori_servo - (initial_insertion_depth_rad * 180 / M_PI)
+        //         + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+       
+        gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI) - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
+    }
+    
 
  
     cout << "Combined Phase: corres_t=" << corres_t
-         << ", theta1=" << theta1 << ", gamma1=" << gamma1 << endl;
+         << ", theta2=" << theta2 << ", gamma2=" << gamma2 << endl;
 
     // Set a gait state value indicating that we're in the combined shear+extraction phase.
     turtle_.turtle_chassis.gait_state = 3;

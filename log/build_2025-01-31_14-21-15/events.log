@@ -1,5 +1,0 @@
-[0.000000] (-) TimerEvent: {}
-[0.000138] (-) JobUnselected: {'identifier': 'traveler_msgs'}
-[0.000155] (-) JobUnselected: {'identifier': 'traveler_optitrack'}
-[0.000165] (-) JobUnselected: {'identifier': 'turtle_high_controller'}
-[0.000384] (-) EventReactorShutdown: {}
