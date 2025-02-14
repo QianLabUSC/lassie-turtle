@@ -171,6 +171,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         boundingGAIT(turtle_, running_t);           
                         std::cout << "running Interation: " << running_t << std::endl;
                         break;
+
                 }
 
        
