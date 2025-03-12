@@ -33,7 +33,6 @@ int main(int argc, char **argv)
     //rclcpp::shutdown();
     rclcpp::Rate loop_rate(1000); 
     int count1;
-	bool trajectory_executed_flag = false;
 	while (rclcpp::ok())
 	{
 		rclcpp::spin_some(Upper_proxy_);
@@ -43,12 +42,7 @@ int main(int argc, char **argv)
 		Upper_proxy_->UpdateGuiCommand(turtle_); 
 		
         Can_driver_->change_odrive_state(turtle_);
-		// Lower_proxy_->calculate_position(turtle_);  
-
-		if (!trajectory_executed_flag) {  
-       		Lower_proxy_->calculate_position(turtle_);
-        	trajectory_executed_flag = true;  
-    	}
+		Lower_proxy_->calculate_position(turtle_);  
 		
 		Can_driver_->setControl(turtle_);
 		
