@@ -7,6 +7,7 @@
 
 #include "proxy/upperproxy.h"
 
+
 /**
  * upperproxy - class to collect robot's information and trajectories from path
  * planning and decision making part. 
@@ -17,39 +18,34 @@ namespace turtle_namespace{
 namespace control{
 
 upperproxy::upperproxy(std::string name) : Node(name){
-    std::cout << "Traveler Upper Proxy established" << std::endl;
+    std::cout<<"Traveler Upper Proxy established"
+                <<std::endl;
     GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
         ("/drag_times", 10);
     GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
 }
 
-void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg){
-    // Set existing GUI parameters
-    turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
-    turtle_inter_.turtle_gui.drag_traj = msg->data[1];
-    turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
-    turtle_inter_.traj_data.drag_speed = msg->data[3];
-    turtle_inter_.traj_data.wiggle_time = msg->data[4];
-    turtle_inter_.traj_data.servo_speed = msg->data[5];
-    turtle_inter_.traj_data.extraction_angle = msg->data[6];
-    turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
-    turtle_inter_.traj_data.insertion_depth = msg->data[8];
-    turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
-
-    // MODIFIED: Set new trajectory parameters for start and end XY coordinates.
-    // 10, 11, 12, and 13 of msg->data hold these values.
-    turtle_inter_.traj_data.start_x = msg->data[10];
-    turtle_inter_.traj_data.start_y = msg->data[11];
-    turtle_inter_.traj_data.end_x = msg->data[12];
-    turtle_inter_.traj_data.end_y = msg->data[13];
-}
+void upperproxy::handle_gui
+    (const std_msgs::msg::Float64MultiArray::SharedPtr msg){
+        // int len = msg->data.size();
+        turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
+        turtle_inter_.turtle_gui.drag_traj = msg->data[1];
+        turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
+        turtle_inter_.traj_data.drag_speed = msg->data[3];
+        turtle_inter_.traj_data.wiggle_time = msg->data[4];
+        turtle_inter_.traj_data.servo_speed = msg->data[5];
+        turtle_inter_.traj_data.extraction_angle = msg->data[6];
+        turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
+        turtle_inter_.traj_data.insertion_depth = msg->data[8];
+        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+        
+    }
 
 void upperproxy::UpdateGuiCommand(turtle& turtle_){
     turtle_.turtle_gui = turtle_inter_.turtle_gui;
     turtle_.traj_data = turtle_inter_.traj_data;
 }
-
 void upperproxy::PublishStatusFeedback(turtle& turtle_){
     if(turtle_.turtle_gui.status_update_flag == true){
         auto message = std_msgs::msg::Float64MultiArray();
@@ -57,7 +53,8 @@ void upperproxy::PublishStatusFeedback(turtle& turtle_){
         GUI_publisher->publish(message);
         turtle_.turtle_gui.status_update_flag = false;
     }
+    
 }
 
-} // namespace control
-} // namespace turtle_namespace
+} //namespace control
+} //namespace turtle_namespace

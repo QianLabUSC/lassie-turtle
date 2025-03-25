@@ -27,8 +27,7 @@ from kivy.metrics import dp
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 from kivy.graphics import Color, Line
-# from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.clock import Clock
 from kivy.graphics import *
 Config.set('input', '%(name)s', '')
@@ -92,7 +91,7 @@ class TravelerApp(MDApp):
 
         # get the absolute path of the grandparent directory of the script
         grandparent_path = os.path.dirname(parent_path)
-        target_path_1 = os.path.join(grandparent_path, 'resource/style_2.kv')
+        target_path_1 = os.path.join(grandparent_path, 'resource/style.kv')
 
         print('target_path_1: ', target_path_1)
         self.screen = Builder.load_file(target_path_1)

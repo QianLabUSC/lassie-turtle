@@ -85,6 +85,12 @@ struct TrajectoryData
     float wiggle_frequency;        //hz  
     float insertion_depth;             //arc        
     float wiggle_amptitude;                 //arc     
+
+    // MODIFIED: New fields for specifying the trajectory start and end points
+    float start_x;  // Start X coordinate (in meters)
+    float start_y;  // Start Y coordinate (in meters)
+    float end_x;    // End X coordinate (in meters)
+    float end_y;    // End Y coordinate (in meters)
 };
 
 struct turtle{
