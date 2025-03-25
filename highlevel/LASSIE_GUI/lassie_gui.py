@@ -4,7 +4,7 @@ import argparse
  
 # Initialize parser
 parser = argparse.ArgumentParser()
-parser.add_argument("-m", "--mode", help = "running scenario   0: others, 1: turtle, 2: others, 3: others", nargs='?', const=1, type=int, default=1)
+parser.add_argument("-m", "--mode", help="running scenario   0: others, 1: turtle, 2: others, 3: others", nargs='?', const=1, type=int, default=1)
 inputargs = parser.parse_args()
 from statistics import mean
 import sys
@@ -49,7 +49,7 @@ class Tab(MDFloatLayout, MDTabsBase):
 class turtle_tab(MDCard):
     '''Implements a material design v3 card.'''
     text = StringProperty()
-
+    
 class turtle_optimize_tab(MDCard):
     '''Implements a material design v3 card.'''
     text = StringProperty()
@@ -117,7 +117,7 @@ class TravelerApp(MDApp):
         
     def change_configure_tab(self, type):
         self.set_item(type)
-        if(type == "Preset_gait"):  # mode 5
+        if(type == "Preset_gait"):
             self.drag_traj = 5
             self.screen.ids.configure_layout.clear_widgets()
             self.screen.ids.configure_layout.add_widget(self.turtle_tab)
@@ -166,7 +166,7 @@ class TravelerApp(MDApp):
         while(True):
             rclpy.spin_once(self.ros_node)
 
-    # Callback functions for turtle optimize tab
+    # Callback functions for optimize tab
     def on_change_Optimize_Variable_1(self):
         self.current_tab.ids.Optimize_Variable_1.text = str(round(self.current_tab.ids.Slider_optimize_1.value))
     def on_change_Optimize_Variable_2(self):
@@ -179,7 +179,7 @@ class TravelerApp(MDApp):
         self.current_tab.ids.Optimize_Variable_5.text = str(round(self.current_tab.ids.Slider_optimize_5.value))
     def on_change_Optimize_Variable_6(self):
         self.current_tab.ids.Optimize_Variable_6.text = str(round(self.current_tab.ids.Slider_optimize_6.value))
-    # Callback functions for turtle preset gait
+    # Callback functions for preset tab
     def on_change_Variable_1(self):
         self.current_tab.ids.Variable_1.text = str(round(self.current_tab.ids.Slider_1.value))
     def on_change_Variable_2(self):
@@ -241,27 +241,27 @@ class TravelerApp(MDApp):
             self.ros_node.calibrate()
             
         self.gui_message = Float64MultiArray()
-        self.gui_message.data.append(self.start_flag)         # [0]: start flag
-        self.gui_message.data.append(float(self.drag_traj))       # [1]: drag traj
+        self.gui_message.data.append(self.start_flag)          # [0]: start flag
+        self.gui_message.data.append(float(self.drag_traj))        # [1]: drag traj
         
         if(self.ros_node.id == "turtle"):
             if(self.drag_traj == 5):
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/1000)  # e.g. lateral_angle_range
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)  # drag_speed
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)  # wiggle_time
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)  # servo_speed
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000)  # extraction_angle (as cm/s, for example)
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_3.value))/1000)   # lateral_angle_range
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_4.value))/1000)   # drag_speed
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_5.value))/1000)   # wiggle_time
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value))/1000)   # servo_speed
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_2.value))/1000)   # extraction_angle
                 self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)) * np.pi / 180)  # conversion to radians
-                # MODIFIED: Append new slider values for start and end coordinates (converted to meters)
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_start_x.value))/1000)  # start_x
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_start_y.value))/1000)  # start_y
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_end_x.value))/1000)    # end_x
-                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_end_y.value))/1000)    # end_y
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_start_x.value))/1000)   # start_x
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_start_y.value))/1000)   # start_y
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_end_x.value))/1000)     # end_x
+                self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_end_y.value))/1000)     # end_y
                 if(self.start_flag):
                     print("start preset gait without adaptation: ", self.gui_message.data)
                 else:
                     print("end preset gait ")
                 self.ros_node.start_preset_gait(self.gui_message)
+                
             elif(self.drag_traj == 6):
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_3.value))/1000)
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_4.value))/1000)
@@ -269,21 +269,18 @@ class TravelerApp(MDApp):
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_6.value))/1000)
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_2.value))/1000)
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_1.value)) * np.pi / 180)
-                # MODIFIED: Append new slider values for start and end coordinates for optimized gait as well
-                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_start_x.value))/1000)  # start_x
-                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_start_y.value))/1000)  # start_y
-                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_end_x.value))/1000)    # end_x
-                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_end_y.value))/1000)    # end_y
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_start_x.value))/1000)   # start_x
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_start_y.value))/1000)   # start_y
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_end_x.value))/1000)     # end_x
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_end_y.value))/1000)     # end_y
                 if(self.start_flag):
                     print("start optimizing gait with initial: ", self.gui_message.data)
                 else:
                     print("end optimizing gait ")    
                 self.ros_node.start_gait_optimization(self.gui_message)
         elif(self.ros_node.id == "leg"):
-            # leg-specific message building code...
             pass
         elif(self.ros_node.id == "MiniRhex"):
-            # MiniRhex-specific message building code...
             pass
 
     def on_download_data(self):
@@ -295,7 +292,6 @@ class TravelerApp(MDApp):
         self.gui_message.data.append(self.start_flag)
         self.gui_message.data.append(float(self.drag_traj))
         if(self.ros_node.id == "leg"):
-            # leg configuration saving code...
             pass
         elif(self.ros_node.id == "turtle"):
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_1.value)))
@@ -306,14 +302,12 @@ class TravelerApp(MDApp):
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_6.value)))
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_7.value)))
             self.gui_message.data.append(float(round(self.turtle_tab.ids.Slider_8.value)))
-            # Optionally, you may save the start/end coordinate values as well.
         elif(self.ros_node.id == "MiniRhex"):
-            # MiniRhex configuration saving code...
             pass
 
     def on_start(self):
         try:
-            path = "./config/"  +  "last_config.csv"
+            path = "./config/" + "last_config.csv"
             with open(path) as f:
                 data = csv.DictReader(f)
                 config = next(data)
@@ -329,7 +323,6 @@ class TravelerApp(MDApp):
             self.shear_tab.ids.Slider_2.max = 10
             self.shear_tab.ids.Slider_5.max = 10
             self.shear_tab.ids.Slider_7.max = 10
-        # ... additional on_start code ...
 
     def on_tab_switch(self, instance_tabs, instance_tab, instance_tab_label, tab_text):
         pass

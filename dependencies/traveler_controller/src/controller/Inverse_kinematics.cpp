@@ -24,7 +24,7 @@ using namespace std;
  * @note This modified function is derived from your original 
  *       fixed_insertion_depth_gait_lower_point_version_3_analytic_solution.
  *       It combines shear and extraction movements into one continuous phase.
- *       MODIFIED: It now also uses user-specified start and end coordinates.
+ *       // MODIFIED: Now uses user-specified start and end coordinates.
  */
 void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& turtle_, float t) {
 
@@ -32,31 +32,24 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     double turtle_height = 0.079; // height from flipper to ground (e.g., pivot-to-ground)
     double lower_point = 0.055;   // a lower reference point
 
-    // MODIFIED: Compute effective horizontal angle.
-    // Compute the angle between the user-specified start and end points.
-    float computed_angle = atan2(turtle_.traj_data.end_y - turtle_.traj_data.start_y,
-                                 turtle_.traj_data.end_x - turtle_.traj_data.start_x) * 180 / M_PI;
-    float effective_angle;
-    // If the y difference is negligible, use the computed angle (linear trajectory);
-    // otherwise, use the originally defined lateral_angle_range (curved trajectory).
-    if (fabs(turtle_.traj_data.end_y - turtle_.traj_data.start_y) < 1e-3) { // threshold for "same y"
-        effective_angle = computed_angle;
-    } else {
-        effective_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
-    }
+    // MODIFIED: Compute the difference vector from start to end (user-specified, in meters)
+    float dx = turtle_.traj_data.end_x - turtle_.traj_data.start_x;
+    float dy = turtle_.traj_data.end_y - turtle_.traj_data.start_y;
+    float distance = sqrt(dx * dx + dy * dy);
+    // Convert the distance (arc length) to an effective angle (in degrees) using the flipper length:
+    float effective_lateral_range = (distance / l1) * (180 / M_PI);
+    // If distance is very small, you might want to enforce a minimum effective range
+    // effective_lateral_range = (effective_lateral_range < 1.0f) ? 1.0f : effective_lateral_range;
 
-    // MODIFIED: Use effective_angle in place of horizontal_angle.
-    // float horizontal_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
-    float horizontal_angle = effective_angle;
-
-    // Set up timing parameters (same as before)
+    // MODIFIED: Use the effective lateral range in place of the original lateral_angle_range.
+    // (This defines the amplitude of the horizontal movement.)
     Rectangle_Params rectangle_params;
-    rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * l1 * 2 / turtle_.traj_data.drag_speed; 
+    rectangle_params.period_down = effective_lateral_range * l1 * 2 / turtle_.traj_data.drag_speed;
     rectangle_params.period_up = 0.8;       // customize back phase time
     rectangle_params.period_left = turtle_.traj_data.servo_speed;
     rectangle_params.period_right = turtle_.traj_data.servo_speed;
-    rectangle_params.vertical_range = turtle_.traj_data.insertion_depth; // depends on insertion depth
-    rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
+    rectangle_params.vertical_range = turtle_.traj_data.insertion_depth;
+    rectangle_params.horizontal_range = effective_lateral_range;
     rectangle_params.period_waiting_time = 0;
 
     float hold_time_1 = 3.0; // hold duration for a new phase (unused here)
@@ -64,22 +57,24 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     float hold_time_3 = 3.0; // hold duration for a new phase (unused here)
     float end_delay    = 3.0; // delay at the end (unused here)
 
-    // Combined duration for the extraction (and simultaneous shearing) phase.
-    float combined_duration = rectangle_params.period_down + rectangle_params.period_left;
-    float t_mod = fmod(t, combined_duration);
-    turtle_.turtle_chassis.step_count = (t - t_mod) / combined_duration;
+    float total_period = rectangle_params.period_down + rectangle_params.period_up +
+                         rectangle_params.period_left + rectangle_params.period_right +
+                         hold_time_1 + hold_time_2 + hold_time_3 + end_delay +
+                         rectangle_params.period_waiting_time;
 
-    // Desired insertion depth limits.
+    float t_mod = fmod(t, total_period);
+    turtle_.turtle_chassis.step_count = (t - t_mod) / total_period;
+
     double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
     if (desierd_insertion_depth > 0.07) {
         desierd_insertion_depth = 0.07;
     }
     cout << "desired insertion depth(m): " << desierd_insertion_depth << endl;
 
-    // Initial insertion depth calculation.
+    // Fixed insertion depth initial calculation
     double initial_insertion_depth_rad = asin((desierd_insertion_depth + turtle_height) /
-        sqrt((l1 * cos(horizontal_angle * M_PI / 180)) * (l1 * cos(horizontal_angle * M_PI / 180)) + lower_point * lower_point))
-        - atan(lower_point / (l1 * cos(horizontal_angle * M_PI / 180)));
+        sqrt((l1 * cos((effective_lateral_range) * M_PI / 180)) * (l1 * cos((effective_lateral_range) * M_PI / 180)) + lower_point * lower_point))
+        - atan(lower_point / (l1 * cos((effective_lateral_range) * M_PI / 180)));
     double initial_insertion_depth_deg = initial_insertion_depth_rad * 180 / M_PI;
     cout << "TMOD: " << t_mod << endl;
 
@@ -93,49 +88,51 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     double gamma2 = 0; // adduction (extraction) angle for right flipper
     double theta2 = 0; // sweeping angle for right flipper
 
-    // Combine shear and extraction.
-    float curve_offset_deg = 30.0f;  // This parameter can be adjusted via the GUI (e.g., turtle_.traj_data.curve_angle)
+    // MODIFIED: Compute the movement direction based on the start and end points.
+    float computed_angle = atan2(dy, dx) * 180 / M_PI;
+    float horizontal_angle;
+    // If the vertical difference is negligible, use the computed angle (linear trajectory);
+    // Otherwise, use the effective lateral range (curved trajectory).
+    if (fabs(dy) < 1e-3) {
+        horizontal_angle = computed_angle;
+    } else {
+        horizontal_angle = effective_lateral_range;
+    }
 
-    // For the sweeping angle (theta):
-    // We start at the “extracted” (or fully inserted) position, then add a shear offset that increases with time.
+    // Combine shear and extraction.
+    float curve_offset_deg = 30.0f;  // this value can be adjusted via the GUI if desired
+
     if(t_mod < rectangle_params.period_down){
         corres_t = t_mod / rectangle_params.period_down;
-        // For mirrored behavior on the right flipper:
+        // For the right flipper, mirror the sweeping:
         theta2 = horizontal_angle - curve_offset_deg * corres_t;
-        // For extraction (adduction) angle (gamma):
+        // Interpolate the extraction (adduction) angle:
         gamma2 = right_hori_servo - extraction_angle + (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
     }
     else{
         corres_t = (t_mod - rectangle_params.period_down) / rectangle_params.period_left;
-        // Mirror behavior for sweeping:
         theta2 = horizontal_angle - curve_offset_deg + (curve_offset_deg * corres_t);
-        // Interpolate extraction (adduction) angle (gamma):
         gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI) - (initial_insertion_depth_rad * 180 / M_PI + extraction_angle) * corres_t;
     }
 
     cout << "Combined Phase: corres_t=" << corres_t
          << ", theta2=" << theta2 << ", gamma2=" << gamma2 << endl;
 
-    // Set a gait state value indicating that we're in the combined shear+extraction phase.
     turtle_.turtle_chassis.gait_state = 3;
 
-    // Send commands to servos (in degrees)
+    // Send commands to servos in degrees.
     turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
     turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
     turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
     turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
 
-    // Also, send commands in radians (converted to turns)
+    // Also, send commands in radians (converted to turns).
     turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
     turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
     turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
     turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
 }
 
-/**
- * @brief bounding gaits.
- * @param t  The current time (in seconds)
- */
 void boundingGAIT(turtle& turtle_, float t)
 {
     fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle_, t);
