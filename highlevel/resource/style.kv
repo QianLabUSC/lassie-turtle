@@ -245,8 +245,6 @@
                     hint: False
                     color: color_deep_orange
 
-</turtle_tab>
-
 <turtle_optimize_tab>:
     MDCard:
         size_hint_x: 1
@@ -469,11 +467,11 @@
 
         MDBoxLayout:
             size_hint_y: None
-            height: dp(160)
+            height: dp(200)
             orientation: "vertical"
             spacing: dp(10)
             MDLabel:
-                text: "Trajectory Start/End Coordinates (in deg)"  
+                text: "Trajectory Start/End Coordinates (in deg)"
                 font_style: "Subtitle1"
                 halign: "center"
                 size_hint_y: None
@@ -651,18 +649,12 @@ MDScreen:
                                 MDBoxLayout:
                                     size_hint_y: 0.6
                                     size_hint_x: 0.4
-                                    MDLabel:
-                                        font_style: "Subtitle1"
-                                        theme_text_color: "Custom"
-                                        text_color: color_deep_orange
-                                        text: "Start Collection"
-                                    MDSwitch:
-                                        id: start_collection
-                                        widget_style: "ios"
-                                        pos_hint: {"center_x": 1, "center_y": 0.1}
-                                        width: dp(30)
-                                        height: dp(20)
-                                        on_active: app.check_if_start()
+                                    MDCheckbox:
+                                        id: if_real_time_plot
+                                        active: True
+                                        size_hint: None, None
+                                        size: "60dp", "60dp"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         MDCard:
                             size_hint_y: 0.1
                             size_hint_x: 1
