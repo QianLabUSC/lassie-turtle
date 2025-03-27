@@ -16,7 +16,7 @@
         padding: dp(20)
         spacing: dp(15)
         
-        # Parameter Group 1: Sweeping Range
+        # Sweeping Range
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -40,7 +40,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_1
             size_hint_y: None
@@ -52,7 +51,7 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_1()
 
-        # Parameter Group 2: Insertion Depth
+        # Insertion Depth
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -76,7 +75,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_2
             size_hint_y: None
@@ -88,7 +86,7 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_2()
 
-        # Parameter Group 3: Penetration Velocity
+        # Penetration Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -112,7 +110,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_3
             size_hint_y: None
@@ -124,7 +121,7 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_3()
 
-        # Parameter Group 4: Sweeping Velocity
+        # Sweeping Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -148,7 +145,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_4
             size_hint_y: None
@@ -160,7 +156,7 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_4()
 
-        # Parameter Group 5: Trajectory Start/End Coordinates
+        # Trajectory Start/End Coordinates
         MDBoxLayout:
             orientation: "vertical"
             size_hint_y: None
@@ -255,6 +251,7 @@
         padding: dp(20)
         spacing: dp(15)
         
+        # Sweeping Range
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -278,7 +275,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_1
             size_hint_y: None
@@ -290,6 +286,7 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_1()
 
+        # Insertion Depth
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -313,7 +310,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_2
             size_hint_y: None
@@ -325,6 +321,7 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_2()
 
+        # Penetration Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -348,7 +345,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_3
             size_hint_y: None
@@ -360,6 +356,7 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_3()
 
+        # Sweeping Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -383,7 +380,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_4
             size_hint_y: None
@@ -395,6 +391,7 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_4()
 
+        # Extraction Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -418,7 +415,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_5
             size_hint_y: None
@@ -430,6 +426,7 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_5()
 
+        # Swing Velocity
         MDBoxLayout:
             size_hint_y: None
             height: dp(40)
@@ -453,7 +450,6 @@
                 font_style: "Subtitle1"
                 theme_text_color: "Custom"
                 text_color: color_black
-
         MDSlider:
             id: Slider_optimize_5
             size_hint_y: None
@@ -465,10 +461,11 @@
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_5()
 
+        # Trajectory Start/End Coordinates
         MDBoxLayout:
+            orientation: "vertical"
             size_hint_y: None
             height: dp(200)
-            orientation: "vertical"
             spacing: dp(10)
             MDLabel:
                 text: "Trajectory Start/End Coordinates (in deg)"
@@ -552,24 +549,21 @@
 MDScreen:
     MDBoxLayout:
         orientation: "vertical"
-            
         MDBottomNavigation:
             id: panel
             height: dp(58)
-
             MDBottomNavigationItem:
                 name: "files_control"
                 text: "Running robot"
                 font_style: "H1"
                 icon: "robot-happy-outline"
-                
                 MDGridLayout:
                     cols: 3
                     rows: 1
                     MDBoxLayout:
                         spacing: dp(20)
                         padding: dp(20)
-                        orientation: "vertical"                    
+                        orientation: "vertical"
                         size_hint_x: 0.7
                         MDBoxLayout:
                             spacing: dp(20)
@@ -577,12 +571,10 @@ MDScreen:
                             size_hint_x: 1
                             radius: [4]
                             orientation: "vertical"
-            
                             MDTabs:
                                 id: datafiguretabs
                                 tab_hint_x: 0.5
                                 on_tab_switch: app.on_tab_switch(*args)
-                                
                                 Tab:
                                     title: "Force"
                                     MDBoxLayout:
@@ -598,18 +590,16 @@ MDScreen:
                     MDBoxLayout:
                         spacing: dp(20)
                         padding: dp(20)
-                        orientation: "vertical"     
+                        orientation: "vertical"
                         size_hint_x: 0.3
-                        
                         MDCard:
                             size_hint_y: 0.16
                             size_hint_x: 1
-                            orientation: "vertical" 
+                            orientation: "vertical"
                             adaptive_height: True
                             elevation: 1
                             radius: [4]
                             padding: dp(12)
-                            
                             MDBoxLayout:
                                 padding: dp(30)
                                 MDLabel:
@@ -624,16 +614,14 @@ MDScreen:
                                     on_release: app.menu.open()
                         MDBoxLayout:
                             id: configure_layout
-                        
                         MDCard:
                             size_hint_y: 0.1
                             size_hint_x: 1
-                            orientation: "vertical" 
+                            orientation: "vertical"
                             adaptive_height: True
                             elevation: 1
                             radius: [4]
                             padding: dp(12)
-                            
                             MDBoxLayout:
                                 padding: dp(15)
                                 spacing: dp(15)
@@ -646,6 +634,7 @@ MDScreen:
                                         theme_text_color: "Custom"
                                         text_color: color_deep_orange
                                         text: "Real Time Plot"
+                                        height: self.texture_size[1]
                                 MDBoxLayout:
                                     size_hint_y: 0.6
                                     size_hint_x: 0.4
@@ -658,12 +647,11 @@ MDScreen:
                         MDCard:
                             size_hint_y: 0.1
                             size_hint_x: 1
-                            orientation: "vertical" 
+                            orientation: "vertical"
                             adaptive_height: True
                             elevation: 1
                             radius: [4]
-                            padding: dp(8)
-                            
+                            padding: dp(12)
                             MDBoxLayout:
                                 padding: dp(15)
                                 spacing: dp(15)
@@ -688,3 +676,33 @@ MDScreen:
                                         user_font_size: "36sp"
                                         on_press: app.on_download_data()
                                         pos_hint: {"right": 0, "center_y": 0.5}
+                        MDCard:
+                            size_hint_y: 0.1
+                            size_hint_x: 1
+                            orientation: "vertical"
+                            adaptive_height: True
+                            elevation: 1
+                            radius: [4]
+                            padding: dp(12)
+                            MDBoxLayout:
+                                padding: dp(15)
+                                spacing: dp(15)
+                                MDBoxLayout:
+                                    size_hint_y: 0.6
+                                    size_hint_x: 0.4
+                                    MDLabel:
+                                        font_style: "Subtitle1"
+                                        theme_text_color: "Custom"
+                                        text_color: color_deep_orange
+                                        text: "Start Collection"
+                                        height: self.texture_size[1]
+                                MDBoxLayout:
+                                    size_hint_y: 0.6
+                                    size_hint_x: 0.4
+                                    MDSwitch:
+                                        id: start_collection
+                                        widget_style: "ios"
+                                        pos_hint: {"center_x": 1, "center_y": 0.1}
+                                        width: dp(30)
+                                        height: dp(20)
+                                        on_active: app.check_if_start()
