@@ -3,51 +3,48 @@
 #:set default_font_size "18sp"
 #:set color_deep_orange "DD2C00"
 #:set color_deep_orange "455A64"
-
 #:set color_baby_blue "89CFF0"
 #:set color_black "000000"
 
-<turtle_tab>
+<turtle_tab>:
     MDCard:
         size_hint_x: 1
         orientation: "vertical"
         adaptive_height: True
         elevation: 1
-        radius: [4,]
-        padding: 20
-        height: 10
-
+        radius: [4]
+        padding: dp(20)
+        spacing: dp(15)
+        
+        # Parameter Group 1: Sweeping Range
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Sweeping range: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Sweeping range: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Variable_1
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_1
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "45"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(C)"
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "45"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(C)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_1
+            size_hint_y: None
+            height: dp(40)
             min: 5
             max: 60
             value: 45
@@ -55,37 +52,35 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_1()
 
+        # Parameter Group 2: Insertion Depth
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Insertion depth: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Insertion depth: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Variable_2
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_2
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "10"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(mm)"
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "10"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_2
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 100
             value: 20
@@ -93,37 +88,35 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_2()
 
+        # Parameter Group 3: Penetration Velocity
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Penetration velocity: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Penetration velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Variable_3
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_3
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "100"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(mm/s)"
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "100"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_3
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 700
             value: 100
@@ -131,344 +124,349 @@
             color: color_deep_orange
             on_active: app.on_change_Variable_3()
 
-        MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Sweeping velocity: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_4
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "150"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(mm/s)"
-                    height: self.texture_size[1]
+        # Parameter Group 4: Sweeping Velocity
         MDBoxLayout:
             size_hint_y: None
-            height: dp(160)
-            orientation: "vertical"
+            height: dp(40)
             spacing: dp(10)
             MDLabel:
-                text: "Trajectory Start/End Coordinates (in deg)"  
+                size_hint_x: 0.4
+                text: "Sweeping velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Variable_4
+                size_hint_x: 0.3
+                text: "150"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
+        MDSlider:
+            id: Slider_4
+            size_hint_y: None
+            height: dp(40)
+            min: 1
+            max: 700
+            value: 150
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Variable_4()
+
+        # Parameter Group 5: Trajectory Start/End Coordinates
+        MDBoxLayout:
+            orientation: "vertical"
+            size_hint_y: None
+            height: dp(200)
+            spacing: dp(10)
+            MDLabel:
+                text: "Trajectory Start/End Coordinates (in deg)"
                 font_style: "Subtitle1"
                 halign: "center"
                 size_hint_y: None
-                height: self.texture_size[1] + dp(10)
+                height: dp(30)
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "Start Gamma (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "Start Gamma (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_start_gamma
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_start_gamma  
-                        min: -45
-                        max: 45
-                        value: 0
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 0
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "Start Theta (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "Start Theta (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_start_theta
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_start_theta   
-                        min: -45
-                        max: 45
-                        value: 0
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 0
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "End Gamma (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "End Gamma (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_end_gamma
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_end_gamma  
-                        min: -45
-                        max: 45
-                        value: 15
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 15
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "End Theta (deg):"   
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "End Theta (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_end_theta
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_end_theta  
-                        min: -45
-                        max: 45
-                        value: 15
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 15
+                    hint: False
+                    color: color_deep_orange
+
 </turtle_tab>
 
-<turtle_optimize_tab>
+<turtle_optimize_tab>:
     MDCard:
         size_hint_x: 1
         orientation: "vertical"
         adaptive_height: True
         elevation: 1
-        radius: [4,]
-        padding: 20
-        height: 10
-
+        radius: [4]
+        padding: dp(20)
+        spacing: dp(15)
+        
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Sweeping range: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Sweeping range: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_1
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_1
-                    text: "45"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(C)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "45"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(C)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_optimize_1
+            size_hint_y: None
+            height: dp(40)
             min: 5
             max: 60
             value: 30
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_1()
+
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Insertion depth: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Insertion depth: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_2
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_2
-                    text: "10"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(mm)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "10"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_optimize_2
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 100
             value: 30
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_2()
+
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Penetration velocity: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Penetration velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_3
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_3
-                    text: "100"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(mm/s)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "100"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_optimize_3
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 700
             value: 100
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_3()
+
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Sweeping velocity: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Sweeping velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_4
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_4
-                    text: "150"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(mm/s)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "150"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_optimize_4
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 700
             value: 500
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_4()
+
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Extraction velocity: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Extraction velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_5
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_5
-                    text: "120"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(mm/s)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            size_hint_x: 0.7
+                text: "120"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
         MDSlider:
             id: Slider_optimize_5
+            size_hint_y: None
+            height: dp(40)
             min: 1
             max: 1000
             value: 500
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_5()
+
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(10)
+            MDLabel:
                 size_hint_x: 0.4
-                MDLabel:
-                    text: "Swing velocity: "
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
+                text: "Swing velocity: "
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                id: Optimize_Variable_6
                 size_hint_x: 0.3
-                MDLabel:
-                    id: Optimize_Variable_6
-                    text: "180"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    text: "(mm/s)"
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    height: self.texture_size[1]
+                text: "180"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+            MDLabel:
+                size_hint_x: 0.3
+                text: "(mm/s)"
+                font_style: "Subtitle1"
+                theme_text_color: "Custom"
+                text_color: color_black
+
+        MDSlider:
+            id: Slider_optimize_5
+            size_hint_y: None
+            height: dp(40)
+            min: 1
+            max: 1000
+            value: 500
+            hint: False
+            color: color_deep_orange
+            on_active: app.on_change_Optimize_Variable_5()
+
         MDBoxLayout:
             size_hint_y: None
             height: dp(160)
@@ -479,84 +477,79 @@
                 font_style: "Subtitle1"
                 halign: "center"
                 size_hint_y: None
-                height: self.texture_size[1] + dp(10)
+                height: dp(30)
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "Start Gamma (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "Start Gamma (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_start_gamma
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_start_gamma  
-                        min: -45
-                        max: 45
-                        value: 0
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 0
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "Start Theta (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "Start Theta (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_start_theta
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_start_theta   
-                        min: -45
-                        max: 45
-                        value: 0
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 0
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "End Gamma (deg):"  
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "End Gamma (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_end_gamma
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_end_gamma  
-                        min: -45
-                        max: 45
-                        value: 15
-                        hint: False
-                        color: color_deep_orange
+                    min: -45
+                    max: 45
+                    value: 15
+                    hint: False
+                    color: color_deep_orange
             MDBoxLayout:
-                padding: [5, -5, 15, 0]
-                MDBoxLayout:
+                size_hint_y: None
+                height: dp(40)
+                spacing: dp(10)
+                MDLabel:
                     size_hint_x: 0.4
-                    MDLabel:
-                        text: "End Theta (deg):"   
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
+                    text: "End Theta (deg):"
+                    font_style: "Subtitle1"
+                    theme_text_color: "Custom"
+                    text_color: color_black
+                MDSlider:
+                    id: Slider_end_theta
                     size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_end_theta  
-                        min: -45
-                        max: 45
-                        value: 15
-                        hint: False
-                        color: color_deep_orange
-</turtle_optimize_tab>
+                    min: -45
+                    max: 45
+                    value: 15
+                    hint: False
+                    color: color_deep_orange
 
 MDScreen:
     MDBoxLayout:
@@ -576,37 +569,37 @@ MDScreen:
                     cols: 3
                     rows: 1
                     MDBoxLayout:
-                        spacing: 20
-                        padding: 20
+                        spacing: dp(20)
+                        padding: dp(20)
                         orientation: "vertical"                    
                         size_hint_x: 0.7
                         MDBoxLayout:
-                            spacing: 20
+                            spacing: dp(20)
                             size_hint_y: 0.6
                             size_hint_x: 1
-                            radius: [4, ]
+                            radius: [4]
                             orientation: "vertical"
             
                             MDTabs:
                                 id: datafiguretabs
-                                tab_hint_x: .5
+                                tab_hint_x: 0.5
                                 on_tab_switch: app.on_tab_switch(*args)
                                 
                                 Tab:
-                                    title: 'Force'
+                                    title: "Force"
                                     MDBoxLayout:
                                         id: rawForcePlot
                                 Tab:
-                                    title: 'Speed'
+                                    title: "Speed"
                                     MDBoxLayout:
                                         id: speedplot
                                 Tab:
-                                    title: 'Position'
+                                    title: "Position"
                                     MDBoxLayout:
                                         id: positionplot
                     MDBoxLayout:
-                        spacing: 20
-                        padding: 20
+                        spacing: dp(20)
+                        padding: dp(20)
                         orientation: "vertical"     
                         size_hint_x: 0.3
                         
@@ -616,22 +609,20 @@ MDScreen:
                             orientation: "vertical" 
                             adaptive_height: True
                             elevation: 1
-                            radius: [4, ]
-                            padding: 12
-                            height: 10
+                            radius: [4]
+                            padding: dp(12)
                             
                             MDBoxLayout:
-                                padding: 30
+                                padding: dp(30)
                                 MDLabel:
                                     font_style: "H6"
                                     theme_text_color: "Custom"
                                     text_color: color_deep_orange
                                     text: "Trajectories Selection"
-                                    height: self.texture_size[1]
                                 MDDropDownItem:
                                     id: drop_item
-                                    pos_hint: {'center_x': .5, 'center_y': .5}
-                                    text: 'turtle'
+                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    text: "turtle"
                                     on_release: app.menu.open()
                         MDBoxLayout:
                             id: configure_layout
@@ -642,14 +633,13 @@ MDScreen:
                             orientation: "vertical" 
                             adaptive_height: True
                             elevation: 1
-                            radius: [4, ]
-                            padding: 12
-                            height: 10
+                            radius: [4]
+                            padding: dp(12)
                             
                             MDBoxLayout:
-                                padding: 15
-                                spacing: 15
-                                pos_hint: {'center_x': .5, 'center_y': .2}
+                                padding: dp(15)
+                                spacing: dp(15)
+                                pos_hint: {"center_x": 0.5, "center_y": 0.2}
                                 MDBoxLayout:
                                     size_hint_y: 0.6
                                     size_hint_x: 0.4
@@ -658,11 +648,51 @@ MDScreen:
                                         theme_text_color: "Custom"
                                         text_color: color_deep_orange
                                         text: "Real Time Plot"
-                                        height: self.texture_size[1]
-                                    MDCheckbox:
-                                        active: True
-                                        id: if_real_time_plot
-                                        size_hint: None, None
-                                        size: "60dp", "60dp"
-                                        pos_hint: {'center_x': .5, 'center_y': .4}
                                 MDBoxLayout:
+                                    size_hint_y: 0.6
+                                    size_hint_x: 0.4
+                                    MDLabel:
+                                        font_style: "Subtitle1"
+                                        theme_text_color: "Custom"
+                                        text_color: color_deep_orange
+                                        text: "Start Collection"
+                                    MDSwitch:
+                                        id: start_collection
+                                        widget_style: "ios"
+                                        pos_hint: {"center_x": 1, "center_y": 0.1}
+                                        width: dp(30)
+                                        height: dp(20)
+                                        on_active: app.check_if_start()
+                        MDCard:
+                            size_hint_y: 0.1
+                            size_hint_x: 1
+                            orientation: "vertical" 
+                            adaptive_height: True
+                            elevation: 1
+                            radius: [4]
+                            padding: dp(8)
+                            
+                            MDBoxLayout:
+                                padding: dp(15)
+                                spacing: dp(15)
+                                MDBoxLayout:
+                                    size_hint_y: 0.1
+                                    MDTextField:
+                                        id: filename
+                                        size_hint_y: None
+                                        size_y: "60dp"
+                                        pos_hint: {"center_x": 0.5, "center_y": 1}
+                                        hint_text: "File Prefix"
+                                        text_color: color_deep_orange
+                                        icon_right: "tag-arrow-down"
+                                        icon_right_color: color_deep_orange
+                                MDBoxLayout:
+                                    size_hint_x: 0.1
+                                    TooltipMDIconButton:
+                                        icon: "file-download"
+                                        tooltip_text: "Download experiment data"
+                                        theme_text_color: "Custom"
+                                        text_color: color_deep_orange
+                                        user_font_size: "36sp"
+                                        on_press: app.on_download_data()
+                                        pos_hint: {"right": 0, "center_y": 0.5}
