@@ -159,17 +159,6 @@
                     text: "(mm/s)"
                     height: self.texture_size[1]
         MDBoxLayout:
-            size_hint_x: 0.7
-        MDSlider:
-            id: Slider_4
-            min: 1
-            max: 700
-            value: 150
-            hint: False
-            color: color_deep_orange
-            on_active: app.on_change_Variable_4()
-
-        MDBoxLayout:
             size_hint_y: None
             height: dp(160)
             orientation: "vertical"
@@ -231,7 +220,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_gamma   
+                        id: Slider_end_gamma  
                         min: -45
                         max: 45
                         value: 15
@@ -250,32 +239,12 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_theta   
+                        id: Slider_end_theta  
                         min: -45
                         max: 45
                         value: 15
                         hint: False
                         color: color_deep_orange
-            MDBoxLayout:
-                padding: [5, -5, 15, 0]  
-                MDBoxLayout:
-                    size_hint_x: 0.4
-                    MDLabel:
-                        text: "Total Period (sec):"
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
-                    size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_total_period
-                        min: 2
-                        max: 20
-                        value: 6
-                        hint: False
-                        color: color_deep_orange
-
 </turtle_tab>
 
 <turtle_optimize_tab>
@@ -516,7 +485,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start Gamma (deg):" 
+                        text: "Start Gamma (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -535,7 +504,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start Theta (deg):" 
+                        text: "Start Theta (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -543,7 +512,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_start_theta 
+                        id: Slider_start_theta   
                         min: -45
                         max: 45
                         value: 0
@@ -573,7 +542,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "End Theta (deg):"  
+                        text: "End Theta (deg):"   
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -587,26 +556,6 @@
                         value: 15
                         hint: False
                         color: color_deep_orange
-            MDBoxLayout:
-                padding: [5, -5, 15, 0]  
-                MDBoxLayout:
-                    size_hint_x: 0.4
-                    MDLabel:
-                        text: "Total Period (sec):"
-                        font_style: "Subtitle1"
-                        theme_text_color: "Custom"
-                        text_color: color_black
-                        height: self.texture_size[1]
-                MDBoxLayout:
-                    size_hint_x: 0.6
-                    MDSlider:
-                        id: Slider_total_period
-                        min: 2
-                        max: 20
-                        value: 6
-                        hint: False
-                        color: color_deep_orange
-
 </turtle_optimize_tab>
 
 MDScreen:
@@ -717,52 +666,3 @@ MDScreen:
                                         size: "60dp", "60dp"
                                         pos_hint: {'center_x': .5, 'center_y': .4}
                                 MDBoxLayout:
-                                    size_hint_y: 0.6
-                                    size_hint_x: 0.4
-                                    MDLabel:
-                                        font_style: "Subtitle1"
-                                        theme_text_color: "Custom"
-                                        text_color: color_deep_orange
-                                        text: "Start Collection"
-                                        height: self.texture_size[1]
-                                    MDSwitch:
-                                        id: start_collection
-                                        widget_style: "ios"
-                                        pos_hint: {'center_x': 1, 'center_y': 0.1}
-                                        width: dp(30)
-                                        height: dp(20)
-                                        on_active: app.check_if_start()
-                        MDCard:
-                            size_hint_y: 0.1
-                            size_hint_x: 1
-                            orientation: "vertical" 
-                            adaptive_height: True
-                            elevation: 1
-                            radius: [4, ]
-                            padding: 8
-                            height: 10
-                            
-                            MDBoxLayout:
-                                padding: 15
-                                spacing: 15
-                                MDBoxLayout:
-                                    size_hint_y: 0.1
-                                    MDTextField:
-                                        id: filename
-                                        size_hint_y: None
-                                        size_y: "60dp"
-                                        pos_hint: {'center_x': .5, 'center_y': 1}
-                                        hint_text: "File Prefix"
-                                        text_color: color_deep_orange
-                                        icon_right: "tag-arrow-down"
-                                        icon_right_color: color_deep_orange
-                                MDBoxLayout:
-                                    size_hint_x: 0.1
-                                    TooltipMDIconButton:
-                                        icon: "file-download"
-                                        tooltip_text: "Download experiment data"
-                                        theme_text_color: "Custom"
-                                        text_color: color_deep_orange
-                                        user_font_size: "36sp"
-                                        on_press: app.on_download_data()
-                                        pos_hint: {'right': 0, 'center_y': 0.5}
