@@ -31,7 +31,6 @@ enum class ProgramState {
     SetToControlAndCalibrate,
     GoToInitialPoint,
     Running,
-    CycleCompleted,
     };
 namespace turtle_namespace{
 namespace control{

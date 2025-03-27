@@ -13,6 +13,7 @@
 #include "traveler_msgs/msg/odrive_status.hpp"
 #include "traveler_msgs/msg/set_input_position.hpp"
 #include "traveler_msgs/msg/set_state.hpp"
+
 struct motor_status{
     float error;
     float effort;
@@ -22,7 +23,6 @@ struct motor_status{
     float toeforce;
     float toespeed;
 };
-
 
 // define turtle leg id vector
 // left_adduction: 0
@@ -40,11 +40,8 @@ struct turtle_status
     float gait_state = 0; // 0: prepare, 1: backing, 2: penetrating, 3: penetrate, 4: shear, 5: stop
     // maximum idle/close_loop_control set count
     int if_idle_count = 1;
-       int step_count=0;
-    
-    
+    int step_count = 0;
 };
-
 
 struct motor_command{
     traveler_msgs::msg::SetInputPosition set_input_position_degree;
@@ -58,7 +55,6 @@ struct trutle_command{
     motor_command left_sweeping;
     motor_command right_adduction;
     motor_command right_sweeping;
-     
 };
 
 struct human_interface{
@@ -69,28 +65,31 @@ struct human_interface{
 
     // unused
     bool status_update_flag = false;
-
-    
 };
+
 // struct that defines the behavior of trajectories
 struct TrajectoryData
 {
     // Extrustion Trajectory Parameters
     float lateral_angle_range;      // arc             
-    float drag_speed;               //m/s     
-    float wiggle_time;                  //s
+    float drag_speed;               // m/s     
+    float wiggle_time;              // s
 
-    float servo_speed;        //s
-    float extraction_angle;    //arc     
-    float wiggle_frequency;        //hz  
-    float insertion_depth;             //arc        
-    float wiggle_amptitude;                 //arc     
+    float servo_speed;              // s
+    float extraction_angle;         // arc     
+    float wiggle_frequency;         // hz  
+    float insertion_depth;          // arc        
+    float wiggle_amptitude;         // arc     
 
-    // MODIFIED: New fields for specifying the trajectory start and end points
-    float start_x;  // Start X coordinate (in meters)
-    float start_y;  // Start Y coordinate (in meters)
-    float end_x;    // End X coordinate (in meters)
-    float end_y;    // End Y coordinate (in meters)
+    // MODIFIED: New fields for specifying the trajectory start and end points.
+    // These are interpreted as the gamma and theta angles (in radians) for the right flipper.
+    float start_x;  // Start gamma (in radians)
+    float start_y;  // Start theta (in radians)
+    float end_x;    // End gamma (in radians)
+    float end_y;    // End theta (in radians)
+    
+    // MODIFIED: New field for curve offset (in radians) to define the curvature of the trajectory.
+    float curve_angle; // curve offset (in radians)
 };
 
 struct turtle{

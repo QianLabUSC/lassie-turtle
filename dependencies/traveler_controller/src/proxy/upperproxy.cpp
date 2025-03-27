@@ -17,7 +17,8 @@ namespace turtle_namespace{
 namespace control{
 
 upperproxy::upperproxy(std::string name) : Node(name){
-    std::cout << "Traveler Upper Proxy established" << std::endl;
+    std::cout<<"Traveler Upper Proxy established"
+                <<std::endl;
     GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
         ("/drag_times", 10);
     GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
@@ -25,7 +26,7 @@ upperproxy::upperproxy(std::string name) : Node(name){
 }
 
 void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg){
-    // Set existing GUI parameters
+    // int len = msg->data.size();
     turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
     turtle_inter_.turtle_gui.drag_traj = msg->data[1];
     turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
@@ -34,30 +35,31 @@ void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr ms
     turtle_inter_.traj_data.servo_speed = msg->data[5];
     turtle_inter_.traj_data.extraction_angle = msg->data[6];
     turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
-    turtle_inter_.traj_data.insertion_depth = msg->data[8];
-    turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
-
-    // MODIFIED: Set new trajectory parameters for start and end XY coordinates.
-    // 10, 11, 12, and 13 of msg->data hold these values.
-    turtle_inter_.traj_data.start_x = msg->data[10];
-    turtle_inter_.traj_data.start_y = msg->data[11];
-    turtle_inter_.traj_data.end_x = msg->data[12];
-    turtle_inter_.traj_data.end_y = msg->data[13];
+    // MODIFIED: Check if new start/end coordinates are provided in the message.
+    if(msg->data.size() >= 12){
+        turtle_inter_.traj_data.start_x = msg->data[8];  // MODIFIED: new start_x (in radians)
+        turtle_inter_.traj_data.start_y = msg->data[9];  // MODIFIED: new start_y (in radians)
+        turtle_inter_.traj_data.end_x   = msg->data[10]; // MODIFIED: new end_x (in radians)
+        turtle_inter_.traj_data.end_y   = msg->data[11]; // MODIFIED: new end_y (in radians)
+    } else {
+        turtle_inter_.traj_data.insertion_depth = msg->data[8];
+        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+    }
 }
 
-void upperproxy::UpdateGuiCommand(turtle& turtle_){
+void upperproxy::UpdateGuiCommand(turtle &turtle_){
     turtle_.turtle_gui = turtle_inter_.turtle_gui;
     turtle_.traj_data = turtle_inter_.traj_data;
 }
-
-void upperproxy::PublishStatusFeedback(turtle& turtle_){
+void upperproxy::PublishStatusFeedback(turtle &turtle_){
     if(turtle_.turtle_gui.status_update_flag == true){
         auto message = std_msgs::msg::Float64MultiArray();
         // std::cout <<  message.data[message.data.size() - 1] << std::endl;
         GUI_publisher->publish(message);
         turtle_.turtle_gui.status_update_flag = false;
     }
+    
 }
 
-} // namespace control
-} // namespace turtle_namespace
+} //namespace control
+} //namespace turtle_namespace

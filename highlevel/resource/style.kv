@@ -170,67 +170,12 @@
             on_active: app.on_change_Variable_4()
 
         MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Extraction velocity: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_5
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "120"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(mm/s)"
-                    height: self.texture_size[1]
-        MDBoxLayout:
-            padding: [5, -5, 15, 0]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "Swing velocity: "
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.3
-                MDLabel:
-                    id: Variable_6
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "180"
-                    height: self.texture_size[1]
-            MDBoxLayout:
-                size_hint_x: 0.4
-                MDLabel:
-                    font_style: "Subtitle1"
-                    theme_text_color: "Custom"
-                    text_color: color_black
-                    text: "(mm/s)"
-                    height: self.texture_size[1]
-
-        MDBoxLayout:
             size_hint_y: None
             height: dp(160)
             orientation: "vertical"
             spacing: dp(10)
             MDLabel:
-                text: "Trajectory Start/End Coordinates"
+                text: "Trajectory Start/End Coordinates (in deg)"  
                 font_style: "Subtitle1"
                 halign: "center"
                 size_hint_y: None
@@ -240,7 +185,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start X (mm):"
+                        text: "Start Gamma (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -248,9 +193,9 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_start_x
-                        min: 0
-                        max: 300
+                        id: Slider_start_gamma  
+                        min: -45
+                        max: 45
                         value: 0
                         hint: False
                         color: color_deep_orange
@@ -259,7 +204,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start Y (mm):"
+                        text: "Start Theta (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -267,9 +212,9 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_start_y
-                        min: 0
-                        max: 300
+                        id: Slider_start_theta   
+                        min: -45
+                        max: 45
                         value: 0
                         hint: False
                         color: color_deep_orange
@@ -278,7 +223,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "End X (mm):"
+                        text: "End Gamma (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -286,10 +231,10 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_x
-                        min: 0
-                        max: 300
-                        value: 150
+                        id: Slider_end_gamma   
+                        min: -45
+                        max: 45
+                        value: 15
                         hint: False
                         color: color_deep_orange
             MDBoxLayout:
@@ -297,7 +242,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "End Y (mm):"
+                        text: "End Theta (deg):"   
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -305,10 +250,29 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_y
-                        min: 0
-                        max: 300
-                        value: 150
+                        id: Slider_end_theta   
+                        min: -45
+                        max: 45
+                        value: 15
+                        hint: False
+                        color: color_deep_orange
+            MDBoxLayout:
+                padding: [5, -5, 15, 0]  
+                MDBoxLayout:
+                    size_hint_x: 0.4
+                    MDLabel:
+                        text: "Total Period (sec):"
+                        font_style: "Subtitle1"
+                        theme_text_color: "Custom"
+                        text_color: color_black
+                        height: self.texture_size[1]
+                MDBoxLayout:
+                    size_hint_x: 0.6
+                    MDSlider:
+                        id: Slider_total_period
+                        min: 2
+                        max: 20
+                        value: 6
                         hint: False
                         color: color_deep_orange
 
@@ -542,7 +506,7 @@
             orientation: "vertical"
             spacing: dp(10)
             MDLabel:
-                text: "Trajectory Start/End Coordinates"
+                text: "Trajectory Start/End Coordinates (in deg)"  
                 font_style: "Subtitle1"
                 halign: "center"
                 size_hint_y: None
@@ -552,7 +516,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start X (mm):"
+                        text: "Start Gamma (deg):" 
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -560,9 +524,9 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_start_x
-                        min: 0
-                        max: 300
+                        id: Slider_start_gamma  
+                        min: -45
+                        max: 45
                         value: 0
                         hint: False
                         color: color_deep_orange
@@ -571,7 +535,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "Start Y (mm):"
+                        text: "Start Theta (deg):" 
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -579,9 +543,9 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_start_y
-                        min: 0
-                        max: 300
+                        id: Slider_start_theta 
+                        min: -45
+                        max: 45
                         value: 0
                         hint: False
                         color: color_deep_orange
@@ -590,7 +554,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "End X (mm):"
+                        text: "End Gamma (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -598,10 +562,10 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_x
-                        min: 0
-                        max: 300
-                        value: 150
+                        id: Slider_end_gamma  
+                        min: -45
+                        max: 45
+                        value: 15
                         hint: False
                         color: color_deep_orange
             MDBoxLayout:
@@ -609,7 +573,7 @@
                 MDBoxLayout:
                     size_hint_x: 0.4
                     MDLabel:
-                        text: "End Y (mm):"
+                        text: "End Theta (deg):"  
                         font_style: "Subtitle1"
                         theme_text_color: "Custom"
                         text_color: color_black
@@ -617,10 +581,29 @@
                 MDBoxLayout:
                     size_hint_x: 0.6
                     MDSlider:
-                        id: Slider_end_y
-                        min: 0
-                        max: 300
-                        value: 150
+                        id: Slider_end_theta  
+                        min: -45
+                        max: 45
+                        value: 15
+                        hint: False
+                        color: color_deep_orange
+            MDBoxLayout:
+                padding: [5, -5, 15, 0]  
+                MDBoxLayout:
+                    size_hint_x: 0.4
+                    MDLabel:
+                        text: "Total Period (sec):"
+                        font_style: "Subtitle1"
+                        theme_text_color: "Custom"
+                        text_color: color_black
+                        height: self.texture_size[1]
+                MDBoxLayout:
+                    size_hint_x: 0.6
+                    MDSlider:
+                        id: Slider_total_period
+                        min: 2
+                        max: 20
+                        value: 6
                         hint: False
                         color: color_deep_orange
 
