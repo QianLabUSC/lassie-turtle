@@ -1,0 +1,71 @@
+[0.014s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.050s] [35m[1mScanning dependencies of target odrive_can_interface[0m
+[0.053s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.083s] [  7%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[0.086s] [ 15%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[0.134s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[0.135s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.135s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.135s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[0.135s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.387s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[0.387s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:62:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_1[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.387s]    62 |     float [01;35m[Khold_time_1[m[K = 3.0; // hold duration for a new phase (unused here)
+[0.387s]       |           [01;35m[K^~~~~~~~~~~[m[K
+[0.387s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:63:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_2[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.387s]    63 |     float [01;35m[Khold_time_2[m[K = 3.0; // hold duration for a new phase (unused here)
+[0.387s]       |           [01;35m[K^~~~~~~~~~~[m[K
+[0.387s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:64:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_3[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.387s]    64 |     float [01;35m[Khold_time_3[m[K = 3.0; // hold duration for a new phase (unused here)
+[0.387s]       |           [01;35m[K^~~~~~~~~~~[m[K
+[0.387s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:65:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kend_delay[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.387s]    65 |     float [01;35m[Kend_delay[m[K    = 3.0; // delay at the end (unused here)
+[0.387s]       |           [01;35m[K^~~~~~~~~[m[K
+[0.388s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:83:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.388s]    83 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+[0.388s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.388s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:87:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kleft_hori_servo[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.388s]    87 |     float [01;35m[Kleft_hori_servo[m[K = 0;   // original value (e.g., 100; manually tuned to 94)
+[0.388s]       |           [01;35m[K^~~~~~~~~~~~~~~[m[K
+[1.786s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[1.786s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:35:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kcount1[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.786s]    35 |     int [01;35m[Kcount1[m[K;
+[1.786s]       |         [01;35m[K^~~~~~[m[K
+[2.354s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[2.354s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:[m[K At global scope:
+[2.354s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[2.354s]    46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[2.354s]       |              [01;35m[K^~~~~[m[K
+[2.354s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[2.354s]    44 | static int [01;35m[Kinit_done[m[K = 0;
+[2.354s]       |            [01;35m[K^~~~~~~~~[m[K
+[2.354s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[2.354s]    43 | static float [01;35m[Kinit_cnt[m[K = 0;
+[2.354s]       |              [01;35m[K^~~~~~~~[m[K
+[2.557s] [ 61%] [32m[1mLinking CXX executable odrive_can_interface[0m
+[2.842s] [ 76%] Built target odrive_can_interface
+[4.663s] [ 84%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[4.982s] [100%] Built target turtle_high_controller
+[4.989s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[5.011s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller
+[5.017s] -- Install configuration: "Debug"
+[5.018s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+[5.024s] -- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+[5.025s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+[5.029s] -- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""
+[5.029s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+[5.029s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+[5.030s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+[5.030s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.xml
+[5.032s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller

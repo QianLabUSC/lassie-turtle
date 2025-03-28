@@ -1,0 +1,67 @@
+[35m[1mScanning dependencies of target odrive_can_interface[0m
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[  7%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[ 15%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:62:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_1[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   62 |     float [01;35m[Khold_time_1[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:63:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_2[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   63 |     float [01;35m[Khold_time_2[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:64:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Khold_time_3[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   64 |     float [01;35m[Khold_time_3[m[K = 3.0; // hold duration for a new phase (unused here)
+      |           [01;35m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:65:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kend_delay[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   65 |     float [01;35m[Kend_delay[m[K    = 3.0; // delay at the end (unused here)
+      |           [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:83:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   83 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+      |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:87:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kleft_hori_servo[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   87 |     float [01;35m[Kleft_hori_servo[m[K = 0;   // original value (e.g., 100; manually tuned to 94)
+      |           [01;35m[K^~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:[m[K In function ‘[01m[Kint main(int, char**)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:35:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kcount1[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   35 |     int [01;35m[Kcount1[m[K;
+      |         [01;35m[K^~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:[m[K At global scope:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+      |              [01;35m[K^~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   44 | static int [01;35m[Kinit_done[m[K = 0;
+      |            [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   43 | static float [01;35m[Kinit_cnt[m[K = 0;
+      |              [01;35m[K^~~~~~~~[m[K
+[ 61%] [32m[1mLinking CXX executable odrive_can_interface[0m
+[ 76%] Built target odrive_can_interface
+[ 84%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[100%] Built target turtle_high_controller
+-- Install configuration: "Debug"
+-- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+-- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+-- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+-- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+-- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+-- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.xml
