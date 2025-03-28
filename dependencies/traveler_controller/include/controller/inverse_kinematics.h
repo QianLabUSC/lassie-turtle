@@ -36,6 +36,13 @@ void HorizontalStep(float t, struct TriangularGaitParams gait, float& X, float& 
 void SwingAngle(float t, struct TriangularGaitParams gait, float& X, float& Y);
 void RadialMove(float t, struct TriangularGaitParams gait, float& X, float& Y);
 
+namespace turtle_namespace {
+namespace control {
+    void custom_trajectory(turtle& turtle_, float t);
+}
+}
+
+
 bool inBounds(float Gamma, float Theta, float L);
 
 bool inBounds(float x, float y);

@@ -71,15 +71,15 @@ struct human_interface{
 struct TrajectoryData
 {
     // Extrustion Trajectory Parameters
-    float lateral_angle_range;      // arc             
-    float drag_speed;               // m/s     
-    float wiggle_time;              // s
+    float sweeping_range;      // arc             
+    float insertion_depth;               // m/s     
+    float penetration_velocity;              // s
 
-    float servo_speed;              // s
-    float extraction_angle;         // arc     
-    float wiggle_frequency;         // hz  
-    float insertion_depth;          // arc        
-    float wiggle_amptitude;         // arc     
+    float sweeping_velocity;              // s
+    float extraction_velocity;         // arc     
+    float swing_velocity;         // hz  
+    // float insertion_depth;          // arc        
+    // float wiggle_amptitude;         // arc     
 
     // MODIFIED: New fields for specifying the trajectory start and end points.
     // These are interpreted as the gamma and theta angles (in radians) for the right flipper.

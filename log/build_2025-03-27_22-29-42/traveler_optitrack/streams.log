@@ -1,0 +1,21 @@
+[0.514s] Invoking command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[0.793s] running egg_info
+[0.793s] writing ../../build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.794s] writing dependency_links to ../../build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.794s] writing entry points to ../../build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.794s] writing requirements to ../../build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.794s] writing top-level names to ../../build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.835s] reading manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.837s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.837s] running build
+[0.837s] running build_py
+[0.837s] running install
+[0.838s] running install_lib
+[0.840s] running install_data
+[0.840s] running install_egg_info
+[0.843s] removing '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info' (and everything under it)
+[0.845s] Copying ../../build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.847s] running install_scripts
+[0.867s] Installing traveler_optitrack script to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/traveler_optitrack
+[0.868s] writing list of installed files to '/home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log'
+[0.900s] Invoked command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
