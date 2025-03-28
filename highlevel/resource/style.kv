@@ -552,15 +552,15 @@
                     theme_text_color: "Custom"
                     font_style: "Subtitle1"
                     text_color: color_black
-                    text: "(rad)"
+                    text: "(deg)"
                     height: self.texture_size[1]
         MDBoxLayout:
             size_hint_x: 0.7
         MDSlider:
             id: Slider_optimize_7
-            min: -45
-            max: 45
-            value: 0
+            min: -45.00
+            max: 45.00
+            value: 0.00
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_7()
@@ -599,9 +599,9 @@
             size_hint_x: 0.7
         MDSlider:
             id: Slider_optimize_8
-            min: -60
-            max: 60
-            value: 0
+            min: -60.00
+            max: 60.00
+            value: 0.00
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_8()
@@ -640,9 +640,9 @@
             size_hint_x: 0.7
         MDSlider:
             id: Slider_optimize_9
-            min: -45
-            max: 45
-            value: 0
+            min: -45.00
+            max: 45.00
+            value: 0.00
             hint: False
             color: color_deep_orange
             on_active: app.on_change_Optimize_Variable_9()
@@ -681,8 +681,8 @@
             size_hint_x: 0.7
         MDSlider:
             id: Slider_optimize_10
-            min: -60
-            max: 60
+            min: -60.00
+            max: 60.00
             value: 0
             hint: False
             color: color_deep_orange
