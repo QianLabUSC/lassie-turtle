@@ -83,10 +83,10 @@ struct TrajectoryData
 
     // MODIFIED: New fields for specifying the trajectory start and end points.
     // These are interpreted as the gamma and theta angles (in radians) for the right flipper.
-    float start_x;  // Start gamma (in radians)
-    float start_y;  // Start theta (in radians)
-    float end_x;    // End gamma (in radians)
-    float end_y;    // End theta (in radians)
+    float start_gamma;  // Start gamma (in radians)
+    float start_theta;  // Start theta (in radians)
+    float end_gamma;    // End gamma (in radians)
+    float end_theta;    // End theta (in radians)
     
     // MODIFIED: New field for curve offset (in radians) to define the curvature of the trajectory.
     float curve_angle; // curve offset (in radians)
