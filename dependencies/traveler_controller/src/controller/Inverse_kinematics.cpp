@@ -276,9 +276,9 @@ void lowerproxy::UpdateJoystickStatus(turtle& turtle_){
 void custom_trajectory(turtle& turtle_, float t)
 {
     // Define phase durations (in seconds) for each part of the cycle.
-    const float T1 = 1.0; // Phase 1: move from current position to the start point.
-    const float T2 = 2.0; // Phase 2: move from the start point to the end point.
-    const float T3 = 2.0; // Phase 3: move from the end point back to the start point.
+    const float T1 = 3.0; // Phase 1: move from current position to the start point.
+    const float T2 = 5.0; // Phase 2: move from the start point to the end point.
+    const float T3 = 5.0; // Phase 3: move from the end point back to the start point.
     const float T_total = T1 + T2 + T3;
     
     float u;
