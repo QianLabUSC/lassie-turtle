@@ -235,19 +235,6 @@ void combined_phase_trajectory(turtle& turtle_, float t, PhaseCombination mode) 
                 turtle_.turtle_chassis.gait_state = 13;
             }
             break;
-        default:
-            {
-                // Default: simple linear interpolation over T_single.
-                float T_single = 3.0;
-                float t_mod = fmod(t, T_single);
-                corres_t = t_mod / T_single;
-                gamma1 = linearInterpolate(turtle_.traj_data.start_gamma, turtle_.traj_data.end_gamma, corres_t);
-                theta1 = linearInterpolate(turtle_.traj_data.start_theta, turtle_.traj_data.end_theta, corres_t);
-                gamma2 = gamma1;
-                theta2 = theta1;
-                turtle_.turtle_chassis.gait_state = 99;
-            }
-            break;
     }
     
     // Add a print statement to output the computed angles.

@@ -1,0 +1,53 @@
+[0.010s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.051s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.059s] [ 38%] Built target odrive_can_interface
+[0.091s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.091s] [ 53%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.383s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid combined_phase_trajectory(turtle&, float, PhaseCombination)[m[K’:
+[0.383s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:50:48:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Klateral_angle_range[m[K’
+[0.383s]    50 |     float horizontal_angle = turtle_.traj_data.[01;31m[Klateral_angle_range[m[K * 180 / M_PI;
+[0.383s]       |                                                [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[0.383s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:54:55:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Klateral_angle_range[m[K’
+[0.384s]    54 |     rectangle_params.period_down  = turtle_.traj_data.[01;31m[Klateral_angle_range[m[K * l1 * 2 / turtle_.traj_data.drag_speed;
+[0.384s]       |                                                       [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[0.384s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:54:104:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kdrag_speed[m[K’
+[0.384s]    54 |     rectangle_params.period_down  = turtle_.traj_data.lateral_angle_range * l1 * 2 / turtle_.traj_data.[01;31m[Kdrag_speed[m[K;
+[0.384s]       |                                                                                                        [01;31m[K^~~~~~~~~~[m[K
+[0.384s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:56:55:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kservo_speed[m[K’
+[0.384s]    56 |     rectangle_params.period_left  = turtle_.traj_data.[01;31m[Kservo_speed[m[K;
+[0.384s]       |                                                       [01;31m[K^~~~~~~~~~~[m[K
+[0.384s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:57:55:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kservo_speed[m[K’
+[0.384s]    57 |     rectangle_params.period_right = turtle_.traj_data.[01;31m[Kservo_speed[m[K;
+[0.384s]       |                                                       [01;31m[K^~~~~~~~~~~[m[K
+[0.384s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:59:59:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Klateral_angle_range[m[K’
+[0.384s]    59 |     rectangle_params.horizontal_range = turtle_.traj_data.[01;31m[Klateral_angle_range[m[K * 180 / M_PI;
+[0.384s]       |                                                           [01;31m[K^~~~~~~~~~~~~~~~~~~[m[K
+[0.384s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:71:48:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kextraction_angle[m[K’
+[0.385s]    71 |     float extraction_angle = turtle_.traj_data.[01;31m[Kextraction_angle[m[K;
+[0.385s]       |                                                [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[0.385s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:244:26:[m[K [01;31m[Kerror: [m[K‘[01m[KlinearInterpolate[m[K’ was not declared in this scope
+[0.385s]   244 |                 gamma1 = [01;31m[KlinearInterpolate[m[K(turtle_.traj_data.start_gamma, turtle_.traj_data.end_gamma, corres_t);
+[0.386s]       |                          [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[0.386s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:66:11:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kend_delay[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.386s]    66 |     float [01;35m[Kend_delay[m[K    = 3.0;
+[0.386s]       |           [01;35m[K^~~~~~~~~[m[K
+[0.386s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:86:12:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kinitial_insertion_depth_deg[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[0.386s]    86 |     double [01;35m[Kinitial_insertion_depth_deg[m[K = initial_insertion_depth_rad * 180 / M_PI;
+[0.386s]       |            [01;35m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[0.386s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid boundingGAIT(turtle&, float, int)[m[K’:
+[0.386s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:271:49:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kmode[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[0.387s]   271 | void boundingGAIT(turtle& turtle_, float t, [01;35m[Kint mode[m[K) {
+[0.387s]       |                                             [01;35m[K~~~~^~~~[m[K
+[0.410s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:76: CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o] Error 1
+[0.410s] make[2]: *** Waiting for unfinished jobs....
+[1.044s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.045s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:166:17:[m[K [01;31m[Kerror: [m[K‘[01m[Kcustom_trajectory[m[K’ was not declared in this scope
+[1.045s]   166 |                 [01;31m[Kcustom_trajectory[m[K(turtle_, running_t); // MODIFIED: custom_trajectory is defined in inverse_kinematics.
+[1.045s]       |                 [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+[1.045s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:178:16:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+[1.045s]   178 |         double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+[1.045s]       |                [01;35m[K^~~~~~~~~~~~~~[m[K
+[1.547s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+[1.547s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[1.547s] make: *** [Makefile:141: all] Error 2
+[1.550s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/turtle_high_controller:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_msgs:/home/qianlab/Turtle_workspace/install/turtle_high_controller:/home/qianlab/Turtle_workspace/install/traveler_msgs:/home/qianlab/Turtle_workspace/lassie-turtle/install/traveler_optitrack:/home/qianlab/Turtle_workspace/install/traveler_optitrack:/opt/ros/foxy CONDA_PROMPT_MODIFIER=(base) LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12

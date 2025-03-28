@@ -163,7 +163,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 running_t = curr_initial_phase_time - initial_phase_time - set_close_control_time;
                 // MODIFIED: 
                 // Move from start to end and return back to start.
-                custom_trajectory(turtle_, running_t); // MODIFIED: custom_trajectory is defined in inverse_kinematics.
+                boundingGAIT(turtle_, running_t, 0);
                 std::cout << "running Interation: " << running_t << std::endl;
                 break;
         }

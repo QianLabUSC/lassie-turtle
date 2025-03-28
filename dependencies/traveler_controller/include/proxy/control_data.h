@@ -79,7 +79,11 @@ struct TrajectoryData
     float extraction_velocity;         // arc     
     float swing_velocity;         // hz  
     // float insertion_depth;          // arc        
-    // float wiggle_amptitude;         // arc     
+    // float wiggle_amptitude;         // arc  
+    float servo_speed; 
+    float lateral_angle_range; 
+    float extraction_angle; 
+    float drag_speed;   
 
     // MODIFIED: New fields for specifying the trajectory start and end points.
     // These are interpreted as the gamma and theta angles (in radians) for the right flipper.
@@ -88,7 +92,6 @@ struct TrajectoryData
     float end_gamma;    // End gamma (in radians)
     float end_theta;    // End theta (in radians)
     
-    // MODIFIED: New field for curve offset (in radians) to define the curvature of the trajectory.
     float curve_angle; // curve offset (in radians)
 };
 
