@@ -29,22 +29,17 @@ void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr ms
     // int len = msg->data.size();
     turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
     turtle_inter_.turtle_gui.drag_traj = msg->data[1];
-    turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
-    turtle_inter_.traj_data.drag_speed = msg->data[3];
-    turtle_inter_.traj_data.wiggle_time = msg->data[4];
-    turtle_inter_.traj_data.servo_speed = msg->data[5];
-    turtle_inter_.traj_data.extraction_angle = msg->data[6];
-    turtle_inter_.traj_data.wiggle_frequency = msg->data[7];
+    turtle_inter_.traj_data.sweeping_range = msg->data[2];
+    turtle_inter_.traj_data.insertion_depth = msg->data[3];
+    turtle_inter_.traj_data.penetration_velocity = msg->data[4];
+    turtle_inter_.traj_data.sweeping_velocity = msg->data[5];
+    turtle_inter_.traj_data.extraction_velocity = msg->data[6];
+    turtle_inter_.traj_data.swing_velocity = msg->data[7];
     // MODIFIED: Check if new start/end coordinates are provided in the message.
-    if(msg->data.size() >= 12){
-        turtle_inter_.traj_data.start_x = msg->data[8];  // MODIFIED: new start_x (in radians)
-        turtle_inter_.traj_data.start_y = msg->data[9];  // MODIFIED: new start_y (in radians)
-        turtle_inter_.traj_data.end_x   = msg->data[10]; // MODIFIED: new end_x (in radians)
-        turtle_inter_.traj_data.end_y   = msg->data[11]; // MODIFIED: new end_y (in radians)
-    } else {
-        turtle_inter_.traj_data.insertion_depth = msg->data[8];
-        turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
-    }
+    turtle_inter_.traj_data.start_gamma = msg->data[8];  // MODIFIED: new start_x (in radians)
+    turtle_inter_.traj_data.start_theta = msg->data[9];  // MODIFIED: new start_y (in radians)
+    turtle_inter_.traj_data.end_gamma   = msg->data[10]; // MODIFIED: new end_x (in radians)
+    turtle_inter_.traj_data.end_theta  = msg->data[11]; // MODIFIED: new end_y (in radians)
 }
 
 void upperproxy::UpdateGuiCommand(turtle &turtle_){
