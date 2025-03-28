@@ -30,18 +30,31 @@ void RadialTrajectory(float t, struct RadialGaitParams gait, float& X, float& Y)
 // void RadialLegMovement(LegConfig leg, float t, struct RadialGaitParams gait, float& theta, float& gamma);
 void RightTriangleTrajectory(float t, struct RightTriangularGaitParams gait, float& X, float& Y);
 void TriangularTrajectory(float t, struct TriangularGaitParams gait, float& X, float& Y);
-void boundingGAIT(turtle &turtle_, float t);
+// void boundingGAIT(turtle &turtle_, float t);
 // Triangular Trajectory Helpers :
 void HorizontalStep(float t, struct TriangularGaitParams gait, float& X, float& Y);
 void SwingAngle(float t, struct TriangularGaitParams gait, float& X, float& Y);
 void RadialMove(float t, struct TriangularGaitParams gait, float& X, float& Y);
 
-namespace turtle_namespace {
-namespace control {
-    void custom_trajectory(turtle& turtle_, float t);
-}
-}
+enum PhaseCombination {
+    INSERTION_ONLY = 0,
+    EXTRACTION_ONLY,
+    SWING_ONLY,
+    STANCE_ONLY,
+    INSERTION_AND_SWING,
+    SWING_AND_EXTRACTION,
+    STANCE_AND_INSERTION,
+    STANCE_AND_EXTRACTION
+};
 
+// Based on the difference between the start and end gamma/theta values, select the appropriate phase.
+PhaseCombination selectPhase(double start_gamma, double start_theta,
+                             double end_gamma, double end_theta);
+// Declaration of the generic combined-phase function:
+void combined_phase_trajectory(turtle& turtle_, float t, PhaseCombination mode);
+
+// For backward compatibility with your state machine:
+void boundingGAIT(turtle& turtle_, float t, int mode);
 
 bool inBounds(float Gamma, float Theta, float L);
 

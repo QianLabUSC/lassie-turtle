@@ -139,8 +139,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 curr_initial_phase_time = deltaTime.count() - set_close_control_time;
                 turtle_.turtle_chassis.gait_state = 0;
                 turtle_.turtle_control.if_control = true;
-                // MODIFIED: Interpolate from current/saved positions to user-specified start point.
-                // Use the start_gamma and start_theta provided by the user.
+                // MODIFIED: 
                 if (curr_initial_phase_time < initial_phase_time) {
                     goback2desiredangle(turtle_, 
                         turtle_.traj_data.start_gamma,          // MODIFIED: target gamma for left flipper (start point)
@@ -162,7 +161,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 curr_initial_phase_time = deltaTime1.count();
                 turtle_.turtle_control.if_control = true;
                 running_t = curr_initial_phase_time - initial_phase_time - set_close_control_time;
-                // MODIFIED: Use custom_trajectory to execute the full cycle:
+                // MODIFIED: 
                 // Move from start to end and return back to start.
                 custom_trajectory(turtle_, running_t); // MODIFIED: custom_trajectory is defined in inverse_kinematics.
                 std::cout << "running Interation: " << running_t << std::endl;
