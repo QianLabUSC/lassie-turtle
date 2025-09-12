@@ -92,6 +92,12 @@ class lowerproxy:public rclcpp::Node{
     turtle turtle_inter_;
     // void handle_joint_state(const control_msgs::msg::DynamicJointState::SharedPtr msg);
     void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
+
+    // added 
+    std::vector<TrajectoryPoint> precomputed_;
+    double                       sample_dt_    = 0.0;
+    bool                         use_precomputed_ = false;
+    void                         loadPrecomputed(const std::string &csv_path);
 };
 
 } //namespace control

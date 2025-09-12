@@ -109,7 +109,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                 double curr_initial_phase_time;
                 double running_t;
 
-                switch (currentState) {
+                switch (currentState) { // add a new state for if user specifies new trajectory points
                     case ProgramState::FirstIteration:                       
                         turtle_.turtle_chassis.gait_state = -1;
                         // Additional code for first iteration

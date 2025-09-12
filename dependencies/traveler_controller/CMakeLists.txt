@@ -37,7 +37,7 @@ add_executable( turtle_high_controller
     # src/controller/controller_monitor.cpp
     # src/controller/pid_speed_controller.cpp
     src/controller/Inverse_kinematics.cpp
-    # src/controller/trajectories_parser.cpp
+    src/controller/trajectories_parser.cpp
 
     src/proxy/lowerproxy.cpp
     src/proxy/upperproxy.cpp

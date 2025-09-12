@@ -93,6 +93,11 @@ struct TrajectoryData
     float end_theta;    // End theta (in radians)
     
     float curve_angle; // curve offset (in radians)
+
+    int num_waypoints; // number of waypoints
+    std::vector<float> waypoints_x; // x coordinates of waypoints
+    std::vector<float> waypoints_y; // y coordinates of waypoints
+    std::vector<float> waypoints_v; // velocity of waypoints
 };
 
 struct turtle{
@@ -101,5 +106,7 @@ struct turtle{
     human_interface turtle_gui;
     TrajectoryData traj_data;
 };
+
+
 
 #endif

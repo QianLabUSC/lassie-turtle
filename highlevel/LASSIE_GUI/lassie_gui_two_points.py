@@ -223,6 +223,20 @@ class TravelerApp(MDApp):
     def on_change_Optimize_Variable_6(self):
         self.current_tab.ids.Optimize_Variable_6.text = str(round(self.current_tab.ids.Slider_optimize_6.value))
 
+    def on_change_Optimize_Variable_7(self):
+        self.current_tab.ids.Optimize_Variable_7.text = str(round(self.current_tab.ids.Slider_optimize_7.value, 2))
+
+    def on_change_Optimize_Variable_8(self):
+        self.current_tab.ids.Optimize_Variable_8.text = str(round(self.current_tab.ids.Slider_optimize_8.value, 2))
+    def on_change_Optimize_Variable_9(self):
+        self.current_tab.ids.Optimize_Variable_9.text = str(round(self.current_tab.ids.Slider_optimize_9.value, 2))
+    def on_change_Optimize_Variable_10(self):
+        self.current_tab.ids.Optimize_Variable_10.text = str(round(self.current_tab.ids.Slider_optimize_10.value, 2))
+
+
+
+
+
 
     # call back for turtle preset gait
     def on_change_Variable_1(self):
@@ -343,7 +357,15 @@ class TravelerApp(MDApp):
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_5.value))/1000)               
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_6.value))/1000)  
                 self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_2.value))/1000 )    
-                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_1.value)) * np.pi / 180  )              
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_1.value)) * np.pi / 180  )     
+                # MODIFIED: Append new start and end coordinate parameters (converted to radians)
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_7.value, 2)) * np.pi / 180)  # MODIFIED: start gamma
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_8.value, 2)) * np.pi / 180)  # MODIFIED: start theta
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_9.value, 2)) * np.pi / 180)  # MODIFIED: end gamma
+                self.gui_message.data.append(float(round(self.turtle_optimize_tab.ids.Slider_optimize_10.value, 2)) * np.pi / 180) # MODIFIED: end theta
+
+
+         
                         
                      
                 if(self.start_flag):

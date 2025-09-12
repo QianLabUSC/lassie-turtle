@@ -7,6 +7,7 @@
 
 #include "proxy/upperproxy.h"
 
+
 /**
  * upperproxy - class to collect robot's information and trajectories from path
  * planning and decision making part. 
@@ -25,28 +26,64 @@ upperproxy::upperproxy(std::string name) : Node(name){
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
 }
 
-void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg){
-    // int len = msg->data.size();
-    turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
-    turtle_inter_.turtle_gui.drag_traj = msg->data[1];
-    turtle_inter_.traj_data.sweeping_range = msg->data[2];
-    turtle_inter_.traj_data.insertion_depth = msg->data[3];
-    turtle_inter_.traj_data.penetration_velocity = msg->data[4];
-    turtle_inter_.traj_data.sweeping_velocity = msg->data[5];
-    turtle_inter_.traj_data.extraction_velocity = msg->data[6];
-    turtle_inter_.traj_data.swing_velocity = msg->data[7];
-    // MODIFIED: Check if new start/end coordinates are provided in the message.
-    turtle_inter_.traj_data.start_gamma = msg->data[8];  // MODIFIED: new start_x (in radians)
-    turtle_inter_.traj_data.start_theta = msg->data[9];  // MODIFIED: new start_y (in radians)
-    turtle_inter_.traj_data.end_gamma   = msg->data[10]; // MODIFIED: new end_x (in radians)
-    turtle_inter_.traj_data.end_theta  = msg->data[11]; // MODIFIED: new end_y (in radians)
+#include "controller/inverse_kinematics.h"  // for clamp_XY
+
+void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
+{
+    // 1) Copy basic GUI fields
+    turtle_inter_.turtle_gui.start_flag = msg->data[0];
+    turtle_inter_.turtle_gui.drag_traj  = msg->data[1];
+    turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
+    turtle_inter_.traj_data.drag_speed         = msg->data[3];
+    turtle_inter_.traj_data.wiggle_time        = msg->data[4];
+    turtle_inter_.traj_data.servo_speed        = msg->data[5];
+    turtle_inter_.traj_data.extraction_angle   = msg->data[6];
+    turtle_inter_.traj_data.wiggle_frequency   = msg->data[7];
+    turtle_inter_.traj_data.insertion_depth    = msg->data[8];
+    turtle_inter_.traj_data.wiggle_amptitude   = msg->data[9];
+
+    // 2) Reset waypoint buffers
+    auto& td = turtle_inter_.traj_data;
+    td.num_waypoints = 0;
+    td.waypoints_x.clear();
+    td.waypoints_y.clear();
+    td.waypoints_v.clear();
+
+    // // 3) OPTIONAL: ingest GUI triples (x, y, v) starting at index 10
+    // for (size_t i = 10; i + 2 < msg->data.size(); i += 3) {
+    //     float x = msg->data[i];
+    //     float y = msg->data[i + 1];
+    //     float v = msg->data[i + 2];
+    //     clamp_XY(x, y, 0.0f);  // keep within workspace (meters)
+    //     td.waypoints_x.push_back(x);
+    //     td.waypoints_y.push_back(y);
+    //     td.waypoints_v.push_back(v);
+    //     td.num_waypoints++;
+    //     printf("Waypoint %d (GUI): (%.3f, %.3f), v=%.3f\n", td.num_waypoints, x, y, v);
+    // }
+
+    // 4) FALLBACK: if no GUI waypoints were provided, seed 4 manual points
+
+        auto push_xy = [&](float x, float y, float v){
+            clamp_XY(x, y, 0.0f);
+            td.waypoints_x.push_back(x);
+            td.waypoints_y.push_back(y);
+            td.waypoints_v.push_back(v);
+            td.num_waypoints++;
+            printf("Waypoint %d (manual): (%.3f, %.3f), v=%.3f\n", td.num_waypoints, x, y, v);
+        };
+        push_xy(0.10f, 0.12f, 0.03f);
+        push_xy(0.12f, 0.08f, 0.03f);
+        push_xy(0.09f, 0.15f, 0.03f);
+        push_xy(0.11f, 0.11f, 0.03f);
 }
 
-void upperproxy::UpdateGuiCommand(turtle &turtle_){
+
+void upperproxy::UpdateGuiCommand(turtle& turtle_){
     turtle_.turtle_gui = turtle_inter_.turtle_gui;
     turtle_.traj_data = turtle_inter_.traj_data;
 }
-void upperproxy::PublishStatusFeedback(turtle &turtle_){
+void upperproxy::PublishStatusFeedback(turtle& turtle_){
     if(turtle_.turtle_gui.status_update_flag == true){
         auto message = std_msgs::msg::Float64MultiArray();
         // std::cout <<  message.data[message.data.size() - 1] << std::endl;

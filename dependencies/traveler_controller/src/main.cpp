@@ -7,7 +7,7 @@
 
 #include "main.h"
 #include "rclcpp/rclcpp.hpp"
-
+#include "controller/trajectories_parser.h"
 
 /**
  * main - entrance of turtle robot Scontroller.
@@ -15,6 +15,8 @@
  * @param argv
  * @return 0
  */
+
+static turtle_namespace::control::TrajectoriesParser traj;
 
 int main(int argc, char **argv)
 {
@@ -32,7 +34,7 @@ int main(int argc, char **argv)
 
     //rclcpp::shutdown();
     rclcpp::Rate loop_rate(1000); 
-    int count1;
+    
 	while (rclcpp::ok())
 	{
 		rclcpp::spin_some(Upper_proxy_);
@@ -40,6 +42,8 @@ int main(int argc, char **argv)
 		Can_driver_->get_motor_status(turtle_);
 		Lower_proxy_->UpdateJoystickStatus(turtle_);
 		Upper_proxy_->UpdateGuiCommand(turtle_); 
+
+        traj.generateTempTraj(turtle_);
 		
         Can_driver_->change_odrive_state(turtle_);
 		Lower_proxy_->calculate_position(turtle_);  
@@ -47,8 +51,8 @@ int main(int argc, char **argv)
 		Can_driver_->setControl(turtle_);
 		
 		loop_rate.sleep();
-		// count1 = count1 + 1;
+		
 	}
-    // std::cout<<count1<<endl;
+
 	 return 0;
 }

@@ -1,81 +1,55 @@
-#pragma once
+#ifndef INVERSE_KINEMATICS_H
+#define INVERSE_KINEMATICS_H
 
-#include <tuple>
-#include <utility>
-#include <stdio.h>
+#define _USE_MATH_DEFINES
+
 #include <cmath>
+#include <utility>
+#include <cstdio>
 #include <iostream>
-#include "proxy/control_data.h"
-// Global Debug Flag
-const float l_1 = 0.1;
-const float l_2 = 0.2;
 
-// void GetAngles(LegConfig leg, float& angle_0, float& angle_1);
+#include "../proxy/control_data.h"   // for XY_pair, L1/L2/L3, MIN_EXT/MAX_EXT, etc.
 
-void GetGamma(float L, float theta, float& gamma);
+// ------------------------------------------------------------
+// Kinematics
+// ------------------------------------------------------------
 
-void PhysicalToAbstract(float X1, float Y1, float X2, float Y2, float &theta1, float &gamma1, float &beta1, float &theta2, float &gamma2, float &beta2);
-void checkright(float &gamma2, float &beta2, float &theta2);
-void checkleft(float &gamma1, float &beta1, float &theta1);
-// void PhysicalToAbstract(float X, float Y, float &theta, float &gamma);
+// gamma from leg length
+void getGamma(float L, float& gamma);
 
-// void PhysicalToAbstract(LegConfig leg, float& L, float& theta, float& gamma);
+// X,Y  ->  L,theta,gamma
+void physicalToAbstract(float X, float Y, float& L, float& theta, float& gamma);
 
-void AbstractToPhysical(float L, float Theta, float gamma, float& x, float& y);
+// X,Y  ->  theta,gamma  (optionally clamp XY into workspace first)
+void physicalToAbstract(float X, float Y, float& theta, float& gamma, bool clamp = false);
 
-// void MoveToPosition(LegConfig leg, float t);
+// L,Theta  ->  x,y
+void abstractToPhysical(float L, float Theta, float& x, float& y);
+void abstractToPhysical(float L, float Theta, XY_pair& point);
 
-void RadialTrajectory(float t, struct RadialGaitParams gait, float& X, float& Y);
+// ------------------------------------------------------------
+// Linear segment interpolation
+// ------------------------------------------------------------
 
-// void RadialLegMovement(LegConfig leg, float t, struct RadialGaitParams gait, float& theta, float& gamma);
-void RightTriangleTrajectory(float t, struct RightTriangularGaitParams gait, float& X, float& Y);
-void TriangularTrajectory(float t, struct TriangularGaitParams gait, float& X, float& Y);
-// void boundingGAIT(turtle &turtle_, float t);
-// Triangular Trajectory Helpers :
-void HorizontalStep(float t, struct TriangularGaitParams gait, float& X, float& Y);
-void SwingAngle(float t, struct TriangularGaitParams gait, float& X, float& Y);
-void RadialMove(float t, struct TriangularGaitParams gait, float& X, float& Y);
+// time-based start/stop form
+void linearTraj(float t, float t_start, float vel, XY_pair A, XY_pair B, float& X, float& Y);
 
-enum PhaseCombination {
-    INSERTION_ONLY = 0,
-    EXTRACTION_ONLY,
-    SWING_ONLY,
-    STANCE_ONLY,
-    INSERTION_AND_SWING,
-    SWING_AND_EXTRACTION,
-    STANCE_AND_INSERTION,
-    STANCE_AND_EXTRACTION
-};
+// relative-time form (returns true when segment is complete)
+bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, float& X, float& Y);
 
-// Based on the difference between the start and end gamma/theta values, select the appropriate phase.
-PhaseCombination selectPhase(double start_gamma, double start_theta,
-                             double end_gamma, double end_theta);
-// Declaration of the generic combined-phase function:
-void combined_phase_trajectory(turtle& turtle_, float t, PhaseCombination mode);
+// relative-time form with Toe feedback + threshold
+bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B,
+                XY_pair ToeXY, float& X, float& Y, float threshold = 0.01f);
 
-// For backward compatibility with your state machine:
-void boundingGAIT(turtle& turtle_, float t, int mode);
+// ------------------------------------------------------------
+// Workspace helpers
+// ------------------------------------------------------------
 
-bool inBounds(float Gamma, float Theta, float L);
+// clamp XY into [MIN_EXT, MAX_EXT] radial band; returns true if already valid
+bool clamp_XY(float& x, float& y, float L = 0.0f);
+bool clamp_XY(XY_pair& P, float L = 0.0f);
 
-bool inBounds(float x, float y);
+// simple utility used by the parser for bookkeeping
+float distance(XY_pair A, XY_pair B);
 
-struct OvalParams {
-    float period_down = 3.0f; // Initial Length of leg
-    float period_up = 3.0f; // Final leg length
-    float vertical_range = 0.01f; // Angle of radial movement (half of the whole range)
-    float horizontal_range = 0.05f; // Frequency of one movement cycle (Hz) (half of the whole range)
-};
-
-struct Rectangle_Params {
-    float period_down = 3.0f; // time
-    float period_up = 3.0f; // time
-    float period_left = 3.0f; // time
-    float period_right = 3.0f; // time
-    float vertical_range = 0.01f; // insertion depth (length)
-    float horizontal_range = 0.03f; // half of the whole range (length)
-    float period_waiting_time = 0.5f; // time
-    float wiggle_length = 0.2f;
-    float wiggle_frequency = 10.0;
-};
-
+#endif // INVERSE_KINEMATICS_H

@@ -1,265 +1,250 @@
 #include "controller/inverse_kinematics.h"
-#include <fstream>
-#include <iostream>
-#include <cmath>
+
 using namespace std;
 
 #define DEBUG
+#define CONTROL_FREQ 100    // Hz
 
-// Select the phase combination based on the difference between endpoints.
-PhaseCombination selectPhase(double start_gamma, double start_theta,
-                             double end_gamma, double end_theta) {
-    const double threshold_gamma = 0.1; 
-    const double threshold_theta = 0.2; 
 
-    double delta_gamma = end_gamma - start_gamma;
-    double delta_theta = end_theta - start_theta;
+/**
+ * ! Leg Workspace:
+ * Gamma must be within [0.087, 2.61] radians
+ * Theta must be within [-2.47, +2.47] radians
+ */
 
-    PhaseCombination mode;
-    if(fabs(delta_gamma) < threshold_gamma && fabs(delta_theta) < threshold_theta) {
-        // Minimal change: default to insertion only.
-        mode = INSERTION_ONLY;
-    } else if(fabs(delta_gamma) >= threshold_gamma && fabs(delta_theta) < threshold_theta) {
-        // Movement mainly in gamma.
-        mode = (delta_gamma > 0) ? INSERTION_ONLY : EXTRACTION_ONLY;
-    } else if(fabs(delta_gamma) < threshold_gamma && fabs(delta_theta) >= threshold_theta) {
-        // Movement mainly in theta.
-        mode = (delta_theta > 0) ? SWING_ONLY : STANCE_ONLY;
+
+/**
+ * @brief Converts Abstract leg position into Theta, Gamma values
+ *
+ * @param L Leg length
+ * @param Theta Abstract leg angle
+ * @return Pair (Theta, Gamma) representing the motor separation
+ *             for the given input parameters. Also called the Diff Angle
+ */
+void getGamma(float L, float &gamma)
+{
+    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+}
+
+/**
+ * @brief Finds the Leg length, angle, and motor separation for a given X, Y toe point
+ *
+ * @param X Toe X position
+ * @param Y Toe Y position
+ *
+ * @return Returns <Length, Angle, Gamma>
+ */
+void physicalToAbstract(float X, float Y, float &L, float &theta, float &gamma)
+{
+    L = sqrt(X*X + Y*Y);
+    theta = atan2(X, Y);
+
+    float theta_temp = atan2(X, Y);
+    // compensates for -x, -y wrapping
+    // if (X < 0.0f && Y < 0.0f) {
+    //     theta = 2 * M_PI + theta_temp;
+    // } else {
+    //     theta = theta_temp;
+    // }
+    if (theta_temp < (-M_PI / 2)) {
+        theta = 2 * M_PI + theta_temp;
     } else {
-        // Both angles change significantly.
-        if(delta_gamma > 0 && delta_theta > 0)
-            mode = INSERTION_AND_SWING;
-        else if(delta_gamma < 0 && delta_theta > 0)
-            mode = SWING_AND_EXTRACTION;
-        else if(delta_gamma > 0 && delta_theta < 0)
-            mode = STANCE_AND_INSERTION;
-        else // (delta_gamma < 0 && delta_theta < 0)
-            mode = STANCE_AND_EXTRACTION;
+        theta = theta_temp;
     }
-    return mode;
+    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
 }
 
-// Main function that computes and sends commands based on the selected phase.
-void combined_phase_trajectory(turtle& turtle_, float t, PhaseCombination mode) {
-    // Common geometry parameters.
-    double l1 = 0.130;          // flipper length (meters)
-    double turtle_height = 0.079; // height from flipper to ground (meters)
-    double lower_point = 0.055;   // reference distance (meters)
+/**
+ * @brief Finds the Leg angle and motor separation for a given X, Y toe point
+ *
+ * @param X Toe X position
+ * @param Y Toe Y position
+ *
+ * @return Returns <Theta, Gamma>
+ */
+void physicalToAbstract(float X, float Y, float &theta, float &gamma, bool clamp)
+{
+    float L = sqrt(X*X + Y*Y);
 
-    // Convert lateral_angle_range (in radians) to degrees.
-    float horizontal_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
+    if (clamp) {
+        clamp_XY(X, Y, L);
+        L = sqrt(X*X + Y*Y); // recalculate L after clamping X,Y
+    }
 
-    // Set up timing parameters from trajectory data.
-    Rectangle_Params rectangle_params;
-    rectangle_params.period_down  = turtle_.traj_data.lateral_angle_range * l1 * 2 / turtle_.traj_data.drag_speed;
-    rectangle_params.period_up    = 0.8; // fixed back phase time
-    rectangle_params.period_left  = turtle_.traj_data.servo_speed;
-    rectangle_params.period_right = turtle_.traj_data.servo_speed;
-    rectangle_params.vertical_range   = turtle_.traj_data.insertion_depth;
-    rectangle_params.horizontal_range = turtle_.traj_data.lateral_angle_range * 180 / M_PI;
-    rectangle_params.period_waiting_time = 0;
+    float theta_temp = atan2(X, Y);
+    // compensates for -x, -y wrapping
+    // if (X < 0.0f && Y < 0.0f) {
+    //     theta = 2 * M_PI + theta_temp;
+    // } else {
+    //     theta = theta_temp;
+    // }
+    if (theta_temp < (M_PI/2)) {
+        theta = 2 * M_PI + theta_temp;
+    } else {
+        theta = theta_temp;
+    }
+    gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+    
+    // printf("X: %f, Y: %f, L: %f, theta: %f, gamma: %f\n", X, Y, L, theta, gamma);
 
-    // Hold times and delays (used in some phases)
-    float hold_time_1 = 3.0;
-    float hold_time_2 = 3.0;
-    float hold_time_3 = 3.0;
-    float end_delay    = 3.0;
+}
 
-    // Baseline servo offsets and extraction parameter.
-    float left_hori_servo = 0;
-    float right_hori_servo = 0;
-    float extraction_angle = turtle_.traj_data.extraction_angle;
+/**
+ * @brief Finds the physical (X, Y) position of the toe for a given L and Theta
+ *
+ * @param L Leg length
+ * @param Theta Abstract leg angle
+ * @return Pair (X, Y) representing the position of the toe in relation to
+ *              the Origin (the hip joint)
+ */
+void abstractToPhysical(float L, float Theta, float &x, float &y)
+{
+    // check consistency for this
+    x = - L * sinf(Theta);
+    y = L * cosf(Theta);
+}
 
-    // Variables to store computed angles.
-    double gamma1 = 0, theta1 = 0, gamma2 = 0, theta2 = 0;
-    float corres_t = 0;
+void abstractToPhysical(float L, float Theta, XY_pair &point) {
+    point.x = - L * sinf(Theta);
+    point.y = L * cosf(Theta);
+}
 
-    // For phases that involve insertion depth calculations.
-    double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
-    if(desierd_insertion_depth > 0.07)
-        desierd_insertion_depth = 0.07;
 
-    // Compute the initial insertion depth (used in insertion, stance, extraction phases).
-    double initial_insertion_depth_rad = asin((desierd_insertion_depth + turtle_height) /
-        sqrt((l1 * cos(horizontal_angle * M_PI / 180)) * (l1 * cos(horizontal_angle * M_PI / 180)) + lower_point * lower_point))
-        - atan(lower_point / (l1 * cos(horizontal_angle * M_PI / 180)));
-    double initial_insertion_depth_deg = initial_insertion_depth_rad * 180 / M_PI;
+void linearTraj(float t, float t_start, float vel, XY_pair A, XY_pair B, float &X, float &Y) {
+    float t_rel = t - t_start;
+    float d1 = B.x - A.x;
+    float d2 = B.y - A.y;
 
-    // Switch on the selected mode.
-    switch(mode) {
-        case SWING_ONLY:
-            {
-                // Swing only: assume the motion is along theta only.
-                float T_total = rectangle_params.period_up;
-                float t_mod = fmod(t, T_total);
-                corres_t = t_mod / T_total;
-                gamma1 = left_hori_servo + extraction_angle;
-                theta1 = -horizontal_angle + 2 * horizontal_angle * corres_t;
-                gamma2 = right_hori_servo - extraction_angle;
-                theta2 = horizontal_angle - 2 * horizontal_angle * corres_t;
-                turtle_.turtle_chassis.gait_state = 1;
-            }
-            break;
-        case INSERTION_ONLY:
-            {
-                // Insertion only: vertical motion.
-                float T_total = rectangle_params.period_up + hold_time_3 + rectangle_params.period_right;
-                float t_mod = fmod(t, T_total);
-                if(t_mod < rectangle_params.period_up + hold_time_3) {
-                    // Hold at the initial configuration.
-                    theta1 = horizontal_angle;
-                    gamma1 = left_hori_servo + extraction_angle;
-                    theta2 = -horizontal_angle;
-                    gamma2 = right_hori_servo - extraction_angle;
-                } else {
-                    corres_t = (t_mod - rectangle_params.period_up - hold_time_3) / rectangle_params.period_right;
-                    theta1 = horizontal_angle;
-                    gamma1 = left_hori_servo + extraction_angle - (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                    theta2 = -horizontal_angle;
-                    gamma2 = right_hori_servo - extraction_angle + (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                }
-                turtle_.turtle_chassis.gait_state = 2;
-                cout << "Insertion Only - Initial Adduction: " << gamma1 << endl;
-            }
-            break;
-        case STANCE_ONLY:
-            {
-                // Stance only: horizontal motion (theta decreasing).
-                float T_total = rectangle_params.period_up + hold_time_3 + rectangle_params.period_right + hold_time_1 + rectangle_params.period_down;
-                float t_mod = fmod(t, T_total);
-                corres_t = (t_mod - rectangle_params.period_up - hold_time_3 - rectangle_params.period_right - hold_time_1) / rectangle_params.period_down;
-                theta1 = horizontal_angle - 2 * horizontal_angle * corres_t;
-                gamma1 = left_hori_servo - (asin((desierd_insertion_depth + turtle_height) /
-                          sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) -
-                          atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
-                theta2 = -horizontal_angle + 2 * horizontal_angle * corres_t;
-                gamma2 = right_hori_servo + (asin((desierd_insertion_depth + turtle_height) /
-                           sqrt((l1 * cos(-theta1 * M_PI / 180)) * (l1 * cos(-theta1 * M_PI / 180)) + lower_point * lower_point)) -
-                           atan(lower_point / (l1 * cos(-theta1 * M_PI / 180)))) * 180 / M_PI;
-                turtle_.turtle_chassis.gait_state = 3;
-                cout << "Stance Only - Phase3 Adduction: " << gamma1 << endl;
-            }
-            break;
-        case EXTRACTION_ONLY:
-            {
-                // Extraction only: upward motion (reverse of insertion).
-                float T_total = rectangle_params.period_up + hold_time_3 + rectangle_params.period_right + hold_time_1 +
-                                rectangle_params.period_down + hold_time_2 + rectangle_params.period_left;
-                float t_mod = fmod(t, T_total);
-                corres_t = (t_mod - rectangle_params.period_up - hold_time_3 - rectangle_params.period_right -
-                           hold_time_1 - rectangle_params.period_down - hold_time_2) / rectangle_params.period_left;
-                theta1 = -horizontal_angle;
-                gamma1 = left_hori_servo - (initial_insertion_depth_rad * 180 / M_PI) +
-                         (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                theta2 = horizontal_angle;
-                gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI) -
-                         (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                turtle_.turtle_chassis.gait_state = 4;
-            }
-            break;
-        case INSERTION_AND_SWING:
-            {
-                // Combined insertion and swing: blend insertion (vertical) and swing (horizontal) simultaneously.
-                float combined_duration = rectangle_params.period_down + rectangle_params.period_left;
-                float t_mod = fmod(t, combined_duration);
-                turtle_.turtle_chassis.step_count = (t - t_mod) / combined_duration;
-                double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
-                if(desierd_insertion_depth > 0.07)
-                    desierd_insertion_depth = 0.07;
-                double initial_insertion_depth_rad = asin((desierd_insertion_depth + turtle_height) /
-                    sqrt((l1 * cos(horizontal_angle * M_PI / 180)) * (l1 * cos(horizontal_angle * M_PI / 180)) + lower_point * lower_point))
-                    - atan(lower_point / (l1 * cos(horizontal_angle * M_PI / 180)));
-                float curve_offset_deg = 30.0f;
-                if(t_mod < rectangle_params.period_down) {
-                    corres_t = t_mod / rectangle_params.period_down;
-                    theta2 = horizontal_angle - curve_offset_deg * corres_t;  
-                    gamma2 = right_hori_servo - extraction_angle +
-                             (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                } else {
-                    corres_t = (t_mod - rectangle_params.period_down) / rectangle_params.period_left;
-                    theta2 = horizontal_angle - curve_offset_deg + (curve_offset_deg * corres_t);
-                    gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI) -
-                             (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                }
-                turtle_.turtle_chassis.gait_state = 10;
-            }
-            break;
-        case SWING_AND_EXTRACTION:
-            {
-                // Combined swing and extraction: blend swing (increasing theta) with extraction (decreasing gamma).
-                float combined_duration = rectangle_params.period_up + rectangle_params.period_left;
-                float t_mod = fmod(t, combined_duration);
-                turtle_.turtle_chassis.step_count = (t - t_mod) / combined_duration;
-                corres_t = t_mod / combined_duration;
-                theta2 = horizontal_angle + 2 * horizontal_angle * corres_t;
-                gamma2 = right_hori_servo - extraction_angle * corres_t;
-                turtle_.turtle_chassis.gait_state = 11;
-            }
-            break;
-        case STANCE_AND_INSERTION:
-            {
-                // Combined stance and insertion: blend stance (leftward swing) with insertion.
-                float combined_duration = rectangle_params.period_down + rectangle_params.period_left;
-                float t_mod = fmod(t, combined_duration);
-                turtle_.turtle_chassis.step_count = (t - t_mod) / combined_duration;
-                double desierd_insertion_depth = turtle_.traj_data.insertion_depth;
-                if(desierd_insertion_depth > 0.07)
-                    desierd_insertion_depth = 0.07;
-                double initial_insertion_depth_rad = asin((desierd_insertion_depth + turtle_height) /
-                    sqrt((l1 * cos(horizontal_angle * M_PI / 180)) * (l1 * cos(horizontal_angle * M_PI / 180)) + lower_point * lower_point))
-                    - atan(lower_point / (l1 * cos(horizontal_angle * M_PI / 180)));
-                float curve_offset_deg = 30.0f;
-                if(t_mod < rectangle_params.period_down) {
-                    corres_t = t_mod / rectangle_params.period_down;
-                    theta2 = horizontal_angle + curve_offset_deg * corres_t;  
-                    gamma2 = right_hori_servo - extraction_angle +
-                             (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                } else {
-                    corres_t = (t_mod - rectangle_params.period_down) / rectangle_params.period_left;
-                    theta2 = horizontal_angle + curve_offset_deg - (curve_offset_deg * corres_t);
-                    gamma2 = right_hori_servo + (initial_insertion_depth_rad * 180 / M_PI) -
-                             (((initial_insertion_depth_rad * 180 / M_PI) + extraction_angle) * corres_t);
-                }
-                turtle_.turtle_chassis.gait_state = 12;
-            }
-            break;
-        case STANCE_AND_EXTRACTION:
-            {
-                // Combined stance and extraction: blend stance (decreasing theta) with extraction (increasing gamma).
-                float combined_duration = rectangle_params.period_up + rectangle_params.period_left;
-                float t_mod = fmod(t, combined_duration);
-                turtle_.turtle_chassis.step_count = (t - t_mod) / combined_duration;
-                corres_t = t_mod / combined_duration;
-                theta2 = -horizontal_angle - 2 * horizontal_angle * corres_t;
-                gamma2 = right_hori_servo + extraction_angle * corres_t;
-                turtle_.turtle_chassis.gait_state = 13;
-            }
-            break;
+    float raw_vel = sqrtf(d1*d1 + d2*d2);
+    float scalar = vel/raw_vel;
+    
+    X = scalar * d1 * t_rel + A.x;
+    Y = scalar * d2 * t_rel + B.x;
+}
+
+bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, float &X, float &Y) {    // actually using this one  
+    // create the vector from A to B
+    float d1 = B.x - A.x;
+    float d2 = B.y - A.y;
+
+    // find the magnitude of the vector
+    float vector_magnitude = sqrtf(d1*d1 + d2*d2);
+
+    // if A = B, assign X = A.x, Y = A.y and return true
+    if(vector_magnitude == 0.0){
+        X = A.x;
+        Y = A.y;
+        return true;
     }
     
-    // Add a print statement to output the computed angles.
-    cout << "Phase = " << corres_t 
-         << ", gamma1 = " << gamma1 << ", theta1 = " << theta1 
-         << ", gamma2 = " << gamma2 << ", theta2 = " << theta2 << endl;
+    // scale the vector to the desired velocity
+    float scalar = vel/vector_magnitude;
+
+    // find the point along the vector
+    X = (scalar * d1 * t_rel) + A.x;
+    Y = (scalar * d2 * t_rel) + A.y;
+
+    //? TODO: Check for end of trajectory using current position
+    // Checking for end of trajectory
+
+    // actual distance is point along the path
+    float actual_dist = sqrtf((X - A.x) * (X - A.x)+ (Y - A.y) * (Y - A.y));
+
+    if (actual_dist <= vector_magnitude) {
+        return false;
+    } else {
+        return true;    // returns true when complete
+    }
+}
+
+bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, XY_pair ToeXY, float &X, float &Y, float threshold) {    
+    // create the vector from A to B
+    float d1 = B.x - A.x;
+    float d2 = B.y - A.y;
+
+    // find the magnitude of the vector
+    float vector_magnitude = sqrtf(d1*d1 + d2*d2);
     
-    // Send commands to servos.
-    turtle_.turtle_control.left_adduction.set_input_position_degree.input_position = gamma1;
-    turtle_.turtle_control.left_sweeping.set_input_position_degree.input_position = theta1;
-    turtle_.turtle_control.right_adduction.set_input_position_degree.input_position = gamma2;
-    turtle_.turtle_control.right_sweeping.set_input_position_degree.input_position = theta2;
+    // scale the vector to the desired velocity
+    float scalar = vel/vector_magnitude;
 
-    turtle_.turtle_control.left_adduction.set_input_position_radian.input_position = -gamma1 / 360;
-    turtle_.turtle_control.left_sweeping.set_input_position_radian.input_position = -theta1 / 360;
-    turtle_.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma2 / 360;
-    turtle_.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta2 / 360;
+    // find the point along the vector
+    X = (scalar * d1 * t_rel) + A.x;
+    Y = (scalar * d2 * t_rel) + A.y;
+
+    //? TODO: Check for end of trajectory using current position
+    // Checking for end of trajectory
+
+    // finds the distance between B and the Toe
+    float actual_dist = sqrtf((ToeXY.x - B.x) * (ToeXY.x - B.x)+ (ToeXY.y - B.y) * (ToeXY.y - B.y));
+
+    if (actual_dist > threshold) {
+        return false;
+    } else {
+        return true;    // returns true when complete
+    }
 }
 
 
-void boundingGAIT(turtle& turtle_, float t, int mode) {
-    double start_gamma = turtle_.traj_data.start_gamma;
-    double start_theta = turtle_.traj_data.start_theta;
-    double end_gamma   = turtle_.traj_data.end_gamma;
-    double end_theta   = turtle_.traj_data.end_theta;
-    PhaseCombination autoMode = selectPhase(start_gamma, start_theta, end_gamma, end_theta);
-    combined_phase_trajectory(turtle_, t, autoMode);
+bool clamp_XY(float &x, float &y, float L) {
+    // calculate L if not provided
+    if (L == 0.0f) { 
+        L = sqrtf(x*x + y*y);
+    } 
+    if (L > (MAX_EXT)) {
+        x = (MAX_EXT) * x / L;
+        y = (MAX_EXT) * y / L;
+        return false;
+    } else if (L < (MIN_EXT)) {
+        x = (MIN_EXT) * x / L;
+        y = (MIN_EXT) * y / L;
+        return false;
+    } else {
+        return true;
+    }
 }
+
+bool clamp_XY(XY_pair &P, float L) {
+    // calculate L if not provided
+    float x = P.x;
+    float y = P.y;
+    if (L == 0.0f) { 
+        L = sqrtf(x*x + y*y);
+    } 
+    if (L > (MAX_EXT)) {
+        x = (MAX_EXT) * x / L;
+        y = (MAX_EXT) * y / L;
+        P.x = x;
+        P.y = y;
+        return false;
+    } else if (L < (MIN_EXT)) {
+        x = (MIN_EXT) * x / L;
+        y = (MIN_EXT) * y / L;
+        P.x = x;
+        P.y = y;
+        return false;
+    } else {
+        return true;
+    }
+}
+
+float distance(XY_pair A, XY_pair B) {
+    return sqrt((B.x - A.x) * (B.x - A.x) + (B.y - A.y) * (B.y - A.y));
+}
+
+/**
+ * ! Leg Workspace Must be validated empirically
+ * Gamma must be within [0.087, 2.61] radians
+ * Theta must be within [-2.47, +2.47] radians
+ */
+
+
+
+
+
+
+
+
+
+
+

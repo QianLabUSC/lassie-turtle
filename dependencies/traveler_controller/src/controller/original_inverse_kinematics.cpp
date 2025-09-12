@@ -168,7 +168,7 @@ void fixed_insertion_depth_gait_lower_point_version_3_analytic_solution(turtle& 
     double lower_point = 0.055;
 
     //get data this is slow version ?? slow version? 
-    float horizontal_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI; ?
+    float horizontal_angle = turtle_.traj_data.lateral_angle_range * 180 / M_PI; 
     Rectangle_Params rectangle_params;
     rectangle_params.period_down = turtle_.traj_data.lateral_angle_range * l1 * 2 / turtle_.traj_data.drag_speed; 
     rectangle_params.period_up = 0.8; //customize back phase time

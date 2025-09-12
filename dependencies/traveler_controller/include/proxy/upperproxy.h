@@ -24,26 +24,36 @@ namespace turtle_namespace
 	namespace control
 	{
 
-		class upperproxy : public rclcpp::Node
-		{
+		// Structure to hold a trajectory waypoint from the GUI
+		struct TrajectoryWaypoint {
+			double time;     // Time to reach this point
+			double gamma;    // Gamma angle
+			double theta;    // Theta angle
+		};
+
+		// Add to the upperproxy class
+		class upperproxy : public rclcpp::Node {
 		public:
-			upperproxy(std::string name = "upper_proxy");
-			void UpdateGuiCommand(turtle &);
-			void PublishStatusFeedback(turtle &);
-
-		private:
-			turtle turtle_inter_;
-			rclcpp::TimerBase::SharedPtr _timer;
-			rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr
-				GUI_publisher;
+			upperproxy(std::string name);
 			void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
-
-			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr
-				GUI_subscriber;
+			void handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
+			void UpdateGuiCommand(turtle &turtle_);
+			void PublishStatusFeedback(turtle &turtle_);
 			
+			// New method to handle trajectory points
+			void GenerateTrajectoryFromWaypoints();
+			
+		private:
+			rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_publisher;
+			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_subscriber;
+			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr trajectory_subscriber;
+			
+			turtle turtle_inter_;
+			std::vector<TrajectoryWaypoint> waypoints;
 		};
 
 	} // namespace control
 } // namespace turtle_namespace
 
 #endif
+

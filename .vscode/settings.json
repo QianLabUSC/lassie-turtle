@@ -48,6 +48,7 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "bit": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "__split_buffer": "cpp"
     }
 }
