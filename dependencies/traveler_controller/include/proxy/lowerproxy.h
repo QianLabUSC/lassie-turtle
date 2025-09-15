@@ -26,12 +26,12 @@
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
-enum class ProgramState {
-    FirstIteration,
-    SetToControlAndCalibrate,
-    GoToInitialPoint,
-    Running,
-    };
+// enum class ProgramState {
+//     FirstIteration,
+//     SetToControlAndCalibrate,
+//     GoToInitialPoint,
+//     Running,
+//     };
 namespace turtle_namespace{
 namespace control{
 

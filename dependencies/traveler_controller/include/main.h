@@ -12,6 +12,7 @@
 // #include "controller/controller_monitor.h"
 #include "proxy/lowerproxy.h"
 #include "proxy/upperproxy.h"
+#include "controller/trajectories_parser.h"
 #include "proxy/control_data.h"
 #include "can_driver/can_driver.hpp"
 #include "can_driver/can_suber.hpp"
@@ -39,13 +40,15 @@ using turtle_namespace::control::lowerproxy;
 using turtle_namespace::control::upperproxy;
 // using turtle_namespace::control::visualizor;
 // using turtle_namespace::control::ControllerMonitor;
+using traveler_namespace::control::TrajectoriesParser;
 
 static float init_cnt = 0;
 static int init_done = 0;
 int i = 0;
 static float timer[10] = { 0 };
 int TIME_STEP = 5;
-float dT = TIME_STEP / 1000.;
-turtle  turtle_; 
+float dT = TIME_STEP / 1000;
+
+turtle turtle_; 
 
 #endif
