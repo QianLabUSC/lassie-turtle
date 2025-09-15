@@ -1,3 +1,4 @@
+uint8 state_flag
 float32 time
 float32 toeforce_x
 float32 toeforce_y

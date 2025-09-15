@@ -63,6 +63,8 @@ rcutils/allocator.h
 /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_generator_c/traveler_msgs/msg/detail/rcutils/allocator.h
 rosidl_runtime_c/string_functions.h
 /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/string_functions.h
+rosidl_runtime_c/primitives_sequence_functions.h
+/home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/primitives_sequence_functions.h
 
 /home/qianlab/single_turtle_workspace/build/traveler_msgs/rosidl_generator_c/traveler_msgs/msg/detail/traveler_mode__functions.c
 traveler_msgs/msg/detail/traveler_mode__functions.h
@@ -139,6 +141,16 @@ stddef.h
 -
 stdint.h
 -
+
+/opt/ros/foxy/include/rosidl_runtime_c/primitives_sequence_functions.h
+stdbool.h
+-
+stddef.h
+-
+rosidl_runtime_c/primitives_sequence.h
+/opt/ros/foxy/include/rosidl_runtime_c/rosidl_runtime_c/primitives_sequence.h
+rosidl_runtime_c/visibility_control.h
+/opt/ros/foxy/include/rosidl_runtime_c/rosidl_runtime_c/visibility_control.h
 
 /opt/ros/foxy/include/rosidl_runtime_c/string.h
 stddef.h
@@ -237,6 +249,8 @@ stdint.h
 -
 rosidl_runtime_c/string.h
 rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/string.h
+rosidl_runtime_c/primitives_sequence.h
+rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/primitives_sequence.h
 
 rosidl_generator_c/traveler_msgs/msg/detail/traveler_mode__functions.h
 stdbool.h

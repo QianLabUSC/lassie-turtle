@@ -1,0 +1,345 @@
+[  7%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[ 28%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[ 50%] Built target odrive_can_interface
+[ 57%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
+[ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[ 71%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:10[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:3[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:12:8:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kstruct XY_pair[m[K’
+   12 | struct [01;31m[KXY_pair[m[K {
+      |        [01;31m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:9[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:3[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_data.h:17:8:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kstruct XY_pair[m[K’
+   17 | struct [01;36m[KXY_pair[m[K {
+      |        [01;36m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:3[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:17:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope
+   86 |     std::vector<[01;31m[KWaypoint[m[K> waypoints_;
+      |                 [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   86 |     std::vector<Waypoint[01;31m[K>[m[K waypoints_;
+      |                         [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:87:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+   87 |     [01;31m[KWaypoint[m[K curr_waypoint_{};
+      |     [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:87:30:[m[K [01;35m[Kwarning: [m[Kextra ‘[01m[K;[m[K’ [[01;35m[K-Wpedantic[m[K]
+   87 |     Waypoint curr_waypoint_{}[01;35m[K;[m[K
+      |                              [01;35m[K^[m[K
+      |                              [31m[K-[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:88:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+   88 |     [01;31m[KWaypoint[m[K prev_waypoint_{};
+      |     [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:88:30:[m[K [01;35m[Kwarning: [m[Kextra ‘[01m[K;[m[K’ [[01;35m[K-Wpedantic[m[K]
+   88 |     Waypoint prev_waypoint_{}[01;35m[K;[m[K
+      |                              [01;35m[K^[m[K
+      |                              [31m[K-[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::waypointTrajectory(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:47:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+   47 |         [01;31m[Kprev_waypoint_[m[K = Waypoint(turtle.turtle_chassis.Leg_lf.toe_position, 0.0f, 0.0f);
+      |         [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:47:57:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[KLeg_lf[m[K’
+   47 |         prev_waypoint_ = Waypoint(turtle.turtle_chassis.[01;31m[KLeg_lf[m[K.toe_position, 0.0f, 0.0f);
+      |                                                         [01;31m[K^~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:47:26:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+   47 |         prev_waypoint_ = [01;31m[KWaypoint[m[K(turtle.turtle_chassis.Leg_lf.toe_position, 0.0f, 0.0f);
+      |                          [01;31m[K^~~~~~~~[m[K
+      |                          [32m[Kwaypoints_[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:48:25:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kempty[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+   48 |         if (!waypoints_.[01;31m[Kempty[m[K()) {
+      |                         [01;31m[K^~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:49:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+   49 |             [01;31m[Kcurr_waypoint_[m[K = waypoints_[waypoint_index_];
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:49:56:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+   49 |             curr_waypoint_ = waypoints_[waypoint_index_[01;31m[K][m[K;
+      |                                                        [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:55:25:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kempty[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+   55 |         if (!waypoints_.[01;31m[Kempty[m[K()) {
+      |                         [01;31m[K^~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:57:20:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+   57 |                    [01;31m[Kcurr_waypoint_[m[K.point.x, curr_waypoint_.point.y);
+      |                    [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:69:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[KLeg_lf[m[K’
+   69 |         turtle.turtle_chassis.[01;31m[KLeg_lf[m[K.state_flag = state_flag_;
+      |                               [01;31m[K^~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:71:42:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ksize[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+   71 |         if (waypoint_index_ < waypoints_.[01;31m[Ksize[m[K()) {
+      |                                          [01;31m[K^~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:72:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+   72 |             [01;31m[Kprev_waypoint_[m[K = curr_waypoint_;
+      |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:72:30:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+   72 |             prev_waypoint_ = [01;31m[Kcurr_waypoint_[m[K;
+      |                              [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:73:56:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+   73 |             curr_waypoint_ = waypoints_[waypoint_index_[01;31m[K][m[K;
+      |                                                        [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::processWaypoint(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:93:22:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+   93 |             clamp_XY([01;31m[Kcurr_waypoint_[m[K.point);
+      |                      [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:100:32:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+  100 |             if (linearTraj(t_, [01;31m[Kcurr_waypoint_[m[K.vel,
+      |                                [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:101:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+  101 |                            [01;31m[Kprev_waypoint_[m[K.point, curr_waypoint_.point,
+      |                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:120:22:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+  120 |             if (t_ > [01;31m[Kcurr_waypoint_[m[K.delay) {
+      |                      [01;31m[K^~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:136:16:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kclear[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+  136 |     waypoints_.[01;31m[Kclear[m[K();
+      |                [01;31m[K^~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:142:20:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kpush_back[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+  142 |         waypoints_.[01;31m[Kpush_back[m[K(Waypoint(x, y, v, 0.0f)); // zero delay between points
+      |                    [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:142:30:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+  142 |         waypoints_.push_back([01;31m[KWaypoint[m[K(x, y, v, 0.0f)); // zero delay between points
+      |                              [01;31m[K^~~~~~~~[m[K
+      |                              [32m[Kwaypoints_[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:146:53:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ksize[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+  146 |     for (int i = 0; i < static_cast<int>(waypoints_.[01;31m[Ksize[m[K()); ++i) {
+      |                                                     [01;31m[K^~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:148:31:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+  148 |                i, waypoints_[i[01;31m[K][m[K.point.x, waypoints_[i].point.y,
+      |                               [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:148:54:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+  148 |                i, waypoints_[i].point.x, waypoints_[i[01;31m[K][m[K.point.y,
+      |                                                      [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:149:28:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+  149 |                waypoints_[i[01;31m[K][m[K.vel, waypoints_[i].delay);
+      |                            [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:149:47:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+  149 |                waypoints_[i].vel, waypoints_[i[01;31m[K][m[K.delay);
+      |                                               [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateTempTraj(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:161:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_toe_pos[m[K’ was not declared in this scope
+  161 |     [01;31m[Kprev_toe_pos[m[K = curr_toe_pos;
+      |     [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:161:20:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_toe_pos[m[K’ was not declared in this scope
+  161 |     prev_toe_pos = [01;31m[Kcurr_toe_pos[m[K;
+      |                    [01;31m[K^~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:162:42:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[KLeg_lf[m[K’
+  162 |     curr_toe_pos = turtle.turtle_chassis.[01;31m[KLeg_lf[m[K.toe_position;
+      |                                          [01;31m[K^~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:184:38:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[KLeg_lf[m[K’
+  184 |                turtle.turtle_chassis.[01;31m[KLeg_lf[m[K.toe_position.x,
+      |                                      [01;31m[K^~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:185:38:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[KLeg_lf[m[K’
+  185 |                turtle.turtle_chassis.[01;31m[KLeg_lf[m[K.toe_position.y);
+      |                                      [01;31m[K^~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:191:22:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kcurrent_t[m[K’
+  191 |     turtle.traj_data.[01;31m[Kcurrent_t[m[K += 0.01000f;
+      |                      [01;31m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::printTrajData(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:205:58:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_time[m[K’
+  205 |     printf("wiggle_time:         %f\n", turtle.traj_data.[01;31m[Kwiggle_time[m[K);
+      |                                                          [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:208:58:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_frequency[m[K’
+  208 |     printf("wiggle_frequency:    %f\n", turtle.traj_data.[01;31m[Kwiggle_frequency[m[K);
+      |                                                          [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:210:58:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_amptitude[m[K’
+  210 |     printf("wiggle_amptitude:    %f\n", turtle.traj_data.[01;31m[Kwiggle_amptitude[m[K);
+      |                                                          [01;31m[K^~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:12:8:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kstruct XY_pair[m[K’
+   12 | struct [01;31m[KXY_pair[m[K {
+      |        [01;31m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:11[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/../proxy/control_data.h:17:8:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kstruct XY_pair[m[K’
+   17 | struct [01;36m[KXY_pair[m[K {
+      |        [01;36m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid getGamma(float, float&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:26:47:[m[K [01;31m[Kerror: [m[K‘[01m[KL3[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   26 |     gamma = static_cast<float>(acosf((pow(L - [01;31m[KL3[m[K, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                               [01;31m[K^~[m[K
+      |                                               [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:26:56:[m[K [01;31m[Kerror: [m[K‘[01m[KL1[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   26 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + [01;31m[KL1[m[K * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                                        [01;31m[K^~[m[K
+      |                                                        [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:26:66:[m[K [01;31m[Kerror: [m[K‘[01m[KL2[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   26 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - [01;31m[KL2[m[K * L2) / (2 * L1 * (L - L3))));
+      |                                                                  [01;31m[K^~[m[K
+      |                                                                  [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid physicalToAbstract(float, float, float&, float&, float&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:54:47:[m[K [01;31m[Kerror: [m[K‘[01m[KL3[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   54 |     gamma = static_cast<float>(acosf((pow(L - [01;31m[KL3[m[K, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                               [01;31m[K^~[m[K
+      |                                               [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:54:56:[m[K [01;31m[Kerror: [m[K‘[01m[KL1[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   54 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + [01;31m[KL1[m[K * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                                        [01;31m[K^~[m[K
+      |                                                        [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:54:66:[m[K [01;31m[Kerror: [m[K‘[01m[KL2[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   54 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - [01;31m[KL2[m[K * L2) / (2 * L1 * (L - L3))));
+      |                                                                  [01;31m[K^~[m[K
+      |                                                                  [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid physicalToAbstract(float, float, float&, float&, bool)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:86:47:[m[K [01;31m[Kerror: [m[K‘[01m[KL3[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   86 |     gamma = static_cast<float>(acosf((pow(L - [01;31m[KL3[m[K, 2) + L1 * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                               [01;31m[K^~[m[K
+      |                                               [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:86:56:[m[K [01;31m[Kerror: [m[K‘[01m[KL1[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   86 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + [01;31m[KL1[m[K * L1 - L2 * L2) / (2 * L1 * (L - L3))));
+      |                                                        [01;31m[K^~[m[K
+      |                                                        [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:86:66:[m[K [01;31m[Kerror: [m[K‘[01m[KL2[m[K’ was not declared in this scope; did you mean ‘[01m[KL[m[K’?
+   86 |     gamma = static_cast<float>(acosf((pow(L - L3, 2) + L1 * L1 - [01;31m[KL2[m[K * L2) / (2 * L1 * (L - L3))));
+      |                                                                  [01;31m[K^~[m[K
+      |                                                                  [32m[KL[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kbool clamp_XY(float&, float&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:194:14:[m[K [01;31m[Kerror: [m[K‘[01m[KMAX_EXT[m[K’ was not declared in this scope
+  194 |     if (L > ([01;31m[KMAX_EXT[m[K)) {
+      |              [01;31m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:198:21:[m[K [01;31m[Kerror: [m[K‘[01m[KMIN_EXT[m[K’ was not declared in this scope
+  198 |     } else if (L < ([01;31m[KMIN_EXT[m[K)) {
+      |                     [01;31m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kbool clamp_XY(XY_pair&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:214:14:[m[K [01;31m[Kerror: [m[K‘[01m[KMAX_EXT[m[K’ was not declared in this scope
+  214 |     if (L > ([01;31m[KMAX_EXT[m[K)) {
+      |              [01;31m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:220:21:[m[K [01;31m[Kerror: [m[K‘[01m[KMIN_EXT[m[K’ was not declared in this scope
+  220 |     } else if (L < ([01;31m[KMIN_EXT[m[K)) {
+      |                     [01;31m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kbool clamp_XY(float&, float&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:205:1:[m[K [01;35m[Kwarning: [m[Kcontrol reaches end of non-void function [[01;35m[K-Wreturn-type[m[K]
+  205 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kbool clamp_XY(XY_pair&, float)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:229:1:[m[K [01;35m[Kwarning: [m[Kcontrol reaches end of non-void function [[01;35m[K-Wreturn-type[m[K]
+  229 | [01;35m[K}[m[K
+      | [01;35m[K^[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:76: CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o] Error 1
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:17:[m[K [01;31m[Kerror: [m[K‘[01m[KTrajectoryPoint[m[K’ was not declared in this scope; did you mean ‘[01m[KTrajectoryData[m[K’?
+   97 |     std::vector<[01;31m[KTrajectoryPoint[m[K> precomputed_;
+      |                 [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |                 [32m[KTrajectoryData[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:32:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   97 |     std::vector<TrajectoryPoint[01;31m[K>[m[K precomputed_;
+      |                                [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:32:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:9[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:12:8:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kstruct XY_pair[m[K’
+   12 | struct [01;31m[KXY_pair[m[K {
+      |        [01;31m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:16[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_data.h:17:8:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kstruct XY_pair[m[K’
+   17 | struct [01;36m[KXY_pair[m[K {
+      |        [01;36m[K^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+   35 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K) {
+      |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::upperproxy::handle_gui(std_msgs::msg::Float64MultiArray_<std::allocator<void> >::SharedPtr)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:38:29:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_time[m[K’
+   38 |     turtle_inter_.traj_data.[01;31m[Kwiggle_time[m[K        = msg->data[4];
+      |                             [01;31m[K^~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:41:29:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_frequency[m[K’
+   41 |     turtle_inter_.traj_data.[01;31m[Kwiggle_frequency[m[K   = msg->data[7];
+      |                             [01;31m[K^~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:43:29:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwiggle_amptitude[m[K’
+   43 |     turtle_inter_.traj_data.[01;31m[Kwiggle_amptitude[m[K   = msg->data[9];
+      |                             [01;31m[K^~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:13[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:17:[m[K [01;31m[Kerror: [m[K‘[01m[KTrajectoryPoint[m[K’ was not declared in this scope; did you mean ‘[01m[KTrajectoryData[m[K’?
+   97 |     std::vector<[01;31m[KTrajectoryPoint[m[K> precomputed_;
+      |                 [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |                 [32m[KTrajectoryData[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:32:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   97 |     std::vector<TrajectoryPoint[01;31m[K>[m[K precomputed_;
+      |                                [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:32:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:10[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:10[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:12:8:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kstruct XY_pair[m[K’
+   12 | struct [01;31m[KXY_pair[m[K {
+      |        [01;31m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:16[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:13[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_data.h:17:8:[m[K [01;36m[Knote: [m[Kprevious definition of ‘[01m[Kstruct XY_pair[m[K’
+   17 | struct [01;36m[KXY_pair[m[K {
+      |        [01;36m[K^~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:10[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:17:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope
+   86 |     std::vector<[01;31m[KWaypoint[m[K> waypoints_;
+      |                 [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   86 |     std::vector<Waypoint[01;31m[K>[m[K waypoints_;
+      |                         [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:86:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:87:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+   87 |     [01;31m[KWaypoint[m[K curr_waypoint_{};
+      |     [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:87:30:[m[K [01;35m[Kwarning: [m[Kextra ‘[01m[K;[m[K’ [[01;35m[K-Wpedantic[m[K]
+   87 |     Waypoint curr_waypoint_{}[01;35m[K;[m[K
+      |                              [01;35m[K^[m[K
+      |                              [31m[K-[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:88:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+   88 |     [01;31m[KWaypoint[m[K prev_waypoint_{};
+      |     [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:88:30:[m[K [01;35m[Kwarning: [m[Kextra ‘[01m[K;[m[K’ [[01;35m[K-Wpedantic[m[K]
+   88 |     Waypoint prev_waypoint_{}[01;35m[K;[m[K
+      |                              [01;35m[K^[m[K
+      |                              [31m[K-[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:19:54:[m[K [01;31m[Kerror: [m[K‘[01m[Kturtle_namespace::control::TrajectoriesParser::TrajectoriesParser()[m[K’ is private within this context
+   19 | static turtle_namespace::control::TrajectoriesParser [01;31m[Ktraj[m[K;
+      |                                                      [01;31m[K^~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:10[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:94:5:[m[K [01;36m[Knote: [m[Kdeclared private here
+   94 |     [01;36m[KTrajectoriesParser[m[K() = default;
+      |     [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:102: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+In file included from [01m[K/usr/include/x86_64-linux-gnu/c++/9/bits/c++allocator.h:33[m[K,
+                 from [01m[K/usr/include/c++/9/bits/allocator.h:46[m[K,
+                 from [01m[K/usr/include/c++/9/string:41[m[K,
+                 from [01m[K/usr/include/c++/9/stdexcept:39[m[K,
+                 from [01m[K/usr/include/c++/9/array:39[m[K,
+                 from [01m[K/usr/include/c++/9/tuple:39[m[K,
+                 from [01m[K/usr/include/c++/9/functional:54[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:12[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:13[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+/usr/include/c++/9/ext/new_allocator.h: In instantiation of ‘[01m[Kvoid __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = turtle_namespace::control::upperproxy; _Args = {}; _Tp = turtle_namespace::control::upperproxy][m[K’:
+[01m[K/usr/include/c++/9/bits/alloc_traits.h:483:4:[m[K   required from ‘[01m[Kstatic void std::allocator_traits<std::allocator<_CharT> >::construct(std::allocator_traits<std::allocator<_CharT> >::allocator_type&, _Up*, _Args&& ...) [with _Up = turtle_namespace::control::upperproxy; _Args = {}; _Tp = turtle_namespace::control::upperproxy; std::allocator_traits<std::allocator<_CharT> >::allocator_type = std::allocator<turtle_namespace::control::upperproxy>][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:548:39:[m[K   required from ‘[01m[Kstd::_Sp_counted_ptr_inplace<_Tp, _Alloc, _Lp>::_Sp_counted_ptr_inplace(_Alloc, _Args&& ...) [with _Args = {}; _Tp = turtle_namespace::control::upperproxy; _Alloc = std::allocator<turtle_namespace::control::upperproxy>; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:679:16:[m[K   required from ‘[01m[Kstd::__shared_count<_Lp>::__shared_count(_Tp*&, std::_Sp_alloc_shared_tag<_Alloc>, _Args&& ...) [with _Tp = turtle_namespace::control::upperproxy; _Alloc = std::allocator<turtle_namespace::control::upperproxy>; _Args = {}; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr_base.h:1344:71:[m[K   required from ‘[01m[Kstd::__shared_ptr<_Tp, _Lp>::__shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<turtle_namespace::control::upperproxy>; _Args = {}; _Tp = turtle_namespace::control::upperproxy; __gnu_cxx::_Lock_policy _Lp = __gnu_cxx::_S_atomic][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:359:59:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp>::shared_ptr(std::_Sp_alloc_shared_tag<_Tp>, _Args&& ...) [with _Alloc = std::allocator<turtle_namespace::control::upperproxy>; _Args = {}; _Tp = turtle_namespace::control::upperproxy][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:701:14:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp> std::allocate_shared(const _Alloc&, _Args&& ...) [with _Tp = turtle_namespace::control::upperproxy; _Alloc = std::allocator<turtle_namespace::control::upperproxy>; _Args = {}][m[K’
+[01m[K/usr/include/c++/9/bits/shared_ptr.h:717:39:[m[K   required from ‘[01m[Kstd::shared_ptr<_Tp> std::make_shared(_Args&& ...) [with _Tp = turtle_namespace::control::upperproxy; _Args = {}][m[K’
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:26:74:[m[K   required from here
+[01m[K/usr/include/c++/9/ext/new_allocator.h:146:4:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kturtle_namespace::control::upperproxy::upperproxy()[m[K’
+  146 |  { [01;31m[K::new((void *)__p) _Up(std::forward<_Args>(__args)...)[m[K; }
+      |    [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:14[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:37:4:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kturtle_namespace::control::upperproxy::upperproxy(std::string)[m[K’
+   37 |    [01;36m[Kupperproxy[m[K(std::string name);
+      |    [01;36m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:37:4:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+      |              [01;35m[K^~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   44 | static int [01;35m[Kinit_done[m[K = 0;
+      |            [01;35m[K^~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+   43 | static float [01;35m[Kinit_cnt[m[K = 0;
+      |              [01;35m[K^~~~~~~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:63: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o] Error 1
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

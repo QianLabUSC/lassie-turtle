@@ -95,6 +95,8 @@ traveler_msgs/msg/set_input_position.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/traveler_msgs/msg/set_input_position.hpp
 traveler_msgs/msg/set_state.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/traveler_msgs/msg/set_state.hpp
+cmath
+-
 
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp
 can_driver/can_driver.hpp

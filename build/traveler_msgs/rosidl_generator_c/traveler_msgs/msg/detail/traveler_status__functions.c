@@ -17,6 +17,7 @@ traveler_msgs__msg__TravelerStatus__init(traveler_msgs__msg__TravelerStatus * ms
   if (!msg) {
     return false;
   }
+  // state_flag
   // time
   // toeforce_x
   // toeforce_y
@@ -35,6 +36,7 @@ traveler_msgs__msg__TravelerStatus__fini(traveler_msgs__msg__TravelerStatus * ms
   if (!msg) {
     return;
   }
+  // state_flag
   // time
   // toeforce_x
   // toeforce_y
@@ -50,6 +52,10 @@ bool
 traveler_msgs__msg__TravelerStatus__are_equal(const traveler_msgs__msg__TravelerStatus * lhs, const traveler_msgs__msg__TravelerStatus * rhs)
 {
   if (!lhs || !rhs) {
+    return false;
+  }
+  // state_flag
+  if (lhs->state_flag != rhs->state_flag) {
     return false;
   }
   // time
@@ -99,6 +105,8 @@ traveler_msgs__msg__TravelerStatus__copy(
   if (!input || !output) {
     return false;
   }
+  // state_flag
+  output->state_flag = input->state_flag;
   // time
   output->time = input->time;
   // toeforce_x

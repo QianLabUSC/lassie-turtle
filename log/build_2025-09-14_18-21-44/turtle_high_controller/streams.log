@@ -1,0 +1,14 @@
+[0.011s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.048s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.054s] [ 35%] Built target odrive_can_interface
+[0.080s] [ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
+[0.083s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.303s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In function ‘[01m[Kbool turtle_namespace::control::{anonymous}::linearStep(float, float, const XY_pair&, const XY_pair&, float&, float&)[m[K’:
+[0.303s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:28:14:[m[K [01;31m[Kerror: [m[K‘[01m[Kclamp[m[K’ is not a member of ‘[01m[Kstd[m[K’
+[0.304s]    28 |     s = std::[01;31m[Kclamp[m[K(s, 0.0f, 1.0f);
+[0.304s]       |              [01;31m[K^~~~~[m[K
+[0.344s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o] Error 1
+[0.344s] make[2]: *** Waiting for unfinished jobs....
+[4.121s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[4.121s] make: *** [Makefile:141: all] Error 2
+[4.123s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12

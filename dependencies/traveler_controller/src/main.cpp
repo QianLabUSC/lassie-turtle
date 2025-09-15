@@ -16,7 +16,7 @@
  * @return 0
  */
 
-static turtle_namespace::control::TrajectoriesParser traj;
+auto& traj = turtle_namespace::control::TrajectoriesParser::getTrajParser();
 
 int main(int argc, char **argv)
 {

@@ -6,6 +6,8 @@
 module traveler_msgs {
   module msg {
     struct TravelerStatus {
+      uint8 state_flag;
+
       float time;
 
       float toeforce_x;

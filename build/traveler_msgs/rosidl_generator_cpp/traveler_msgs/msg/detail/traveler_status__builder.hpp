@@ -151,13 +151,29 @@ private:
 class Init_TravelerStatus_time
 {
 public:
-  Init_TravelerStatus_time()
-  : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
+  explicit Init_TravelerStatus_time(::traveler_msgs::msg::TravelerStatus & msg)
+  : msg_(msg)
   {}
   Init_TravelerStatus_toeforce_x time(::traveler_msgs::msg::TravelerStatus::_time_type arg)
   {
     msg_.time = std::move(arg);
     return Init_TravelerStatus_toeforce_x(msg_);
+  }
+
+private:
+  ::traveler_msgs::msg::TravelerStatus msg_;
+};
+
+class Init_TravelerStatus_state_flag
+{
+public:
+  Init_TravelerStatus_state_flag()
+  : msg_(::rosidl_runtime_cpp::MessageInitialization::SKIP)
+  {}
+  Init_TravelerStatus_time state_flag(::traveler_msgs::msg::TravelerStatus::_state_flag_type arg)
+  {
+    msg_.state_flag = std::move(arg);
+    return Init_TravelerStatus_time(msg_);
   }
 
 private:
@@ -175,7 +191,7 @@ template<>
 inline
 auto build<::traveler_msgs::msg::TravelerStatus>()
 {
-  return traveler_msgs::msg::builder::Init_TravelerStatus_time();
+  return traveler_msgs::msg::builder::Init_TravelerStatus_state_flag();
 }
 
 }  // namespace traveler_msgs

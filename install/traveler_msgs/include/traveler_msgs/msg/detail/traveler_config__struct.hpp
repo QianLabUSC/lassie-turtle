@@ -39,25 +39,6 @@ struct TravelerConfig_
     {
       this->running_scenario = "";
       this->filename = "";
-      this->extrude_speed = 0.0f;
-      this->extrude_angle = 0.0f;
-      this->extrude_depth = 0.0f;
-      this->shear_penetration_depth = 0.0f;
-      this->shear_penetration_speed = 0.0f;
-      this->shear_penetration_delay = 0.0f;
-      this->shear_length = 0.0f;
-      this->shear_speed = 0.0f;
-      this->shear_delay = 0.0f;
-      this->shear_return_speed = 0.0f;
-      this->workspace_angular_speed = 0.0f;
-      this->workspace_moving_angle = 0.0f;
-      this->workspace_time_delay = 0.0f;
-      this->static_length = 0.0f;
-      this->static_angle = 0.0f;
-      this->search_start = 0.0f;
-      this->search_end = 0.0f;
-      this->ground_height = 0.0f;
-      this->back_speed = 0.0f;
     }
   }
 
@@ -70,25 +51,6 @@ struct TravelerConfig_
     {
       this->running_scenario = "";
       this->filename = "";
-      this->extrude_speed = 0.0f;
-      this->extrude_angle = 0.0f;
-      this->extrude_depth = 0.0f;
-      this->shear_penetration_depth = 0.0f;
-      this->shear_penetration_speed = 0.0f;
-      this->shear_penetration_delay = 0.0f;
-      this->shear_length = 0.0f;
-      this->shear_speed = 0.0f;
-      this->shear_delay = 0.0f;
-      this->shear_return_speed = 0.0f;
-      this->workspace_angular_speed = 0.0f;
-      this->workspace_moving_angle = 0.0f;
-      this->workspace_time_delay = 0.0f;
-      this->static_length = 0.0f;
-      this->static_angle = 0.0f;
-      this->search_start = 0.0f;
-      this->search_end = 0.0f;
-      this->ground_height = 0.0f;
-      this->back_speed = 0.0f;
     }
   }
 
@@ -99,63 +61,9 @@ struct TravelerConfig_
   using _filename_type =
     std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other>;
   _filename_type filename;
-  using _extrude_speed_type =
-    float;
-  _extrude_speed_type extrude_speed;
-  using _extrude_angle_type =
-    float;
-  _extrude_angle_type extrude_angle;
-  using _extrude_depth_type =
-    float;
-  _extrude_depth_type extrude_depth;
-  using _shear_penetration_depth_type =
-    float;
-  _shear_penetration_depth_type shear_penetration_depth;
-  using _shear_penetration_speed_type =
-    float;
-  _shear_penetration_speed_type shear_penetration_speed;
-  using _shear_penetration_delay_type =
-    float;
-  _shear_penetration_delay_type shear_penetration_delay;
-  using _shear_length_type =
-    float;
-  _shear_length_type shear_length;
-  using _shear_speed_type =
-    float;
-  _shear_speed_type shear_speed;
-  using _shear_delay_type =
-    float;
-  _shear_delay_type shear_delay;
-  using _shear_return_speed_type =
-    float;
-  _shear_return_speed_type shear_return_speed;
-  using _workspace_angular_speed_type =
-    float;
-  _workspace_angular_speed_type workspace_angular_speed;
-  using _workspace_moving_angle_type =
-    float;
-  _workspace_moving_angle_type workspace_moving_angle;
-  using _workspace_time_delay_type =
-    float;
-  _workspace_time_delay_type workspace_time_delay;
-  using _static_length_type =
-    float;
-  _static_length_type static_length;
-  using _static_angle_type =
-    float;
-  _static_angle_type static_angle;
-  using _search_start_type =
-    float;
-  _search_start_type search_start;
-  using _search_end_type =
-    float;
-  _search_end_type search_end;
-  using _ground_height_type =
-    float;
-  _ground_height_type ground_height;
-  using _back_speed_type =
-    float;
-  _back_speed_type back_speed;
+  using _data_type =
+    std::vector<float, typename ContainerAllocator::template rebind<float>::other>;
+  _data_type data;
 
   // setters for named parameter idiom
   Type & set__running_scenario(
@@ -170,118 +78,10 @@ struct TravelerConfig_
     this->filename = _arg;
     return *this;
   }
-  Type & set__extrude_speed(
-    const float & _arg)
+  Type & set__data(
+    const std::vector<float, typename ContainerAllocator::template rebind<float>::other> & _arg)
   {
-    this->extrude_speed = _arg;
-    return *this;
-  }
-  Type & set__extrude_angle(
-    const float & _arg)
-  {
-    this->extrude_angle = _arg;
-    return *this;
-  }
-  Type & set__extrude_depth(
-    const float & _arg)
-  {
-    this->extrude_depth = _arg;
-    return *this;
-  }
-  Type & set__shear_penetration_depth(
-    const float & _arg)
-  {
-    this->shear_penetration_depth = _arg;
-    return *this;
-  }
-  Type & set__shear_penetration_speed(
-    const float & _arg)
-  {
-    this->shear_penetration_speed = _arg;
-    return *this;
-  }
-  Type & set__shear_penetration_delay(
-    const float & _arg)
-  {
-    this->shear_penetration_delay = _arg;
-    return *this;
-  }
-  Type & set__shear_length(
-    const float & _arg)
-  {
-    this->shear_length = _arg;
-    return *this;
-  }
-  Type & set__shear_speed(
-    const float & _arg)
-  {
-    this->shear_speed = _arg;
-    return *this;
-  }
-  Type & set__shear_delay(
-    const float & _arg)
-  {
-    this->shear_delay = _arg;
-    return *this;
-  }
-  Type & set__shear_return_speed(
-    const float & _arg)
-  {
-    this->shear_return_speed = _arg;
-    return *this;
-  }
-  Type & set__workspace_angular_speed(
-    const float & _arg)
-  {
-    this->workspace_angular_speed = _arg;
-    return *this;
-  }
-  Type & set__workspace_moving_angle(
-    const float & _arg)
-  {
-    this->workspace_moving_angle = _arg;
-    return *this;
-  }
-  Type & set__workspace_time_delay(
-    const float & _arg)
-  {
-    this->workspace_time_delay = _arg;
-    return *this;
-  }
-  Type & set__static_length(
-    const float & _arg)
-  {
-    this->static_length = _arg;
-    return *this;
-  }
-  Type & set__static_angle(
-    const float & _arg)
-  {
-    this->static_angle = _arg;
-    return *this;
-  }
-  Type & set__search_start(
-    const float & _arg)
-  {
-    this->search_start = _arg;
-    return *this;
-  }
-  Type & set__search_end(
-    const float & _arg)
-  {
-    this->search_end = _arg;
-    return *this;
-  }
-  Type & set__ground_height(
-    const float & _arg)
-  {
-    this->ground_height = _arg;
-    return *this;
-  }
-  Type & set__back_speed(
-    const float & _arg)
-  {
-    this->back_speed = _arg;
+    this->data = _arg;
     return *this;
   }
 
@@ -333,61 +133,7 @@ struct TravelerConfig_
     if (this->filename != other.filename) {
       return false;
     }
-    if (this->extrude_speed != other.extrude_speed) {
-      return false;
-    }
-    if (this->extrude_angle != other.extrude_angle) {
-      return false;
-    }
-    if (this->extrude_depth != other.extrude_depth) {
-      return false;
-    }
-    if (this->shear_penetration_depth != other.shear_penetration_depth) {
-      return false;
-    }
-    if (this->shear_penetration_speed != other.shear_penetration_speed) {
-      return false;
-    }
-    if (this->shear_penetration_delay != other.shear_penetration_delay) {
-      return false;
-    }
-    if (this->shear_length != other.shear_length) {
-      return false;
-    }
-    if (this->shear_speed != other.shear_speed) {
-      return false;
-    }
-    if (this->shear_delay != other.shear_delay) {
-      return false;
-    }
-    if (this->shear_return_speed != other.shear_return_speed) {
-      return false;
-    }
-    if (this->workspace_angular_speed != other.workspace_angular_speed) {
-      return false;
-    }
-    if (this->workspace_moving_angle != other.workspace_moving_angle) {
-      return false;
-    }
-    if (this->workspace_time_delay != other.workspace_time_delay) {
-      return false;
-    }
-    if (this->static_length != other.static_length) {
-      return false;
-    }
-    if (this->static_angle != other.static_angle) {
-      return false;
-    }
-    if (this->search_start != other.search_start) {
-      return false;
-    }
-    if (this->search_end != other.search_end) {
-      return false;
-    }
-    if (this->ground_height != other.ground_height) {
-      return false;
-    }
-    if (this->back_speed != other.back_speed) {
+    if (this->data != other.data) {
       return false;
     }
     return true;

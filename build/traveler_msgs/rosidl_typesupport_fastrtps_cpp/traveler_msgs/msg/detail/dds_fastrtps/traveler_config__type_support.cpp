@@ -36,44 +36,10 @@ cdr_serialize(
   cdr << ros_message.running_scenario;
   // Member: filename
   cdr << ros_message.filename;
-  // Member: extrude_speed
-  cdr << ros_message.extrude_speed;
-  // Member: extrude_angle
-  cdr << ros_message.extrude_angle;
-  // Member: extrude_depth
-  cdr << ros_message.extrude_depth;
-  // Member: shear_penetration_depth
-  cdr << ros_message.shear_penetration_depth;
-  // Member: shear_penetration_speed
-  cdr << ros_message.shear_penetration_speed;
-  // Member: shear_penetration_delay
-  cdr << ros_message.shear_penetration_delay;
-  // Member: shear_length
-  cdr << ros_message.shear_length;
-  // Member: shear_speed
-  cdr << ros_message.shear_speed;
-  // Member: shear_delay
-  cdr << ros_message.shear_delay;
-  // Member: shear_return_speed
-  cdr << ros_message.shear_return_speed;
-  // Member: workspace_angular_speed
-  cdr << ros_message.workspace_angular_speed;
-  // Member: workspace_moving_angle
-  cdr << ros_message.workspace_moving_angle;
-  // Member: workspace_time_delay
-  cdr << ros_message.workspace_time_delay;
-  // Member: static_length
-  cdr << ros_message.static_length;
-  // Member: static_angle
-  cdr << ros_message.static_angle;
-  // Member: search_start
-  cdr << ros_message.search_start;
-  // Member: search_end
-  cdr << ros_message.search_end;
-  // Member: ground_height
-  cdr << ros_message.ground_height;
-  // Member: back_speed
-  cdr << ros_message.back_speed;
+  // Member: data
+  {
+    cdr << ros_message.data;
+  }
   return true;
 }
 
@@ -89,62 +55,10 @@ cdr_deserialize(
   // Member: filename
   cdr >> ros_message.filename;
 
-  // Member: extrude_speed
-  cdr >> ros_message.extrude_speed;
-
-  // Member: extrude_angle
-  cdr >> ros_message.extrude_angle;
-
-  // Member: extrude_depth
-  cdr >> ros_message.extrude_depth;
-
-  // Member: shear_penetration_depth
-  cdr >> ros_message.shear_penetration_depth;
-
-  // Member: shear_penetration_speed
-  cdr >> ros_message.shear_penetration_speed;
-
-  // Member: shear_penetration_delay
-  cdr >> ros_message.shear_penetration_delay;
-
-  // Member: shear_length
-  cdr >> ros_message.shear_length;
-
-  // Member: shear_speed
-  cdr >> ros_message.shear_speed;
-
-  // Member: shear_delay
-  cdr >> ros_message.shear_delay;
-
-  // Member: shear_return_speed
-  cdr >> ros_message.shear_return_speed;
-
-  // Member: workspace_angular_speed
-  cdr >> ros_message.workspace_angular_speed;
-
-  // Member: workspace_moving_angle
-  cdr >> ros_message.workspace_moving_angle;
-
-  // Member: workspace_time_delay
-  cdr >> ros_message.workspace_time_delay;
-
-  // Member: static_length
-  cdr >> ros_message.static_length;
-
-  // Member: static_angle
-  cdr >> ros_message.static_angle;
-
-  // Member: search_start
-  cdr >> ros_message.search_start;
-
-  // Member: search_end
-  cdr >> ros_message.search_end;
-
-  // Member: ground_height
-  cdr >> ros_message.ground_height;
-
-  // Member: back_speed
-  cdr >> ros_message.back_speed;
+  // Member: data
+  {
+    cdr >> ros_message.data;
+  }
 
   return true;
 }
@@ -170,118 +84,14 @@ get_serialized_size(
   current_alignment += padding +
     eprosima::fastcdr::Cdr::alignment(current_alignment, padding) +
     (ros_message.filename.size() + 1);
-  // Member: extrude_speed
+  // Member: data
   {
-    size_t item_size = sizeof(ros_message.extrude_speed);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: extrude_angle
-  {
-    size_t item_size = sizeof(ros_message.extrude_angle);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: extrude_depth
-  {
-    size_t item_size = sizeof(ros_message.extrude_depth);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_penetration_depth
-  {
-    size_t item_size = sizeof(ros_message.shear_penetration_depth);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_penetration_speed
-  {
-    size_t item_size = sizeof(ros_message.shear_penetration_speed);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_penetration_delay
-  {
-    size_t item_size = sizeof(ros_message.shear_penetration_delay);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_length
-  {
-    size_t item_size = sizeof(ros_message.shear_length);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_speed
-  {
-    size_t item_size = sizeof(ros_message.shear_speed);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_delay
-  {
-    size_t item_size = sizeof(ros_message.shear_delay);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: shear_return_speed
-  {
-    size_t item_size = sizeof(ros_message.shear_return_speed);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: workspace_angular_speed
-  {
-    size_t item_size = sizeof(ros_message.workspace_angular_speed);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: workspace_moving_angle
-  {
-    size_t item_size = sizeof(ros_message.workspace_moving_angle);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: workspace_time_delay
-  {
-    size_t item_size = sizeof(ros_message.workspace_time_delay);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: static_length
-  {
-    size_t item_size = sizeof(ros_message.static_length);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: static_angle
-  {
-    size_t item_size = sizeof(ros_message.static_angle);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: search_start
-  {
-    size_t item_size = sizeof(ros_message.search_start);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: search_end
-  {
-    size_t item_size = sizeof(ros_message.search_end);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: ground_height
-  {
-    size_t item_size = sizeof(ros_message.ground_height);
-    current_alignment += item_size +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
-  }
-  // Member: back_speed
-  {
-    size_t item_size = sizeof(ros_message.back_speed);
-    current_alignment += item_size +
+    size_t array_size = ros_message.data.size();
+
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
+    size_t item_size = sizeof(ros_message.data[0]);
+    current_alignment += array_size * item_size +
       eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
   }
 
@@ -327,153 +137,12 @@ max_serialized_size_TravelerConfig(
     }
   }
 
-  // Member: extrude_speed
+  // Member: data
   {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: extrude_angle
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: extrude_depth
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_penetration_depth
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_penetration_speed
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_penetration_delay
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_length
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_speed
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_delay
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: shear_return_speed
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: workspace_angular_speed
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: workspace_moving_angle
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: workspace_time_delay
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: static_length
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: static_angle
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: search_start
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: search_end
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: ground_height
-  {
-    size_t array_size = 1;
-
-    current_alignment += array_size * sizeof(uint32_t) +
-      eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));
-  }
-
-  // Member: back_speed
-  {
-    size_t array_size = 1;
+    size_t array_size = 0;
+    full_bounded = false;
+    current_alignment += padding +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, padding);
 
     current_alignment += array_size * sizeof(uint32_t) +
       eprosima::fastcdr::Cdr::alignment(current_alignment, sizeof(uint32_t));

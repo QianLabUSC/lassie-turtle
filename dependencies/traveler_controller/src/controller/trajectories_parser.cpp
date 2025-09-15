@@ -1,80 +1,98 @@
-// trajectories_parser.cpp — Waypoints-only version
+// src/controller/trajectories_parser.cpp
 
 #include "controller/trajectories_parser.h"
 #include <chrono>
 #include <cmath>
-#include <iostream>
-
-using namespace std;
+#include <cstdio>
+#include <algorithm>
 
 namespace turtle_namespace {
 namespace control {
 
+namespace {
+// simple time-based linear step: move from A -> B at constant speed "vel" (m/s)
+static bool linearStep(float t_rel, float vel,
+                       const XY_pair& A, const XY_pair& B,
+                       float& X, float& Y)
+{
+    const float dx = B.x - A.x;
+    const float dy = B.y - A.y;
+    const float dist = std::sqrt(dx*dx + dy*dy);
+
+    if (dist < 1e-6f || vel <= 0.0f) {  // nothing to do
+        X = B.x; Y = B.y;
+        return true;
+    }
+
+    float s = (t_rel * vel) / dist;             // normalized progress
+    // s = std::clamp(s, 0.0f, 1.0f);
+
+    X = A.x + s * dx;
+    Y = A.y + s * dy;
+    return (s >= 1.0f);
+}
+
+} // anon ns
+
 void TrajectoriesParser::init() {}
 
-// -------------------------------------------------------
-// Motor commanding helpers (kept)
-// -------------------------------------------------------
+// If you don't have IK yet, you can map XY directly to the two axes (toy mapping).
+// Replace with your real IK when ready.
 void TrajectoriesParser::setCoupledPosition(turtle &turtle)
 {
-    float axis_0 = theta_ - gamma_;
-    float axis_1 = theta_ + gamma_;
+    const float axis_0 = theta_ - gamma_;
+    const float axis_1 = theta_ + gamma_;
     turtle.turtle_control.left_adduction.set_input_position_radian.input_position = axis_0;
     turtle.turtle_control.left_sweeping.set_input_position_radian.input_position  = axis_1;
 }
 
 void TrajectoriesParser::cartesianMotorCommand(turtle &turtle, float target_x, float target_y)
 {
-    // Uses inverse_kinematics: physicalToAbstract(X,Y, theta_, gamma_, clamp=true)
-    physicalToAbstract(target_x, target_y, theta_, gamma_, true);
+    // TEMP: interpret (x,y) directly as (theta,gamma) in radians.
+    // Swap in your real physicalToAbstract when you want proper IK.
+    theta_ = target_x;
+    gamma_ = target_y;
     setCoupledPosition(turtle);
 }
 
-// -------------------------------------------------------
-// Waypoint execution
-// -------------------------------------------------------
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle)
 {
     if (first_iteration) {
         generateWaypoints(turtle);
-        clock_start_     = chrono::steady_clock::now();
+
+        // seed prev/curr waypoints
         waypoint_index_  = 0;
         waypoint_state_  = 0;
-        state_flag_      = 0;
         traj_complete_   = false;
 
-        // Start from current toe toward first user waypoint
-        prev_waypoint_ = Waypoint(turtle.turtle_chassis.Leg_lf.toe_position, 0.0f, 0.0f);
-        if (!waypoints_.empty()) {
-            curr_waypoint_ = waypoints_[waypoint_index_];
+        if (waypoints_.empty()) {
+            traj_complete_ = true;
+            return true;
         }
 
-        printf("Waypoint Trajectory Initialized\n");
-        printf("Previous Waypoint : (%f, %f)\n",
-               prev_waypoint_.point.x, prev_waypoint_.point.y);
-        if (!waypoints_.empty()) {
-            printf("Current Waypoint 0: (%f, %f)\n",
-                   curr_waypoint_.point.x, curr_waypoint_.point.y);
+        prev_waypoint_ = waypoints_[0];
+        if (waypoints_.size() > 1) {
+            curr_waypoint_ = waypoints_[1];
+            waypoint_index_ = 1;
+        } else {
+            curr_waypoint_ = waypoints_[0];
+            waypoint_index_ = 0;
         }
+
+        clock_start_ = std::chrono::steady_clock::now();
+        std::printf("Waypoint Trajectory Initialized with %zu points\n", waypoints_.size());
     }
 
-    if (traj_complete_) {
-        return true;
-    }
+    if (traj_complete_) return true;
 
-    // Step through the current segment; advance on completion
     if (processWaypoint(turtle)) {
-        waypoint_index_++;
-        state_flag_ = waypoint_index_;  // optional: expose which waypoint we're heading to
-        turtle.turtle_chassis.Leg_lf.state_flag = state_flag_;
-
-        if (waypoint_index_ < waypoints_.size()) {
+        // Advance to next segment
+        if (++waypoint_index_ < static_cast<int>(waypoints_.size())) {
             prev_waypoint_ = curr_waypoint_;
             curr_waypoint_ = waypoints_[waypoint_index_];
-            printf("Current Waypoint %d: (%f, %f)\n",
-                   waypoint_index_, curr_waypoint_.point.x, curr_waypoint_.point.y);
+            clock_start_   = std::chrono::steady_clock::now();
         } else {
-            printf("Waypoint Trajectory Complete\n");
+            std::printf("Waypoint Trajectory Complete\n");
             traj_complete_ = true;
             return true;
         }
@@ -84,42 +102,35 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle)
 
 bool TrajectoriesParser::processWaypoint(turtle &turtle)
 {
-    // time since this waypoint segment started
-    t_ = chrono::duration<float>(clock_now_ - clock_start_).count();
+    clock_now_ = std::chrono::steady_clock::now();
+    t_ = std::chrono::duration<float>(clock_now_ - clock_start_).count();
 
     switch (waypoint_state_) {
         case 0: {
-            // Clamp requested point into reachable workspace (function from IK module)
-            clamp_XY(curr_waypoint_.point);
-            clock_start_     = chrono::steady_clock::now();
-            waypoint_state_  = 1;
+            // start this segment
+            waypoint_state_ = 1;
             return false;
         }
         case 1: {
-            // Linear trajectory from prev -> curr at curr_waypoint_.vel
-            if (linearTraj(t_, curr_waypoint_.vel,
-                           prev_waypoint_.point, curr_waypoint_.point,
-                           target_x, target_y))
-            {
-                // Snap exactly to target once complete
+            if (linearStep(t_, curr_waypoint_.vel, prev_waypoint_.point, curr_waypoint_.point, target_x, target_y)) {
+                // snap & optional dwell
                 target_x = curr_waypoint_.point.x;
                 target_y = curr_waypoint_.point.y;
                 cartesianMotorCommand(turtle, target_x, target_y);
-
-                waypoint_state_ = 2;                  // optional dwell
-                clock_start_     = chrono::steady_clock::now();
+                waypoint_state_ = 2;
+                clock_start_ = std::chrono::steady_clock::now();
                 return false;
             }
-
-            // Keep commanding along the line
+            // continue along the line
             cartesianMotorCommand(turtle, target_x, target_y);
             return false;
         }
         case 2: {
-            // Dwell at waypoint (delay may be zero)
-            if (t_ > curr_waypoint_.delay) {
+            // dwell (if you ever add nonzero delay)
+            const float t_dwell = std::chrono::duration<float>(clock_now_ - clock_start_).count();
+            if (t_dwell > curr_waypoint_.delay) {
                 waypoint_state_ = 0;
-                return true;                          // segment complete
+                return true; // segment complete
             }
             return false;
         }
@@ -127,89 +138,62 @@ bool TrajectoriesParser::processWaypoint(turtle &turtle)
     return false;
 }
 
-// -------------------------------------------------------
-// Waypoint ingestion (NO MODES)
-// Fill internal vector from turtle.traj_data
-// -------------------------------------------------------
 void TrajectoriesParser::generateWaypoints(turtle &turtle)
 {
     waypoints_.clear();
+    const auto& td = turtle.traj_data;
 
-    for (int i = 0; i < turtle.traj_data.num_waypoints; ++i) {
-        float x = turtle.traj_data.waypoints_x[i];
-        float y = turtle.traj_data.waypoints_y[i];
-        float v = turtle.traj_data.waypoints_v[i];
-        waypoints_.push_back(Waypoint(x, y, v, 0.0f)); // zero delay between points
+    for (int i = 0; i < td.num_waypoints; ++i) {
+        const float x = td.waypoints_x[i];
+        const float y = td.waypoints_y[i];
+        const float v = td.waypoints_v[i];
+        waypoints_.push_back(Waypoint(x, y, v, 0.0f));
     }
 
-    printf("Waypoints:\n");
-    for (int i = 0; i < static_cast<int>(waypoints_.size()); ++i) {
-        printf("  %d: (%f, %f), vel: %f, delay: %f\n",
-               i, waypoints_[i].point.x, waypoints_[i].point.y,
-               waypoints_[i].vel, waypoints_[i].delay);
+    std::printf("Waypoints loaded: %zu\n", waypoints_.size());
+    for (size_t i = 0; i < waypoints_.size(); ++i) {
+        std::printf("  %zu: (%.3f, %.3f), v=%.3f\n",
+            i, waypoints_[i].point.x, waypoints_[i].point.y, waypoints_[i].vel);
     }
 }
 
-// -------------------------------------------------------
-// Main tick: when start_flag is true, run waypoints
-// -------------------------------------------------------
 void TrajectoriesParser::generateTempTraj(turtle &turtle)
 {
-    const int RUN = turtle.turtle_gui.start_flag;
-
-    // Bookkeeping (harmless)
-    prev_toe_pos = curr_toe_pos;
-    curr_toe_pos = turtle.turtle_chassis.Leg_lf.toe_position;
-    Move_Dist    = distance(prev_toe_pos, curr_toe_pos);
+    const bool RUN = (turtle.turtle_gui.start_flag != 0);
 
     if (!RUN) {
-        // Reset minimal state used by the waypoint runner
-        first_iteration  = true;
-        traj_complete_   = false;
-        waypoint_state_  = 0;
-        waypoint_index_  = 0;
-        E_STOP           = false;
-        return;
-    } else if (E_STOP) {
-        printf("============ E-STOPPED ============\n");
+        first_iteration = true;
+        traj_complete_  = false;
+        waypoint_state_ = 0;
+        waypoint_index_ = 0;
+        E_STOP          = false;
         return;
     }
 
-    // Tick wall clock for the current segment
-    clock_now_ = chrono::steady_clock::now();
-
     if (first_iteration) {
-        printf("General Trajectory (waypoints-only)\n");
-        printf("Starting Toe Position: (%f, %f)\n",
-               turtle.turtle_chassis.Leg_lf.toe_position.x,
-               turtle.turtle_chassis.Leg_lf.toe_position.y);
+        std::printf("Trajectory: waypoints-only (no clamp / no IK)\n");
     }
 
     waypointTrajectory(turtle);
-
-    // Legacy bookkeeping (safe to keep; unused elsewhere)
-    turtle.traj_data.current_t += 0.01000f;
 
     if (RUN && first_iteration) {
         first_iteration = false;
     }
 }
 
-// -------------------------------------------------------
-// Optional: prints (renamed fields you mentioned)
-// -------------------------------------------------------
 void TrajectoriesParser::printTrajData(turtle &turtle)
 {
-    printf("lateral_angle_range: %f\n", turtle.traj_data.lateral_angle_range);
-    printf("drag_speed:          %f\n", turtle.traj_data.drag_speed);
-    printf("wiggle_time:         %f\n", turtle.traj_data.wiggle_time);
-    printf("servo_speed:         %f\n", turtle.traj_data.servo_speed);
-    printf("extraction_angle:    %f\n", turtle.traj_data.extraction_angle);
-    printf("wiggle_frequency:    %f\n", turtle.traj_data.wiggle_frequency);
-    printf("insertion_depth:     %f\n", turtle.traj_data.insertion_depth);
-    printf("wiggle_amptitude:    %f\n", turtle.traj_data.wiggle_amptitude);
-    printf("num_waypoints:       %d\n", turtle.traj_data.num_waypoints);
+    const auto& td = turtle.traj_data;
+    std::printf("sweeping_range:        %f\n", td.sweeping_range);
+    std::printf("insertion_depth:       %f\n", td.insertion_depth);
+    std::printf("penetration_velocity:  %f\n", td.penetration_velocity);
+    std::printf("sweeping_velocity:     %f\n", td.sweeping_velocity);
+    std::printf("extraction_velocity:   %f\n", td.extraction_velocity);
+    std::printf("swing_velocity:        %f\n", td.swing_velocity);
 }
 
 } // namespace control
 } // namespace turtle_namespace
+
+
+

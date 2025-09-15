@@ -19,6 +19,9 @@
 #include "rosidl_runtime_c/string.h"
 #include "rosidl_runtime_c/string_functions.h"
 
+#include "rosidl_runtime_c/primitives_sequence.h"
+#include "rosidl_runtime_c/primitives_sequence_functions.h"
+
 
 ROSIDL_GENERATOR_C_EXPORT
 bool traveler_msgs__msg__traveler_config__convert_from_py(PyObject * _pymsg, void * _ros_message)
@@ -83,175 +86,66 @@ bool traveler_msgs__msg__traveler_config__convert_from_py(PyObject * _pymsg, voi
     Py_DECREF(encoded_field);
     Py_DECREF(field);
   }
-  {  // extrude_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "extrude_speed");
+  {  // data
+    PyObject * field = PyObject_GetAttrString(_pymsg, "data");
     if (!field) {
       return false;
     }
-    assert(PyFloat_Check(field));
-    ros_message->extrude_speed = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // extrude_angle
-    PyObject * field = PyObject_GetAttrString(_pymsg, "extrude_angle");
-    if (!field) {
-      return false;
+    if (PyObject_CheckBuffer(field)) {
+      // Optimization for converting arrays of primitives
+      Py_buffer view;
+      int rc = PyObject_GetBuffer(field, &view, PyBUF_SIMPLE);
+      if (rc < 0) {
+        Py_DECREF(field);
+        return false;
+      }
+      Py_ssize_t size = view.len / sizeof(float);
+      if (!rosidl_runtime_c__float__Sequence__init(&(ros_message->data), size)) {
+        PyErr_SetString(PyExc_RuntimeError, "unable to create float__Sequence ros_message");
+        PyBuffer_Release(&view);
+        Py_DECREF(field);
+        return false;
+      }
+      float * dest = ros_message->data.data;
+      rc = PyBuffer_ToContiguous(dest, &view, view.len, 'C');
+      if (rc < 0) {
+        PyBuffer_Release(&view);
+        Py_DECREF(field);
+        return false;
+      }
+      PyBuffer_Release(&view);
+    } else {
+      PyObject * seq_field = PySequence_Fast(field, "expected a sequence in 'data'");
+      if (!seq_field) {
+        Py_DECREF(field);
+        return false;
+      }
+      Py_ssize_t size = PySequence_Size(field);
+      if (-1 == size) {
+        Py_DECREF(seq_field);
+        Py_DECREF(field);
+        return false;
+      }
+      if (!rosidl_runtime_c__float__Sequence__init(&(ros_message->data), size)) {
+        PyErr_SetString(PyExc_RuntimeError, "unable to create float__Sequence ros_message");
+        Py_DECREF(seq_field);
+        Py_DECREF(field);
+        return false;
+      }
+      float * dest = ros_message->data.data;
+      for (Py_ssize_t i = 0; i < size; ++i) {
+        PyObject * item = PySequence_Fast_GET_ITEM(seq_field, i);
+        if (!item) {
+          Py_DECREF(seq_field);
+          Py_DECREF(field);
+          return false;
+        }
+        assert(PyFloat_Check(item));
+        float tmp = (float)PyFloat_AS_DOUBLE(item);
+        memcpy(&dest[i], &tmp, sizeof(float));
+      }
+      Py_DECREF(seq_field);
     }
-    assert(PyFloat_Check(field));
-    ros_message->extrude_angle = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // extrude_depth
-    PyObject * field = PyObject_GetAttrString(_pymsg, "extrude_depth");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->extrude_depth = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_penetration_depth
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_penetration_depth");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_penetration_depth = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_penetration_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_penetration_speed");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_penetration_speed = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_penetration_delay
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_penetration_delay");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_penetration_delay = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_length
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_length");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_length = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_speed");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_speed = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_delay
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_delay");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_delay = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // shear_return_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "shear_return_speed");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->shear_return_speed = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // workspace_angular_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "workspace_angular_speed");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->workspace_angular_speed = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // workspace_moving_angle
-    PyObject * field = PyObject_GetAttrString(_pymsg, "workspace_moving_angle");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->workspace_moving_angle = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // workspace_time_delay
-    PyObject * field = PyObject_GetAttrString(_pymsg, "workspace_time_delay");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->workspace_time_delay = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // static_length
-    PyObject * field = PyObject_GetAttrString(_pymsg, "static_length");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->static_length = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // static_angle
-    PyObject * field = PyObject_GetAttrString(_pymsg, "static_angle");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->static_angle = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // search_start
-    PyObject * field = PyObject_GetAttrString(_pymsg, "search_start");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->search_start = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // search_end
-    PyObject * field = PyObject_GetAttrString(_pymsg, "search_end");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->search_end = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // ground_height
-    PyObject * field = PyObject_GetAttrString(_pymsg, "ground_height");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->ground_height = (float)PyFloat_AS_DOUBLE(field);
-    Py_DECREF(field);
-  }
-  {  // back_speed
-    PyObject * field = PyObject_GetAttrString(_pymsg, "back_speed");
-    if (!field) {
-      return false;
-    }
-    assert(PyFloat_Check(field));
-    ros_message->back_speed = (float)PyFloat_AS_DOUBLE(field);
     Py_DECREF(field);
   }
 
@@ -310,214 +204,62 @@ PyObject * traveler_msgs__msg__traveler_config__convert_to_py(void * raw_ros_mes
       }
     }
   }
-  {  // extrude_speed
+  {  // data
     PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->extrude_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "extrude_speed", field);
+    field = PyObject_GetAttrString(_pymessage, "data");
+    if (!field) {
+      return NULL;
+    }
+    assert(field->ob_type != NULL);
+    assert(field->ob_type->tp_name != NULL);
+    assert(strcmp(field->ob_type->tp_name, "array.array") == 0);
+    // ensure that itemsize matches the sizeof of the ROS message field
+    PyObject * itemsize_attr = PyObject_GetAttrString(field, "itemsize");
+    assert(itemsize_attr != NULL);
+    size_t itemsize = PyLong_AsSize_t(itemsize_attr);
+    Py_DECREF(itemsize_attr);
+    if (itemsize != sizeof(float)) {
+      PyErr_SetString(PyExc_RuntimeError, "itemsize doesn't match expectation");
       Py_DECREF(field);
-      if (rc) {
+      return NULL;
+    }
+    // clear the array, poor approach to remove potential default values
+    Py_ssize_t length = PyObject_Length(field);
+    if (-1 == length) {
+      Py_DECREF(field);
+      return NULL;
+    }
+    if (length > 0) {
+      PyObject * pop = PyObject_GetAttrString(field, "pop");
+      assert(pop != NULL);
+      for (Py_ssize_t i = 0; i < length; ++i) {
+        PyObject * ret = PyObject_CallFunctionObjArgs(pop, NULL);
+        if (!ret) {
+          Py_DECREF(pop);
+          Py_DECREF(field);
+          return NULL;
+        }
+        Py_DECREF(ret);
+      }
+      Py_DECREF(pop);
+    }
+    if (ros_message->data.size > 0) {
+      // populating the array.array using the frombytes method
+      PyObject * frombytes = PyObject_GetAttrString(field, "frombytes");
+      assert(frombytes != NULL);
+      float * src = &(ros_message->data.data[0]);
+      PyObject * data = PyBytes_FromStringAndSize((const char *)src, ros_message->data.size * sizeof(float));
+      assert(data != NULL);
+      PyObject * ret = PyObject_CallFunctionObjArgs(frombytes, data, NULL);
+      Py_DECREF(data);
+      Py_DECREF(frombytes);
+      if (!ret) {
+        Py_DECREF(field);
         return NULL;
       }
+      Py_DECREF(ret);
     }
-  }
-  {  // extrude_angle
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->extrude_angle);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "extrude_angle", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // extrude_depth
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->extrude_depth);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "extrude_depth", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_penetration_depth
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_penetration_depth);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_penetration_depth", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_penetration_speed
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_penetration_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_penetration_speed", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_penetration_delay
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_penetration_delay);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_penetration_delay", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_length
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_length);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_length", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_speed
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_speed", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_delay
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_delay);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_delay", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // shear_return_speed
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->shear_return_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "shear_return_speed", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // workspace_angular_speed
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->workspace_angular_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "workspace_angular_speed", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // workspace_moving_angle
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->workspace_moving_angle);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "workspace_moving_angle", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // workspace_time_delay
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->workspace_time_delay);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "workspace_time_delay", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // static_length
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->static_length);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "static_length", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // static_angle
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->static_angle);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "static_angle", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // search_start
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->search_start);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "search_start", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // search_end
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->search_end);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "search_end", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // ground_height
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->ground_height);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "ground_height", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
-  }
-  {  // back_speed
-    PyObject * field = NULL;
-    field = PyFloat_FromDouble(ros_message->back_speed);
-    {
-      int rc = PyObject_SetAttrString(_pymessage, "back_speed", field);
-      Py_DECREF(field);
-      if (rc) {
-        return NULL;
-      }
-    }
+    Py_DECREF(field);
   }
 
   // ownership of _pymessage is transferred to the caller

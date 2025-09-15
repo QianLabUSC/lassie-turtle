@@ -83,9 +83,22 @@ CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.s: c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp -o CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.s
 
+CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
+CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp
+
+CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp > CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.i
+
+CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp -o CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.s
+
 CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
 CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp
 
 CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.s: cmake_force
 
 CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
 CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp
 
 CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.i: cmake_force
@@ -111,7 +124,7 @@ CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.s: cmake_force
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.i: cmake_force
@@ -124,7 +137,7 @@ CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.s: cmake_for
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
 CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/socketcan_interface.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/socketcan_interface.cpp
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.i: cmake_force
@@ -137,7 +150,7 @@ CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.s: 
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o: CMakeFiles/turtle_high_controller.dir/flags.make
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o: /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_suber.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o -c /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_suber.cpp
 
 CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.i: cmake_force
@@ -152,6 +165,7 @@ CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.s: cmake_forc
 turtle_high_controller_OBJECTS = \
 "CMakeFiles/turtle_high_controller.dir/src/main.cpp.o" \
 "CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o" \
+"CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o" \
 "CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o" \
 "CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o" \
 "CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o" \
@@ -163,6 +177,7 @@ turtle_high_controller_EXTERNAL_OBJECTS =
 
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o
+turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o
@@ -247,7 +262,7 @@ turtle_high_controller: /opt/ros/foxy/lib/librcpputils.so
 turtle_high_controller: /opt/ros/foxy/lib/librosidl_runtime_c.so
 turtle_high_controller: /opt/ros/foxy/lib/librcutils.so
 turtle_high_controller: CMakeFiles/turtle_high_controller.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable turtle_high_controller"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/qianlab/single_turtle_workspace/build/turtle_high_controller/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable turtle_high_controller"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/turtle_high_controller.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

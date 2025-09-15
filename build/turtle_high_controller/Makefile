@@ -363,6 +363,33 @@ src/controller/Inverse_kinematics.cpp.s:
 	$(MAKE) -f CMakeFiles/turtle_high_controller.dir/build.make CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.s
 .PHONY : src/controller/Inverse_kinematics.cpp.s
 
+src/controller/trajectories_parser.o: src/controller/trajectories_parser.cpp.o
+
+.PHONY : src/controller/trajectories_parser.o
+
+# target to build an object file
+src/controller/trajectories_parser.cpp.o:
+	$(MAKE) -f CMakeFiles/turtle_high_controller.dir/build.make CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o
+.PHONY : src/controller/trajectories_parser.cpp.o
+
+src/controller/trajectories_parser.i: src/controller/trajectories_parser.cpp.i
+
+.PHONY : src/controller/trajectories_parser.i
+
+# target to preprocess a source file
+src/controller/trajectories_parser.cpp.i:
+	$(MAKE) -f CMakeFiles/turtle_high_controller.dir/build.make CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.i
+.PHONY : src/controller/trajectories_parser.cpp.i
+
+src/controller/trajectories_parser.s: src/controller/trajectories_parser.cpp.s
+
+.PHONY : src/controller/trajectories_parser.s
+
+# target to generate assembly for a file
+src/controller/trajectories_parser.cpp.s:
+	$(MAKE) -f CMakeFiles/turtle_high_controller.dir/build.make CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.s
+.PHONY : src/controller/trajectories_parser.cpp.s
+
 src/main.o: src/main.cpp.o
 
 .PHONY : src/main.o
@@ -476,6 +503,9 @@ help:
 	@echo "... src/controller/Inverse_kinematics.o"
 	@echo "... src/controller/Inverse_kinematics.i"
 	@echo "... src/controller/Inverse_kinematics.s"
+	@echo "... src/controller/trajectories_parser.o"
+	@echo "... src/controller/trajectories_parser.i"
+	@echo "... src/controller/trajectories_parser.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

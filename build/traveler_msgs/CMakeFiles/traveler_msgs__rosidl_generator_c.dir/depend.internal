@@ -46,6 +46,7 @@ CMakeFiles/traveler_msgs__rosidl_generator_c.dir/rosidl_generator_c/traveler_msg
  /opt/ros/foxy/include/rcutils/visibility_control.h
  /opt/ros/foxy/include/rcutils/visibility_control_macros.h
  /opt/ros/foxy/include/rosidl_runtime_c/primitives_sequence.h
+ /opt/ros/foxy/include/rosidl_runtime_c/primitives_sequence_functions.h
  /opt/ros/foxy/include/rosidl_runtime_c/string.h
  /opt/ros/foxy/include/rosidl_runtime_c/string_functions.h
  /opt/ros/foxy/include/rosidl_runtime_c/visibility_control.h

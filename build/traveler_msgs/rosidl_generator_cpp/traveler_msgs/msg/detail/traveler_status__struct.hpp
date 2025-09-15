@@ -37,6 +37,7 @@ struct TravelerStatus_
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
+      this->state_flag = 0;
       this->time = 0.0f;
       this->toeforce_x = 0.0f;
       this->toeforce_y = 0.0f;
@@ -55,6 +56,7 @@ struct TravelerStatus_
     if (rosidl_runtime_cpp::MessageInitialization::ALL == _init ||
       rosidl_runtime_cpp::MessageInitialization::ZERO == _init)
     {
+      this->state_flag = 0;
       this->time = 0.0f;
       this->toeforce_x = 0.0f;
       this->toeforce_y = 0.0f;
@@ -68,6 +70,9 @@ struct TravelerStatus_
   }
 
   // field types and members
+  using _state_flag_type =
+    uint8_t;
+  _state_flag_type state_flag;
   using _time_type =
     float;
   _time_type time;
@@ -97,6 +102,12 @@ struct TravelerStatus_
   _motor1_torque_type motor1_torque;
 
   // setters for named parameter idiom
+  Type & set__state_flag(
+    const uint8_t & _arg)
+  {
+    this->state_flag = _arg;
+    return *this;
+  }
   Type & set__time(
     const float & _arg)
   {
@@ -194,6 +205,9 @@ struct TravelerStatus_
   // comparison operators
   bool operator==(const TravelerStatus_ & other) const
   {
+    if (this->state_flag != other.state_flag) {
+      return false;
+    }
     if (this->time != other.time) {
       return false;
     }

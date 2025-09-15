@@ -1,0 +1,32 @@
+[0.010s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.050s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.055s] [ 35%] Built target odrive_can_interface
+[0.095s] [ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.095s] [ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.095s] [ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
+[0.095s] [ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.097s] [ 71%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[1.151s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.151s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[1.151s]    35 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K) {
+[1.151s]       |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[1.848s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.848s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.849s]    46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[1.849s]       |              [01;35m[K^~~~~[m[K
+[1.849s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.849s]    44 | static int [01;35m[Kinit_done[m[K = 0;
+[1.849s]       |            [01;35m[K^~~~~~~~~[m[K
+[1.849s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.849s]    43 | static float [01;35m[Kinit_cnt[m[K = 0;
+[1.849s]       |              [01;35m[K^~~~~~~~[m[K
+[4.869s] [ 78%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[5.216s] /usr/bin/ld: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o: in function `main':
+[5.217s] /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:46: undefined reference to `turtle_namespace::control::TrajectoriesParser::generateTempTraj(turtle&)'
+[5.217s] /usr/bin/ld: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o: in function `turtle_namespace::control::upperproxy::handle_gui(std::shared_ptr<std_msgs::msg::Float64MultiArray_<std::allocator<void> > >)::{lambda(float, float, float)#1}::operator()(float, float, float) const':
+[5.217s] /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:70: undefined reference to `turtle_namespace::control::clamp_XY(float&, float&, float)'
+[5.217s] collect2: error: ld returned 1 exit status
+[5.218s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:266: turtle_high_controller] Error 1
+[5.219s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[5.219s] make: *** [Makefile:141: all] Error 2
+[5.221s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12

@@ -31,7 +31,22 @@ void TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_fini_fun
   traveler_msgs__msg__TravelerStatus__fini(message_memory);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_message_member_array[9] = {
+static rosidl_typesupport_introspection_c__MessageMember TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_message_member_array[10] = {
+  {
+    "state_flag",  // name
+    rosidl_typesupport_introspection_c__ROS_TYPE_UINT8,  // type
+    0,  // upper bound of string
+    NULL,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(traveler_msgs__msg__TravelerStatus, state_flag),  // bytes offset in struct
+    NULL,  // default value
+    NULL,  // size() function pointer
+    NULL,  // get_const(index) function pointer
+    NULL,  // get(index) function pointer
+    NULL  // resize(index) function pointer
+  },
   {
     "time",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_FLOAT,  // type
@@ -172,7 +187,7 @@ static rosidl_typesupport_introspection_c__MessageMember TravelerStatus__rosidl_
 static const rosidl_typesupport_introspection_c__MessageMembers TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_message_members = {
   "traveler_msgs__msg",  // message namespace
   "TravelerStatus",  // message name
-  9,  // number of fields
+  10,  // number of fields
   sizeof(traveler_msgs__msg__TravelerStatus),
   TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_message_member_array,  // message members
   TravelerStatus__rosidl_typesupport_introspection_c__TravelerStatus_init_function,  // function to initialize message memory (memory has to be allocated)

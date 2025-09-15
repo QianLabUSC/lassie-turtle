@@ -94,7 +94,7 @@ class lowerproxy:public rclcpp::Node{
     void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 
     // added 
-    std::vector<TrajectoryPoint> precomputed_;
+    std::vector<XY_pair> precomputed_;
     double                       sample_dt_    = 0.0;
     bool                         use_precomputed_ = false;
     void                         loadPrecomputed(const std::string &csv_path);

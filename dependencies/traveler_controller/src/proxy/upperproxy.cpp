@@ -17,6 +17,8 @@
 namespace turtle_namespace{
 namespace control{
 
+upperproxy::upperproxy(): upperproxy("upperproxy"){}
+
 upperproxy::upperproxy(std::string name) : Node(name){
     std::cout<<"Traveler Upper Proxy established"
                 <<std::endl;
@@ -26,7 +28,6 @@ upperproxy::upperproxy(std::string name) : Node(name){
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
 }
 
-#include "controller/inverse_kinematics.h"  // for clamp_XY
 
 void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg)
 {
@@ -35,12 +36,12 @@ void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr ms
     turtle_inter_.turtle_gui.drag_traj  = msg->data[1];
     turtle_inter_.traj_data.lateral_angle_range = msg->data[2];
     turtle_inter_.traj_data.drag_speed         = msg->data[3];
-    turtle_inter_.traj_data.wiggle_time        = msg->data[4];
+    // turtle_inter_.traj_data.wiggle_time        = msg->data[4];
     turtle_inter_.traj_data.servo_speed        = msg->data[5];
     turtle_inter_.traj_data.extraction_angle   = msg->data[6];
-    turtle_inter_.traj_data.wiggle_frequency   = msg->data[7];
+    // turtle_inter_.traj_data.wiggle_frequency   = msg->data[7];
     turtle_inter_.traj_data.insertion_depth    = msg->data[8];
-    turtle_inter_.traj_data.wiggle_amptitude   = msg->data[9];
+    // turtle_inter_.traj_data.wiggle_amptitude   = msg->data[9];
 
     // 2) Reset waypoint buffers
     auto& td = turtle_inter_.traj_data;
@@ -65,7 +66,7 @@ void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr ms
     // 4) FALLBACK: if no GUI waypoints were provided, seed 4 manual points
 
         auto push_xy = [&](float x, float y, float v){
-            clamp_XY(x, y, 0.0f);
+            // clamp_XY(x, y, 0.0f);
             td.waypoints_x.push_back(x);
             td.waypoints_y.push_back(y);
             td.waypoints_v.push_back(v);

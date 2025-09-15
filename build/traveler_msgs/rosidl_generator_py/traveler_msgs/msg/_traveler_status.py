@@ -53,6 +53,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
     """Message class 'TravelerStatus'."""
 
     __slots__ = [
+        '_state_flag',
         '_time',
         '_toeforce_x',
         '_toeforce_y',
@@ -65,6 +66,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
     ]
 
     _fields_and_field_types = {
+        'state_flag': 'uint8',
         'time': 'float',
         'toeforce_x': 'float',
         'toeforce_y': 'float',
@@ -77,6 +79,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
     }
 
     SLOT_TYPES = (
+        rosidl_parser.definition.BasicType('uint8'),  # noqa: E501
         rosidl_parser.definition.BasicType('float'),  # noqa: E501
         rosidl_parser.definition.BasicType('float'),  # noqa: E501
         rosidl_parser.definition.BasicType('float'),  # noqa: E501
@@ -92,6 +95,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
         assert all('_' + key in self.__slots__ for key in kwargs.keys()), \
             'Invalid arguments passed to constructor: %s' % \
             ', '.join(sorted(k for k in kwargs.keys() if '_' + k not in self.__slots__))
+        self.state_flag = kwargs.get('state_flag', int())
         self.time = kwargs.get('time', float())
         self.toeforce_x = kwargs.get('toeforce_x', float())
         self.toeforce_y = kwargs.get('toeforce_y', float())
@@ -131,6 +135,8 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
+        if self.state_flag != other.state_flag:
+            return False
         if self.time != other.time:
             return False
         if self.toeforce_x != other.toeforce_x:
@@ -155,6 +161,21 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
     def get_fields_and_field_types(cls):
         from copy import copy
         return copy(cls._fields_and_field_types)
+
+    @property
+    def state_flag(self):
+        """Message field 'state_flag'."""
+        return self._state_flag
+
+    @state_flag.setter
+    def state_flag(self, value):
+        if __debug__:
+            assert \
+                isinstance(value, int), \
+                "The 'state_flag' field must be of type 'int'"
+            assert value >= 0 and value < 256, \
+                "The 'state_flag' field must be an unsigned integer in [0, 255]"
+        self._state_flag = value
 
     @property
     def time(self):

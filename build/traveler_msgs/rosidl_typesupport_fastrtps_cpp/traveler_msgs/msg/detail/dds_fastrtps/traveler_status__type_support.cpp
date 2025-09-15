@@ -32,6 +32,8 @@ cdr_serialize(
   const traveler_msgs::msg::TravelerStatus & ros_message,
   eprosima::fastcdr::Cdr & cdr)
 {
+  // Member: state_flag
+  cdr << ros_message.state_flag;
   // Member: time
   cdr << ros_message.time;
   // Member: toeforce_x
@@ -59,6 +61,9 @@ cdr_deserialize(
   eprosima::fastcdr::Cdr & cdr,
   traveler_msgs::msg::TravelerStatus & ros_message)
 {
+  // Member: state_flag
+  cdr >> ros_message.state_flag;
+
   // Member: time
   cdr >> ros_message.time;
 
@@ -102,6 +107,12 @@ get_serialized_size(
   (void)padding;
   (void)wchar_size;
 
+  // Member: state_flag
+  {
+    size_t item_size = sizeof(ros_message.state_flag);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
   // Member: time
   {
     size_t item_size = sizeof(ros_message.time);
@@ -174,6 +185,13 @@ max_serialized_size_TravelerStatus(
   (void)wchar_size;
   (void)full_bounded;
 
+
+  // Member: state_flag
+  {
+    size_t array_size = 1;
+
+    current_alignment += array_size * sizeof(uint8_t);
+  }
 
   // Member: time
   {

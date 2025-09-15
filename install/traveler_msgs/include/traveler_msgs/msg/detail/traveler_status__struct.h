@@ -20,6 +20,7 @@ extern "C"
 // Struct defined in msg/TravelerStatus in the package traveler_msgs.
 typedef struct traveler_msgs__msg__TravelerStatus
 {
+  uint8_t state_flag;
   float time;
   float toeforce_x;
   float toeforce_y;

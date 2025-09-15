@@ -50,6 +50,15 @@ bool traveler_msgs__msg__traveler_status__convert_from_py(PyObject * _pymsg, voi
     assert(strncmp("traveler_msgs.msg._traveler_status.TravelerStatus", full_classname_dest, 49) == 0);
   }
   traveler_msgs__msg__TravelerStatus * ros_message = _ros_message;
+  {  // state_flag
+    PyObject * field = PyObject_GetAttrString(_pymsg, "state_flag");
+    if (!field) {
+      return false;
+    }
+    assert(PyLong_Check(field));
+    ros_message->state_flag = (uint8_t)PyLong_AsUnsignedLong(field);
+    Py_DECREF(field);
+  }
   {  // time
     PyObject * field = PyObject_GetAttrString(_pymsg, "time");
     if (!field) {
@@ -153,6 +162,17 @@ PyObject * traveler_msgs__msg__traveler_status__convert_to_py(void * raw_ros_mes
     }
   }
   traveler_msgs__msg__TravelerStatus * ros_message = (traveler_msgs__msg__TravelerStatus *)raw_ros_message;
+  {  // state_flag
+    PyObject * field = NULL;
+    field = PyLong_FromUnsignedLong(ros_message->state_flag);
+    {
+      int rc = PyObject_SetAttrString(_pymessage, "state_flag", field);
+      Py_DECREF(field);
+      if (rc) {
+        return NULL;
+      }
+    }
+  }
   {  // time
     PyObject * field = NULL;
     field = PyFloat_FromDouble(ros_message->time);

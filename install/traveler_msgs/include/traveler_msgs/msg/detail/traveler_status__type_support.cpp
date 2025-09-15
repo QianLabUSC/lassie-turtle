@@ -37,7 +37,22 @@ void TravelerStatus_fini_function(void * message_memory)
   typed_message->~TravelerStatus();
 }
 
-static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerStatus_message_member_array[9] = {
+static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerStatus_message_member_array[10] = {
+  {
+    "state_flag",  // name
+    ::rosidl_typesupport_introspection_cpp::ROS_TYPE_UINT8,  // type
+    0,  // upper bound of string
+    nullptr,  // members of sub message
+    false,  // is array
+    0,  // array size
+    false,  // is upper bound
+    offsetof(traveler_msgs::msg::TravelerStatus, state_flag),  // bytes offset in struct
+    nullptr,  // default value
+    nullptr,  // size() function pointer
+    nullptr,  // get_const(index) function pointer
+    nullptr,  // get(index) function pointer
+    nullptr  // resize(index) function pointer
+  },
   {
     "time",  // name
     ::rosidl_typesupport_introspection_cpp::ROS_TYPE_FLOAT,  // type
@@ -178,7 +193,7 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerStatu
 static const ::rosidl_typesupport_introspection_cpp::MessageMembers TravelerStatus_message_members = {
   "traveler_msgs::msg",  // message namespace
   "TravelerStatus",  // message name
-  9,  // number of fields
+  10,  // number of fields
   sizeof(traveler_msgs::msg::TravelerStatus),
   TravelerStatus_message_member_array,  // message members
   TravelerStatus_init_function,  // function to initialize message memory (memory has to be allocated)

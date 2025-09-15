@@ -49,6 +49,11 @@ static bool _TravelerStatus__cdr_serialize(
     return false;
   }
   const _TravelerStatus__ros_msg_type * ros_message = static_cast<const _TravelerStatus__ros_msg_type *>(untyped_ros_message);
+  // Field name: state_flag
+  {
+    cdr << ros_message->state_flag;
+  }
+
   // Field name: time
   {
     cdr << ros_message->time;
@@ -106,6 +111,11 @@ static bool _TravelerStatus__cdr_deserialize(
     return false;
   }
   _TravelerStatus__ros_msg_type * ros_message = static_cast<_TravelerStatus__ros_msg_type *>(untyped_ros_message);
+  // Field name: state_flag
+  {
+    cdr >> ros_message->state_flag;
+  }
+
   // Field name: time
   {
     cdr >> ros_message->time;
@@ -168,6 +178,12 @@ size_t get_serialized_size_traveler_msgs__msg__TravelerStatus(
   (void)padding;
   (void)wchar_size;
 
+  // field.name state_flag
+  {
+    size_t item_size = sizeof(ros_message->state_flag);
+    current_alignment += item_size +
+      eprosima::fastcdr::Cdr::alignment(current_alignment, item_size);
+  }
   // field.name time
   {
     size_t item_size = sizeof(ros_message->time);
@@ -246,6 +262,12 @@ size_t max_serialized_size_traveler_msgs__msg__TravelerStatus(
   (void)wchar_size;
   (void)full_bounded;
 
+  // member: state_flag
+  {
+    size_t array_size = 1;
+
+    current_alignment += array_size * sizeof(uint8_t);
+  }
   // member: time
   {
     size_t array_size = 1;

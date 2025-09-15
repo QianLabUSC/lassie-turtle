@@ -3,6 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o"
   "CMakeFiles/turtle_high_controller.dir/src/can_driver/socketcan_interface.cpp.o"
   "CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o"
+  "CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o"
   "CMakeFiles/turtle_high_controller.dir/src/main.cpp.o"
   "CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o"
   "CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o"

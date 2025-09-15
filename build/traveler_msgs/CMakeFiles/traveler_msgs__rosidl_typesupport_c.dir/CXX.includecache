@@ -199,6 +199,8 @@ stdint.h
 -
 rosidl_runtime_c/string.h
 rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/string.h
+rosidl_runtime_c/primitives_sequence.h
+rosidl_generator_c/traveler_msgs/msg/detail/rosidl_runtime_c/primitives_sequence.h
 
 rosidl_generator_c/traveler_msgs/msg/detail/traveler_mode__struct.h
 stdbool.h
