@@ -32,19 +32,52 @@ lowerproxy::lowerproxy(std::string name) : Node(name){
 
 
 
-void lowerproxy::calculate_position(turtle &turtle_) {
-    // float target_x = t.traj_data.desired_x;  
-    // float target_y = t.traj_data.desired_y;
+   void lowerproxy::calculate_position(turtle &turtle_ )
+    {
+        /**
+         * The motor positions must be converted from Radians to Turns
+         * 
+         * The controller interprets angular position in radians, but the ODrive
+         * uses turns as its angular unit.
+        */
+        float axis0_pos = (-1.0f * turtle_.turtle_control.Leg_lf.axis0.motor_control_position + M0_OFFSET + (M_PI / 2)) / (2 * M_PI);
+        float axis1_pos = (turtle_.turtle_control.Leg_lf.axis1.motor_control_position - (M_PI / 2) + M1_OFFSET) / (2 * M_PI);
 
-    // float theta, gamma;
-    // physicalToAbstract(target_x, target_y, theta, gamma, true);
+        // clamp both motor angles to within 1 turn;
+        // axis0_pos = fmodf(axis0_pos, 1.0f);
+        // axis1_pos = fmodf(axis1_pos, 1.0f);
+        
+        // _count = _count + 1;
+        //int sign = 0;
 
-    // float m0 = theta - gamma;
-    // float m1 = theta + gamma;
+        // auto message_channel_0 = turtle_msgs::msg::SetInputPosition();
+        // message_channel_0.can_channel = 0;
+        // message_channel_0.axis = 0;
+        // message_channel_0.input_position = axis0_pos;
+        // //message_channel_0.input_position = sign ;
+        // message_channel_0.vel_ff = 0;
+        // message_channel_0.torque_ff = 0;
 
-    // t.turtle_control.Leg_lf.axis0.motor_control_position = m0; // radians
-    // t.turtle_control.Leg_lf.axis1.motor_control_position = m1;
-}
+        auto message_channel_1 = turtle_msgs::msg::SetInputPosition();
+        message_channel_1.can_channel = 1;
+        message_channel_1.axis = 0;
+        message_channel_1.input_position = axis1_pos;
+        message_channel_1.vel_ff = 0;
+        message_channel_1.torque_ff = 0;
+        // instead of publiishing to ros topics, publish to local class
+        turtle_.turtle_control.Leg_lf.axis0.set_input_position = message_channel_0;
+        turtle_.turtle_control.Leg_lf.axis1.set_input_position = message_channel_1;
+        // Position_publisher_channel_0->publish(message_channel_0);
+        // Position_publisher_channel_1->publish(message_channel_1);
+        
+      
+    }
+
+} // namespace control
+} // namespace turtle_namespace
+
+
+
 
 void lowerproxy::UpdateJoystickStatus(turtle &turtle_) {
     // Mirror app state (what upper layers commanded + any sensed values)
@@ -82,4 +115,5 @@ void lowerproxy::Estop() {
 }
 
 } // namespace control
+}
 } // namespace turtle_namespace

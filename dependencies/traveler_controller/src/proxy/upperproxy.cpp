@@ -20,13 +20,33 @@ namespace control{
 upperproxy::upperproxy(): upperproxy("upperproxy"){}
 
 upperproxy::upperproxy(std::string name) : Node(name){
-    std::cout<<"Traveler Upper Proxy established"
-                <<std::endl;
+    std::cout<<"Traveler Upper Proxy established" << std::endl;
+    
     GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
         ("/drag_times", 10);
     GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
+    
+    // INITIALIZE WITHOUT GUI:
+    turtle_inter_.turtle_gui.start_flag = 1;
+    
+    auto& td = turtle_inter_.traj_data;
+    td.num_waypoints = 0;
+    
+    auto push_xy = [&](float x, float y, float v){
+        td.waypoints_x.push_back(x);
+        td.waypoints_y.push_back(y);
+        td.waypoints_v.push_back(v);
+        td.num_waypoints++;
+    };
+    push_xy(0.10f, 0.12f, 0.03f);
+    push_xy(0.12f, 0.08f, 0.03f);
+    push_xy(0.09f, 0.15f, 0.03f);
+    push_xy(0.11f, 0.11f, 0.03f);
 }
+
+
+
 
 
 void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg)

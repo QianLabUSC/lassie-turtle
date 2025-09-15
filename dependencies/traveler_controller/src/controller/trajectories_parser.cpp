@@ -36,23 +36,20 @@ static bool linearStep(float t_rel, float vel,
 
 void TrajectoriesParser::init() {}
 
-// If you don't have IK yet, you can map XY directly to the two axes (toy mapping).
-// Replace with your real IK when ready.
 void TrajectoriesParser::setCoupledPosition(turtle &turtle)
 {
-    const float axis_0 = theta_ - gamma_;
-    const float axis_1 = theta_ + gamma_;
-    turtle.turtle_control.left_adduction.set_input_position_radian.input_position = axis_0;
-    turtle.turtle_control.left_sweeping.set_input_position_radian.input_position  = axis_1;
+    // radians -> turns 
+    const float axis_0_turns = (theta_ - gamma_) / (2.0f * M_PI);
+    const float axis_1_turns = (theta_ + gamma_) / (2.0f * M_PI);
+
+    turtle.turtle_control.left_adduction.set_input_position_radian.input_position = axis_0_turns;
+    turtle.turtle_control.left_sweeping.set_input_position_radian.input_position  = axis_1_turns;
 }
 
 void TrajectoriesParser::cartesianMotorCommand(turtle &turtle, float target_x, float target_y)
 {
-    // TEMP: interpret (x,y) directly as (theta,gamma) in radians.
-    // Swap in your real physicalToAbstract when you want proper IK.
-    theta_ = target_x;
-    gamma_ = target_y;
-    setCoupledPosition(turtle);
+    physicalToAbstract(target_x, target_y, theta_, gamma_, true);
+    setCoupledPosition(turtle); 
 }
 
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle)

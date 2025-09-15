@@ -1,0 +1,67 @@
+[0.012s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.035s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.051s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.179s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.216s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.220s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.315s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.349s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.350s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.457s] -- Found control_msgs: 2.5.1 (/opt/ros/foxy/share/control_msgs/cmake)
+[0.725s] -- Found traveler_msgs: 0.0.0 (/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/cmake)
+[0.777s] -- Configuring done
+[0.790s] -- Generating done
+[0.791s] -- Build files have been written to: /home/qianlab/single_turtle_workspace/build/turtle_high_controller
+[0.815s] [35m[1mScanning dependencies of target odrive_can_interface[0m
+[0.820s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.844s] [ 21%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_suber.cpp.o[0m
+[0.844s] [ 21%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[0.844s] [ 21%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[0.875s] [ 28%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[0.876s] [ 35%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.877s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.877s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_suber.cpp.o[0m
+[0.877s] [ 57%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[0.880s] [ 64%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.899s] [ 71%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
+[2.335s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[2.335s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:45:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kturtle_[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[2.335s]    35 | void lowerproxy::calculate_position([01;35m[Kturtle &turtle_[m[K) {
+[2.335s]       |                                     [01;35m[K~~~~~~~~^~~~~~~[m[K
+[3.763s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:1[m[K:
+[3.763s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.763s]    46 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[3.763s]       |              [01;35m[K^~~~~[m[K
+[3.763s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:44:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.763s]    44 | static int [01;35m[Kinit_done[m[K = 0;
+[3.764s]       |            [01;35m[K^~~~~~~~~[m[K
+[3.764s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:43:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[3.764s]    43 | static float [01;35m[Kinit_cnt[m[K = 0;
+[3.764s]       |              [01;35m[K^~~~~~~~[m[K
+[7.225s] [ 78%] [32m[1mLinking CXX executable odrive_can_interface[0m
+[7.261s] [ 85%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[7.473s] [ 92%] Built target odrive_can_interface
+[7.683s] [100%] Built target turtle_high_controller
+[7.694s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[7.717s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller
+[7.722s] -- Install configuration: "Debug"
+[7.723s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller
+[7.731s] -- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/turtle_high_controller" to ""
+[7.731s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface
+[7.735s] -- Set runtime path of "/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/turtle_high_controller/odrive_can_interface" to ""
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/package_run_dependencies/turtle_high_controller
+[7.736s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/parent_prefix_path/turtle_high_controller
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.sh
+[7.736s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/ament_prefix_path.dsv
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.sh
+[7.736s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/environment/path.dsv
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.bash
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.sh
+[7.736s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.zsh
+[7.736s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/local_setup.dsv
+[7.737s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.dsv
+[7.737s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/ament_index/resource_index/packages/turtle_high_controller
+[7.737s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig.cmake
+[7.737s] -- Up-to-date: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/cmake/turtle_high_controllerConfig-version.cmake
+[7.737s] -- Installing: /home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.xml
+[7.738s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller

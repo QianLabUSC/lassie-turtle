@@ -1,0 +1,32 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:40:[m[K [01;31m[Kerror: [m[Kvariable or field ‘[01m[Kcalculate_position[m[K’ declared void
+   35 |    void lowerproxy::calculate_position([01;31m[KTraveler[m[K &traveler_ )
+      |                                        [01;31m[K^~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:40:[m[K [01;31m[Kerror: [m[K‘[01m[KTraveler[m[K’ was not declared in this scope
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:35:50:[m[K [01;31m[Kerror: [m[K‘[01m[Ktraveler_[m[K’ was not declared in this scope; did you mean ‘[01m[Ktraveler_msgs[m[K’?
+   35 |    void lowerproxy::calculate_position(Traveler &[01;31m[Ktraveler_[m[K )
+      |                                                  [01;31m[K^~~~~~~~~[m[K
+      |                                                  [32m[Ktraveler_msgs[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:82:6:[m[K [01;31m[Kerror: [m[K‘[01m[Klowerproxy[m[K’ has not been declared
+   82 | void [01;31m[Klowerproxy[m[K::UpdateJoystickStatus(turtle &turtle_) {
+      |      [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In function ‘[01m[Kvoid UpdateJoystickStatus(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:85:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kturtle_inter_[m[K’ was not declared in this scope
+   85 |     [01;31m[Kturtle_inter_[m[K = turtle_;
+      |     [01;31m[K^~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:110:5:[m[K [01;31m[Kerror: [m[K‘[01m[Kcontroller_state_publisher[m[K’ was not declared in this scope
+  110 |     [01;31m[Kcontroller_state_publisher[m[K->publish(robot_state);
+      |     [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K At global scope:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:113:6:[m[K [01;31m[Kerror: [m[K‘[01m[Klowerproxy[m[K’ has not been declared
+  113 | void [01;31m[Klowerproxy[m[K::Estop() {
+      |      [01;31m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:117:1:[m[K [01;31m[Kerror: [m[Kexpected declaration before ‘[01m[K}[m[K’ token
+  117 | [01;31m[K}[m[K // namespace control
+      | [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:118:1:[m[K [01;31m[Kerror: [m[Kexpected declaration before ‘[01m[K}[m[K’ token
+  118 | [01;31m[K}[m[K // namespace turtle_namespace
+      | [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:102: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+make[2]: *** Waiting for unfinished jobs....
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

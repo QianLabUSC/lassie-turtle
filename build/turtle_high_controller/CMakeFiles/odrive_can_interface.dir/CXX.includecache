@@ -102,6 +102,10 @@ cmath
 can_driver/can_driver.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver/can_driver.hpp
 
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_suber.cpp
+can_driver/can_suber.hpp
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver/can_suber.hpp
+
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/odrive_can.cpp
 cstdio
 -
