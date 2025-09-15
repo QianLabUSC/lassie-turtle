@@ -12,6 +12,7 @@ void getGamma(float L, float& gamma);
 
 void physicalToAbstract(float X, float Y, float& theta, float& gamma, bool clamp = false);
 void abstractToPhysical(float L, float Theta, XY_pair& point);
+void abstractToPhysical(float L, float Theta, float& x, float& y);
 
 // ------------------------------------------------------------
 // Linear segment interpolation
@@ -59,3 +60,4 @@ struct WorkspaceTraversalParams {
 };
 
 #endif // INVERSE_KINEMATICS_H
+

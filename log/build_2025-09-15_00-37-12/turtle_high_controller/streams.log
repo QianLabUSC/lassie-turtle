@@ -1,0 +1,788 @@
+[0.008s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.039s] [35m[1mScanning dependencies of target odrive_can_interface[0m
+[0.045s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.065s] [ 14%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o[0m
+[0.065s] [ 14%] [32mBuilding CXX object CMakeFiles/odrive_can_interface.dir/src/can_driver/odrive_can.cpp.o[0m
+[0.082s] [ 21%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o[0m
+[0.082s] [ 35%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
+[0.082s] [ 35%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/main.cpp.o[0m
+[0.083s] [ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[0.083s] [ 50%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o[0m
+[0.085s] [ 57%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o[0m
+[0.468s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[0.468s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:14:47:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.468s]    14 | void abstractToPhysical(float L, float Theta, [01;31m[KXY_pair[m[K& point);
+[0.469s]       |                                               [01;31m[K^~~~~~~[m[K
+[0.469s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.469s]    19 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B, float& X, float& Y);
+[0.469s]       |                                         [01;31m[K^~~~~~~[m[K
+[0.471s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.471s]    19 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B, float& X, float& Y);
+[0.471s]       |                                                    [01;31m[K^~~~~~~[m[K
+[0.471s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.471s]    20 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B,
+[0.471s]       |                                         [01;31m[K^~~~~~~[m[K
+[0.471s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.471s]    20 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B,
+[0.471s]       |                                                    [01;31m[K^~~~~~~[m[K
+[0.471s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:21:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.471s]    21 |                 [01;31m[KXY_pair[m[K ToeXY, float& X, float& Y, float threshold = 0.01f);
+[0.471s]       |                 [01;31m[K^~~~~~~[m[K
+[0.471s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.472s]    26 | bool validPath([01;31m[KXY_pair[m[K A, XY_pair B);
+[0.472s]       |                [01;31m[K^~~~~~~[m[K
+[0.472s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.472s]    26 | bool validPath(XY_pair A, [01;31m[KXY_pair[m[K B);
+[0.472s]       |                           [01;31m[K^~~~~~~[m[K
+[0.472s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.472s]    26 | bool validPath(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[0.472s]       |                                    [01;31m[K^[m[K
+[0.483s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.483s]    32 | bool inBounds([01;31m[KXY_pair[m[K ToeXY);
+[0.483s]       |               [01;31m[K^~~~~~~[m[K
+[0.483s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:33:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kbool inBounds(float, float)[m[K’ redeclared as different kind of entity
+[0.483s]    33 | bool inBounds(float x, float y[01;31m[K)[m[K;
+[0.483s]       |                               [01;31m[K^[m[K
+[0.483s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:6:[m[K [01;36m[Knote: [m[Kprevious declaration ‘[01m[Kbool inBounds[m[K’
+[0.483s]    32 | bool [01;36m[KinBounds[m[K(XY_pair ToeXY);
+[0.483s]       |      [01;36m[K^~~~~~~~[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.484s]    35 | bool clamp_XY([01;31m[KXY_pair[m[K& P, float L = 0.0f);
+[0.484s]       |               [01;31m[K^~~~~~~[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:24:[m[K [01;31m[Kerror: [m[K‘[01m[KP[m[K’ was not declared in this scope
+[0.484s]    35 | bool clamp_XY(XY_pair& [01;31m[KP[m[K, float L = 0.0f);
+[0.484s]       |                        [01;31m[K^[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:27:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kfloat[m[K’
+[0.484s]    35 | bool clamp_XY(XY_pair& P, [01;31m[Kfloat[m[K L = 0.0f);
+[0.484s]       |                           [01;31m[K^~~~~[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:41:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.484s]    35 | bool clamp_XY(XY_pair& P, float L = 0.0f[01;31m[K)[m[K;
+[0.484s]       |                                         [01;31m[K^[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.484s]    36 | float distance([01;31m[KXY_pair[m[K A, XY_pair B);
+[0.484s]       |                [01;31m[K^~~~~~~[m[K
+[0.484s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.484s]    36 | float distance(XY_pair A, [01;31m[KXY_pair[m[K B);
+[0.485s]       |                           [01;31m[K^~~~~~~[m[K
+[0.485s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.485s]    36 | float distance(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[0.485s]       |                                    [01;31m[K^[m[K
+[0.485s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:11:13:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kconst float L1[m[K’
+[0.485s]    11 | const float [01;31m[KL1[m[K = 0.130f;   // flipper length
+[0.485s]       |             [01;31m[K^~[m[K
+[0.485s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:6[m[K,
+[0.485s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[0.485s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/../proxy/control_data.h:23:13:[m[K [01;36m[Knote: [m[K‘[01m[Kconst float L1[m[K’ previously defined here
+[0.485s]    23 | const float [01;36m[KL1[m[K = 0.1f;
+[0.485s]       |             [01;36m[K^~[m[K
+[0.485s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:12:13:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kconst float L2[m[K’
+[0.485s]    12 | const float [01;31m[KL2[m[K = 0.079f;   // hip-to-ground height
+[0.485s]       |             [01;31m[K^~[m[K
+[0.485s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:6[m[K,
+[0.485s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[0.485s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/../proxy/control_data.h:24:13:[m[K [01;36m[Knote: [m[K‘[01m[Kconst float L2[m[K’ previously defined here
+[0.486s]    24 | const float [01;36m[KL2[m[K = 0.2f;
+[0.486s]       |             [01;36m[K^~[m[K
+[0.486s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:13:13:[m[K [01;31m[Kerror: [m[Kredefinition of ‘[01m[Kconst float L3[m[K’
+[0.486s]    13 | const float [01;31m[KL3[m[K = 0.055f;   // offset below hip
+[0.486s]       |             [01;31m[K^~[m[K
+[0.486s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:6[m[K,
+[0.486s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:1[m[K:
+[0.486s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/../proxy/control_data.h:25:13:[m[K [01;36m[Knote: [m[K‘[01m[Kconst float L3[m[K’ previously defined here
+[0.486s]    25 | const float [01;36m[KL3[m[K = 0.05f;
+[0.486s]       |             [01;36m[K^~[m[K
+[0.486s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid physicalToAbstract(float, float, float&, float&, bool)[m[K’:
+[0.486s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:24:76:[m[K [01;35m[Kwarning: [m[Kunused parameter ‘[01m[Kclamp[m[K’ [[01;35m[K-Wunused-parameter[m[K]
+[0.486s]    24 | void physicalToAbstract(float X, float Y, float &theta, float &gamma, [01;35m[Kbool clamp[m[K)
+[0.486s]       |                                                                       [01;35m[K~~~~~^~~~~[m[K
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K At global scope:
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:46:47:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.487s]    46 | void abstractToPhysical(float L, float Theta, [01;31m[KXY_pair[m[K &point)
+[0.487s]       |                                               [01;31m[K^~~~~~~[m[K
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kvoid abstractToPhysical(float, float, int&)[m[K’:
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:48:11:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[Kpoint[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.487s]    48 |     point.[01;31m[Kx[m[K = -L * sinf(Theta);
+[0.487s]       |           [01;31m[K^[m[K
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:49:11:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[Kpoint[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.487s]    49 |     point.[01;31m[Ky[m[K =  L * cosf(Theta);
+[0.487s]       |           [01;31m[K^[m[K
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K At global scope:
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:62:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.487s]    62 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B, float &X, float &Y)
+[0.487s]       |                                         [01;31m[K^~~~~~~[m[K
+[0.487s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:62:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.487s]    62 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B, float &X, float &Y)
+[0.487s]       |                                                    [01;31m[K^~~~~~~[m[K
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:[m[K In function ‘[01m[Kbool linearTraj(float, float, int, int, float&, float&)[m[K’:
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:64:18:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KB[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.488s]    64 |     float dx = B.[01;31m[Kx[m[K - A.x;
+[0.488s]       |                  [01;31m[K^[m[K
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:64:24:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.488s]    64 |     float dx = B.x - A.[01;31m[Kx[m[K;
+[0.488s]       |                        [01;31m[K^[m[K
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:65:18:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KB[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.488s]    65 |     float dy = B.[01;31m[Ky[m[K - A.y;
+[0.488s]       |                  [01;31m[K^[m[K
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:65:24:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.488s]    65 |     float dy = B.y - A.[01;31m[Ky[m[K;
+[0.488s]       |                        [01;31m[K^[m[K
+[0.488s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:69:15:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.488s]    69 |         X = A.[01;31m[Kx[m[K;
+[0.488s]       |               [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:70:15:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    70 |         Y = A.[01;31m[Ky[m[K;
+[0.489s]       |               [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:75:33:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    75 |     X = scalar * dx * t_rel + A.[01;31m[Kx[m[K;
+[0.489s]       |                                 [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:76:33:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    76 |     Y = scalar * dy * t_rel + A.[01;31m[Ky[m[K;
+[0.489s]       |                                 [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:78:38:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    78 |     float actual_dist = sqrtf((X - A.[01;31m[Kx[m[K)*(X - A.x) + (Y - A.y)*(Y - A.y));
+[0.489s]       |                                      [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:78:48:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kx[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    78 |     float actual_dist = sqrtf((X - A.x)*(X - A.[01;31m[Kx[m[K) + (Y - A.y)*(Y - A.y));
+[0.489s]       |                                                [01;31m[K^[m[K
+[0.489s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:78:60:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.489s]    78 |     float actual_dist = sqrtf((X - A.x)*(X - A.x) + (Y - A.[01;31m[Ky[m[K)*(Y - A.y));
+[0.490s]       |                                                            [01;31m[K^[m[K
+[0.490s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/Inverse_kinematics.cpp:78:70:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ky[m[K’ in ‘[01m[KA[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.490s]    78 |     float actual_dist = sqrtf((X - A.x)*(X - A.x) + (Y - A.y)*(Y - A.[01;31m[Ky[m[K));
+[0.490s]       |                                                                      [01;31m[K^[m[K
+[0.492s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:8[m[K,
+[0.492s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:1[m[K:
+[0.492s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:14:47:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.492s]    14 | void abstractToPhysical(float L, float Theta, [01;31m[KXY_pair[m[K& point);
+[0.493s]       |                                               [01;31m[K^~~~~~~[m[K
+[0.493s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.493s]    19 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B, float& X, float& Y);
+[0.493s]       |                                         [01;31m[K^~~~~~~[m[K
+[0.493s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.493s]    19 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B, float& X, float& Y);
+[0.493s]       |                                                    [01;31m[K^~~~~~~[m[K
+[0.493s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.493s]    20 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B,
+[0.493s]       |                                         [01;31m[K^~~~~~~[m[K
+[0.493s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.493s]    20 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B,
+[0.494s]       |                                                    [01;31m[K^~~~~~~[m[K
+[0.494s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:21:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[0.494s]    21 |                 [01;31m[KXY_pair[m[K ToeXY, float& X, float& Y, float threshold = 0.01f);
+[0.494s]       |                 [01;31m[K^~~~~~~[m[K
+[0.494s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.494s]    26 | bool validPath([01;31m[KXY_pair[m[K A, XY_pair B);
+[0.494s]       |                [01;31m[K^~~~~~~[m[K
+[0.495s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.495s]    26 | bool validPath(XY_pair A, [01;31m[KXY_pair[m[K B);
+[0.495s]       |                           [01;31m[K^~~~~~~[m[K
+[0.495s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.495s]    26 | bool validPath(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[0.495s]       |                                    [01;31m[K^[m[K
+[0.496s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.496s]    32 | bool inBounds([01;31m[KXY_pair[m[K ToeXY);
+[0.497s]       |               [01;31m[K^~~~~~~[m[K
+[0.497s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:33:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kbool inBounds(float, float)[m[K’ redeclared as different kind of entity
+[0.497s]    33 | bool inBounds(float x, float y[01;31m[K)[m[K;
+[0.499s]       |                               [01;31m[K^[m[K
+[0.499s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:6:[m[K [01;36m[Knote: [m[Kprevious declaration ‘[01m[Kbool inBounds[m[K’
+[0.499s]    32 | bool [01;36m[KinBounds[m[K(XY_pair ToeXY);
+[0.499s]       |      [01;36m[K^~~~~~~~[m[K
+[0.499s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.499s]    35 | bool clamp_XY([01;31m[KXY_pair[m[K& P, float L = 0.0f);
+[0.499s]       |               [01;31m[K^~~~~~~[m[K
+[0.499s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:24:[m[K [01;31m[Kerror: [m[K‘[01m[KP[m[K’ was not declared in this scope
+[0.499s]    35 | bool clamp_XY(XY_pair& [01;31m[KP[m[K, float L = 0.0f);
+[0.499s]       |                        [01;31m[K^[m[K
+[0.500s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:27:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kfloat[m[K’
+[0.500s]    35 | bool clamp_XY(XY_pair& P, [01;31m[Kfloat[m[K L = 0.0f);
+[0.500s]       |                           [01;31m[K^~~~~[m[K
+[0.500s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:41:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.500s]    35 | bool clamp_XY(XY_pair& P, float L = 0.0f[01;31m[K)[m[K;
+[0.500s]       |                                         [01;31m[K^[m[K
+[0.500s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.500s]    36 | float distance([01;31m[KXY_pair[m[K A, XY_pair B);
+[0.500s]       |                [01;31m[K^~~~~~~[m[K
+[0.502s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[0.502s]    36 | float distance(XY_pair A, [01;31m[KXY_pair[m[K B);
+[0.502s]       |                           [01;31m[K^~~~~~~[m[K
+[0.502s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[0.502s]    36 | float distance(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[0.502s]       |                                    [01;31m[K^[m[K
+[0.504s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:1[m[K:
+[0.504s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:17:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope
+[0.504s]    40 |     std::vector<[01;31m[KWaypoint[m[K> waypoints_;
+[0.505s]       |                 [01;31m[K^~~~~~~~[m[K
+[0.505s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[0.505s]    40 |     std::vector<Waypoint[01;31m[K>[m[K waypoints_;
+[0.505s]       |                         [01;31m[K^[m[K
+[0.505s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[0.506s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:41:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+[0.506s]    41 |     [01;31m[KWaypoint[m[K curr_waypoint_;
+[0.506s]       |     [01;31m[K^~~~~~~~[m[K
+[0.507s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:42:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+[0.507s]    42 |     [01;31m[KWaypoint[m[K prev_waypoint_;
+[0.507s]       |     [01;31m[K^~~~~~~~[m[K
+[0.508s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[0.508s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:20:16:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kclear[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.508s]    20 |     waypoints_.[01;31m[Kclear[m[K();
+[0.508s]       |                [01;31m[K^~~~~[m[K
+[0.508s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:21:42:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Knum_waypoints[m[K’
+[0.509s]    21 |     for (int i = 0; i < turtle.traj_data.[01;31m[Knum_waypoints[m[K; i++) {
+[0.509s]       |                                          [01;31m[K^~~~~~~~~~~~~[m[K
+[0.509s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:22:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_x[m[K’
+[0.509s]    22 |         float x = turtle.traj_data.[01;31m[Kwaypoints_x[m[K[i];
+[0.509s]       |                                    [01;31m[K^~~~~~~~~~~[m[K
+[0.509s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:23:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_y[m[K’
+[0.509s]    23 |         float y = turtle.traj_data.[01;31m[Kwaypoints_y[m[K[i];
+[0.509s]       |                                    [01;31m[K^~~~~~~~~~~[m[K
+[0.509s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:24:36:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_v[m[K’
+[0.509s]    24 |         float v = turtle.traj_data.[01;31m[Kwaypoints_v[m[K[i];
+[0.509s]       |                                    [01;31m[K^~~~~~~~~~~[m[K
+[0.509s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:25:20:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Kpush_back[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.509s]    25 |         waypoints_.[01;31m[Kpush_back[m[K(Waypoint(x, y, v, 0.0f));
+[0.509s]       |                    [01;31m[K^~~~~~~~~[m[K
+[0.511s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:25:30:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+[0.511s]    25 |         waypoints_.push_back([01;31m[KWaypoint[m[K(x, y, v, 0.0f));
+[0.511s]       |                              [01;31m[K^~~~~~~~[m[K
+[0.511s]       |                              [32m[Kwaypoints_[m[K
+[0.511s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:29:36:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ksize[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.511s]    29 |     for (int i = 0; i < waypoints_.[01;31m[Ksize[m[K(); i++) {
+[0.511s]       |                                    [01;31m[K^~~~[m[K
+[0.511s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:31:31:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+[0.511s]    31 |                i, waypoints_[i[01;31m[K][m[K.point.x, waypoints_[i].point.y, waypoints_[i].vel);
+[0.512s]       |                               [01;31m[K^[m[K
+[0.512s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:31:54:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+[0.512s]    31 |                i, waypoints_[i].point.x, waypoints_[i[01;31m[K][m[K.point.y, waypoints_[i].vel);
+[0.512s]       |                                                      [01;31m[K^[m[K
+[0.512s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:31:77:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+[0.512s]    31 |                i, waypoints_[i].point.x, waypoints_[i].point.y, waypoints_[i[01;31m[K][m[K.vel);
+[0.512s]       |                                                                             [01;31m[K^[m[K
+[0.516s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::processWaypoint(turtle&)[m[K’:
+[0.516s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:38:24:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+[0.516s]    38 |     if (linearTraj(t_, [01;31m[Kcurr_waypoint_[m[K.vel,
+[0.516s]       |                        [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.518s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:39:20:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+[0.518s]    39 |                    [01;31m[Kprev_waypoint_[m[K.point, curr_waypoint_.point,
+[0.518s]       |                    [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.520s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::waypointTrajectory(turtle&)[m[K’:
+[0.520s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:52:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+[0.520s]    52 |         [01;31m[Kprev_waypoint_[m[K = Waypoint(turtle.turtle_chassis.left_adduction.pos_estimate, turtle.turtle_chassis.left_sweeping.pos_estimate, 0.0f, 0.0f);
+[0.520s]       |         [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.522s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:52:26:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+[0.522s]    52 |         prev_waypoint_ = [01;31m[KWaypoint[m[K(turtle.turtle_chassis.left_adduction.pos_estimate, turtle.turtle_chassis.left_sweeping.pos_estimate, 0.0f, 0.0f);
+[0.522s]       |                          [01;31m[K^~~~~~~~[m[K
+[0.522s]       |                          [32m[Kwaypoints_[m[K
+[0.524s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:53:9:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+[0.524s]    53 |         [01;31m[Kcurr_waypoint_[m[K = waypoints_[waypoint_index_];
+[0.524s]       |         [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.524s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:53:52:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+[0.524s]    53 |         curr_waypoint_ = waypoints_[waypoint_index_[01;31m[K][m[K;
+[0.524s]       |                                                    [01;31m[K^[m[K
+[0.524s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:58:39:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ksize[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.524s]    58 |     if (waypoint_index_ >= waypoints_.[01;31m[Ksize[m[K()) {
+[0.525s]       |                                       [01;31m[K^~~~[m[K
+[0.525s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:65:42:[m[K [01;31m[Kerror: [m[Krequest for member ‘[01m[Ksize[m[K’ in ‘[01m[K((turtle_namespace::control::TrajectoriesParser*)this)->turtle_namespace::control::TrajectoriesParser::waypoints_[m[K’, which is of non-class type ‘[01m[Kint[m[K’
+[0.525s]    65 |         if (waypoint_index_ < waypoints_.[01;31m[Ksize[m[K()) {
+[0.525s]       |                                          [01;31m[K^~~~[m[K
+[0.525s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:76: CMakeFiles/turtle_high_controller.dir/src/controller/Inverse_kinematics.cpp.o] Error 1
+[0.525s] make[2]: *** Waiting for unfinished jobs....
+[0.525s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:66:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kprev_waypoint_[m[K’ was not declared in this scope
+[0.525s]    66 |             [01;31m[Kprev_waypoint_[m[K = curr_waypoint_;
+[0.525s]       |             [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.527s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:66:30:[m[K [01;31m[Kerror: [m[K‘[01m[Kcurr_waypoint_[m[K’ was not declared in this scope
+[0.528s]    66 |             prev_waypoint_ = [01;31m[Kcurr_waypoint_[m[K;
+[0.528s]       |                              [01;31m[K^~~~~~~~~~~~~~[m[K
+[0.528s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:67:56:[m[K [01;31m[Kerror: [m[Kinvalid types ‘[01m[Kint[int][m[K’ for array subscript
+[0.528s]    67 |             curr_waypoint_ = waypoints_[waypoint_index_[01;31m[K][m[K;
+[0.528s]       |                                                        [01;31m[K^[m[K
+[0.574s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o] Error 1
+[1.235s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:13[m[K,
+[1.235s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.235s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.235s]    97 |     std::vector<[01;31m[KXY_pair[m[K> precomputed_;
+[1.235s]       |                 [01;31m[K^~~~~~~[m[K
+[1.235s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:24:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.235s]    97 |     std::vector<XY_pair[01;31m[K>[m[K precomputed_;
+[1.235s]       |                        [01;31m[K^[m[K
+[1.235s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:24:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[1.237s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:8[m[K,
+[1.238s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:15[m[K,
+[1.238s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.238s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:14:47:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.238s]    14 | void abstractToPhysical(float L, float Theta, [01;31m[KXY_pair[m[K& point);
+[1.238s]       |                                               [01;31m[K^~~~~~~[m[K
+[1.238s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.238s]    19 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B, float& X, float& Y);
+[1.238s]       |                                         [01;31m[K^~~~~~~[m[K
+[1.238s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.238s]    19 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B, float& X, float& Y);
+[1.238s]       |                                                    [01;31m[K^~~~~~~[m[K
+[1.238s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.238s]    20 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B,
+[1.239s]       |                                         [01;31m[K^~~~~~~[m[K
+[1.239s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.239s]    20 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B,
+[1.239s]       |                                                    [01;31m[K^~~~~~~[m[K
+[1.239s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:21:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.239s]    21 |                 [01;31m[KXY_pair[m[K ToeXY, float& X, float& Y, float threshold = 0.01f);
+[1.239s]       |                 [01;31m[K^~~~~~~[m[K
+[1.239s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.239s]    26 | bool validPath([01;31m[KXY_pair[m[K A, XY_pair B);
+[1.239s]       |                [01;31m[K^~~~~~~[m[K
+[1.241s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.241s]    26 | bool validPath(XY_pair A, [01;31m[KXY_pair[m[K B);
+[1.241s]       |                           [01;31m[K^~~~~~~[m[K
+[1.241s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.241s]    26 | bool validPath(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[1.241s]       |                                    [01;31m[K^[m[K
+[1.242s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.242s]    32 | bool inBounds([01;31m[KXY_pair[m[K ToeXY);
+[1.242s]       |               [01;31m[K^~~~~~~[m[K
+[1.242s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:33:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kbool inBounds(float, float)[m[K’ redeclared as different kind of entity
+[1.242s]    33 | bool inBounds(float x, float y[01;31m[K)[m[K;
+[1.242s]       |                               [01;31m[K^[m[K
+[1.243s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:6:[m[K [01;36m[Knote: [m[Kprevious declaration ‘[01m[Kbool inBounds[m[K’
+[1.243s]    32 | bool [01;36m[KinBounds[m[K(XY_pair ToeXY);
+[1.243s]       |      [01;36m[K^~~~~~~~[m[K
+[1.243s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.243s]    35 | bool clamp_XY([01;31m[KXY_pair[m[K& P, float L = 0.0f);
+[1.243s]       |               [01;31m[K^~~~~~~[m[K
+[1.245s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:24:[m[K [01;31m[Kerror: [m[K‘[01m[KP[m[K’ was not declared in this scope
+[1.245s]    35 | bool clamp_XY(XY_pair& [01;31m[KP[m[K, float L = 0.0f);
+[1.245s]       |                        [01;31m[K^[m[K
+[1.245s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:27:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kfloat[m[K’
+[1.245s]    35 | bool clamp_XY(XY_pair& P, [01;31m[Kfloat[m[K L = 0.0f);
+[1.245s]       |                           [01;31m[K^~~~~[m[K
+[1.245s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:41:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.245s]    35 | bool clamp_XY(XY_pair& P, float L = 0.0f[01;31m[K)[m[K;
+[1.245s]       |                                         [01;31m[K^[m[K
+[1.246s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.247s]    36 | float distance([01;31m[KXY_pair[m[K A, XY_pair B);
+[1.247s]       |                [01;31m[K^~~~~~~[m[K
+[1.249s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.249s]    36 | float distance(XY_pair A, [01;31m[KXY_pair[m[K B);
+[1.249s]       |                           [01;31m[K^~~~~~~[m[K
+[1.249s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.249s]    36 | float distance(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[1.249s]       |                                    [01;31m[K^[m[K
+[1.251s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:15[m[K,
+[1.251s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.251s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:17:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ was not declared in this scope
+[1.251s]    40 |     std::vector<[01;31m[KWaypoint[m[K> waypoints_;
+[1.251s]       |                 [01;31m[K^~~~~~~~[m[K
+[1.251s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.251s]    40 |     std::vector<Waypoint[01;31m[K>[m[K waypoints_;
+[1.251s]       |                         [01;31m[K^[m[K
+[1.252s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:40:25:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[1.252s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:41:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+[1.252s]    41 |     [01;31m[KWaypoint[m[K curr_waypoint_;
+[1.252s]       |     [01;31m[K^~~~~~~~[m[K
+[1.254s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/trajectories_parser.h:42:5:[m[K [01;31m[Kerror: [m[K‘[01m[KWaypoint[m[K’ does not name a type
+[1.254s]    42 |     [01;31m[KWaypoint[m[K prev_waypoint_;
+[1.254s]       |     [01;31m[K^~~~~~~~[m[K
+[1.667s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In constructor ‘[01m[Kcan_driver::can_driver()[m[K’:
+[1.668s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.668s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.668s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.668s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.668s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.668s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.668s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.668s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.668s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.668s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.669s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.669s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.669s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.669s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.669s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.669s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.669s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.669s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.669s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.669s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.669s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.670s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.670s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.670s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.670s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.670s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.670s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.670s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.670s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.670s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.670s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.670s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.670s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.671s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.671s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.671s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.671s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.671s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.671s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.671s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.672s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.672s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.672s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.672s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.672s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.672s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.672s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.672s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.672s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.673s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.673s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.673s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.673s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.673s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.673s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.673s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.673s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.673s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.674s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.674s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.674s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.674s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.674s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.674s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.674s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.674s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.674s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.675s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.675s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.675s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.675s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.675s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.675s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::get_motor_status(turtle&)[m[K’:
+[1.675s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:110:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.676s]   110 |     turtle_.turtle_chassis.[01;31m[Kright_adduction[m[K = odrive_status_msg_1_axis1;
+[1.676s]       |                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.676s]       |                            [32m[Kleft_adduction[m[K
+[1.676s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:111:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.676s]   111 |     turtle_.turtle_chassis.[01;31m[Kright_sweeping[m[K  = odrive_status_msg_1_axis0;
+[1.676s]       |                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.676s]       |                            [32m[Kleft_sweeping[m[K
+[1.676s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setControl(turtle&)[m[K’:
+[1.676s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:116:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.676s]   116 |     turtle_.turtle_control.[01;31m[Kright_adduction[m[K.set_input_position_radian.can_channel = 1;
+[1.676s]       |                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.676s]       |                            [32m[Kleft_adduction[m[K
+[1.676s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:117:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.676s]   117 |     turtle_.turtle_control.[01;31m[Kright_sweeping[m[K.set_input_position_radian.can_channel  = 1;
+[1.677s]       |                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.677s]       |                            [32m[Kleft_sweeping[m[K
+[1.677s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:120:60:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.677s]   120 |         setPosition_right_adduction(turtle_.turtle_control.[01;31m[Kright_adduction[m[K.set_input_position_radian);
+[1.677s]       |                                                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.677s]       |                                                            [32m[Kleft_adduction[m[K
+[1.677s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:121:59:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.677s]   121 |         setPosition_right_sweeping(turtle_.turtle_control.[01;31m[Kright_sweeping[m[K.set_input_position_radian);
+[1.677s]       |                                                           [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.677s]       |                                                           [32m[Kleft_sweeping[m[K
+[1.684s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In constructor ‘[01m[Kcan_driver::can_driver()[m[K’:
+[1.684s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.684s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.684s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.684s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.684s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.684s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.684s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.684s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.684s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.685s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.685s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.685s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.685s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.685s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.685s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.685s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.686s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.686s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.686s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.686s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.686s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.686s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.686s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.686s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.686s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.686s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.686s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.686s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.687s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.687s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.687s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.687s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.687s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.687s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.687s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.688s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.688s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.688s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.688s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.688s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.688s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.688s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.688s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.688s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.688s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.688s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.688s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.688s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.688s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.689s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.689s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.689s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.689s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.689s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.689s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.689s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.689s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:15:144:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[KSocketcanInterface::SocketcanInterface()[m[K’
+[1.690s]    15 |                                socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500[01;31m[K)[m[K
+[1.690s]       |                                                                                                                                                [01;31m[K^[m[K
+[1.690s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/can_driver.hpp:6[m[K,
+[1.690s]                  from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:1[m[K:
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t, uint32_t)[m[K’
+[1.690s]    28 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask, uint32_t timeout_microseconds);
+[1.690s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:28:3:[m[K [01;36m[Knote: [m[K  candidate expects 4 arguments, 0 provided
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t, uint16_t)[m[K’
+[1.690s]    27 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel, uint16_t mask);
+[1.690s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:27:3:[m[K [01;36m[Knote: [m[K  candidate expects 3 arguments, 0 provided
+[1.690s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t, uint8_t)[m[K’
+[1.691s]    26 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id, uint8_t can_channel);
+[1.691s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:26:3:[m[K [01;36m[Knote: [m[K  candidate expects 2 arguments, 0 provided
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[KSocketcanInterface::SocketcanInterface(canid_t)[m[K’
+[1.691s]    25 |   [01;36m[KSocketcanInterface[m[K(canid_t msg_id);
+[1.691s]       |   [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:25:3:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Kconstexpr SocketcanInterface::SocketcanInterface(const SocketcanInterface&)[m[K’
+[1.691s]    21 | class [01;36m[KSocketcanInterface[m[K
+[1.691s]       |       [01;36m[K^~~~~~~~~~~~~~~~~~[m[K
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/can_driver/socketcan_interface.hpp:21:7:[m[K [01;36m[Knote: [m[K  candidate expects 1 argument, 0 provided
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::get_motor_status(turtle&)[m[K’:
+[1.691s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:110:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.691s]   110 |     turtle_.turtle_chassis.[01;31m[Kright_adduction[m[K = odrive_status_msg_1_axis1;
+[1.692s]       |                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.692s]       |                            [32m[Kleft_adduction[m[K
+[1.692s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:111:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.692s]   111 |     turtle_.turtle_chassis.[01;31m[Kright_sweeping[m[K  = odrive_status_msg_1_axis0;
+[1.692s]       |                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.692s]       |                            [32m[Kleft_sweeping[m[K
+[1.692s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:[m[K In member function ‘[01m[Kvoid can_driver::setControl(turtle&)[m[K’:
+[1.692s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:116:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.692s]   116 |     turtle_.turtle_control.[01;31m[Kright_adduction[m[K.set_input_position_radian.can_channel = 1;
+[1.692s]       |                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.692s]       |                            [32m[Kleft_adduction[m[K
+[1.692s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:117:28:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.692s]   117 |     turtle_.turtle_control.[01;31m[Kright_sweeping[m[K.set_input_position_radian.can_channel  = 1;
+[1.692s]       |                            [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.693s]       |                            [32m[Kleft_sweeping[m[K
+[1.693s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:120:60:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.693s]   120 |         setPosition_right_adduction(turtle_.turtle_control.[01;31m[Kright_adduction[m[K.set_input_position_radian);
+[1.693s]       |                                                            [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.693s]       |                                                            [32m[Kleft_adduction[m[K
+[1.693s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/can_driver/can_driver.cpp:121:59:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.693s]   121 |         setPosition_right_sweeping(turtle_.turtle_control.[01;31m[Kright_sweeping[m[K.set_input_position_radian);
+[1.693s]       |                                                           [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.693s]       |                                                           [32m[Kleft_sweeping[m[K
+[1.726s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:8[m[K:
+[1.726s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.726s]    97 |     std::vector<[01;31m[KXY_pair[m[K> precomputed_;
+[1.726s]       |                 [01;31m[K^~~~~~~[m[K
+[1.726s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:24:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+[1.726s]    97 |     std::vector<XY_pair[01;31m[K>[m[K precomputed_;
+[1.726s]       |                        [01;31m[K^[m[K
+[1.726s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h:97:24:[m[K [01;31m[Kerror: [m[Ktemplate argument 2 is invalid
+[1.726s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:9[m[K:
+[1.727s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:14:47:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.727s]    14 | void abstractToPhysical(float L, float Theta, [01;31m[KXY_pair[m[K& point);
+[1.727s]       |                                               [01;31m[K^~~~~~~[m[K
+[1.727s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.727s]    19 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B, float& X, float& Y);
+[1.727s]       |                                         [01;31m[K^~~~~~~[m[K
+[1.727s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:19:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.727s]    19 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B, float& X, float& Y);
+[1.727s]       |                                                    [01;31m[K^~~~~~~[m[K
+[1.727s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:41:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.727s]    20 | bool linearTraj(float t_rel, float vel, [01;31m[KXY_pair[m[K A, XY_pair B,
+[1.727s]       |                                         [01;31m[K^~~~~~~[m[K
+[1.728s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:20:52:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.728s]    20 | bool linearTraj(float t_rel, float vel, XY_pair A, [01;31m[KXY_pair[m[K B,
+[1.728s]       |                                                    [01;31m[K^~~~~~~[m[K
+[1.728s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:21:17:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ has not been declared
+[1.728s]    21 |                 [01;31m[KXY_pair[m[K ToeXY, float& X, float& Y, float threshold = 0.01f);
+[1.728s]       |                 [01;31m[K^~~~~~~[m[K
+[1.728s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.728s]    26 | bool validPath([01;31m[KXY_pair[m[K A, XY_pair B);
+[1.728s]       |                [01;31m[K^~~~~~~[m[K
+[1.729s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.729s]    26 | bool validPath(XY_pair A, [01;31m[KXY_pair[m[K B);
+[1.729s]       |                           [01;31m[K^~~~~~~[m[K
+[1.729s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:26:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.729s]    26 | bool validPath(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[1.729s]       |                                    [01;31m[K^[m[K
+[1.731s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.731s]    32 | bool inBounds([01;31m[KXY_pair[m[K ToeXY);
+[1.732s]       |               [01;31m[K^~~~~~~[m[K
+[1.732s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:33:31:[m[K [01;31m[Kerror: [m[K‘[01m[Kbool inBounds(float, float)[m[K’ redeclared as different kind of entity
+[1.732s]    33 | bool inBounds(float x, float y[01;31m[K)[m[K;
+[1.732s]       |                               [01;31m[K^[m[K
+[1.733s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:32:6:[m[K [01;36m[Knote: [m[Kprevious declaration ‘[01m[Kbool inBounds[m[K’
+[1.733s]    32 | bool [01;36m[KinBounds[m[K(XY_pair ToeXY);
+[1.733s]       |      [01;36m[K^~~~~~~~[m[K
+[1.733s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:15:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.733s]    35 | bool clamp_XY([01;31m[KXY_pair[m[K& P, float L = 0.0f);
+[1.733s]       |               [01;31m[K^~~~~~~[m[K
+[1.734s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:24:[m[K [01;31m[Kerror: [m[K‘[01m[KP[m[K’ was not declared in this scope
+[1.734s]    35 | bool clamp_XY(XY_pair& [01;31m[KP[m[K, float L = 0.0f);
+[1.734s]       |                        [01;31m[K^[m[K
+[1.734s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:27:[m[K [01;31m[Kerror: [m[Kexpected primary-expression before ‘[01m[Kfloat[m[K’
+[1.734s]    35 | bool clamp_XY(XY_pair& P, [01;31m[Kfloat[m[K L = 0.0f);
+[1.734s]       |                           [01;31m[K^~~~~[m[K
+[1.734s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:35:41:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.734s]    35 | bool clamp_XY(XY_pair& P, float L = 0.0f[01;31m[K)[m[K;
+[1.734s]       |                                         [01;31m[K^[m[K
+[1.735s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:16:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.735s]    36 | float distance([01;31m[KXY_pair[m[K A, XY_pair B);
+[1.735s]       |                [01;31m[K^~~~~~~[m[K
+[1.736s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:27:[m[K [01;31m[Kerror: [m[K‘[01m[KXY_pair[m[K’ was not declared in this scope
+[1.736s]    36 | float distance(XY_pair A, [01;31m[KXY_pair[m[K B);
+[1.736s]       |                           [01;31m[K^~~~~~~[m[K
+[1.736s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h:36:36:[m[K [01;31m[Kerror: [m[Kexpression list treated as compound expression in initializer [[01;31m[K-fpermissive[m[K]
+[1.736s]    36 | float distance(XY_pair A, XY_pair B[01;31m[K)[m[K;
+[1.736s]       |                                    [01;31m[K^[m[K
+[1.783s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[1.783s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:97:47:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct motor_command[m[K’ has no member named ‘[01m[Kaxis0[m[K’
+[1.783s]    97 |         turtle_.turtle_control.left_adduction.[01;31m[Kaxis0[m[K.motor_control_position;
+[1.783s]       |                                               [01;31m[K^~~~~[m[K
+[1.783s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:99:46:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct motor_command[m[K’ has no member named ‘[01m[Kaxis1[m[K’
+[1.783s]    99 |         turtle_.turtle_control.left_sweeping.[01;31m[Kaxis1[m[K.motor_control_position;
+[1.784s]       |                                              [01;31m[K^~~~~[m[K
+[1.784s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::UpdateJoystickStatus(turtle&)[m[K’:
+[1.784s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:175:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.784s]   175 |     robot_state.data.push_back(turtle_inter_.turtle_chassis.[01;31m[Kright_adduction[m[K.pos_estimate); //right adduction motor position status
+[1.784s]       |                                                             [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.784s]       |                                                             [32m[Kleft_adduction[m[K
+[1.784s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:176:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.784s]   176 |     robot_state.data.push_back(turtle_inter_.turtle_chassis.[01;31m[Kright_sweeping[m[K.pos_estimate); //right sweeping motor position status
+[1.784s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.784s]       |                                                             [32m[Kleft_sweeping[m[K
+[1.784s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:179:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.784s]   179 |     robot_state.data.push_back(turtle_inter_.turtle_chassis.[01;31m[Kright_adduction[m[K.iq_setpoint); //right sweeping motor torque status
+[1.784s]       |                                                             [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.785s]       |                                                             [32m[Kleft_adduction[m[K
+[1.785s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:180:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_status[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.785s]   180 |     robot_state.data.push_back(turtle_inter_.turtle_chassis.[01;31m[Kright_sweeping[m[K.iq_setpoint); //left adduction motor torque status
+[1.785s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.785s]       |                                                             [32m[Kleft_sweeping[m[K
+[1.785s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:183:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_adduction[m[K’; did you mean ‘[01m[Kleft_adduction[m[K’?
+[1.785s]   183 |     robot_state.data.push_back(turtle_inter_.turtle_control.[01;31m[Kright_adduction[m[K.set_input_position_radian.input_position);
+[1.785s]       |                                                             [01;31m[K^~~~~~~~~~~~~~~[m[K
+[1.785s]       |                                                             [32m[Kleft_adduction[m[K
+[1.785s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:184:61:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct turtle_command[m[K’ has no member named ‘[01m[Kright_sweeping[m[K’; did you mean ‘[01m[Kleft_sweeping[m[K’?
+[1.785s]   184 |     robot_state.data.push_back(turtle_inter_.turtle_control.[01;31m[Kright_sweeping[m[K.set_input_position_radian.input_position);
+[1.785s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[1.785s]       |                                                             [32m[Kleft_sweeping[m[K
+[1.839s] In file included from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/main.cpp:8[m[K:
+[1.839s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:48:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Ktimer[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.839s]    48 | static float [01;35m[Ktimer[m[K[10] = { 0 };
+[1.839s]       |              [01;35m[K^~~~~[m[K
+[1.839s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:46:12:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_done[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.839s]    46 | static int [01;35m[Kinit_done[m[K = 0;
+[1.840s]       |            [01;35m[K^~~~~~~~~[m[K
+[1.840s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/main.h:45:14:[m[K [01;35m[Kwarning: [m[K‘[01m[Kinit_cnt[m[K’ defined but not used [[01;35m[K-Wunused-variable[m[K]
+[1.840s]    45 | static float [01;35m[Kinit_cnt[m[K = 0;
+[1.840s]       |              [01;35m[K^~~~~~~~[m[K
+[1.861s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::upperproxy::manual_waypoints()[m[K’:
+[1.861s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:33:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Knum_waypoints[m[K’
+[1.861s]    33 |     td.[01;31m[Knum_waypoints[m[K = 0;
+[1.861s]       |        [01;31m[K^~~~~~~~~~~~~[m[K
+[1.861s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:34:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_x[m[K’
+[1.861s]    34 |     td.[01;31m[Kwaypoints_x[m[K.clear();
+[1.861s]       |        [01;31m[K^~~~~~~~~~~[m[K
+[1.862s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:35:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_y[m[K’
+[1.862s]    35 |     td.[01;31m[Kwaypoints_y[m[K.clear();
+[1.862s]       |        [01;31m[K^~~~~~~~~~~[m[K
+[1.862s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:36:8:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_v[m[K’
+[1.862s]    36 |     td.[01;31m[Kwaypoints_v[m[K.clear();
+[1.862s]       |        [01;31m[K^~~~~~~~~~~[m[K
+[1.862s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In lambda function:
+[1.862s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:39:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_x[m[K’
+[1.862s]    39 |         td.[01;31m[Kwaypoints_x[m[K.push_back(x);
+[1.862s]       |            [01;31m[K^~~~~~~~~~~[m[K
+[1.862s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:40:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_y[m[K’
+[1.862s]    40 |         td.[01;31m[Kwaypoints_y[m[K.push_back(y);
+[1.863s]       |            [01;31m[K^~~~~~~~~~~[m[K
+[1.863s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:41:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Kwaypoints_v[m[K’
+[1.863s]    41 |         td.[01;31m[Kwaypoints_v[m[K.push_back(v);
+[1.863s]       |            [01;31m[K^~~~~~~~~~~[m[K
+[1.863s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:42:12:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Knum_waypoints[m[K’
+[1.863s]    42 |         td.[01;31m[Knum_waypoints[m[K++;
+[1.863s]       |            [01;31m[K^~~~~~~~~~~~~[m[K
+[1.863s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:44:19:[m[K [01;31m[Kerror: [m[K‘[01m[Kstruct TrajectoryData[m[K’ has no member named ‘[01m[Knum_waypoints[m[K’
+[1.863s]    44 |                td.[01;31m[Knum_waypoints[m[K, x, y, v);
+[1.863s]       |                   [01;31m[K^~~~~~~~~~~~~[m[K
+[1.863s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::upperproxy::manual_waypoints()[m[K’:
+[1.863s] [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:47:5:[m[K [01;31m[Kerror: [m[Kexpected ‘[01m[K,[m[K’ or ‘[01m[K;[m[K’ before ‘[01m[Kpush_xy[m[K’
+[1.863s]    47 |     [01;31m[Kpush_xy[m[K(0.10f, 0.12f, 0.03f);
+[1.863s]       |     [01;31m[K^~~~~~~[m[K
+[1.864s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:63: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o] Error 1
+[2.110s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:128: CMakeFiles/turtle_high_controller.dir/src/can_driver/can_driver.cpp.o] Error 1
+[2.247s] make[2]: *** [CMakeFiles/odrive_can_interface.dir/build.make:76: CMakeFiles/odrive_can_interface.dir/src/can_driver/can_driver.cpp.o] Error 1
+[2.247s] make[1]: *** [CMakeFiles/Makefile2:80: CMakeFiles/odrive_can_interface.dir/all] Error 2
+[2.247s] make[1]: *** Waiting for unfinished jobs....
+[2.477s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:102: CMakeFiles/turtle_high_controller.dir/src/proxy/lowerproxy.cpp.o] Error 1
+[2.972s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+[2.972s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[2.972s] make: *** [Makefile:141: all] Error 2
+[2.975s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12

@@ -22,16 +22,10 @@
 #include "traveler_msgs/msg/odrive_status.hpp"
 #include "traveler_msgs/msg/set_input_position.hpp"
 #include "proxy/control_data.h"
-// #include "travelermsgs/msg/robot_state.hpp"
 
 using namespace std::chrono_literals;
 using std::placeholders::_1;
-// enum class ProgramState {
-//     FirstIteration,
-//     SetToControlAndCalibrate,
-//     GoToInitialPoint,
-//     Running,
-//     };
+
 namespace turtle_namespace{
 namespace control{
 
@@ -103,6 +97,5 @@ class lowerproxy:public rclcpp::Node{
 } //namespace control
 } //namespace turtle_namespace
 
-
-
 #endif
+

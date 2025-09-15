@@ -40,6 +40,7 @@ namespace turtle_namespace
 			void handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 			void UpdateGuiCommand(turtle &turtle_);
 			void PublishStatusFeedback(turtle &turtle_);
+			void manual_waypoints(); 
 			
 			// New method to handle trajectory points
 			void GenerateTrajectoryFromWaypoints();

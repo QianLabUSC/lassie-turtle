@@ -22,8 +22,8 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
     }
 
     printf("Waypoints loaded:\n");
-    for (int i = 0; i < waypoints_.size(); i++) {
-        printf("Waypoint %d: (%f, %f), vel: %f\n",
+    for (size_t i = 0; i < waypoints_.size(); i++) {
+        printf("Waypoint %zu: (%f, %f), vel: %f\n",
                i, waypoints_[i].point.x, waypoints_[i].point.y, waypoints_[i].vel);
     }
 }
@@ -48,17 +48,20 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
         prev_waypoint_ = Waypoint(turtle.turtle_chassis.Leg_lf.toe_position, 0.0f, 0.0f);
         curr_waypoint_ = waypoints_[waypoint_index_];
         first_iteration = false;
+        clock_start_ = chrono::steady_clock::now();
         printf("Starting waypoint trajectory...\n");
     }
 
-    if (waypoint_index_ >= waypoints_.size()) {
+    if (waypoint_index_ >= static_cast<int>(waypoints_.size())) {
         printf("Trajectory complete.\n");
         return true;
     }
 
+    clock_now_ = chrono::steady_clock::now();
+    
     if (processWaypoint(turtle)) {
         waypoint_index_++;
-        if (waypoint_index_ < waypoints_.size()) {
+        if (waypoint_index_ < static_cast<int>(waypoints_.size())) {
             prev_waypoint_ = curr_waypoint_;
             curr_waypoint_ = waypoints_[waypoint_index_];
             clock_start_ = chrono::steady_clock::now();
@@ -77,9 +80,9 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
         return;
     }
 
-    clock_now_ = chrono::steady_clock::now();
     waypointTrajectory(turtle);
 }
 
 } // namespace control
 } // namespace turtle_namespace
+
