@@ -44,6 +44,8 @@ int main(int argc, char **argv)
 		Upper_proxy_->UpdateGuiCommand(turtle_); 
 
         traj.generateTempTraj(turtle_);
+
+		turtle_.turtle_control.if_control = true; 
 		
         Can_driver_->change_odrive_state(turtle_);
 		Lower_proxy_->calculate_position(turtle_);  
