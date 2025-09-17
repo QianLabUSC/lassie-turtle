@@ -15,15 +15,6 @@
 namespace turtle_namespace{
 namespace control{
 
-upperproxy::upperproxy() : Node("upperproxy") {
-    std::cout<<"Traveler Upper Proxy established" << std::endl;
-    GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
-        ("/drag_times", 10);
-    GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
-        ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
-
-    manual_waypoints();
-}
 
 upperproxy::upperproxy(std::string name) : Node(name) {
     std::cout<<"Traveler Upper Proxy established" << std::endl;
@@ -57,14 +48,14 @@ void upperproxy::manual_waypoints(){
     push_xy(0.11f, 0.11f, 0.03f);
 }
 
-void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
+void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg) { // change message
     (void)msg; 
     manual_waypoints();
 }
 
 void upperproxy::handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
     (void)msg;
-    // Implementation for handling trajectory points from GUI
+   
 }
 
 void upperproxy::UpdateGuiCommand(turtle& turtle_) {
@@ -80,8 +71,7 @@ void upperproxy::PublishStatusFeedback(turtle& turtle_) {
 }
 
 void upperproxy::GenerateTrajectoryFromWaypoints() {
-    // Implementation for generating trajectory from waypoints
-    // This can be expanded based on specific requirements
+    
 }
 
 } //namespace control

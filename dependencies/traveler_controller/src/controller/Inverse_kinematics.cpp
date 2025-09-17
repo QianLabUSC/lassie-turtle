@@ -81,14 +81,14 @@ bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, float &X, float &Y
     return (actual_dist >= dist);
 }
 
-// Placeholder implementations for missing functions
+
 void getGamma(float L, float& gamma) {
     // Implementation for getting gamma from length L
     gamma = acosf((L*L + L1*L1 - L2*L2) / (2 * L1 * L));
 }
 
 bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, XY_pair ToeXY, float& X, float& Y, float threshold) {
-    (void)ToeXY; // Suppress unused parameter warning
+    (void)ToeXY; 
     (void)threshold;
     return linearTraj(t_rel, vel, A, B, X, Y);
 }
