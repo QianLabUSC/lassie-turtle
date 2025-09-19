@@ -34,8 +34,8 @@ namespace turtle_namespace
 		// Add to the upperproxy class
 		class upperproxy : public rclcpp::Node {
 		public:
-			upperproxy();
-			upperproxy(std::string name);
+			// upperproxy();
+			upperproxy(std::string name = "upper_proxy");
 			void handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 			void handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 			void UpdateGuiCommand(turtle &turtle_);
@@ -49,6 +49,7 @@ namespace turtle_namespace
 			rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_publisher;
 			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_subscriber;
 			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr trajectory_subscriber;
+			// rclcpp::Subscription<traveler_msgs::msg::TravelerConfig>::SharedPtr start_subscriber;
 			
 			turtle turtle_inter_;
 			std::vector<TrajectoryWaypoint> waypoints;

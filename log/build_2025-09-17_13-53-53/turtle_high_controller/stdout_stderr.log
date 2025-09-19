@@ -1,0 +1,41 @@
+[35m[1mScanning dependencies of target turtle_high_controller[0m
+[ 35%] Built target odrive_can_interface
+[ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In constructor ‘[01m[Kturtle_namespace::control::upperproxy::upperproxy(std::string)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:27:75:[m[K [01;31m[Kerror: [m[K‘[01m[KFloat64MultiArray[m[K’ is not a member of ‘[01m[Ktraveler_msgs::msg[m[K’; did you mean ‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’?
+   27 |     trajectory_subscriber = this->create_subscription<traveler_msgs::msg::[01;31m[KFloat64MultiArray[m[K>
+      |                                                                           [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/foxy/include/std_msgs/msg/float64_multi_array.hpp:7[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:17[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:8[m[K:
+[01m[K/opt/ros/foxy/include/std_msgs/msg/detail/float64_multi_array__struct.hpp:130:7:[m[K [01;36m[Knote: [m[K‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’ declared here
+  130 | using [01;36m[KFloat64MultiArray[m[K =
+      |       [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:27:75:[m[K [01;31m[Kerror: [m[K‘[01m[KFloat64MultiArray[m[K’ is not a member of ‘[01m[Ktraveler_msgs::msg[m[K’; did you mean ‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’?
+   27 |     trajectory_subscriber = this->create_subscription<traveler_msgs::msg::[01;31m[KFloat64MultiArray[m[K>
+      |                                                                           [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/foxy/include/std_msgs/msg/float64_multi_array.hpp:7[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:17[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:8[m[K:
+[01m[K/opt/ros/foxy/include/std_msgs/msg/detail/float64_multi_array__struct.hpp:130:7:[m[K [01;36m[Knote: [m[K‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’ declared here
+  130 | using [01;36m[KFloat64MultiArray[m[K =
+      |       [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:28:94:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kturtle_namespace::control::upperproxy::create_subscription<<expression error> >(const char [19], int, std::_Bind_helper<false, void (turtle_namespace::control::upperproxy::*)(std::shared_ptr<std_msgs::msg::Float64MultiArray_<std::allocator<void> > >), turtle_namespace::control::upperproxy*, const std::_Placeholder<1>&>::type)[m[K’
+   28 |         ("/trajectory_points", 10, std::bind(&upperproxy::handle_trajectory_points, this, _1)[01;31m[K)[m[K;
+      |                                                                                              [01;31m[K^[m[K
+In file included from [01m[K/opt/ros/foxy/include/rclcpp/node.hpp:1224[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/executors/single_threaded_executor.hpp:28[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/executors.hpp:22[m[K,
+                 from [01m[K/opt/ros/foxy/include/rclcpp/rclcpp.hpp:146[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:15[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:8[m[K:
+[01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:91:1:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class MessageT, class CallbackT, class AllocatorT, class CallbackMessageT, class SubscriptionT, class MessageMemoryStrategyT> std::shared_ptr<SubscriptionT> rclcpp::Node::create_subscription(const string&, const rclcpp::QoS&, CallbackT&&, const rclcpp::SubscriptionOptionsWithAllocator<AllocatorT>&, typename MessageMemoryStrategyT::SharedPtr)[m[K’
+   91 | [01;36m[KNode[m[K::create_subscription(
+      | [01;36m[K^~~~[m[K
+[01m[K/opt/ros/foxy/include/rclcpp/node_impl.hpp:91:1:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:28:94:[m[K [01;31m[Kerror: [m[Ktemplate argument 1 is invalid
+   28 |         ("/trajectory_points", 10, std::bind(&upperproxy::handle_trajectory_points, this, _1)[01;31m[K)[m[K;
+      |                                                                                              [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

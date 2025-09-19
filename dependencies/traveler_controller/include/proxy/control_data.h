@@ -96,6 +96,7 @@ struct turtle_command {
 struct human_interface {
     int start_flag = 0;   // 0 = stopped, 1 = run
     bool status_update_flag = false;  // Added missing field
+    float drag_traj = 0; 
 };
 
 // Waypoint trajectory data

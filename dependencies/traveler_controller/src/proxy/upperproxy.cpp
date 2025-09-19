@@ -7,73 +7,88 @@
 
 #include "proxy/upperproxy.h"
 
+
 /**
  * upperproxy - class to collect robot's information and trajectories from path
  * planning and decision making part. 
+ * agile taur.
  */
 
 namespace turtle_namespace{
 namespace control{
 
-
-upperproxy::upperproxy(std::string name) : Node(name) {
-    std::cout<<"Traveler Upper Proxy established" << std::endl;
+upperproxy::upperproxy(std::string name) : Node(name){
+    std::cout<<"Traveler Upper Proxy established"
+                <<std::endl;
     GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
         ("/drag_times", 10);
     GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
+    trajectory_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
+        ("/trajectory_points", 10, std::bind(&upperproxy::handle_trajectory_points, this, _1)); 
+    RCLCPP_INFO(this->get_logger(), "Subscribed to /trajectory_points (Float64MultiArray)");
+    std::cout << "[upperproxy] ctor reached, trajectory sub created\n";
 
-    manual_waypoints();
 }
 
-void upperproxy::manual_waypoints(){
-    auto& td = turtle_inter_.traj_data;
-    td.num_waypoints = 0;
+void upperproxy::handle_trajectory_points(
+    const std_msgs::msg::Float64MultiArray::SharedPtr msg)
+    {
+    std::cout << "Received waypoints:\n";
+    // Save into shared state so other parts of the system can use them later
+    auto &td = turtle_inter_.traj_data;
     td.waypoints_x.clear();
     td.waypoints_y.clear();
     td.waypoints_v.clear();
+    td.num_waypoints = 0;
 
-    auto push_xy = [&](float x, float y, float v) {
-        td.waypoints_x.push_back(x);
-        td.waypoints_y.push_back(y);
-        td.waypoints_v.push_back(v);
+    for (size_t i = 0; i + 2 < msg->data.size(); i += 3) {
+        const double x = msg->data[i];
+        const double y = msg->data[i + 1];
+        const double v = msg->data[i + 2];
+        // Keep your prints
+        std::cout << " (" << x << ", " << y << "), vel: " << v << std::endl; // print 
+        // Store 
+        td.waypoints_x.push_back(static_cast<float>(x));
+        td.waypoints_y.push_back(static_cast<float>(y));
+        td.waypoints_v.push_back(static_cast<float>(v));
         td.num_waypoints++;
-        printf("Waypoint %d (manual): (%.3f, %.3f), v=%.3f\n",
-               td.num_waypoints, x, y, v);
-    };
-    
-    push_xy(0.10f, 0.12f, 0.03f);
-    push_xy(0.12f, 0.08f, 0.03f);
-    push_xy(0.09f, 0.15f, 0.03f);
-    push_xy(0.11f, 0.11f, 0.03f);
+    }
+    RCLCPP_INFO(this->get_logger(), "Stored %d waypoints", td.num_waypoints);
 }
 
-void upperproxy::handle_gui(const std_msgs::msg::Float64MultiArray::SharedPtr msg) { // change message
-    (void)msg; 
-    manual_waypoints();
-}
 
-void upperproxy::handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg) {
-    (void)msg;
-   
-}
 
-void upperproxy::UpdateGuiCommand(turtle& turtle_) {
+
+void upperproxy::handle_gui
+    (const std_msgs::msg::Float64MultiArray::SharedPtr msg){
+        // int len = msg->data.size();
+        turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
+        turtle_inter_.turtle_gui.drag_traj = msg->data[1];
+        // turtle_inter_.traj_data.lateral_angle_range = msg->data[2]; // sweeping range
+        // turtle_inter_.traj_data.drag_speed = msg->data[3]; // insertion
+        // turtle_inter_.traj_data.wiggle_time = msg->data[4]; //penetration velocity
+        // turtle_inter_.traj_data.servo_speed = msg->data[5]; // sweeping velocity 
+        // turtle_inter_.traj_data.extraction_angle = msg->data[6]; // extraction velocity
+        // turtle_inter_.traj_data.wiggle_frequency = msg->data[7]; // swing velocity
+        // turtle_inter_.traj_data.insertion_depth = msg->data[8]; // 
+        // turtle_inter_.traj_data.wiggle_amptitude = msg->data[9];
+        
+    }
+
+void upperproxy::UpdateGuiCommand(turtle& turtle_){
+    turtle_.turtle_gui = turtle_inter_.turtle_gui;
     turtle_.traj_data = turtle_inter_.traj_data;
 }
-
-void upperproxy::PublishStatusFeedback(turtle& turtle_) {
-    if(turtle_.turtle_gui.status_update_flag == true) {
+void upperproxy::PublishStatusFeedback(turtle& turtle_){
+    if(turtle_.turtle_gui.status_update_flag == true){
         auto message = std_msgs::msg::Float64MultiArray();
+        // std::cout <<  message.data[message.data.size() - 1] << std::endl;
         GUI_publisher->publish(message);
         turtle_.turtle_gui.status_update_flag = false;
     }
-}
-
-void upperproxy::GenerateTrajectoryFromWaypoints() {
     
 }
 
 } //namespace control
 } //namespace turtle_namespace
-

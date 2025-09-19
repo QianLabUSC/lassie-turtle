@@ -1,0 +1,25 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:[m[K In constructor ‘[01m[Kturtle_namespace::control::upperproxy::upperproxy(std::string)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:27:75:[m[K [01;31m[Kerror: [m[K‘[01m[KFloat64MultiArray[m[K’ is not a member of ‘[01m[Ktraveler_msgs::msg[m[K’; did you mean ‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’?
+   27 |     trajectory_subscriber = this->create_subscription<traveler_msgs::msg::[01;31m[KFloat64MultiArray[m[K>
+      |                                                                           [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/foxy/include/std_msgs/msg/float64_multi_array.hpp:7[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:17[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:8[m[K:
+[01m[K/opt/ros/foxy/include/std_msgs/msg/detail/float64_multi_array__struct.hpp:130:7:[m[K [01;36m[Knote: [m[K‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’ declared here
+  130 | using [01;36m[KFloat64MultiArray[m[K =
+      |       [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:27:75:[m[K [01;31m[Kerror: [m[K‘[01m[KFloat64MultiArray[m[K’ is not a member of ‘[01m[Ktraveler_msgs::msg[m[K’; did you mean ‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’?
+   27 |     trajectory_subscriber = this->create_subscription<traveler_msgs::msg::[01;31m[KFloat64MultiArray[m[K>
+      |                                                                           [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+In file included from [01m[K/opt/ros/foxy/include/std_msgs/msg/float64_multi_array.hpp:7[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h:17[m[K,
+                 from [01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:8[m[K:
+[01m[K/opt/ros/foxy/include/std_msgs/msg/detail/float64_multi_array__struct.hpp:130:7:[m[K [01;36m[Knote: [m[K‘[01m[Kstd_msgs::msg::Float64MultiArray[m[K’ declared here
+  130 | using [01;36m[KFloat64MultiArray[m[K =
+      |       [01;36m[K^~~~~~~~~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp:28:59:[m[K [01;31m[Kerror: [m[K‘[01m[Khandle_trajectory[m[K’ is not a member of ‘[01m[Kturtle_namespace::control::upperproxy[m[K’
+   28 |         ("/trajectory_points", 10, std::bind(&upperproxy::[01;31m[Khandle_trajectory[m[K, this, _1));
+      |                                                           [01;31m[K^~~~~~~~~~~~~~~~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:115: CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

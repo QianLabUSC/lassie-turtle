@@ -1,0 +1,12 @@
+[0.011s] Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[0.048s] [35m[1mScanning dependencies of target turtle_high_controller[0m
+[0.056s] [ 35%] Built target odrive_can_interface
+[0.082s] [ 42%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/proxy/upperproxy.cpp.o[0m
+[4.066s] [ 50%] [32m[1mLinking CXX executable turtle_high_controller[0m
+[4.415s] /usr/bin/ld: CMakeFiles/turtle_high_controller.dir/src/main.cpp.o: in function `void __gnu_cxx::new_allocator<turtle_namespace::control::upperproxy>::construct<turtle_namespace::control::upperproxy>(turtle_namespace::control::upperproxy*)':
+[4.416s] /usr/include/c++/9/ext/new_allocator.h:146: undefined reference to `turtle_namespace::control::upperproxy::upperproxy()'
+[4.416s] collect2: error: ld returned 1 exit status
+[4.417s] make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:266: turtle_high_controller] Error 1
+[4.418s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+[4.418s] make: *** [Makefile:141: all] Error 2
+[4.420s] Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '2': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12

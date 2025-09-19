@@ -13,7 +13,6 @@
         "cwctype": "cpp",
         "array": "cpp",
         "atomic": "cpp",
-        "*.tcc": "cpp",
         "chrono": "cpp",
         "cstdint": "cpp",
         "deque": "cpp",
@@ -26,6 +25,7 @@
         "memory": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
+        "optional": "cpp",
         "random": "cpp",
         "ratio": "cpp",
         "string": "cpp",
@@ -47,8 +47,6 @@
         "streambuf": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "bit": "cpp",
-        "optional": "cpp",
-        "__split_buffer": "cpp"
+        "bit": "cpp"
     }
 }
