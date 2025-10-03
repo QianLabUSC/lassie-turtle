@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/controller/inverse_kinematics.h
+cmath
+-
+iostream
+-
+../proxy/control_data.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_data.h
+
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_data.h
 vector
 -
@@ -18,7 +26,7 @@ traveler_msgs/msg/set_state.hpp
 traveler_msgs/msg/odrive_status.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/traveler_msgs/msg/odrive_status.hpp
 
-/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/upperproxy.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/lowerproxy.h
 chrono
 -
 functional
@@ -27,20 +35,38 @@ memory
 -
 string
 -
+chrono
+-
 proxy/control_data.h
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/proxy/control_data.h
 rclcpp/rclcpp.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/rclcpp/rclcpp.hpp
+cmath
+-
 std_msgs/msg/string.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/std_msgs/msg/string.hpp
 std_msgs/msg/float64_multi_array.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/std_msgs/msg/float64_multi_array.hpp
 control_msgs/msg/dynamic_joint_state.hpp
 /home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/control_msgs/msg/dynamic_joint_state.hpp
+traveler_msgs/msg/odrive_status.hpp
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/traveler_msgs/msg/odrive_status.hpp
+traveler_msgs/msg/set_input_position.hpp
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/traveler_msgs/msg/set_input_position.hpp
+proxy/control_data.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/include/proxy/proxy/control_data.h
 
-/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/upperproxy.cpp
-proxy/upperproxy.h
-/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/proxy/upperproxy.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp
+proxy/lowerproxy.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/proxy/lowerproxy.h
+controller/inverse_kinematics.h
+/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/controller/inverse_kinematics.h
+fstream
+-
+iostream
+-
+iomanip
+-
 
 /home/qianlab/single_turtle_workspace/install/traveler_msgs/include/traveler_msgs/msg/detail/odrive_status__builder.hpp
 traveler_msgs/msg/detail/odrive_status__struct.hpp

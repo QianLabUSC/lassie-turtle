@@ -146,14 +146,14 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         turtle_.turtle_chassis.gait_state = 0;
                         turtle_.turtle_control.if_control = true;
                         if (curr_initial_phase_time < initial_phase_time) {
-                            goback2desiredangle(turtle_, 
-                                -turtle_.traj_data.extraction_angle, 
-                                turtle_.traj_data.lateral_angle_range, 
-                                turtle_.traj_data.extraction_angle, 
-                                -turtle_.traj_data.lateral_angle_range,
-                                saved_left_adduction, saved_left_sweeping,
-                                saved_right_adduction, saved_right_sweeping,
-                                curr_initial_phase_time, initial_phase_time);
+                            // goback2desiredangle(turtle_, 
+                            //     -turtle_.traj_data.extraction_angle, 
+                            //     turtle_.traj_data.lateral_angle_range, 
+                            //     turtle_.traj_data.extraction_angle, 
+                            //     -turtle_.traj_data.lateral_angle_range,
+                            //     saved_left_adduction, saved_left_sweeping,
+                            //     saved_right_adduction, saved_right_sweeping,
+                            //     curr_initial_phase_time, initial_phase_time);
                         } else {
                             currentState = ProgramState::Running;
                         }
@@ -168,7 +168,7 @@ void lowerproxy::calculate_position(turtle &turtle_ )
                         curr_initial_phase_time = deltaTime1.count();
                         turtle_.turtle_control.if_control = true;
                         running_t = curr_initial_phase_time- initial_phase_time - set_close_control_time;
-                        boundingGAIT(turtle_, running_t);           
+                        // boundingGAIT(turtle_, running_t);           
                         std::cout << "running Interation: " << running_t << std::endl;
                         break;
 

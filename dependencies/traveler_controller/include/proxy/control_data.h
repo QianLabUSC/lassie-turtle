@@ -50,7 +50,8 @@ struct leg_structure {
 // Motor command for one actuator
 struct motor_command {
     traveler_msgs::msg::SetInputPosition set_input_position_radian;
-    float motor_control_position = 0.0f;  // Added missing field
+    float motor_control_position = 0.0f; 
+    traveler_msgs::msg::SetState set_state; 
 };
 
 // Set state command structure
