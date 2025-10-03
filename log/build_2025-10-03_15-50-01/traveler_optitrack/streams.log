@@ -1,0 +1,36 @@
+[0.617s] Invoking command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack': PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[0.701s] /home/qianlab/.local/lib/python3.8/site-packages/setuptools/dist.py:498: SetuptoolsDeprecationWarning: Invalid dash-separated options
+[0.701s] !!
+[0.701s] 
+[0.701s]         ********************************************************************************
+[0.702s]         Usage of dash-separated 'script-dir' will not be supported in future
+[0.702s]         versions. Please use the underscore name 'script_dir' instead.
+[0.702s] 
+[0.702s]         This deprecation is overdue, please update your project and remove deprecated
+[0.702s]         calls to avoid build errors in the future.
+[0.702s] 
+[0.702s]         See https://setuptools.pypa.io/en/latest/userguide/declarative_config.html for details.
+[0.702s]         ********************************************************************************
+[0.702s] 
+[0.702s] !!
+[0.702s]   opt = self.warn_dash_deprecation(opt, section)
+[0.775s] running egg_info
+[0.784s] writing ../../build/traveler_optitrack/traveler_optitrack.egg-info/PKG-INFO
+[0.785s] writing dependency_links to ../../build/traveler_optitrack/traveler_optitrack.egg-info/dependency_links.txt
+[0.785s] writing entry points to ../../build/traveler_optitrack/traveler_optitrack.egg-info/entry_points.txt
+[0.785s] writing requirements to ../../build/traveler_optitrack/traveler_optitrack.egg-info/requires.txt
+[0.785s] writing top-level names to ../../build/traveler_optitrack/traveler_optitrack.egg-info/top_level.txt
+[0.874s] reading manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.874s] writing manifest file '../../build/traveler_optitrack/traveler_optitrack.egg-info/SOURCES.txt'
+[0.874s] running build
+[0.874s] running build_py
+[0.875s] running install
+[0.878s] running install_lib
+[0.889s] running install_data
+[0.889s] running install_egg_info
+[0.899s] removing '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info' (and everything under it)
+[0.899s] Copying ../../build/traveler_optitrack/traveler_optitrack.egg-info to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages/traveler_optitrack-0.0.0-py3.8.egg-info
+[0.899s] running install_scripts
+[0.931s] Installing traveler_optitrack script to /home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/traveler_optitrack
+[0.932s] writing list of installed files to '/home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log'
+[0.955s] Invoked command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack' returned '0': PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
