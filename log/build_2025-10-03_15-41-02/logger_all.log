@@ -1,0 +1,443 @@
+[0.187s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.187s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7fb293447a60>>, merge_install=False, metas=['./colcon.meta'], mixin=None, mixin_files=None, mixin_verb=('build',), packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=12, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7fb293447a60>, verb_name='build', verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0x7fb29332cb80>)
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.219s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.219s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/qianlab/single_turtle_workspace'
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.219s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'ignore'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'ignore_ament_install'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['colcon_pkg']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'colcon_pkg'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['colcon_meta']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'colcon_meta'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['ros']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'ros'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['cmake', 'python']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'cmake'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'python'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extensions ['python_setup_py']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dataanalysis) by extension 'python_setup_py'
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['ignore', 'ignore_ament_install']
+[0.231s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'ignore'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'ignore_ament_install'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['colcon_pkg']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'colcon_pkg'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['colcon_meta']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'colcon_meta'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['ros']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'ros'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['cmake', 'python']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'cmake'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'python'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extensions ['python_setup_py']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies) by extension 'python_setup_py'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extension 'ignore'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extension 'ignore_ament_install'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extensions ['colcon_pkg']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extension 'colcon_pkg'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extensions ['colcon_meta']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extension 'colcon_meta'
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extensions ['ros']
+[0.232s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_controller) by extension 'ros'
+[0.234s] DEBUG:colcon.colcon_core.package_identification:Package 'dependencies/traveler_controller' with type 'ros.ament_cmake' and name 'turtle_high_controller'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extension 'ignore'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extension 'ignore_ament_install'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extensions ['colcon_pkg']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extension 'colcon_pkg'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extensions ['colcon_meta']
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extension 'colcon_meta'
+[0.234s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extensions ['ros']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(dependencies/traveler_msgs) by extension 'ros'
+[0.235s] DEBUG:colcon.colcon_core.package_identification:Package 'dependencies/traveler_msgs' with type 'ros.ament_cmake' and name 'traveler_msgs'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'ignore_ament_install'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['colcon_pkg']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'colcon_pkg'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['colcon_meta']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'colcon_meta'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['ros']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'ros'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['cmake', 'python']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'cmake'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'python'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extensions ['python_setup_py']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel) by extension 'python_setup_py'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['ignore', 'ignore_ament_install']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'ignore'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'ignore_ament_install'
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['colcon_pkg']
+[0.235s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['ros']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'ros'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['cmake', 'python']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'cmake'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'python'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extensions ['python_setup_py']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI) by extension 'python_setup_py'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['colcon_pkg']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['ros']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'ros'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['cmake', 'python']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'cmake'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'python'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extensions ['python_setup_py']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/__pycache__) by extension 'python_setup_py'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/build) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/build) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/build) ignored
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['ignore', 'ignore_ament_install']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'ignore'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'ignore_ament_install'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['colcon_pkg']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'colcon_pkg'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['colcon_meta']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'colcon_meta'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['ros']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'ros'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['cmake', 'python']
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'cmake'
+[0.236s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'python'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extensions ['python_setup_py']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/config) by extension 'python_setup_py'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['ignore', 'ignore_ament_install']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'ignore'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'ignore_ament_install'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['colcon_pkg']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'colcon_pkg'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['colcon_meta']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'colcon_meta'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['ros']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'ros'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['cmake', 'python']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'cmake'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'python'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extensions ['python_setup_py']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data) by extension 'python_setup_py'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['ignore', 'ignore_ament_install']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'ignore'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'ignore_ament_install'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['colcon_pkg']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'colcon_pkg'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['colcon_meta']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'colcon_meta'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['ros']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'ros'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['cmake', 'python']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'cmake'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'python'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extensions ['python_setup_py']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/experiment_data/turtle) by extension 'python_setup_py'
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/install) by extensions ['ignore', 'ignore_ament_install']
+[0.237s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/install) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/install) ignored
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/log) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/log) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/LASSIE_GUI/log) ignored
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'ignore_ament_install'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['colcon_pkg']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'colcon_pkg'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['colcon_meta']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'colcon_meta'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['ros']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'ros'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['cmake', 'python']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'cmake'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'python'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extensions ['python_setup_py']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/config) by extension 'python_setup_py'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['ignore', 'ignore_ament_install']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'ignore'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'ignore_ament_install'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['colcon_pkg']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'colcon_pkg'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['colcon_meta']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'colcon_meta'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['ros']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'ros'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['cmake', 'python']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'cmake'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'python'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extensions ['python_setup_py']
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data) by extension 'python_setup_py'
+[0.238s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['ignore', 'ignore_ament_install']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'ignore'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'ignore_ament_install'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['colcon_pkg']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'colcon_pkg'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['colcon_meta']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'colcon_meta'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['ros']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'ros'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['cmake', 'python']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'cmake'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'python'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extensions ['python_setup_py']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/experiment_data/turtle) by extension 'python_setup_py'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['ignore', 'ignore_ament_install']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'ignore'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'ignore_ament_install'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['colcon_pkg']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'colcon_pkg'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['colcon_meta']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'colcon_meta'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['ros']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'ros'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['cmake', 'python']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'cmake'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'python'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extensions ['python_setup_py']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/resource) by extension 'python_setup_py'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extensions ['ignore', 'ignore_ament_install']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extension 'ignore'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extension 'ignore_ament_install'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extensions ['colcon_pkg']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extension 'colcon_pkg'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extensions ['colcon_meta']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extension 'colcon_meta'
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extensions ['ros']
+[0.239s] Level 1:colcon.colcon_core.package_identification:_identify(highlevel/traveler_optitrack) by extension 'ros'
+[0.240s] DEBUG:colcon.colcon_core.package_identification:Package 'highlevel/traveler_optitrack' with type 'ros.ament_python' and name 'traveler_optitrack'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.240s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.240s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.240s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.240s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.240s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.240s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.256s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.256s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.257s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 2 installed packages in /home/qianlab/lassie-traveler/dependencies/install
+[0.258s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 294 installed packages in /opt/ros/foxy
+[0.260s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.301s] WARNING:colcon.colcon_core.package_selection:Some selected packages are already built in one or more underlay workspaces:
+	'traveler_msgs' is in: /home/qianlab/lassie-traveler/dependencies/install/traveler_msgs
+If a package in a merged underlay workspace is overridden and it installs headers, then all packages in the overlay must sort their include directories by workspace order. Failure to do so may result in build failures or undefined behavior at run time.
+If the overridden package is used by another package in any underlay, then the overriding package in the overlay must be API and ABI compatible or undefined behavior at run time may occur.
+
+If you understand the risks and want to override a package anyways, add the following to the command line:
+	--allow-overriding traveler_msgs
+
+This may be promoted to an error in a future release of colcon-override-check.
+[0.301s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_target' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.302s] DEBUG:colcon.colcon_core.verb:Building package 'traveler_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/qianlab/single_turtle_workspace/build/traveler_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/qianlab/single_turtle_workspace/install/traveler_msgs', 'merge_install': False, 'path': '/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs', 'symlink_install': False, 'test_result_base': None}
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_target' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_clean_cache' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_clean_first' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'cmake_force_configure' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'ament_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'catkin_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'traveler_optitrack' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.302s] DEBUG:colcon.colcon_core.verb:Building package 'traveler_optitrack' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/qianlab/single_turtle_workspace/build/traveler_optitrack', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/qianlab/single_turtle_workspace/install/traveler_optitrack', 'merge_install': False, 'path': '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack', 'symlink_install': False, 'test_result_base': None}
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_target' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_clean_first' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'cmake_force_configure' from command line to 'False'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'ament_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[0.302s] Level 5:colcon.colcon_core.verb:set package 'turtle_high_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.302s] DEBUG:colcon.colcon_core.verb:Building package 'turtle_high_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/qianlab/single_turtle_workspace/build/turtle_high_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/qianlab/single_turtle_workspace/install/turtle_high_controller', 'merge_install': False, 'path': '/home/qianlab/single_turtle_workspace/dependencies/traveler_controller', 'symlink_install': False, 'test_result_base': None}
+[0.302s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.303s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.304s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs' with build type 'ament_cmake'
+[0.304s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs'
+[0.306s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.306s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.306s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.309s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack' with build type 'ament_python'
+[0.309s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_optitrack', 'ament_prefix_path')
+[0.310s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/ament_prefix_path.ps1'
+[0.311s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/ament_prefix_path.dsv'
+[0.311s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/ament_prefix_path.sh'
+[0.312s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.312s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.320s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/traveler_msgs -- -j12 -l12
+[0.464s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack'
+[0.465s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.465s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.504s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/traveler_msgs -- -j12 -l12
+[0.575s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/traveler_msgs
+[0.664s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(traveler_msgs)
+[0.665s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/qianlab/single_turtle_workspace/build/traveler_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/traveler_msgs
+[0.669s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs' for CMake module files
+[0.669s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs' for CMake config files
+[0.670s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'cmake_prefix_path')
+[0.670s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.ps1'
+[0.671s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.dsv'
+[0.671s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.sh'
+[0.683s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib'
+[0.683s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'ld_library_path_lib')
+[0.684s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.ps1'
+[0.684s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.dsv'
+[0.685s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.sh'
+[0.685s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/bin'
+[0.685s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/pkgconfig/traveler_msgs.pc'
+[0.686s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages'
+[0.686s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'pythonpath')
+[0.686s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.ps1'
+[0.686s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.dsv'
+[0.687s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.sh'
+[0.687s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/bin'
+[0.688s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.ps1'
+[0.689s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.dsv'
+[0.689s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.sh'
+[0.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.bash'
+[0.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.zsh'
+[0.691s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/colcon-core/packages/traveler_msgs)
+[0.755s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(traveler_msgs)
+[0.755s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs' for CMake module files
+[0.755s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs' for CMake config files
+[0.756s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'cmake_prefix_path')
+[0.756s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.ps1'
+[0.756s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.dsv'
+[0.756s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/cmake_prefix_path.sh'
+[0.757s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib'
+[0.757s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'ld_library_path_lib')
+[0.757s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.ps1'
+[0.757s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.dsv'
+[0.757s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/ld_library_path_lib.sh'
+[0.758s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/bin'
+[0.758s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/pkgconfig/traveler_msgs.pc'
+[0.758s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages'
+[0.758s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_msgs', 'pythonpath')
+[0.758s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.ps1'
+[0.758s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.dsv'
+[0.758s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/hook/pythonpath.sh'
+[0.759s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_msgs/bin'
+[0.759s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.ps1'
+[0.759s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.dsv'
+[0.760s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.sh'
+[0.760s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.bash'
+[0.760s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/traveler_msgs/package.zsh'
+[0.760s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/qianlab/single_turtle_workspace/install/traveler_msgs/share/colcon-core/packages/traveler_msgs)
+[0.760s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/qianlab/single_turtle_workspace/dependencies/traveler_controller' with build type 'ament_cmake'
+[0.761s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/qianlab/single_turtle_workspace/dependencies/traveler_controller'
+[0.761s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.761s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.772s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[1.137s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack': PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[1.802s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack' for CMake module files
+[1.803s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/qianlab/single_turtle_workspace/highlevel/traveler_optitrack' returned '0': PYTHONPATH=/home/qianlab/single_turtle_workspace/build/traveler_optitrack/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/traveler_optitrack build --build-base /home/qianlab/single_turtle_workspace/build/traveler_optitrack/build install --record /home/qianlab/single_turtle_workspace/build/traveler_optitrack/install.log --install-scripts $base/lib/traveler_optitrack --single-version-externally-managed install_data
+[1.803s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack' for CMake config files
+[1.804s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib'
+[1.804s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/bin'
+[1.804s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/pkgconfig/traveler_optitrack.pc'
+[1.804s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/lib/python3.8/site-packages'
+[1.804s] Level 1:colcon.colcon_core.shell:create_environment_hook('traveler_optitrack', 'pythonpath')
+[1.805s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/pythonpath.ps1'
+[1.806s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/pythonpath.dsv'
+[1.806s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/hook/pythonpath.sh'
+[1.807s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/bin'
+[1.807s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(traveler_optitrack)
+[1.808s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/package.ps1'
+[1.809s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/package.dsv'
+[1.809s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/package.sh'
+[1.810s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/package.bash'
+[1.810s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/traveler_optitrack/package.zsh'
+[1.811s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/qianlab/single_turtle_workspace/install/traveler_optitrack/share/colcon-core/packages/traveler_optitrack)
+[6.569s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/qianlab/single_turtle_workspace/build/turtle_high_controller -- -j12 -l12
+[6.594s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller
+[6.614s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(turtle_high_controller)
+[6.614s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller' for CMake module files
+[6.615s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/qianlab/single_turtle_workspace/build/turtle_high_controller' returned '0': AMENT_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs:/home/qianlab/lassie-traveler/dependencies/install/traveler_high_controller:/home/qianlab/lassie-traveler/dependencies/install/traveler_msgs:/opt/ros/foxy LD_LIBRARY_PATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib:${LD_LIBRARY_PATH} PYTHONPATH=/home/qianlab/single_turtle_workspace/install/traveler_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --install /home/qianlab/single_turtle_workspace/build/turtle_high_controller
+[6.615s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller' for CMake config files
+[6.615s] Level 1:colcon.colcon_core.shell:create_environment_hook('turtle_high_controller', 'cmake_prefix_path')
+[6.616s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.ps1'
+[6.616s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.dsv'
+[6.617s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.sh'
+[6.617s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib'
+[6.618s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/bin'
+[6.618s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/pkgconfig/turtle_high_controller.pc'
+[6.618s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/python3.8/site-packages'
+[6.618s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/bin'
+[6.618s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.ps1'
+[6.619s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.dsv'
+[6.619s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.sh'
+[6.620s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.bash'
+[6.620s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.zsh'
+[6.620s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/colcon-core/packages/turtle_high_controller)
+[6.643s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(turtle_high_controller)
+[6.643s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller' for CMake module files
+[6.643s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller' for CMake config files
+[6.643s] Level 1:colcon.colcon_core.shell:create_environment_hook('turtle_high_controller', 'cmake_prefix_path')
+[6.644s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.ps1'
+[6.644s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.dsv'
+[6.644s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/hook/cmake_prefix_path.sh'
+[6.645s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib'
+[6.645s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/bin'
+[6.645s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/pkgconfig/turtle_high_controller.pc'
+[6.645s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/lib/python3.8/site-packages'
+[6.645s] Level 1:colcon.colcon_core.environment:checking '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/bin'
+[6.645s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.ps1'
+[6.645s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.dsv'
+[6.646s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.sh'
+[6.646s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.bash'
+[6.646s] INFO:colcon.colcon_core.shell:Creating package script '/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/turtle_high_controller/package.zsh'
+[6.646s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/qianlab/single_turtle_workspace/install/turtle_high_controller/share/colcon-core/packages/turtle_high_controller)
+[6.647s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[6.647s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[6.647s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[6.647s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[6.657s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[6.657s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[6.657s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[6.671s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[6.672s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/qianlab/single_turtle_workspace/install/local_setup.ps1'
+[6.673s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/qianlab/single_turtle_workspace/install/_local_setup_util_ps1.py'
+[6.674s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/qianlab/single_turtle_workspace/install/setup.ps1'
+[6.676s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/qianlab/single_turtle_workspace/install/local_setup.sh'
+[6.676s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/qianlab/single_turtle_workspace/install/_local_setup_util_sh.py'
+[6.677s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/qianlab/single_turtle_workspace/install/setup.sh'
+[6.678s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/qianlab/single_turtle_workspace/install/local_setup.bash'
+[6.680s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/qianlab/single_turtle_workspace/install/setup.bash'
+[6.681s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/qianlab/single_turtle_workspace/install/local_setup.zsh'
+[6.681s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/qianlab/single_turtle_workspace/install/setup.zsh'
