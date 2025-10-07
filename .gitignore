@@ -11,3 +11,7 @@ dependencies/build/*
 dependencies/devel/*
 dependencies/logs/*
 highlevel/experiment_data/*
+highlevel/__pycache__/*
+highlevel/terrain_manipulation/__pycache__/*
+highlevel/terrain_manipulation/data/*
+highlevel/terrain_manipulation/rgbd_recordings/*
