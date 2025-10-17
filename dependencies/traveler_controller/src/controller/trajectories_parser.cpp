@@ -1,4 +1,7 @@
 #include "controller/trajectories_parser.h"
+#define _USE_MATH_DEFINES
+
+#include <cmath>
 using namespace std;
 
 namespace turtle_namespace {
@@ -8,12 +11,18 @@ void TrajectoriesParser::cartesianMotorCommand(turtle &turtle, float target_x, f
     physicalToAbstract(target_x, target_y, theta_, gamma_, true);
     float axis_0 = theta_ - gamma_;
     float axis_1 = theta_ + gamma_;
+
+
     turtle.turtle_control.Leg_lf.axis0.motor_control_position = axis_0;
     turtle.turtle_control.Leg_lf.axis1.motor_control_position = axis_1;
+
+    
 }
 
 void TrajectoriesParser::generateWaypoints(turtle &turtle) {
     waypoints_.clear();
+    int trajectory = turtle.turtle_gui.drag_traj; 
+
     for (int i = 0; i < turtle.traj_data.num_waypoints; i++) {
         float x = turtle.traj_data.waypoints_x[i];
         float y = turtle.traj_data.waypoints_y[i];
@@ -31,21 +40,31 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
 bool TrajectoriesParser::processWaypoint(turtle &turtle) {
     t_ = chrono::duration<float>(clock_now_ - clock_start_).count();
 
-    if (linearTraj(t_, curr_waypoint_.vel,
-                   prev_waypoint_.point, curr_waypoint_.point,
-                   target_x, target_y)) {
-        return true; // reached waypoint
-    }
+    // 
+    linearTraj(t_, curr_waypoint_.vel, prev_waypoint_.point, curr_waypoint_.point, gamma_, theta_);
 
-    cartesianMotorCommand(turtle, target_x, target_y);
+    // Store the calculated values
+    turtle.turtle_control.right_adduction.set_input_position_radian.input_position = gamma_;
+    turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = theta_;
+    // convert 
+    turtle.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma_ / (2 * M_PI);
+    turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta_ / (2 * M_PI);
+
     return false;
 }
+
+
+
+
 
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
     if (first_iteration) {
         generateWaypoints(turtle);
+
+        turtle.turtle_control.if_control = 1; 
+
         waypoint_index_ = 0;
-        prev_waypoint_ = Waypoint(turtle.turtle_chassis.Leg_lf.toe_position, 0.0f, 0.0f);
+        prev_waypoint_ = Waypoint(XY_pair(0.0f, 0.0f), 0.0f, 0.0f);
         curr_waypoint_ = waypoints_[waypoint_index_];
         first_iteration = false;
         clock_start_ = chrono::steady_clock::now();
@@ -74,6 +93,10 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 }
 
 void TrajectoriesParser::generateTempTraj(turtle &turtle) {
+
+    int trajectory = turtle.turtle_gui.drag_traj; 
+    int RUN = turtle.turtle_gui.start_flag; 
+    
     if (!turtle.turtle_gui.start_flag) {
         first_iteration = true;
         waypoint_index_ = 0;

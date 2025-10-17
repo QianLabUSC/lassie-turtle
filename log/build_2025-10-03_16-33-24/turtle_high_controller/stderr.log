@@ -1,0 +1,25 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:22:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   22 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::processWaypoint(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:40:22:[m[K [01;31m[Kerror: [m[Kswitch quantity not an integer
+   40 |     switch(waypoints_[01;31m[K)[m[K {
+      |                      [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:46:1:[m[K [01;31m[Kerror: [m[K‘[01m[Kwaypoint_state[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+   46 | [01;31m[Kwaypoint_state[m[K
+      | [01;31m[K^~~~~~~~~~~~~~[m[K
+      | [32m[Kwaypoints_[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:57:13:[m[K [01;31m[Kerror: [m[K‘[01m[Kwaypoint_state_[m[K’ was not declared in this scope; did you mean ‘[01m[Kwaypoints_[m[K’?
+   57 |             [01;31m[Kwaypoint_state_[m[K++; // increment state
+      |             [01;31m[K^~~~~~~~~~~~~~~[m[K
+      |             [32m[Kwaypoints_[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:73:110:[m[K [01;31m[Kerror: [m[Kexpression cannot be used as a function
+   73 |             turtle.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma_ / 2(M_PI[01;31m[K)[m[K;
+      |                                                                                                              [01;31m[K^[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:74:109:[m[K [01;31m[Kerror: [m[Kexpression cannot be used as a function
+   74 |             turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta_ / 2(M_PI[01;31m[K)[m[K;
+      |                                                                                                             [01;31m[K^[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2

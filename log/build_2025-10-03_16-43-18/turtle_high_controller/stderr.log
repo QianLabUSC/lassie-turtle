@@ -1,0 +1,4 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:22:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   22 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K

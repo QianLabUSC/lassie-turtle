@@ -1,0 +1,19 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:22:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   22 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kbool turtle_namespace::control::TrajectoriesParser::waypointTrajectory(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:62:35:[m[K [01;31m[Kerror: [m[K‘[01m[KGT_pair[m[K’ was not declared in this scope; did you mean ‘[01m[KXY_pair[m[K’?
+   62 |         prev_waypoint_ = Waypoint([01;31m[KGT_pair[m[K(0.0f, 0.0f), 0.0f, 0.0f);
+      |                                   [01;31m[K^~~~~~~[m[K
+      |                                   [32m[KXY_pair[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateTempTraj(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:92:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   92 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:93:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KRUN[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   93 |     int [01;35m[KRUN[m[K = turtle.turtle_gui.start_flag;
+      |         [01;35m[K^~~[m[K
+make[2]: *** [CMakeFiles/turtle_high_controller.dir/build.make:89: CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/turtle_high_controller.dir/all] Error 2
+make: *** [Makefile:141: all] Error 2
