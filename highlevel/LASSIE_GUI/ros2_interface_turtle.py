@@ -24,7 +24,11 @@ from kivy.uix.image import Image
 from kivy.properties import StringProperty
 from kivy.uix.slider import Slider
 from kivy.graphics import Color, Bezier, Line
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+try:
+    from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+except ModuleNotFoundError:
+    # Fallback to the PyPI namespace used by recent garden packages
+    from kivy_garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 from kivy.clock import Clock
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.graphics import *

@@ -33,6 +33,7 @@ from dataclasses import dataclass, asdict
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional, Tuple
+import os
 
 import cv2
 import numpy as np
@@ -50,16 +51,24 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
 
 # Ensure we can import the existing turtle interface as used by lassie_gui.py
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.append(str(PROJECT_ROOT))
+REPO_ROOT = PROJECT_ROOT.parent
+for path in (PROJECT_ROOT, REPO_ROOT):
+    if str(path) not in sys.path:
+        sys.path.append(str(path))
 
-from LASSIE_GUI.ros2_interface_turtle import ControlNode_Turtle  # noqa: E402
+try:  # Prefer the full GUI interface when its dependencies are available.
+    from LASSIE_GUI.ros2_interface_turtle import ControlNode_Turtle  # type: ignore  # noqa: E402
+except Exception:  # pragma: no cover - fallback for headless environments
+    from highlevel.terrain_manipulation.headless_ros2_interface_turtle import (  # noqa: E402
+        ControlNode_Turtle,
+    )
 
 STREAM_WIDTH = 640
 STREAM_HEIGHT = 480
 STREAM_FPS = 30
 SESSION_ROOT = Path(__file__).resolve().parent / "data"
 PREVIEW_WINDOW = "Terrain Manipulation RGB-D"
+DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "America/Los_Angeles")
 
 
 @dataclass
@@ -100,7 +109,9 @@ class MovementProfile:
 class RGBDRecorder:
     color_writer: cv2.VideoWriter
     depth_writer: cv2.VideoWriter
+    color_raw_frames: List[np.ndarray]
     depth_raw_frames: List[np.ndarray]
+    color_raw_path: Path
     depth_raw_path: Path
 
     @classmethod
@@ -108,6 +119,7 @@ class RGBDRecorder:
         fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         color_path = session_dir / "rgb.mp4"
         depth_vis_path = session_dir / "depth_colormap.mp4"
+        color_raw_path = session_dir / "rgb_raw.npy"
         depth_raw_path = session_dir / "depth_raw.npy"
 
         color_writer = cv2.VideoWriter(str(color_path), fourcc, STREAM_FPS, (STREAM_WIDTH, STREAM_HEIGHT))
@@ -120,22 +132,36 @@ class RGBDRecorder:
 
         print(f"Recording RGB video to {color_path}")
         print(f"Recording depth visualization video to {depth_vis_path}")
+        print(f"Accumulating raw RGB frames in {color_raw_path}")
         print(f"Accumulating raw depth frames in {depth_raw_path}")
 
-        return cls(color_writer=color_writer, depth_writer=depth_writer, depth_raw_frames=[], depth_raw_path=depth_raw_path)
+        return cls(
+            color_writer=color_writer,
+            depth_writer=depth_writer,
+            color_raw_frames=[],
+            depth_raw_frames=[],
+            color_raw_path=color_raw_path,
+            depth_raw_path=depth_raw_path,
+        )
 
     def write(self, color_image: np.ndarray, depth_colormap: np.ndarray, depth_raw: np.ndarray) -> None:
         self.color_writer.write(np.ascontiguousarray(color_image))
         self.depth_writer.write(np.ascontiguousarray(depth_colormap))
+        self.color_raw_frames.append(color_image.copy())
         self.depth_raw_frames.append(depth_raw.copy())
 
     def close(self) -> None:
         self.color_writer.release()
         self.depth_writer.release()
+        if self.color_raw_frames:
+            color_stack = np.stack(self.color_raw_frames)
+            np.save(self.color_raw_path, color_stack)
+            print(f"Saved {color_stack.shape[0]} raw RGB frames to {self.color_raw_path}")
         if self.depth_raw_frames:
             depth_stack = np.stack(self.depth_raw_frames)
             np.save(self.depth_raw_path, depth_stack)
             print(f"Saved {depth_stack.shape[0]} raw depth frames to {self.depth_raw_path}")
+        self.color_raw_frames.clear()
         self.depth_raw_frames.clear()
 
 
@@ -206,9 +232,30 @@ def build_profile(args: argparse.Namespace) -> MovementProfile:
     )
 
 
-def ensure_session_dir() -> Path:
+def _resolve_now(timezone_name: Optional[str]) -> datetime:
+    """Return an aware datetime using the requested timezone, falling back to local time."""
+    if timezone_name:
+        try:
+            from zoneinfo import ZoneInfo  # Python 3.9+
+        except ModuleNotFoundError:  # pragma: no cover - Python 3.8 fallback
+            try:
+                from backports.zoneinfo import ZoneInfo  # type: ignore
+            except ModuleNotFoundError:
+                ZoneInfo = None  # type: ignore
+        if ZoneInfo is not None:
+            try:
+                return datetime.now(ZoneInfo(timezone_name))
+            except Exception:
+                pass  # fall through to local time
+    now = datetime.now()
+    if now.tzinfo is None:
+        return now.astimezone()
+    return now
+
+
+def ensure_session_dir(run_time: datetime) -> Path:
     SESSION_ROOT.mkdir(parents=True, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    timestamp = run_time.strftime("%Y%m%d_%H%M%S")
     session_dir = SESSION_ROOT / f"session_{timestamp}"
     session_dir.mkdir(parents=True, exist_ok=False)
     return session_dir
@@ -322,7 +369,7 @@ def bind_signal(sig: int, handler) -> None:
 def main() -> None:
     args = parse_args()
     profile = build_profile(args)
-    session_dir = ensure_session_dir()
+    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
     print(f"Session directory: {session_dir}")
 
     rclpy.init()
@@ -365,7 +412,7 @@ def main() -> None:
     realsense.start()
     recorder = RGBDRecorder.create(session_dir)
 
-    start_time = datetime.now()
+    start_time = _resolve_now(DEFAULT_TIMEZONE)
     data_loop_running.set()
     node.publish_gui_information(profile.to_gui_payload(start_flag=1))
     print("Robot command issued. Recording RGB-D and telemetry...\nPress Enter again or use CTRL+C to stop.")
@@ -393,7 +440,7 @@ def main() -> None:
         print(f"RealSense stream error: {exc}")
         stop_requested.set()
 
-    stop_time = datetime.now()
+    stop_time = _resolve_now(DEFAULT_TIMEZONE)
 
     # Issue stop command to the robot and tear down resources
     data_loop_running.clear()

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Define the folders to copy
-folders=("dependencies")
+folders=("dependencies" "highlevel")
 
 # SSH connection details
 user="ubuntu"
-host="192.168.8.203"
+host="192.168.8.193"
 remote_dir="/home/ubuntu/roboland"
 
 # Sync folders to the remote directory
