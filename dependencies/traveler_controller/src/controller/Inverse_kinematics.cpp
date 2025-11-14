@@ -61,24 +61,32 @@ void abstractToPhysical(float L, float Theta, XY_pair &point)
  * @param X,Y   output interpolated point
  * @return true if segment complete
  */
+
 bool linearTraj(float t_rel, float vel, XY_pair A, XY_pair B, float &X, float &Y)
 {
     float dx = B.x - A.x;
     float dy = B.y - A.y;
     float dist = sqrtf(dx*dx + dy*dy);
-
-    if (dist == 0.0f) {
-        X = A.x;
-        Y = A.y;
+    
+    if (dist < 1e-6f) {
+        X = B.x;
+        Y = B.y;
         return true;
     }
-
-    float scalar = vel / dist;
-    X = scalar * dx * t_rel + A.x;
-    Y = scalar * dy * t_rel + A.y;
-
-    float actual_dist = sqrtf((X - A.x)*(X - A.x) + (Y - A.y)*(Y - A.y));
-    return (actual_dist >= dist);
+    
+    float desired_dist = vel * t_rel;
+    
+    if (desired_dist >= dist) {
+        X = B.x;
+        Y = B.y;
+        return true;
+    }
+    
+    float t = desired_dist / dist;
+    X = A.x + t * dx;
+    Y = A.y + t * dy;
+    
+    return false;
 }
 
 

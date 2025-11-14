@@ -40,17 +40,19 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
 bool TrajectoriesParser::processWaypoint(turtle &turtle) {
     t_ = chrono::duration<float>(clock_now_ - clock_start_).count();
 
-    // 
-    linearTraj(t_, curr_waypoint_.vel, prev_waypoint_.point, curr_waypoint_.point, gamma_, theta_);
+    bool segment_complete = linearTraj(t_, curr_waypoint_.vel, 
+                                       prev_waypoint_.point, curr_waypoint_.point, 
+                                       gamma_, theta_);
 
     // Store the calculated values
     turtle.turtle_control.right_adduction.set_input_position_radian.input_position = gamma_;
     turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = theta_;
-    // convert 
+    // Store the calculated values and convert to motor units (turns)
     turtle.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma_ / (2 * M_PI);
     turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta_ / (2 * M_PI);
 
-    return false;
+    // Return whether we've reached the waypoint
+    return segment_complete;
 }
 
 
@@ -93,13 +95,14 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 }
 
 void TrajectoriesParser::generateTempTraj(turtle &turtle) {
-
     int trajectory = turtle.turtle_gui.drag_traj; 
     int RUN = turtle.turtle_gui.start_flag; 
     
     if (!turtle.turtle_gui.start_flag) {
         first_iteration = true;
         waypoint_index_ = 0;
+        waypoints_.clear();
+        turtle.turtle_control.if_control = 0;  
         return;
     }
 
