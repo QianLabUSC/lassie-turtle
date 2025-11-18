@@ -1,0 +1,15 @@
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateWaypoints(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:24:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   24 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::TrajectoriesParser::generateTempTraj(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:98:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Ktrajectory[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   98 |     int [01;35m[Ktrajectory[m[K = turtle.turtle_gui.drag_traj;
+      |         [01;35m[K^~~~~~~~~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/controller/trajectories_parser.cpp:99:9:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[KRUN[m[K’ [[01;35m[K-Wunused-variable[m[K]
+   99 |     int [01;35m[KRUN[m[K = turtle.turtle_gui.start_flag;
+      |         [01;35m[K^~~[m[K
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:[m[K In member function ‘[01m[Kvoid turtle_namespace::control::lowerproxy::calculate_position(turtle&)[m[K’:
+[01m[K/home/qianlab/single_turtle_workspace/dependencies/traveler_controller/src/proxy/lowerproxy.cpp:186:24:[m[K [01;35m[Kwarning: [m[Kunused variable ‘[01m[Kback_curr_time[m[K’ [[01;35m[K-Wunused-variable[m[K]
+  186 |                 double [01;35m[Kback_curr_time[m[K = deltaTime.count();
+      |                        [01;35m[K^~~~~~~~~~~~~~[m[K

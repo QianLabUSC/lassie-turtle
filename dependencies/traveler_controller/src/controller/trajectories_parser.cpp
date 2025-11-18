@@ -45,8 +45,8 @@ bool TrajectoriesParser::processWaypoint(turtle &turtle) {
                                        gamma_, theta_);
 
     // Store the calculated values
-    turtle.turtle_control.right_adduction.set_input_position_radian.input_position = gamma_;
-    turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = theta_;
+    // turtle.turtle_control.right_adduction.set_input_position_radian.input_position = gamma_;
+    // turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = theta_;
     // Store the calculated values and convert to motor units (turns)
     turtle.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma_ / (2 * M_PI);
     turtle.turtle_control.right_sweeping.set_input_position_radian.input_position = -theta_ / (2 * M_PI);
@@ -65,9 +65,9 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 
         turtle.turtle_control.if_control = 1; 
 
-        waypoint_index_ = 0;
-        prev_waypoint_ = Waypoint(XY_pair(0.0f, 0.0f), 0.0f, 0.0f);
-        curr_waypoint_ = waypoints_[waypoint_index_];
+        waypoint_index_ = 1;
+        prev_waypoint_ = waypoints_[0];
+        curr_waypoint_ = waypoints_[1];
         first_iteration = false;
         clock_start_ = chrono::steady_clock::now();
         printf("Starting waypoint trajectory...\n");
