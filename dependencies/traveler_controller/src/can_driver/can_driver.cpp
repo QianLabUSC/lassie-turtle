@@ -209,13 +209,13 @@ void can_driver::updateChannel2StatusCallback_1(){
 
 
 void can_driver::get_motor_status(turtle& turtle_){
-      updateChannel1StatusCallback_0();
-      updateChannel1StatusCallback_1();
+      // updateChannel1StatusCallback_0();
+      // updateChannel1StatusCallback_1();
       updateChannel2StatusCallback_0();
       updateChannel2StatusCallback_1();
    
-      turtle_.turtle_chassis.left_adduction = odrive_status_msg_0_axis1;
-      turtle_.turtle_chassis.left_sweeping = odrive_status_msg_0_axis0;
+      // turtle_.turtle_chassis.left_adduction = odrive_status_msg_0_axis1;
+      // turtle_.turtle_chassis.left_sweeping = odrive_status_msg_0_axis0;
       turtle_.turtle_chassis.right_adduction = odrive_status_msg_1_axis1;
       turtle_.turtle_chassis.right_sweeping = odrive_status_msg_1_axis0;
 
@@ -223,15 +223,15 @@ void can_driver::get_motor_status(turtle& turtle_){
 }
 
 void can_driver::setControl(turtle& turtle_){
-   turtle_.turtle_control.left_adduction.set_input_position_radian.can_channel = 0;
-   turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 0;
+   // turtle_.turtle_control.left_adduction.set_input_position_radian.can_channel = 0;
+   // turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 0;
    turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 1;
    turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 1;
    std::cout<<"ifcontrol:" << turtle_.turtle_control.if_control<<std::endl;
    
    if(turtle_.turtle_control.if_control){
-      setPosition_left_adduction(turtle_.turtle_control.left_adduction.set_input_position_radian);
-      setPosition_left_sweeping(turtle_.turtle_control.left_sweeping.set_input_position_radian);
+      // setPosition_left_adduction(turtle_.turtle_control.left_adduction.set_input_position_radian);
+      // setPosition_left_sweeping(turtle_.turtle_control.left_sweeping.set_input_position_radian);
       setPosition_right_adduction(turtle_.turtle_control.right_adduction.set_input_position_radian);
       setPosition_right_sweeping(turtle_.turtle_control.right_sweeping.set_input_position_radian);
    }
@@ -253,8 +253,8 @@ void can_driver::change_odrive_state(turtle &turtle_)
             turtle_.turtle_control.left_sweeping.set_state.set_state = 8;
             turtle_.turtle_control.right_adduction.set_state.set_state = 8;
             turtle_.turtle_control.right_sweeping.set_state.set_state = 8;
-            setstate_left_adduction(turtle_.turtle_control.left_adduction.set_state);
-            setstate_left_sweeping(turtle_.turtle_control.left_sweeping.set_state);
+            // setstate_left_adduction(turtle_.turtle_control.left_adduction.set_state);
+            // setstate_left_sweeping(turtle_.turtle_control.left_sweeping.set_state);
             setstate_right_adduction(turtle_.turtle_control.right_adduction.set_state);
             setstate_right_sweeping(turtle_.turtle_control.right_sweeping.set_state);
             std::cout << "set to close loop control" << std::endl;
@@ -275,8 +275,8 @@ void can_driver::change_odrive_state(turtle &turtle_)
             turtle_.turtle_control.left_sweeping.set_state.set_state = 1;
             turtle_.turtle_control.right_adduction.set_state.set_state = 1;
             turtle_.turtle_control.right_sweeping.set_state.set_state = 1;
-            setstate_left_adduction(turtle_.turtle_control.left_adduction.set_state);
-            setstate_left_sweeping(turtle_.turtle_control.left_sweeping.set_state);
+            // setstate_left_adduction(turtle_.turtle_control.left_adduction.set_state);
+            // setstate_left_sweeping(turtle_.turtle_control.left_sweeping.set_state);
             setstate_right_adduction(turtle_.turtle_control.right_adduction.set_state);
             setstate_right_sweeping(turtle_.turtle_control.right_sweeping.set_state);
             turtle_.turtle_chassis.if_idle_count = turtle_.turtle_chassis.if_idle_count + 1;
