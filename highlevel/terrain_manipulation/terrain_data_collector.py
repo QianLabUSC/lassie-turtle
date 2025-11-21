@@ -204,7 +204,18 @@ class RealSenseSession:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--preview", action="store_true", help="Display a live RGB/depth preview during capture.")
+    parser.add_argument(
+        "--preview",
+        dest="preview",
+        action="store_true",
+        help="Display a live RGB/depth preview during capture (default).",
+    )
+    parser.add_argument(
+        "--no-preview",
+        dest="preview",
+        action="store_false",
+        help="Disable live RGB/depth preview (useful over SSH/headless).",
+    )
     parser.add_argument("--drag-traj", type=float, default=5.0, help="Trajectory ID (matches GUI dropdown).")
     parser.add_argument("--lateral-angle", type=float, default=45.0, help="Initial lateral angle in degrees.")
     parser.add_argument("--drag-speed", type=float, default=100.0, help="Drag speed in mm/s.")
@@ -215,6 +226,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--insertion-depth", type=float, default=10.0, help="Insertion depth in millimetres.")
     parser.add_argument("--wiggle-amplitude", type=float, default=1.0, help="Wiggle amplitude in centimetres.")
     parser.add_argument("--metadata-note", type=str, help="Optional operator note stored with the session metadata.")
+    parser.add_argument(
+        "--waypoint-pattern",
+        type=str,
+        default="circle",
+        choices=["none", "line", "diag", "triangle", "circle"],
+        help="Publish a waypoint set to /trajectory_points before sending the start flag.",
+    )
+    parser.add_argument(
+        "--waypoint-rate",
+        type=float,
+        default=10.0,
+        help="Waypoint publish rate (Hz) while the run is active.",
+    )
+    parser.set_defaults(preview=True)
     return parser.parse_args()
 
 
@@ -230,6 +255,48 @@ def build_profile(args: argparse.Namespace) -> MovementProfile:
         insertion_depth_mm=args.insertion_depth,
         wiggle_amplitude_cm=args.wiggle_amplitude,
     )
+
+
+def build_waypoints(pattern: str) -> List[float]:
+    """Return a flattened waypoint list [x, y, vel, ...] suitable for /trajectory_points."""
+    pattern = pattern.lower()
+    if pattern == "line":
+        return [0.0, 0.16, 0.01, 0.0, 0.21, 0.01]
+    if pattern == "diag":
+        return [-0.4, 0.0, 0.02, 0.4, 0.0, 0.02]
+    if pattern == "triangle":
+        return [-0.4, 0.0, 0.5, 0.4, 0.0, 0.5, 0.0, -0.6, 0.5]
+    if pattern == "circle":
+        return [
+            0.35,
+            0.00,
+            0.5,
+            0.25,
+            0.25,
+            0.5,
+            0.00,
+            0.35,
+            0.5,
+            -0.25,
+            0.25,
+            0.5,
+            -0.35,
+            0.00,
+            0.5,
+            -0.25,
+            -0.25,
+            0.5,
+            0.00,
+            -0.35,
+            0.5,
+            0.25,
+            -0.25,
+            0.5,
+            0.35,
+            0.00,
+            0.5,
+        ]
+    return []
 
 
 def _resolve_now(timezone_name: Optional[str]) -> datetime:
@@ -379,6 +446,7 @@ def main() -> None:
 
     executor_stop = threading.Event()
     data_loop_running = threading.Event()
+    waypoint_loop_running = threading.Event()
 
     def executor_thread():
         while not executor_stop.is_set():
@@ -397,6 +465,29 @@ def main() -> None:
     force_thread = threading.Thread(target=force_data_thread, daemon=True)
     force_thread.start()
 
+    waypoints = build_waypoints(args.waypoint_pattern)
+    waypoint_publisher = None
+    waypoint_thread_stop = threading.Event()
+    waypoint_thread_handle: Optional[threading.Thread] = None
+    if waypoints:
+        waypoint_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
+
+    def waypoint_thread():
+        if waypoint_publisher is None:
+            return
+        msg = Float64MultiArray()
+        msg.data = waypoints
+        while not waypoint_thread_stop.is_set():
+            if waypoint_loop_running.is_set():
+                waypoint_publisher.publish(msg)
+                time.sleep(max(0.01, 1.0 / max(args.waypoint_rate, 0.1)))
+            else:
+                time.sleep(0.05)
+
+    if waypoint_publisher is not None:
+        waypoint_thread_handle = threading.Thread(target=waypoint_thread, daemon=True)
+        waypoint_thread_handle.start()
+
     stop_requested = threading.Event()
 
     def request_stop(*_args):
@@ -411,6 +502,12 @@ def main() -> None:
     realsense = RealSenseSession()
     realsense.start()
     recorder = RGBDRecorder.create(session_dir)
+    if waypoint_publisher is not None:
+        initial_waypoints = Float64MultiArray()
+        initial_waypoints.data = waypoints
+        waypoint_publisher.publish(initial_waypoints)
+        waypoint_loop_running.set()
+        print(f"Published {len(waypoints) // 3} waypoints to /trajectory_points.")
 
     start_time = _resolve_now(DEFAULT_TIMEZONE)
     data_loop_running.set()
@@ -444,9 +541,11 @@ def main() -> None:
 
     # Issue stop command to the robot and tear down resources
     data_loop_running.clear()
+    waypoint_loop_running.clear()
     node.publish_gui_information(profile.to_gui_payload(start_flag=0))
 
     force_loop_stop.set()
+    waypoint_thread_stop.set()
     recorder.close()
     realsense.stop()
     if args.preview:
@@ -455,6 +554,8 @@ def main() -> None:
     executor_stop.set()
     spin_thread.join(timeout=1.0)
     force_thread.join(timeout=1.0)
+    if waypoint_thread_handle is not None:
+        waypoint_thread_handle.join(timeout=1.0)
 
     save_metadata(session_dir, profile, args.metadata_note, start_time, stop_time)
     save_robot_data(session_dir, node, profile, real_time_plot=False)
