@@ -1,6 +1,6 @@
 #include "controller/trajectories_parser.h"
 #define _USE_MATH_DEFINES
-
+#include <algorithm>
 #include <cmath>
 using namespace std;
 
@@ -38,6 +38,7 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
 }
 
 bool TrajectoriesParser::processWaypoint(turtle &turtle) {
+    clock_now_ = chrono::steady_clock::now();
     t_ = chrono::duration<float>(clock_now_ - clock_start_).count();
 
     bool segment_complete = linearTraj(t_, curr_waypoint_.vel, 
@@ -56,22 +57,74 @@ bool TrajectoriesParser::processWaypoint(turtle &turtle) {
 }
 
 
+bool TrajectoriesParser::goToInitialPoint(turtle &turtle) {
+    if (waypoints_.empty()) {
+        return true;
+    }
+
+    // Use a conservative velocity for the move-to-start segment
+    const float v = std::min(goto_start_vel_, waypoints_[0].vel);
+
+    clock_now_ = chrono::steady_clock::now();
+    t_ = chrono::duration<float>(clock_now_ - clock_start_).count();
+
+    const bool segment_complete = linearTraj(t_, v,
+                                            prev_waypoint_.point, waypoints_[0].point,
+                                            gamma_, theta_);
+
+    // Command motors (ODrive input_pos is in turns)
+    turtle.turtle_control.right_adduction.set_input_position_radian.input_position = -gamma_ / (2 * M_PI);
+    turtle.turtle_control.right_sweeping.set_input_position_radian.input_position  = -theta_ / (2 * M_PI);
+
+    return segment_complete;
+}
 
 
 
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
     if (first_iteration) {
-        generateWaypoints(turtle);
+    generateWaypoints(turtle);
 
-        turtle.turtle_control.if_control = 1; 
+    turtle.turtle_control.if_control = 1;
 
-        waypoint_index_ = 1;
-        prev_waypoint_ = waypoints_[0];
-        curr_waypoint_ = waypoints_[1];
-        first_iteration = false;
-        clock_start_ = chrono::steady_clock::now();
-        printf("Starting waypoint trajectory...\n");
+    // Pre-position: start from the *current* measured motor positions (turns -> radians)
+    // ODrive pos_estimate is in turns. Your waypoint points are treated as radians (gamma/theta).
+    const float curr_add_turns = turtle.turtle_chassis.right_adduction.pos_estimate;
+    const float curr_swp_turns = turtle.turtle_chassis.right_sweeping.pos_estimate;
+
+    const float curr_gamma_rad = -curr_add_turns * (2 * M_PI);
+    const float curr_theta_rad = -curr_swp_turns * (2 * M_PI);
+
+    // Reuse prev_waypoint_ as the "current state" start point for the pre-position segment
+    prev_waypoint_ = Waypoint(curr_gamma_rad, curr_theta_rad, 0.0f, 0.0f);
+
+    prog_state_ = ProgramState::GoToInitialPoint;
+    first_iteration = false;
+
+    clock_start_ = chrono::steady_clock::now();
+    printf("Prepositioning to waypoint 0...\n");
     }
+
+    // Phase 1: move smoothly to waypoint 0
+    if (prog_state_ == ProgramState::GoToInitialPoint) {
+        if (goToInitialPoint(turtle)) {
+            if (waypoints_.size() < 2) {
+                printf("Trajectory complete (only 1 waypoint).\n");
+                return true;
+            }
+
+            // Phase 2: run the user trajectory from waypoint0 -> waypoint1 -> ...
+            waypoint_index_ = 1;
+            prev_waypoint_ = waypoints_[0];
+            curr_waypoint_ = waypoints_[1];
+            clock_start_ = chrono::steady_clock::now();
+            prog_state_ = ProgramState::Running;
+
+            printf("Reached waypoint 0. Starting waypoint trajectory...\n");
+        }
+        return false;
+    }
+
 
     if (waypoint_index_ >= static_cast<int>(waypoints_.size())) {
         printf("Trajectory complete.\n");
@@ -100,6 +153,7 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
     
     if (!turtle.turtle_gui.start_flag) {
         first_iteration = true;
+        prog_state_ = ProgramState::FirstIteration;
         waypoint_index_ = 0;
         waypoints_.clear();
         turtle.turtle_control.if_control = 0;  

@@ -25,6 +25,8 @@ public:
     bool waypointTrajectory(turtle &);
     void generateWaypoints(turtle &);
     bool processWaypoint(turtle &);
+    // Pre-start: smoothly move motors to waypoints_[0] before running the rest of the trajectory
+    bool goToInitialPoint(turtle &);
 
 private:
     // state for linear trajectory timing
@@ -43,6 +45,12 @@ private:
     int waypoint_index_ = 0;
     bool first_iteration = true;
     bool traj_complete_ = false;
+
+    // Program state for waypoint execution
+    ProgramState prog_state_ = ProgramState::FirstIteration;
+
+    // Max speed for the pre-position move to waypoint 0 
+    float goto_start_vel_ = 0.2f; // conservative
 
     // cartesian interpolation targets
     float target_x = 0.0f;
