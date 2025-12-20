@@ -34,11 +34,10 @@ except ModuleNotFoundError as exc:  # pragma: no cover - import guard
 import cv2
 import numpy as np
 
+from camera_configs import STREAM_WIDTH, STREAM_HEIGHT, STREAM_FPS
+
 WINDOW_NAME = "Intel RealSense D435i (tuned)"
 CROSSHAIR_SIZE = 12
-STREAM_WIDTH = 640
-STREAM_HEIGHT = 480
-STREAM_FPS = 30
 RECORDINGS_DIR = Path(__file__).resolve().parent / "rgbd_recordings"
 
 # Perceptual colormaps to choose from.
