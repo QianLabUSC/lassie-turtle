@@ -34,7 +34,19 @@ except ModuleNotFoundError as exc:  # pragma: no cover - import guard
 import cv2
 import numpy as np
 
-from camera_configs import STREAM_WIDTH, STREAM_HEIGHT, STREAM_FPS
+from camera_configs.realsense_d435i import (
+    STREAM_WIDTH,
+    STREAM_HEIGHT,
+    STREAM_FPS,
+    DEFAULT_MIN_DEPTH_M,
+    DEFAULT_MAX_DEPTH_M,
+    DEFAULT_DECIMATE_MAGNITUDE,
+    DEFAULT_AUTO_RANGE,
+    DEFAULT_DISPLAY_SMOOTH,
+    DEFAULT_SMOOTH_KERNEL,
+    DEFAULT_COLORMAP_NAME,
+    DEFAULT_VISUAL_PRESET,
+)
 
 WINDOW_NAME = "Intel RealSense D435i (tuned)"
 CROSSHAIR_SIZE = 12
@@ -149,31 +161,31 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--colormap",
         choices=sorted(COLORMAPS.keys()),
-        default="turbo",
+        default=DEFAULT_COLORMAP_NAME,
         help="Colormap for depth visualization.",
     )
     parser.add_argument(
         "--max-depth",
         type=float,
-        default=1.5,
+        default=DEFAULT_MAX_DEPTH_M,
         help="Depth range upper bound (meters) used for clamping/normalization.",
     )
     parser.add_argument(
         "--min-depth",
         type=float,
-        default=0.0,
+        default=DEFAULT_MIN_DEPTH_M,
         help="Depth range lower bound (meters) used for clamping/normalization.",
     )
     parser.add_argument(
         "--preset",
         choices=sorted(VISUAL_PRESETS.keys()),
-        default="high_density",
+        default=DEFAULT_VISUAL_PRESET,
         help="RealSense visual preset applied to the depth sensor.",
     )
     parser.add_argument(
         "--decimate",
         type=int,
-        default=1,
+        default=DEFAULT_DECIMATE_MAGNITUDE,
         help="Decimation magnitude (>=1). Values >1 downsample depth to reduce noise.",
     )
     parser.add_argument(
@@ -188,17 +200,17 @@ def _parse_args() -> argparse.Namespace:
         action="store_false",
         help="Disable automatic depth range detection; rely solely on --min-depth/--max-depth.",
     )
-    parser.set_defaults(auto_range=True)
+    parser.set_defaults(auto_range=DEFAULT_AUTO_RANGE)
     parser.add_argument(
         "--display-smooth",
         choices=("none", "median", "gaussian", "bilateral"),
-        default="median",
+        default=DEFAULT_DISPLAY_SMOOTH,
         help="Extra smoothing applied only to the depth visualization (not raw depth).",
     )
     parser.add_argument(
         "--smooth-kernel",
         type=int,
-        default=5,
+        default=DEFAULT_SMOOTH_KERNEL,
         help="Kernel size for display smoothing (odd integer; ignored when --display-smooth=none).",
     )
     return parser.parse_args()
