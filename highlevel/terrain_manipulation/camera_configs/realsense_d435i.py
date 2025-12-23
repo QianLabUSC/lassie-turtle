@@ -12,12 +12,12 @@ STREAM_HEIGHT = 480
 STREAM_FPS = 30
 
 # Depth range (in meters) used for clamping/normalization.
-DEFAULT_MIN_DEPTH_M = 0.1
+DEFAULT_MIN_DEPTH_M = 0.01
 DEFAULT_MAX_DEPTH_M = 0.7
 
 # RealSense visual preset used for the depth sensor.
 # Must be one of: "default", "high_accuracy", "high_density", "medium_density".
-DEFAULT_VISUAL_PRESET = "high_density"
+DEFAULT_VISUAL_PRESET = "default"
 
 # Decimation magnitude (>=1). Values >1 downsample depth to reduce noise.
 DEFAULT_DECIMATE_MAGNITUDE = 1
