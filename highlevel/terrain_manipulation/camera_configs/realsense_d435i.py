@@ -12,8 +12,8 @@ STREAM_HEIGHT = 480
 STREAM_FPS = 30
 
 # Depth range (in meters) used for clamping/normalization.
-DEFAULT_MIN_DEPTH_M = 0.0
-DEFAULT_MAX_DEPTH_M = 1.5
+DEFAULT_MIN_DEPTH_M = 0.1
+DEFAULT_MAX_DEPTH_M = 0.7
 
 # RealSense visual preset used for the depth sensor.
 # Must be one of: "default", "high_accuracy", "high_density", "medium_density".
@@ -23,7 +23,7 @@ DEFAULT_VISUAL_PRESET = "high_density"
 DEFAULT_DECIMATE_MAGNITUDE = 1
 
 # Whether to automatically estimate depth min/max per frame using percentiles.
-DEFAULT_AUTO_RANGE = True
+DEFAULT_AUTO_RANGE = False
 
 # Extra smoothing applied only to the depth visualization (not raw depth).
 # One of: "none", "median", "gaussian", "bilateral".
@@ -34,4 +34,3 @@ DEFAULT_SMOOTH_KERNEL = 5
 
 # Default perceptual colormap name for depth visualization.
 DEFAULT_COLORMAP_NAME = "turbo"
-
