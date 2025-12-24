@@ -19,7 +19,9 @@ automatically once the turtle returns to the idle state.
 from __future__ import annotations
 
 import json
+import shutil
 import signal
+import subprocess
 import sys
 import threading
 import time
@@ -48,6 +50,9 @@ except Exception:  # pragma: no cover - fallback for headless environments
 
 SESSION_ROOT = Path(__file__).resolve().parent / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "America/Los_Angeles")
+REMOTE_HOST = os.environ.get("TERRAIN_REMOTE_HOST", "qianlab@192.168.10.16")
+REMOTE_DATA_ROOT = os.environ.get("TERRAIN_REMOTE_DATA_ROOT", "/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/terrain_manipulation/data")
+KEEP_LOCAL = os.environ.get("TERRAIN_KEEP_LOCAL", "0").lower() in ("1", "true", "yes")
 
 FIXED_TRAJECTORY = [
     0.0,
@@ -196,6 +201,22 @@ def save_robot_data(session_dir: Path, node: ControlNode_Turtle) -> None:
     print(f"Robot telemetry saved to {csv_path}")
 
 
+def transfer_session(session_dir: Path) -> Optional[str]:
+    if not REMOTE_HOST or not REMOTE_DATA_ROOT:
+        print("Remote transfer disabled: missing host or data root.")
+        return None
+    remote_root = REMOTE_DATA_ROOT.rstrip("/")
+    remote_session = f"{remote_root}/{session_dir.name}"
+    try:
+        subprocess.run(["ssh", REMOTE_HOST, "mkdir", "-p", remote_session], check=True)
+        subprocess.run(["rsync", "-a", f"{session_dir}/", f"{REMOTE_HOST}:{remote_session}/"], check=True)
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        print(f"Failed to transfer session to {REMOTE_HOST}:{remote_session}: {exc}")
+        return None
+    print(f"Session transferred to {REMOTE_HOST}:{remote_session}")
+    return remote_session
+
+
 def bind_signal(sig: int, handler) -> None:
     try:
         signal.signal(sig, handler)
@@ -291,12 +312,25 @@ def main() -> None:
     save_metadata(session_dir, start_time, stop_time)
     save_robot_data(session_dir, node)
 
+    remote_session = transfer_session(session_dir)
+    if remote_session and not KEEP_LOCAL:
+        try:
+            shutil.rmtree(session_dir)
+            print(f"Removed local session data at {session_dir}")
+        except OSError as exc:
+            print(f"Failed to remove local session data {session_dir}: {exc}")
+
     executor.shutdown()
     node.destroy_node()
     rclpy.shutdown()
 
     print("Session complete.")
-    print(f"Data stored under: {session_dir}")
+    if remote_session and not KEEP_LOCAL:
+        print(f"Data stored under: {REMOTE_HOST}:{remote_session}")
+    elif remote_session:
+        print(f"Data stored under: {session_dir} and {REMOTE_HOST}:{remote_session}")
+    else:
+        print(f"Data stored under: {session_dir}")
 
 
 if __name__ == "__main__":
