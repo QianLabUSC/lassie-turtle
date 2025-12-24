@@ -68,11 +68,11 @@ def _plot_to_image(
     height: int,
 ) -> np.ndarray:
     fig, ax = plt.subplots(figsize=(width / 100.0, height / 100.0), dpi=100)
-    ax.plot(times[: current_idx + 1], right_adduction[: current_idx + 1], color="tab:red", linewidth=1.5, label="rightadduction_curr")
-    ax.plot(times[: current_idx + 1], right_sweeping[: current_idx + 1], color="tab:blue", linewidth=1.5, label="rightsweeping_curr")
-    ax.set_title("Right Motor Torque Setpoints")
+    ax.plot(times[: current_idx + 1], right_adduction[: current_idx + 1], color="tab:red", linewidth=1.5, label="adduction_current")
+    ax.plot(times[: current_idx + 1], right_sweeping[: current_idx + 1], color="tab:blue", linewidth=1.5, label="sweeping_current")
+    ax.set_title("Motor Current Setpoints")
     ax.set_xlabel("time (s)")
-    ax.set_ylabel("torque setpoint")
+    ax.set_ylabel("current setpoint")
     ax.legend(loc="upper right")
     ax.grid(True, alpha=0.3)
     fig.tight_layout()

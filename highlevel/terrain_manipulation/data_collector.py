@@ -67,10 +67,10 @@ KEEP_LOCAL = os.environ.get("TERRAIN_KEEP_LOCAL", "0").lower() in ("1", "true", 
 STREAM_WIDTH = 848
 STREAM_HEIGHT = 480
 STREAM_FPS = 30
-DEPTH_MIN_M = 0.10
-DEPTH_MAX_M = 0.70
+DEPTH_MIN_M = None
+DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
-DEPTH_HIST_EQ = False
+DEPTH_HIST_EQ = True
 DEPTH_POSTPROCESS = False
 
 FIXED_TRAJECTORY = [
@@ -243,8 +243,10 @@ def _make_colorizer() -> rs.colorizer:
     cz = rs.colorizer()
     scheme = scheme_map.get(DEPTH_SCHEME, 0)
     _try_set(cz, rs.option.color_scheme, float(scheme))
-    _try_set(cz, rs.option.min_distance, float(DEPTH_MIN_M))
-    _try_set(cz, rs.option.max_distance, float(DEPTH_MAX_M))
+    if DEPTH_MIN_M is not None:
+        _try_set(cz, rs.option.min_distance, float(DEPTH_MIN_M))
+    if DEPTH_MAX_M is not None:
+        _try_set(cz, rs.option.max_distance, float(DEPTH_MAX_M))
     _try_set(cz, rs.option.histogram_equalization_enabled, 1.0 if DEPTH_HIST_EQ else 0.0)
     return cz
 
@@ -333,6 +335,7 @@ class RealSenseSession:
         self.spatial = rs.spatial_filter()
         self.temporal = rs.temporal_filter()
         self.hole = rs.hole_filling_filter()
+        self.align = rs.align(rs.stream.color)
 
     def start(self) -> None:
         self.pipeline.start(self.config)
@@ -342,6 +345,7 @@ class RealSenseSession:
 
     def poll(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
         frames = self.pipeline.wait_for_frames(timeout_ms=5000)
+        frames = self.align.process(frames)
         depth = frames.get_depth_frame()
         color = frames.get_color_frame()
         if not depth or not color:
