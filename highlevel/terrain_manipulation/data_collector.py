@@ -399,15 +399,6 @@ def main() -> None:
     executor = SingleThreadedExecutor()
     executor.add_node(node)
 
-    executor_stop = threading.Event()
-
-    def executor_thread():
-        while not executor_stop.is_set():
-            executor.spin_once(timeout_sec=0.1)
-
-    spin_thread = threading.Thread(target=executor_thread, daemon=True)
-    spin_thread.start()
-
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
 
     stop_requested = threading.Event()
@@ -445,6 +436,7 @@ def main() -> None:
     has_moved = False
     try:
         while not stop_requested.is_set():
+            executor.spin_once(timeout_sec=0.0)
             color_img, depth_raw, depth_bgr = realsense.poll()
             frame_time = time.time() - run_start
             node.update_force_data(True)
@@ -461,9 +453,6 @@ def main() -> None:
     stop_time = _resolve_now(DEFAULT_TIMEZONE)
 
     node.publish_gui_information(_build_gui_message(start_flag=0.0))
-
-    executor_stop.set()
-    spin_thread.join(timeout=1.0)
 
     save_metadata(session_dir, start_time, stop_time)
     save_robot_data(session_dir, node)
