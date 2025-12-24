@@ -49,7 +49,7 @@ except Exception:  # pragma: no cover - fallback for headless environments
     )
 
 SESSION_ROOT = Path(__file__).resolve().parent / "data"
-DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "America/Los_Angeles")
+DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 REMOTE_HOST = os.environ.get("TERRAIN_REMOTE_HOST", "qianlab@192.168.10.16")
 REMOTE_DATA_ROOT = os.environ.get("TERRAIN_REMOTE_DATA_ROOT", "/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/terrain_manipulation/data")
 KEEP_LOCAL = os.environ.get("TERRAIN_KEEP_LOCAL", "0").lower() in ("1", "true", "yes")
