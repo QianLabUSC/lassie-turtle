@@ -255,6 +255,7 @@ class RGBDRecorder:
         self.depth_vis_path = session_dir / "depth_colormap.mp4"
         self.color_raw_path = session_dir / "rgb_raw.npy"
         self.depth_raw_path = session_dir / "depth_raw.npy"
+        self.timestamp_path = session_dir / "rgbd_timestamps.npy"
 
         self.color_raw_frames: List[np.ndarray] = []
         self.depth_raw_frames: List[np.ndarray] = []
@@ -265,12 +266,15 @@ class RGBDRecorder:
         print(f"Recording depth visualization video to {self.depth_vis_path}")
         print(f"Accumulating raw RGB frames in {self.color_raw_path}")
         print(f"Accumulating raw depth frames in {self.depth_raw_path}")
+        print(f"Accumulating frame timestamps in {self.timestamp_path}")
 
-    def write(self, color_image: np.ndarray, depth_colormap: np.ndarray, depth_raw: np.ndarray) -> None:
+    def write(
+        self, color_image: np.ndarray, depth_colormap: np.ndarray, depth_raw: np.ndarray, timestamp: float
+    ) -> None:
         self.color_raw_frames.append(color_image.copy())
         self.depth_raw_frames.append(depth_raw.copy())
         self.depth_vis_frames.append(depth_colormap.copy())
-        self.timestamps.append(time.monotonic())
+        self.timestamps.append(float(timestamp))
 
     def close(self) -> None:
         if self.timestamps:
@@ -310,6 +314,9 @@ class RGBDRecorder:
             depth_stack = np.stack(self.depth_raw_frames)
             np.save(self.depth_raw_path, depth_stack)
             print(f"Saved {depth_stack.shape[0]} raw depth frames to {self.depth_raw_path}")
+        if self.timestamps:
+            np.save(self.timestamp_path, np.asarray(self.timestamps))
+            print(f"Saved {len(self.timestamps)} frame timestamps to {self.timestamp_path}")
         self.color_raw_frames.clear()
         self.depth_raw_frames.clear()
         self.depth_vis_frames.clear()
@@ -393,7 +400,6 @@ def main() -> None:
     executor.add_node(node)
 
     executor_stop = threading.Event()
-    data_loop_running = threading.Event()
 
     def executor_thread():
         while not executor_stop.is_set():
@@ -401,16 +407,6 @@ def main() -> None:
 
     spin_thread = threading.Thread(target=executor_thread, daemon=True)
     spin_thread.start()
-
-    force_loop_stop = threading.Event()
-
-    def force_data_thread():
-        while not force_loop_stop.is_set():
-            node.update_force_data(data_loop_running.is_set())
-            time.sleep(0.01)
-
-    force_thread = threading.Thread(target=force_data_thread, daemon=True)
-    force_thread.start()
 
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
 
@@ -425,6 +421,7 @@ def main() -> None:
     input("Press Enter to start the fixed trajectory run...")
 
     node.calibrate()
+    run_start = node.start_time
 
     trajectory_msg = Float64MultiArray()
     trajectory_msg.data = list(FIXED_TRAJECTORY)
@@ -436,7 +433,6 @@ def main() -> None:
     recorder = RGBDRecorder(session_dir)
 
     start_time = _resolve_now(DEFAULT_TIMEZONE)
-    data_loop_running.set()
     node.publish_gui_information(_build_gui_message(start_flag=1.0))
     print("Robot command issued. Recording RGB-D + telemetry...\nPress Enter again or use CTRL+C to stop.")
 
@@ -450,26 +446,24 @@ def main() -> None:
     try:
         while not stop_requested.is_set():
             color_img, depth_raw, depth_bgr = realsense.poll()
-            recorder.write(color_img, depth_bgr, depth_raw)
+            frame_time = time.time() - run_start
+            node.update_force_data(True)
+            recorder.write(color_img, depth_bgr, depth_raw, frame_time)
             if node.turtle_state != 0.0:
                 has_moved = True
             elif has_moved and node.turtle_state == 0.0:
                 stop_requested.set()
                 break
-            time.sleep(0.01)
     except RuntimeError as exc:
         print(f"RealSense stream error: {exc}")
         stop_requested.set()
 
     stop_time = _resolve_now(DEFAULT_TIMEZONE)
 
-    data_loop_running.clear()
     node.publish_gui_information(_build_gui_message(start_flag=0.0))
 
-    force_loop_stop.set()
     executor_stop.set()
     spin_thread.join(timeout=1.0)
-    force_thread.join(timeout=1.0)
 
     save_metadata(session_dir, start_time, stop_time)
     save_robot_data(session_dir, node)
