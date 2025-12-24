@@ -145,6 +145,7 @@ def main() -> None:
     hole = rs.hole_filling_filter()
 
     colorizer = _make_colorizer(args.min_depth, args.max_depth, args.scheme, args.hist_eq)
+    align = rs.align(rs.stream.color)
 
     win = "RealSense D435i (Viewer-like)"
     cv2.namedWindow(win, cv2.WINDOW_NORMAL)
@@ -152,6 +153,7 @@ def main() -> None:
     try:
         while True:
             frames = pipeline.wait_for_frames()
+            frames = align.process(frames)
             depth = frames.get_depth_frame()
             color = frames.get_color_frame()
             if not depth or not color:
