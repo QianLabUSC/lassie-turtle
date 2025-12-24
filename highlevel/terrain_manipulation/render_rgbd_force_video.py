@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render RGB|Depth|Torque plot video from a session folder."""
+"""Render RGB|Torque plot video from a session folder."""
 
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ except ModuleNotFoundError as exc:
     raise SystemExit("matplotlib is required for plotting.") from exc
 
 
-def _read_robot_times_and_torque(csv_path: Path) -> Tuple[np.ndarray, np.ndarray]:
+def _read_robot_times_and_torque(csv_path: Path) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     with csv_path.open("r", newline="") as fh:
         reader = csv.reader(fh)
         rows = list(reader)
@@ -28,21 +28,24 @@ def _read_robot_times_and_torque(csv_path: Path) -> Tuple[np.ndarray, np.ndarray
     header = rows[2]
     data_rows = rows[3:]
     try:
-        torque_idx = header.index("rightadduction_curr")
+        right_adduction_idx = header.index("rightadduction_curr")
+        right_sweeping_idx = header.index("rightsweeping_curr")
     except ValueError as exc:
-        raise ValueError("rightadduction_curr column not found in robot_state.csv") from exc
+        raise ValueError("rightadduction_curr/rightsweeping_curr columns not found in robot_state.csv") from exc
 
     times: List[float] = []
-    torque: List[float] = []
+    right_adduction: List[float] = []
+    right_sweeping: List[float] = []
     for row in data_rows:
         if not row:
             continue
         try:
             times.append(float(row[0]))
-            torque.append(float(row[torque_idx]))
+            right_adduction.append(float(row[right_adduction_idx]))
+            right_sweeping.append(float(row[right_sweeping_idx]))
         except ValueError:
             continue
-    return np.asarray(times), np.asarray(torque)
+    return np.asarray(times), np.asarray(right_adduction), np.asarray(right_sweeping)
 
 
 def _closest_indices(robot_times: np.ndarray, frame_times: np.ndarray) -> np.ndarray:
@@ -56,12 +59,21 @@ def _closest_indices(robot_times: np.ndarray, frame_times: np.ndarray) -> np.nda
     return np.where(use_right, right, left)
 
 
-def _plot_to_image(times: np.ndarray, torque: np.ndarray, current_idx: int, width: int, height: int) -> np.ndarray:
+def _plot_to_image(
+    times: np.ndarray,
+    right_adduction: np.ndarray,
+    right_sweeping: np.ndarray,
+    current_idx: int,
+    width: int,
+    height: int,
+) -> np.ndarray:
     fig, ax = plt.subplots(figsize=(width / 100.0, height / 100.0), dpi=100)
-    ax.plot(times[: current_idx + 1], torque[: current_idx + 1], color="tab:red", linewidth=1.5)
-    ax.set_title("rightadduction_curr")
+    ax.plot(times[: current_idx + 1], right_adduction[: current_idx + 1], color="tab:red", linewidth=1.5, label="rightadduction_curr")
+    ax.plot(times[: current_idx + 1], right_sweeping[: current_idx + 1], color="tab:blue", linewidth=1.5, label="rightsweeping_curr")
+    ax.set_title("Right Motor Torque Setpoints")
     ax.set_xlabel("time (s)")
     ax.set_ylabel("torque setpoint")
+    ax.legend(loc="upper right")
     ax.grid(True, alpha=0.3)
     fig.tight_layout()
     fig.canvas.draw()
@@ -82,17 +94,16 @@ def main() -> None:
         session_dir = session_dir.parent
 
     rgb_path = session_dir / "rgb_raw.npy"
-    depth_vis_path = session_dir / "depth_colormap.mp4"
     ts_path = session_dir / "rgbd_timestamps.npy"
     csv_path = session_dir / "robot_state.csv"
 
-    for path in (rgb_path, depth_vis_path, ts_path, csv_path):
+    for path in (rgb_path, ts_path, csv_path):
         if not path.exists():
             raise SystemExit(f"Missing {path}")
 
     rgb = np.load(rgb_path)
     frame_times = np.load(ts_path)
-    robot_times, torque = _read_robot_times_and_torque(csv_path)
+    robot_times, right_adduction, right_sweeping = _read_robot_times_and_torque(csv_path)
 
     if len(rgb) != len(frame_times):
         raise SystemExit("RGB and timestamps lengths do not match.")
@@ -105,14 +116,10 @@ def main() -> None:
 
     idxs = _closest_indices(robot_times, frame_times)
 
-    output_path = args.output or (session_dir / "rgbd_force.mp4")
+    output_path = args.output or (session_dir / "rgb_force.mp4")
     fps = max(1.0, (len(frame_times) - 1) / (frame_times[-1] - frame_times[0]))
-    out_w = rgb.shape[2] + rgb.shape[2] + plot_w
+    out_w = rgb.shape[2] + plot_w
     out_h = rgb.shape[1]
-
-    cap = cv2.VideoCapture(str(depth_vis_path))
-    if not cap.isOpened():
-        raise SystemExit("Failed to open depth_colormap.mp4.")
 
     writer = cv2.VideoWriter(
         str(output_path),
@@ -125,16 +132,12 @@ def main() -> None:
 
     for i in range(len(rgb)):
         color_img = rgb[i]
-        ok, depth_bgr = cap.read()
-        if not ok:
-            break
-        plot_img = _plot_to_image(robot_times, torque, int(idxs[i]), plot_w, plot_h)
+        plot_img = _plot_to_image(robot_times, right_adduction, right_sweeping, int(idxs[i]), plot_w, plot_h)
         plot_bgr = cv2.cvtColor(plot_img, cv2.COLOR_RGB2BGR)
 
-        canvas = np.hstack([color_img, depth_bgr, plot_bgr])
+        canvas = np.hstack([color_img, plot_bgr])
         writer.write(canvas)
 
-    cap.release()
     writer.release()
     print(f"Saved {output_path}")
 
