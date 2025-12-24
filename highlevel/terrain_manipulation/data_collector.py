@@ -251,32 +251,15 @@ def _make_colorizer() -> rs.colorizer:
 
 class RGBDRecorder:
     def __init__(self, session_dir: Path) -> None:
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
         self.color_path = session_dir / "rgb.mp4"
         self.depth_vis_path = session_dir / "depth_colormap.mp4"
         self.color_raw_path = session_dir / "rgb_raw.npy"
         self.depth_raw_path = session_dir / "depth_raw.npy"
 
-        self.color_writer = cv2.VideoWriter(
-            str(self.color_path),
-            fourcc,
-            STREAM_FPS,
-            (STREAM_WIDTH, STREAM_HEIGHT),
-        )
-        self.depth_writer = cv2.VideoWriter(
-            str(self.depth_vis_path),
-            fourcc,
-            STREAM_FPS,
-            (STREAM_WIDTH, STREAM_HEIGHT),
-        )
-
-        if not self.color_writer.isOpened() or not self.depth_writer.isOpened():
-            self.color_writer.release()
-            self.depth_writer.release()
-            raise SystemExit("Failed to open video writers for RGB-D recording.")
-
         self.color_raw_frames: List[np.ndarray] = []
         self.depth_raw_frames: List[np.ndarray] = []
+        self.depth_vis_frames: List[np.ndarray] = []
+        self.timestamps: List[float] = []
 
         print(f"Recording RGB video to {self.color_path}")
         print(f"Recording depth visualization video to {self.depth_vis_path}")
@@ -284,14 +267,41 @@ class RGBDRecorder:
         print(f"Accumulating raw depth frames in {self.depth_raw_path}")
 
     def write(self, color_image: np.ndarray, depth_colormap: np.ndarray, depth_raw: np.ndarray) -> None:
-        self.color_writer.write(np.ascontiguousarray(color_image))
-        self.depth_writer.write(np.ascontiguousarray(depth_colormap))
         self.color_raw_frames.append(color_image.copy())
         self.depth_raw_frames.append(depth_raw.copy())
+        self.depth_vis_frames.append(depth_colormap.copy())
+        self.timestamps.append(time.monotonic())
 
     def close(self) -> None:
-        self.color_writer.release()
-        self.depth_writer.release()
+        if self.timestamps:
+            duration = self.timestamps[-1] - self.timestamps[0]
+            if duration > 0 and len(self.timestamps) > 1:
+                fps = max(1.0, (len(self.timestamps) - 1) / duration)
+            else:
+                fps = STREAM_FPS
+        else:
+            fps = STREAM_FPS
+
+        if self.color_raw_frames:
+            frame_h, frame_w = self.color_raw_frames[0].shape[:2]
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            color_writer = cv2.VideoWriter(str(self.color_path), fourcc, fps, (frame_w, frame_h))
+            if not color_writer.isOpened():
+                raise SystemExit("Failed to open RGB video writer.")
+            for frame in self.color_raw_frames:
+                color_writer.write(np.ascontiguousarray(frame))
+            color_writer.release()
+
+        if self.depth_vis_frames:
+            frame_h, frame_w = self.depth_vis_frames[0].shape[:2]
+            fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+            depth_writer = cv2.VideoWriter(str(self.depth_vis_path), fourcc, fps, (frame_w, frame_h))
+            if not depth_writer.isOpened():
+                raise SystemExit("Failed to open depth video writer.")
+            for frame in self.depth_vis_frames:
+                depth_writer.write(np.ascontiguousarray(frame))
+            depth_writer.release()
+
         if self.color_raw_frames:
             color_stack = np.stack(self.color_raw_frames)
             np.save(self.color_raw_path, color_stack)
@@ -302,6 +312,8 @@ class RGBDRecorder:
             print(f"Saved {depth_stack.shape[0]} raw depth frames to {self.depth_raw_path}")
         self.color_raw_frames.clear()
         self.depth_raw_frames.clear()
+        self.depth_vis_frames.clear()
+        self.timestamps.clear()
 
 
 class RealSenseSession:
