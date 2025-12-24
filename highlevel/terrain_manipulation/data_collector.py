@@ -27,12 +27,22 @@ import threading
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional, Tuple
 import os
 
+import cv2
+import numpy as np
 import rclpy
 from rclpy.executors import SingleThreadedExecutor
 from std_msgs.msg import Float64MultiArray
+
+try:
+    import pyrealsense2 as rs
+except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
+    raise SystemExit(
+        "pyrealsense2 is not installed.\n"
+        "Install the Intel RealSense SDK Python bindings before running this program."
+    ) from exc
 
 # Ensure we can import the existing turtle interface as used by lassie_gui.py
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +63,15 @@ DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 REMOTE_HOST = os.environ.get("TERRAIN_REMOTE_HOST", "qianlab@192.168.10.16")
 REMOTE_DATA_ROOT = os.environ.get("TERRAIN_REMOTE_DATA_ROOT", "/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/terrain_manipulation/data")
 KEEP_LOCAL = os.environ.get("TERRAIN_KEEP_LOCAL", "0").lower() in ("1", "true", "yes")
+
+STREAM_WIDTH = 848
+STREAM_HEIGHT = 480
+STREAM_FPS = 30
+DEPTH_MIN_M = 0.10
+DEPTH_MAX_M = 0.70
+DEPTH_SCHEME = "jet"
+DEPTH_HIST_EQ = False
+DEPTH_POSTPROCESS = False
 
 FIXED_TRAJECTORY = [
     0.0,
@@ -201,6 +220,127 @@ def save_robot_data(session_dir: Path, node: ControlNode_Turtle) -> None:
     print(f"Robot telemetry saved to {csv_path}")
 
 
+def _try_set(opt_owner, option, value) -> None:
+    try:
+        opt_owner.set_option(option, value)
+    except Exception as exc:
+        print(f"[WARN] Could not set {option} to {value}: {exc}")
+
+
+def _make_colorizer() -> rs.colorizer:
+    scheme_map = {
+        "jet": 0,
+        "classic": 1,
+        "white_to_black": 2,
+        "black_to_white": 3,
+        "bio": 4,
+        "cold": 5,
+        "warm": 6,
+        "quantized": 7,
+        "pattern": 8,
+        "turbo": 9,
+    }
+    cz = rs.colorizer()
+    scheme = scheme_map.get(DEPTH_SCHEME, 0)
+    _try_set(cz, rs.option.color_scheme, float(scheme))
+    _try_set(cz, rs.option.min_distance, float(DEPTH_MIN_M))
+    _try_set(cz, rs.option.max_distance, float(DEPTH_MAX_M))
+    _try_set(cz, rs.option.histogram_equalization_enabled, 1.0 if DEPTH_HIST_EQ else 0.0)
+    return cz
+
+
+class RGBDRecorder:
+    def __init__(self, session_dir: Path) -> None:
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        self.color_path = session_dir / "rgb.mp4"
+        self.depth_vis_path = session_dir / "depth_colormap.mp4"
+        self.color_raw_path = session_dir / "rgb_raw.npy"
+        self.depth_raw_path = session_dir / "depth_raw.npy"
+
+        self.color_writer = cv2.VideoWriter(
+            str(self.color_path),
+            fourcc,
+            STREAM_FPS,
+            (STREAM_WIDTH, STREAM_HEIGHT),
+        )
+        self.depth_writer = cv2.VideoWriter(
+            str(self.depth_vis_path),
+            fourcc,
+            STREAM_FPS,
+            (STREAM_WIDTH, STREAM_HEIGHT),
+        )
+
+        if not self.color_writer.isOpened() or not self.depth_writer.isOpened():
+            self.color_writer.release()
+            self.depth_writer.release()
+            raise SystemExit("Failed to open video writers for RGB-D recording.")
+
+        self.color_raw_frames: List[np.ndarray] = []
+        self.depth_raw_frames: List[np.ndarray] = []
+
+        print(f"Recording RGB video to {self.color_path}")
+        print(f"Recording depth visualization video to {self.depth_vis_path}")
+        print(f"Accumulating raw RGB frames in {self.color_raw_path}")
+        print(f"Accumulating raw depth frames in {self.depth_raw_path}")
+
+    def write(self, color_image: np.ndarray, depth_colormap: np.ndarray, depth_raw: np.ndarray) -> None:
+        self.color_writer.write(np.ascontiguousarray(color_image))
+        self.depth_writer.write(np.ascontiguousarray(depth_colormap))
+        self.color_raw_frames.append(color_image.copy())
+        self.depth_raw_frames.append(depth_raw.copy())
+
+    def close(self) -> None:
+        self.color_writer.release()
+        self.depth_writer.release()
+        if self.color_raw_frames:
+            color_stack = np.stack(self.color_raw_frames)
+            np.save(self.color_raw_path, color_stack)
+            print(f"Saved {color_stack.shape[0]} raw RGB frames to {self.color_raw_path}")
+        if self.depth_raw_frames:
+            depth_stack = np.stack(self.depth_raw_frames)
+            np.save(self.depth_raw_path, depth_stack)
+            print(f"Saved {depth_stack.shape[0]} raw depth frames to {self.depth_raw_path}")
+        self.color_raw_frames.clear()
+        self.depth_raw_frames.clear()
+
+
+class RealSenseSession:
+    def __init__(self) -> None:
+        self.pipeline = rs.pipeline()
+        self.config = rs.config()
+        self.config.enable_stream(rs.stream.depth, STREAM_WIDTH, STREAM_HEIGHT, rs.format.z16, STREAM_FPS)
+        self.config.enable_stream(rs.stream.color, STREAM_WIDTH, STREAM_HEIGHT, rs.format.bgr8, STREAM_FPS)
+        self.colorizer = _make_colorizer()
+        self.spatial = rs.spatial_filter()
+        self.temporal = rs.temporal_filter()
+        self.hole = rs.hole_filling_filter()
+
+    def start(self) -> None:
+        self.pipeline.start(self.config)
+
+    def stop(self) -> None:
+        self.pipeline.stop()
+
+    def poll(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        frames = self.pipeline.wait_for_frames(timeout_ms=5000)
+        depth = frames.get_depth_frame()
+        color = frames.get_color_frame()
+        if not depth or not color:
+            raise RuntimeError("Incomplete RGB-D frame received from RealSense pipeline.")
+
+        if DEPTH_POSTPROCESS:
+            depth = self.spatial.process(depth)
+            depth = self.temporal.process(depth)
+            depth = self.hole.process(depth)
+
+        depth_color = self.colorizer.colorize(depth)
+        depth_img = np.asanyarray(depth_color.get_data())
+        depth_bgr = cv2.cvtColor(depth_img, cv2.COLOR_RGB2BGR)
+        color_img = np.asanyarray(color.get_data())
+        depth_raw = np.asanyarray(depth.get_data())
+        return color_img, depth_raw, depth_bgr
+
+
 def transfer_session(session_dir: Path) -> Optional[str]:
     if not REMOTE_HOST or not REMOTE_DATA_ROOT:
         print("Remote transfer disabled: missing host or data root.")
@@ -279,10 +419,14 @@ def main() -> None:
     trajectory_publisher.publish(trajectory_msg)
     print(f"Published {len(FIXED_TRAJECTORY) // 3} waypoints to /trajectory_points.")
 
+    realsense = RealSenseSession()
+    realsense.start()
+    recorder = RGBDRecorder(session_dir)
+
     start_time = _resolve_now(DEFAULT_TIMEZONE)
     data_loop_running.set()
     node.publish_gui_information(_build_gui_message(start_flag=1.0))
-    print("Robot command issued. Recording force/telemetry...\nPress Enter again or use CTRL+C to stop.")
+    print("Robot command issued. Recording RGB-D + telemetry...\nPress Enter again or use CTRL+C to stop.")
 
     def stop_listener():
         input()
@@ -291,13 +435,19 @@ def main() -> None:
     threading.Thread(target=stop_listener, daemon=True).start()
 
     has_moved = False
-    while not stop_requested.is_set():
-        if node.turtle_state != 0.0:
-            has_moved = True
-        elif has_moved and node.turtle_state == 0.0:
-            stop_requested.set()
-            break
-        time.sleep(0.02)
+    try:
+        while not stop_requested.is_set():
+            color_img, depth_raw, depth_bgr = realsense.poll()
+            recorder.write(color_img, depth_bgr, depth_raw)
+            if node.turtle_state != 0.0:
+                has_moved = True
+            elif has_moved and node.turtle_state == 0.0:
+                stop_requested.set()
+                break
+            time.sleep(0.01)
+    except RuntimeError as exc:
+        print(f"RealSense stream error: {exc}")
+        stop_requested.set()
 
     stop_time = _resolve_now(DEFAULT_TIMEZONE)
 
@@ -311,6 +461,9 @@ def main() -> None:
 
     save_metadata(session_dir, start_time, stop_time)
     save_robot_data(session_dir, node)
+
+    recorder.close()
+    realsense.stop()
 
     remote_session = transfer_session(session_dir)
     if remote_session and not KEEP_LOCAL:
