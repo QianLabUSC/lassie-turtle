@@ -118,6 +118,25 @@ def ensure_session_dir(run_time: datetime) -> Path:
     return session_dir
 
 
+def ensure_preliminary_session_dir() -> Path:
+    SESSION_ROOT.mkdir(parents=True, exist_ok=True)
+    session_dir = SESSION_ROOT / "session_preliminary"
+    session_dir.mkdir(parents=True, exist_ok=True)
+    return session_dir
+
+
+def next_trial_path(session_dir: Path) -> Path:
+    existing = list(session_dir.glob("trial*.npy"))
+    max_idx = 0
+    for path in existing:
+        stem = path.stem
+        suffix = stem.replace("trial", "", 1)
+        if not suffix.isdigit():
+            continue
+        max_idx = max(max_idx, int(suffix))
+    return session_dir / f"trial{max_idx + 1}.npy"
+
+
 def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
     return {
         "trajectory_points": FIXED_TRAJECTORY,
@@ -289,7 +308,7 @@ def _build_gui_message(start_flag: float) -> Float64MultiArray:
 
 
 def main() -> None:
-    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
+    session_dir = ensure_preliminary_session_dir()
     print(f"Session directory: {session_dir}")
 
     rclpy.init()
@@ -363,7 +382,7 @@ def main() -> None:
         "metadata": metadata,
     }
 
-    trial_path = session_dir / "trial.npy"
+    trial_path = next_trial_path(session_dir)
     np.save(trial_path, payload, allow_pickle=True)
     print(f"Saved trial data to {trial_path}")
 
