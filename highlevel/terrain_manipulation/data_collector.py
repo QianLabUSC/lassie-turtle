@@ -252,12 +252,13 @@ def _make_colorizer() -> rs.colorizer:
 
 
 class RGBDRecorder:
-    def __init__(self, session_dir: Path) -> None:
-        self.color_path = session_dir / "rgb.mp4"
-        self.depth_vis_path = session_dir / "depth_colormap.mp4"
-        self.color_raw_path = session_dir / "rgb_raw.npy"
-        self.depth_raw_path = session_dir / "depth_raw.npy"
-        self.timestamp_path = session_dir / "rgbd_timestamps.npy"
+    def __init__(self, session_dir: Path, suffix: str = "") -> None:
+        label = f"_{suffix}" if suffix else ""
+        self.color_path = session_dir / f"rgb{label}.mp4"
+        self.depth_vis_path = session_dir / f"depth_colormap{label}.mp4"
+        self.color_raw_path = session_dir / f"rgb_raw{label}.npy"
+        self.depth_raw_path = session_dir / f"depth_raw{label}.npy"
+        self.timestamp_path = session_dir / f"rgbd_timestamps{label}.npy"
 
         self.color_raw_frames: List[np.ndarray] = []
         self.depth_raw_frames: List[np.ndarray] = []
@@ -326,9 +327,12 @@ class RGBDRecorder:
 
 
 class RealSenseSession:
-    def __init__(self) -> None:
+    def __init__(self, serial: Optional[str] = None) -> None:
+        self.serial = serial
         self.pipeline = rs.pipeline()
         self.config = rs.config()
+        if serial:
+            self.config.enable_device(serial)
         self.config.enable_stream(rs.stream.depth, STREAM_WIDTH, STREAM_HEIGHT, rs.format.z16, STREAM_FPS)
         self.config.enable_stream(rs.stream.color, STREAM_WIDTH, STREAM_HEIGHT, rs.format.bgr8, STREAM_FPS)
         self.colorizer = _make_colorizer()
@@ -362,6 +366,18 @@ class RealSenseSession:
         color_img = np.asanyarray(color.get_data())
         depth_raw = np.asanyarray(depth.get_data())
         return color_img, depth_raw, depth_bgr
+
+
+def _get_realsense_serials() -> List[str]:
+    ctx = rs.context()
+    devices = ctx.query_devices()
+    serials: List[str] = []
+    for dev in devices:
+        try:
+            serials.append(dev.get_info(rs.camera_info.serial_number))
+        except Exception:
+            continue
+    return serials
 
 
 def transfer_session(session_dir: Path) -> Optional[str]:
@@ -423,9 +439,16 @@ def main() -> None:
     trajectory_publisher.publish(trajectory_msg)
     print(f"Published {len(FIXED_TRAJECTORY) // 3} waypoints to /trajectory_points.")
 
-    realsense = RealSenseSession()
-    realsense.start()
-    recorder = RGBDRecorder(session_dir)
+    serials = _get_realsense_serials()
+    if len(serials) < 2:
+        raise SystemExit(f"Expected 2 RealSense devices, found {len(serials)}.")
+    serials = sorted(serials)
+    realsense_primary = RealSenseSession(serials[0])
+    realsense_secondary = RealSenseSession(serials[1])
+    realsense_primary.start()
+    realsense_secondary.start()
+    recorder_primary = RGBDRecorder(session_dir)
+    recorder_secondary = RGBDRecorder(session_dir, suffix="2")
 
     start_time = _resolve_now(DEFAULT_TIMEZONE)
     node.publish_gui_information(_build_gui_message(start_flag=1.0))
@@ -441,10 +464,12 @@ def main() -> None:
     try:
         while not stop_requested.is_set():
             executor.spin_once(timeout_sec=0.0)
-            color_img, depth_raw, depth_bgr = realsense.poll()
+            color_img, depth_raw, depth_bgr = realsense_primary.poll()
+            color_img_2, depth_raw_2, depth_bgr_2 = realsense_secondary.poll()
             frame_time = time.time() - run_start
             node.update_force_data(True)
-            recorder.write(color_img, depth_bgr, depth_raw, frame_time)
+            recorder_primary.write(color_img, depth_bgr, depth_raw, frame_time)
+            recorder_secondary.write(color_img_2, depth_bgr_2, depth_raw_2, frame_time)
             if node.turtle_state != 0.0:
                 has_moved = True
             elif has_moved and node.turtle_state == 0.0:
@@ -461,8 +486,10 @@ def main() -> None:
     save_metadata(session_dir, start_time, stop_time)
     save_robot_data(session_dir, node)
 
-    recorder.close()
-    realsense.stop()
+    recorder_primary.close()
+    recorder_secondary.close()
+    realsense_primary.stop()
+    realsense_secondary.stop()
 
     remote_session = transfer_session(session_dir)
     if remote_session and not KEEP_LOCAL:
