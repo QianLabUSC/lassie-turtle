@@ -118,25 +118,6 @@ def ensure_session_dir(run_time: datetime) -> Path:
     return session_dir
 
 
-def ensure_preliminary_session_dir() -> Path:
-    SESSION_ROOT.mkdir(parents=True, exist_ok=True)
-    session_dir = SESSION_ROOT / "session_preliminary"
-    session_dir.mkdir(parents=True, exist_ok=True)
-    return session_dir
-
-
-def next_trial_path(session_dir: Path) -> Path:
-    existing = list(session_dir.glob("trial*.npy"))
-    max_idx = 0
-    for path in existing:
-        stem = path.stem
-        suffix = stem.replace("trial", "", 1)
-        if not suffix.isdigit():
-            continue
-        max_idx = max(max_idx, int(suffix))
-    return session_dir / f"trial{max_idx + 1}.npy"
-
-
 def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
     return {
         "trajectory_points": FIXED_TRAJECTORY,
@@ -239,9 +220,12 @@ class RGBDRecorder:
 
 
 class RealSenseSession:
-    def __init__(self) -> None:
+    def __init__(self, serial: Optional[str] = None) -> None:
+        self.serial = serial
         self.pipeline = rs.pipeline()
         self.config = rs.config()
+        if serial:
+            self.config.enable_device(serial)
         self.config.enable_stream(rs.stream.depth, STREAM_WIDTH, STREAM_HEIGHT, rs.format.z16, STREAM_FPS)
         self.config.enable_stream(rs.stream.color, STREAM_WIDTH, STREAM_HEIGHT, rs.format.bgr8, STREAM_FPS)
         self.colorizer = _make_colorizer()
@@ -277,6 +261,18 @@ class RealSenseSession:
         return color_img, depth_raw, depth_bgr
 
 
+def _get_realsense_serials() -> List[str]:
+    ctx = rs.context()
+    devices = ctx.query_devices()
+    serials: List[str] = []
+    for dev in devices:
+        try:
+            serials.append(dev.get_info(rs.camera_info.serial_number))
+        except Exception:
+            continue
+    return serials
+
+
 def transfer_session(session_dir: Path) -> Optional[str]:
     if not REMOTE_HOST or not REMOTE_DATA_ROOT:
         print("Remote transfer disabled: missing host or data root.")
@@ -308,7 +304,7 @@ def _build_gui_message(start_flag: float) -> Float64MultiArray:
 
 
 def main() -> None:
-    session_dir = ensure_preliminary_session_dir()
+    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
     print(f"Session directory: {session_dir}")
 
     rclpy.init()
@@ -336,9 +332,16 @@ def main() -> None:
     trajectory_publisher.publish(trajectory_msg)
     print(f"Published {len(FIXED_TRAJECTORY) // 3} waypoints to /trajectory_points.")
 
-    realsense = RealSenseSession()
-    realsense.start()
-    recorder = RGBDRecorder()
+    serials = _get_realsense_serials()
+    if len(serials) < 2:
+        raise SystemExit(f"Expected 2 RealSense devices, found {len(serials)}.")
+    serials = sorted(serials)
+    realsense_primary = RealSenseSession(serials[0])
+    realsense_secondary = RealSenseSession(serials[1])
+    realsense_primary.start()
+    realsense_secondary.start()
+    recorder_primary = RGBDRecorder()
+    recorder_secondary = RGBDRecorder()
 
     start_time = _resolve_now(DEFAULT_TIMEZONE)
     node.publish_gui_information(_build_gui_message(start_flag=1.0))
@@ -354,10 +357,12 @@ def main() -> None:
     try:
         while not stop_requested.is_set():
             executor.spin_once(timeout_sec=0.0)
-            color_img, depth_raw, _depth_bgr = realsense.poll()
+            color_img, depth_raw, _depth_bgr = realsense_primary.poll()
+            color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
             frame_time = time.time() - run_start
             node.update_force_data(True)
-            recorder.write(color_img, depth_raw, frame_time)
+            recorder_primary.write(color_img, depth_raw, frame_time)
+            recorder_secondary.write(color_img_2, depth_raw_2, frame_time)
             if node.turtle_state != 0.0:
                 has_moved = True
             elif has_moved and node.turtle_state == 0.0:
@@ -371,22 +376,27 @@ def main() -> None:
 
     node.publish_gui_information(_build_gui_message(start_flag=0.0))
 
-    rgbd_payload = recorder.finalize()
+    rgbd_payload = recorder_primary.finalize()
+    rgbd_payload_2 = recorder_secondary.finalize()
     robot_state = build_robot_state(node)
     metadata = build_metadata(start_time, stop_time)
     payload = {
         "rgb": rgbd_payload["rgb"],
         "depth": rgbd_payload["depth"],
         "timestamps": rgbd_payload["timestamps"],
+        "rgb_2": rgbd_payload_2["rgb"],
+        "depth_2": rgbd_payload_2["depth"],
+        "timestamps_2": rgbd_payload_2["timestamps"],
         "robot_state": robot_state,
         "metadata": metadata,
     }
 
-    trial_path = next_trial_path(session_dir)
+    trial_path = session_dir / "trial.npy"
     np.save(trial_path, payload, allow_pickle=True)
     print(f"Saved trial data to {trial_path}")
 
-    realsense.stop()
+    realsense_primary.stop()
+    realsense_secondary.stop()
 
     remote_session = transfer_session(session_dir)
     if remote_session and not KEEP_LOCAL:
