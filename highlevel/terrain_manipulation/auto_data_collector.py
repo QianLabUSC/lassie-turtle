@@ -3,13 +3,13 @@
 
 This script mirrors data_collector.py but stores a single npy file per run
 containing RGB-D frames, timestamps, and robot telemetry in a structured dict.
+
+Depth scale (meters per unit): 0.0010000000474974513
 """
 
 from __future__ import annotations
 
-import shutil
 import signal
-import subprocess
 import sys
 import threading
 import time
@@ -48,12 +48,6 @@ except Exception:  # pragma: no cover - fallback for headless environments
 
 SESSION_ROOT = Path(__file__).resolve().parent / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
-REMOTE_HOST = os.environ.get("TERRAIN_REMOTE_HOST", "qianlab@192.168.10.16")
-REMOTE_DATA_ROOT = os.environ.get(
-    "TERRAIN_REMOTE_DATA_ROOT",
-    "/home/qianlab/Turtle_workspace/lassie-turtle/highlevel/terrain_manipulation/data",
-)
-KEEP_LOCAL = os.environ.get("TERRAIN_KEEP_LOCAL", "0").lower() in ("1", "true", "yes")
 
 STREAM_WIDTH = 848
 STREAM_HEIGHT = 480
@@ -63,6 +57,8 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = True
 DEPTH_POSTPROCESS = False
+TRIAL_COUNT = 5
+TRIAL_DURATION_SEC = 7.0
 
 FIXED_TRAJECTORY = [
     0.0,
@@ -200,6 +196,7 @@ class RGBDRecorder:
         self.depth_raw_frames: List[np.ndarray] = []
         self.timestamps: List[float] = []
 
+
     def write(self, color_image: np.ndarray, depth_raw: np.ndarray, timestamp: float) -> None:
         self.color_raw_frames.append(color_image.copy())
         self.depth_raw_frames.append(depth_raw.copy())
@@ -273,22 +270,6 @@ def _get_realsense_serials() -> List[str]:
     return serials
 
 
-def transfer_session(session_dir: Path) -> Optional[str]:
-    if not REMOTE_HOST or not REMOTE_DATA_ROOT:
-        print("Remote transfer disabled: missing host or data root.")
-        return None
-    remote_root = REMOTE_DATA_ROOT.rstrip("/")
-    remote_session = f"{remote_root}/{session_dir.name}"
-    try:
-        subprocess.run(["ssh", REMOTE_HOST, "mkdir", "-p", remote_session], check=True)
-        subprocess.run(["rsync", "-a", f"{session_dir}/", f"{REMOTE_HOST}:{remote_session}/"], check=True)
-    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
-        print(f"Failed to transfer session to {REMOTE_HOST}:{remote_session}: {exc}")
-        return None
-    print(f"Session transferred to {REMOTE_HOST}:{remote_session}")
-    return remote_session
-
-
 def bind_signal(sig: int, handler) -> None:
     try:
         signal.signal(sig, handler)
@@ -325,12 +306,6 @@ def main() -> None:
     input("Press Enter to start the fixed trajectory run...")
 
     node.calibrate()
-    run_start = node.start_time
-
-    trajectory_msg = Float64MultiArray()
-    trajectory_msg.data = list(FIXED_TRAJECTORY)
-    trajectory_publisher.publish(trajectory_msg)
-    print(f"Published {len(FIXED_TRAJECTORY) // 3} waypoints to /trajectory_points.")
 
     serials = _get_realsense_serials()
     if len(serials) < 2:
@@ -340,83 +315,71 @@ def main() -> None:
     realsense_secondary = RealSenseSession(serials[1])
     realsense_primary.start()
     realsense_secondary.start()
-    recorder_primary = RGBDRecorder()
-    recorder_secondary = RGBDRecorder()
+    trajectory_msg = Float64MultiArray()
+    trajectory_msg.data = list(FIXED_TRAJECTORY)
 
-    start_time = _resolve_now(DEFAULT_TIMEZONE)
-    node.publish_gui_information(_build_gui_message(start_flag=1.0))
-    print("Robot command issued. Recording RGB-D + telemetry...\nPress Enter again or use CTRL+C to stop.")
+    print(
+        "Robot command issued. Recording RGB-D + telemetry...\n"
+        f"Each trial runs for {TRIAL_DURATION_SEC:.1f} seconds (CTRL+C to abort)."
+    )
 
-    def stop_listener():
-        input()
-        stop_requested.set()
+    for trial_idx in range(TRIAL_COUNT):
+        if stop_requested.is_set():
+            break
+        recorder_primary = RGBDRecorder()
+        recorder_secondary = RGBDRecorder()
+        run_start = time.time()
+        start_time = _resolve_now(DEFAULT_TIMEZONE)
+        trajectory_publisher.publish(trajectory_msg)
+        node.publish_gui_information(_build_gui_message(start_flag=1.0))
+        print(f"Starting trial {trial_idx + 1}/{TRIAL_COUNT}...")
 
-    threading.Thread(target=stop_listener, daemon=True).start()
+        try:
+            while not stop_requested.is_set():
+                executor.spin_once(timeout_sec=0.0)
+                color_img, depth_raw, _depth_bgr = realsense_primary.poll()
+                color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
+                frame_time = time.time() - run_start
+                node.update_force_data(True)
+                recorder_primary.write(color_img, depth_raw, frame_time)
+                recorder_secondary.write(color_img_2, depth_raw_2, frame_time)
+                if frame_time >= TRIAL_DURATION_SEC:
+                    break
+        except RuntimeError as exc:
+            print(f"RealSense stream error: {exc}")
+            stop_requested.set()
 
-    has_moved = False
-    try:
-        while not stop_requested.is_set():
-            executor.spin_once(timeout_sec=0.0)
-            color_img, depth_raw, _depth_bgr = realsense_primary.poll()
-            color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
-            frame_time = time.time() - run_start
-            node.update_force_data(True)
-            recorder_primary.write(color_img, depth_raw, frame_time)
-            recorder_secondary.write(color_img_2, depth_raw_2, frame_time)
-            if node.turtle_state != 0.0:
-                has_moved = True
-            elif has_moved and node.turtle_state == 0.0:
-                stop_requested.set()
-                break
-    except RuntimeError as exc:
-        print(f"RealSense stream error: {exc}")
-        stop_requested.set()
+        stop_time = _resolve_now(DEFAULT_TIMEZONE)
+        node.publish_gui_information(_build_gui_message(start_flag=0.0))
 
-    stop_time = _resolve_now(DEFAULT_TIMEZONE)
+        rgbd_payload = recorder_primary.finalize()
+        rgbd_payload_2 = recorder_secondary.finalize()
+        robot_state = build_robot_state(node)
+        metadata = build_metadata(start_time, stop_time)
+        payload = {
+            "rgb": rgbd_payload["rgb"],
+            "depth": rgbd_payload["depth"],
+            "timestamps": rgbd_payload["timestamps"],
+            "rgb_2": rgbd_payload_2["rgb"],
+            "depth_2": rgbd_payload_2["depth"],
+            "timestamps_2": rgbd_payload_2["timestamps"],
+            "robot_state": robot_state,
+            "metadata": metadata,
+        }
 
-    node.publish_gui_information(_build_gui_message(start_flag=0.0))
-
-    rgbd_payload = recorder_primary.finalize()
-    rgbd_payload_2 = recorder_secondary.finalize()
-    robot_state = build_robot_state(node)
-    metadata = build_metadata(start_time, stop_time)
-    payload = {
-        "rgb": rgbd_payload["rgb"],
-        "depth": rgbd_payload["depth"],
-        "timestamps": rgbd_payload["timestamps"],
-        "rgb_2": rgbd_payload_2["rgb"],
-        "depth_2": rgbd_payload_2["depth"],
-        "timestamps_2": rgbd_payload_2["timestamps"],
-        "robot_state": robot_state,
-        "metadata": metadata,
-    }
-
-    trial_path = session_dir / "trial.npy"
-    np.save(trial_path, payload, allow_pickle=True)
-    print(f"Saved trial data to {trial_path}")
+        trial_path = session_dir / f"trial_{trial_idx + 1}.npy"
+        np.save(trial_path, payload, allow_pickle=True)
+        print(f"Saved trial data to {trial_path}")
 
     realsense_primary.stop()
     realsense_secondary.stop()
-
-    remote_session = transfer_session(session_dir)
-    if remote_session and not KEEP_LOCAL:
-        try:
-            shutil.rmtree(session_dir)
-            print(f"Removed local session data at {session_dir}")
-        except OSError as exc:
-            print(f"Failed to remove local session data {session_dir}: {exc}")
 
     executor.shutdown()
     node.destroy_node()
     rclpy.shutdown()
 
     print("Session complete.")
-    if remote_session and not KEEP_LOCAL:
-        print(f"Data stored under: {REMOTE_HOST}:{remote_session}")
-    elif remote_session:
-        print(f"Data stored under: {session_dir} and {REMOTE_HOST}:{remote_session}")
-    else:
-        print(f"Data stored under: {session_dir}")
+    print(f"Data stored under: {session_dir}")
 
 
 if __name__ == "__main__":

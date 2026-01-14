@@ -5,6 +5,8 @@ RealSense D435i: viewer-like preview with safer defaults.
 Differences vs realsense_default.py:
 - Histogram equalization enabled by default.
 - Do not force min/max depth unless explicitly provided.
+
+Depth scale (meters per unit): 0.0010000000474974513
 """
 
 import argparse
@@ -127,6 +129,8 @@ def main() -> None:
 
     dev = profile.get_device()
     depth_sensor = dev.first_depth_sensor()
+    depth_scale = depth_sensor.get_depth_scale()
+    print(f"Depth scale (meters per unit): {depth_scale}")
     if args.emitter is not None:
         _try_set(depth_sensor, rs.option.emitter_enabled, float(args.emitter))
     if args.laser is not None:
