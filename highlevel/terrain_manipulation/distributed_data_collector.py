@@ -335,6 +335,7 @@ def main() -> None:
             break
         recorder = RGBDRecorder()
         run_start = time.time()
+        node.start_time = run_start
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         trajectory_publisher.publish(trajectory_msg)
         node.publish_gui_information(_build_gui_message(start_flag=1.0))
