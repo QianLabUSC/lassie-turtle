@@ -5,6 +5,8 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -120,7 +122,7 @@ class SetState(metaclass=Metaclass_SetState):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def can_channel(self):
         """Message field 'can_channel'."""
         return self._can_channel
@@ -135,7 +137,7 @@ class SetState(metaclass=Metaclass_SetState):
                 "The 'can_channel' field must be an unsigned integer in [0, 255]"
         self._can_channel = value
 
-    @property
+    @builtins.property
     def axis(self):
         """Message field 'axis'."""
         return self._axis
@@ -150,7 +152,7 @@ class SetState(metaclass=Metaclass_SetState):
                 "The 'axis' field must be an unsigned integer in [0, 255]"
         self._axis = value
 
-    @property
+    @builtins.property
     def set_state(self):
         """Message field 'set_state'."""
         return self._set_state

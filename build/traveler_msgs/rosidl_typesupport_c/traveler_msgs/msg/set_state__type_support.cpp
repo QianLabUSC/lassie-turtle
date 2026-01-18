@@ -4,8 +4,8 @@
 
 #include "cstddef"
 #include "rosidl_runtime_c/message_type_support_struct.h"
-#include "traveler_msgs/msg/rosidl_typesupport_c__visibility_control.h"
 #include "traveler_msgs/msg/detail/set_state__struct.h"
+#include "traveler_msgs/msg/detail/set_state__type_support.h"
 #include "rosidl_typesupport_c/identifier.h"
 #include "rosidl_typesupport_c/message_type_support_dispatch.h"
 #include "rosidl_typesupport_c/type_support_map.h"
@@ -85,7 +85,6 @@ extern "C"
 {
 #endif
 
-ROSIDL_TYPESUPPORT_C_EXPORT_traveler_msgs
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_c, traveler_msgs, msg, SetState)() {
   return &::traveler_msgs::msg::rosidl_typesupport_c::SetState_message_type_support_handle;

@@ -17,7 +17,7 @@ extern "C"
 
 // Constants defined in the message
 
-// Struct defined in msg/OdriveStatus in the package traveler_msgs.
+/// Struct defined in msg/OdriveStatus in the package traveler_msgs.
 typedef struct traveler_msgs__msg__OdriveStatus
 {
   uint8_t can_channel;

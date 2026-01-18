@@ -57,6 +57,24 @@ void * get_function__TravelerConfig__data(void * untyped_member, size_t index)
   return &member[index];
 }
 
+void fetch_function__TravelerConfig__data(
+  const void * untyped_member, size_t index, void * untyped_value)
+{
+  const auto & item = *reinterpret_cast<const float *>(
+    get_const_function__TravelerConfig__data(untyped_member, index));
+  auto & value = *reinterpret_cast<float *>(untyped_value);
+  value = item;
+}
+
+void assign_function__TravelerConfig__data(
+  void * untyped_member, size_t index, const void * untyped_value)
+{
+  auto & item = *reinterpret_cast<float *>(
+    get_function__TravelerConfig__data(untyped_member, index));
+  const auto & value = *reinterpret_cast<const float *>(untyped_value);
+  item = value;
+}
+
 void resize_function__TravelerConfig__data(void * untyped_member, size_t size)
 {
   auto * member =
@@ -78,6 +96,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerConfi
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
     nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
     nullptr  // resize(index) function pointer
   },
   {
@@ -93,6 +113,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerConfi
     nullptr,  // size() function pointer
     nullptr,  // get_const(index) function pointer
     nullptr,  // get(index) function pointer
+    nullptr,  // fetch(index, &value) function pointer
+    nullptr,  // assign(index, value) function pointer
     nullptr  // resize(index) function pointer
   },
   {
@@ -108,6 +130,8 @@ static const ::rosidl_typesupport_introspection_cpp::MessageMember TravelerConfi
     size_function__TravelerConfig__data,  // size() function pointer
     get_const_function__TravelerConfig__data,  // get_const(index) function pointer
     get_function__TravelerConfig__data,  // get(index) function pointer
+    fetch_function__TravelerConfig__data,  // fetch(index, &value) function pointer
+    assign_function__TravelerConfig__data,  // assign(index, value) function pointer
     resize_function__TravelerConfig__data  // resize(index) function pointer
   }
 };

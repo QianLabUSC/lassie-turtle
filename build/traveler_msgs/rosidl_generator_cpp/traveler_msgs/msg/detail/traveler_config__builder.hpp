@@ -5,10 +5,11 @@
 #ifndef TRAVELER_MSGS__MSG__DETAIL__TRAVELER_CONFIG__BUILDER_HPP_
 #define TRAVELER_MSGS__MSG__DETAIL__TRAVELER_CONFIG__BUILDER_HPP_
 
-#include "traveler_msgs/msg/detail/traveler_config__struct.hpp"
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <utility>
+
+#include "traveler_msgs/msg/detail/traveler_config__struct.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 namespace traveler_msgs

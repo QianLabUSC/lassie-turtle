@@ -23,6 +23,7 @@ size_t get_serialized_size_traveler_msgs__msg__OdriveStatus(
 ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_traveler_msgs
 size_t max_serialized_size_traveler_msgs__msg__OdriveStatus(
   bool & full_bounded,
+  bool & is_plain,
   size_t current_alignment);
 
 ROSIDL_TYPESUPPORT_FASTRTPS_C_PUBLIC_traveler_msgs

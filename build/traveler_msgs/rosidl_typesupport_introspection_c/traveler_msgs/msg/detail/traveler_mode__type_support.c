@@ -17,7 +17,7 @@ extern "C"
 {
 #endif
 
-void TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_init_function(
+void traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_init_function(
   void * message_memory, enum rosidl_runtime_c__message_initialization _init)
 {
   // TODO(karsten1987): initializers are not yet implemented for typesupport c
@@ -26,12 +26,12 @@ void TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_init_functio
   traveler_msgs__msg__TravelerMode__init(message_memory);
 }
 
-void TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_fini_function(void * message_memory)
+void traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_fini_function(void * message_memory)
 {
   traveler_msgs__msg__TravelerMode__fini(message_memory);
 }
 
-static rosidl_typesupport_introspection_c__MessageMember TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_member_array[2] = {
+static rosidl_typesupport_introspection_c__MessageMember traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_member_array[2] = {
   {
     "start_flag",  // name
     rosidl_typesupport_introspection_c__ROS_TYPE_BOOLEAN,  // type
@@ -45,6 +45,8 @@ static rosidl_typesupport_introspection_c__MessageMember TravelerMode__rosidl_ty
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
     NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
     NULL  // resize(index) function pointer
   },
   {
@@ -60,36 +62,38 @@ static rosidl_typesupport_introspection_c__MessageMember TravelerMode__rosidl_ty
     NULL,  // size() function pointer
     NULL,  // get_const(index) function pointer
     NULL,  // get(index) function pointer
+    NULL,  // fetch(index, &value) function pointer
+    NULL,  // assign(index, value) function pointer
     NULL  // resize(index) function pointer
   }
 };
 
-static const rosidl_typesupport_introspection_c__MessageMembers TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_members = {
+static const rosidl_typesupport_introspection_c__MessageMembers traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_members = {
   "traveler_msgs__msg",  // message namespace
   "TravelerMode",  // message name
   2,  // number of fields
   sizeof(traveler_msgs__msg__TravelerMode),
-  TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_member_array,  // message members
-  TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_init_function,  // function to initialize message memory (memory has to be allocated)
-  TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_fini_function  // function to terminate message instance (will not free memory)
+  traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_member_array,  // message members
+  traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_init_function,  // function to initialize message memory (memory has to be allocated)
+  traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_fini_function  // function to terminate message instance (will not free memory)
 };
 
 // this is not const since it must be initialized on first access
 // since C does not allow non-integral compile-time constants
-static rosidl_message_type_support_t TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle = {
+static rosidl_message_type_support_t traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle = {
   0,
-  &TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_members,
+  &traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_members,
   get_message_typesupport_handle_function,
 };
 
 ROSIDL_TYPESUPPORT_INTROSPECTION_C_EXPORT_traveler_msgs
 const rosidl_message_type_support_t *
 ROSIDL_TYPESUPPORT_INTERFACE__MESSAGE_SYMBOL_NAME(rosidl_typesupport_introspection_c, traveler_msgs, msg, TravelerMode)() {
-  if (!TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle.typesupport_identifier) {
-    TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle.typesupport_identifier =
+  if (!traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle.typesupport_identifier) {
+    traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle.typesupport_identifier =
       rosidl_typesupport_introspection_c__identifier;
   }
-  return &TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle;
+  return &traveler_msgs__msg__TravelerMode__rosidl_typesupport_introspection_c__TravelerMode_message_type_support_handle;
 }
 #ifdef __cplusplus
 }

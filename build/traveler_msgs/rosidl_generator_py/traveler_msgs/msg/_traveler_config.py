@@ -8,6 +8,10 @@
 # Member 'data'
 import array  # noqa: E402, I100
 
+import builtins  # noqa: E402, I100
+
+import math  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -123,7 +127,7 @@ class TravelerConfig(metaclass=Metaclass_TravelerConfig):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def running_scenario(self):
         """Message field 'running_scenario'."""
         return self._running_scenario
@@ -136,7 +140,7 @@ class TravelerConfig(metaclass=Metaclass_TravelerConfig):
                 "The 'running_scenario' field must be of type 'str'"
         self._running_scenario = value
 
-    @property
+    @builtins.property
     def filename(self):
         """Message field 'filename'."""
         return self._filename
@@ -149,7 +153,7 @@ class TravelerConfig(metaclass=Metaclass_TravelerConfig):
                 "The 'filename' field must be of type 'str'"
         self._filename = value
 
-    @property
+    @builtins.property
     def data(self):
         """Message field 'data'."""
         return self._data
@@ -173,6 +177,6 @@ class TravelerConfig(metaclass=Metaclass_TravelerConfig):
                  not isinstance(value, str) and
                  not isinstance(value, UserString) and
                  all(isinstance(v, float) for v in value) and
-                 True), \
-                "The 'data' field must be a set or sequence and each value of type 'float'"
+                 all(not (val < -3.402823466e+38 or val > 3.402823466e+38) or math.isinf(val) for val in value)), \
+                "The 'data' field must be a set or sequence and each value of type 'float' and each float in [-340282346600000016151267322115014000640.000000, 340282346600000016151267322115014000640.000000]"
         self._data = array.array('f', value)

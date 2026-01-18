@@ -1,3 +1,0 @@
-[35m[1mScanning dependencies of target turtle_high_controller[0m
-[  7%] [32mBuilding CXX object CMakeFiles/turtle_high_controller.dir/src/controller/trajectories_parser.cpp.o[0m
-[ 42%] Built target odrive_can_interface

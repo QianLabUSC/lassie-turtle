@@ -5,6 +5,10 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
+import math  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -144,7 +148,7 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def can_channel(self):
         """Message field 'can_channel'."""
         return self._can_channel
@@ -159,7 +163,7 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
                 "The 'can_channel' field must be an unsigned integer in [0, 255]"
         self._can_channel = value
 
-    @property
+    @builtins.property
     def axis(self):
         """Message field 'axis'."""
         return self._axis
@@ -174,7 +178,7 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
                 "The 'axis' field must be an unsigned integer in [0, 255]"
         self._axis = value
 
-    @property
+    @builtins.property
     def pos_estimate(self):
         """Message field 'pos_estimate'."""
         return self._pos_estimate
@@ -185,9 +189,11 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
             assert \
                 isinstance(value, float), \
                 "The 'pos_estimate' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'pos_estimate' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._pos_estimate = value
 
-    @property
+    @builtins.property
     def vel_estimate(self):
         """Message field 'vel_estimate'."""
         return self._vel_estimate
@@ -198,9 +204,11 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
             assert \
                 isinstance(value, float), \
                 "The 'vel_estimate' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'vel_estimate' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._vel_estimate = value
 
-    @property
+    @builtins.property
     def iq_setpoint(self):
         """Message field 'iq_setpoint'."""
         return self._iq_setpoint
@@ -211,9 +219,11 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
             assert \
                 isinstance(value, float), \
                 "The 'iq_setpoint' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'iq_setpoint' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._iq_setpoint = value
 
-    @property
+    @builtins.property
     def iq_measured(self):
         """Message field 'iq_measured'."""
         return self._iq_measured
@@ -224,9 +234,11 @@ class OdriveStatus(metaclass=Metaclass_OdriveStatus):
             assert \
                 isinstance(value, float), \
                 "The 'iq_measured' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'iq_measured' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._iq_measured = value
 
-    @property
+    @builtins.property
     def axis_state(self):
         """Message field 'axis_state'."""
         return self._axis_state

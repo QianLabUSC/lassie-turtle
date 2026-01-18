@@ -5,13 +5,14 @@
 #ifndef TRAVELER_MSGS__MSG__DETAIL__SET_INPUT_POSITION__STRUCT_HPP_
 #define TRAVELER_MSGS__MSG__DETAIL__SET_INPUT_POSITION__STRUCT_HPP_
 
-#include <rosidl_runtime_cpp/bounded_vector.hpp>
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <array>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "rosidl_runtime_cpp/bounded_vector.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 #ifndef _WIN32

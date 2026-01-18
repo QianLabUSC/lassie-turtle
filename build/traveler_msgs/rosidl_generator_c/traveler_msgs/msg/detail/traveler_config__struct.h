@@ -24,7 +24,7 @@ extern "C"
 // Member 'data'
 #include "rosidl_runtime_c/primitives_sequence.h"
 
-// Struct defined in msg/TravelerConfig in the package traveler_msgs.
+/// Struct defined in msg/TravelerConfig in the package traveler_msgs.
 typedef struct traveler_msgs__msg__TravelerConfig
 {
   rosidl_runtime_c__String running_scenario;

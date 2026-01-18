@@ -1,11 +1,11 @@
 {
   "package_name": "traveler_msgs",
   "non_idl_tuples": [
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:msg/OdriveStatus.msg",
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:msg/TravelerConfig.msg",
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:msg/TravelerMode.msg",
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:msg/TravelerStatus.msg",
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:odrivemsg/SetState.msg",
-    "/home/qianlab/single_turtle_workspace/dependencies/traveler_msgs:odrivemsg/SetInputPosition.msg"
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:msg/OdriveStatus.msg",
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:msg/TravelerConfig.msg",
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:msg/TravelerMode.msg",
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:msg/TravelerStatus.msg",
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:odrivemsg/SetState.msg",
+    "/home/parnia/Projects/Turtle_workspace/dependencies/traveler_msgs:odrivemsg/SetInputPosition.msg"
   ]
 }

@@ -5,6 +5,10 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
+import math  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -132,7 +136,7 @@ class SetInputPosition(metaclass=Metaclass_SetInputPosition):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def can_channel(self):
         """Message field 'can_channel'."""
         return self._can_channel
@@ -147,7 +151,7 @@ class SetInputPosition(metaclass=Metaclass_SetInputPosition):
                 "The 'can_channel' field must be an unsigned integer in [0, 255]"
         self._can_channel = value
 
-    @property
+    @builtins.property
     def axis(self):
         """Message field 'axis'."""
         return self._axis
@@ -162,7 +166,7 @@ class SetInputPosition(metaclass=Metaclass_SetInputPosition):
                 "The 'axis' field must be an unsigned integer in [0, 255]"
         self._axis = value
 
-    @property
+    @builtins.property
     def input_position(self):
         """Message field 'input_position'."""
         return self._input_position
@@ -173,9 +177,11 @@ class SetInputPosition(metaclass=Metaclass_SetInputPosition):
             assert \
                 isinstance(value, float), \
                 "The 'input_position' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'input_position' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._input_position = value
 
-    @property
+    @builtins.property
     def vel_ff(self):
         """Message field 'vel_ff'."""
         return self._vel_ff
@@ -190,7 +196,7 @@ class SetInputPosition(metaclass=Metaclass_SetInputPosition):
                 "The 'vel_ff' field must be an integer in [-32768, 32767]"
         self._vel_ff = value
 
-    @property
+    @builtins.property
     def torque_ff(self):
         """Message field 'torque_ff'."""
         return self._torque_ff

@@ -17,13 +17,15 @@ extern "C"
 
 // Constants defined in the message
 
-// Struct defined in msg/SetInputPosition in the package traveler_msgs.
+/// Struct defined in msg/SetInputPosition in the package traveler_msgs.
 typedef struct traveler_msgs__msg__SetInputPosition
 {
   uint8_t can_channel;
   uint8_t axis;
   float input_position;
+  /// 0.1 Factor
   int16_t vel_ff;
+  /// 0.001 Factor
   int16_t torque_ff;
 } traveler_msgs__msg__SetInputPosition;
 

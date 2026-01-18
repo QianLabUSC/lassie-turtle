@@ -5,6 +5,10 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
+import math  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -162,7 +166,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def state_flag(self):
         """Message field 'state_flag'."""
         return self._state_flag
@@ -177,7 +181,7 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
                 "The 'state_flag' field must be an unsigned integer in [0, 255]"
         self._state_flag = value
 
-    @property
+    @builtins.property
     def time(self):
         """Message field 'time'."""
         return self._time
@@ -188,9 +192,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'time' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'time' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._time = value
 
-    @property
+    @builtins.property
     def toeforce_x(self):
         """Message field 'toeforce_x'."""
         return self._toeforce_x
@@ -201,9 +207,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'toeforce_x' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'toeforce_x' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._toeforce_x = value
 
-    @property
+    @builtins.property
     def toeforce_y(self):
         """Message field 'toeforce_y'."""
         return self._toeforce_y
@@ -214,9 +222,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'toeforce_y' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'toeforce_y' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._toeforce_y = value
 
-    @property
+    @builtins.property
     def toe_pos_x(self):
         """Message field 'toe_pos_x'."""
         return self._toe_pos_x
@@ -227,9 +237,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'toe_pos_x' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'toe_pos_x' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._toe_pos_x = value
 
-    @property
+    @builtins.property
     def toe_pos_y(self):
         """Message field 'toe_pos_y'."""
         return self._toe_pos_y
@@ -240,9 +252,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'toe_pos_y' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'toe_pos_y' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._toe_pos_y = value
 
-    @property
+    @builtins.property
     def motor0_pos(self):
         """Message field 'motor0_pos'."""
         return self._motor0_pos
@@ -253,9 +267,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'motor0_pos' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'motor0_pos' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._motor0_pos = value
 
-    @property
+    @builtins.property
     def motor1_pos(self):
         """Message field 'motor1_pos'."""
         return self._motor1_pos
@@ -266,9 +282,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'motor1_pos' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'motor1_pos' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._motor1_pos = value
 
-    @property
+    @builtins.property
     def motor0_torque(self):
         """Message field 'motor0_torque'."""
         return self._motor0_torque
@@ -279,9 +297,11 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'motor0_torque' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'motor0_torque' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._motor0_torque = value
 
-    @property
+    @builtins.property
     def motor1_torque(self):
         """Message field 'motor1_torque'."""
         return self._motor1_torque
@@ -292,4 +312,6 @@ class TravelerStatus(metaclass=Metaclass_TravelerStatus):
             assert \
                 isinstance(value, float), \
                 "The 'motor1_torque' field must be of type 'float'"
+            assert not (value < -3.402823466e+38 or value > 3.402823466e+38) or math.isinf(value), \
+                "The 'motor1_torque' field must be a float in [-3.402823466e+38, 3.402823466e+38]"
         self._motor1_torque = value

@@ -5,6 +5,8 @@
 
 # Import statements for member types
 
+import builtins  # noqa: E402, I100
+
 import rosidl_parser.definition  # noqa: E402, I100
 
 
@@ -114,7 +116,7 @@ class TravelerMode(metaclass=Metaclass_TravelerMode):
         from copy import copy
         return copy(cls._fields_and_field_types)
 
-    @property
+    @builtins.property
     def start_flag(self):
         """Message field 'start_flag'."""
         return self._start_flag
@@ -127,7 +129,7 @@ class TravelerMode(metaclass=Metaclass_TravelerMode):
                 "The 'start_flag' field must be of type 'bool'"
         self._start_flag = value
 
-    @property
+    @builtins.property
     def traveler_mode(self):
         """Message field 'traveler_mode'."""
         return self._traveler_mode

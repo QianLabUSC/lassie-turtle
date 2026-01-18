@@ -5,13 +5,14 @@
 #ifndef TRAVELER_MSGS__MSG__DETAIL__TRAVELER_CONFIG__STRUCT_HPP_
 #define TRAVELER_MSGS__MSG__DETAIL__TRAVELER_CONFIG__STRUCT_HPP_
 
-#include <rosidl_runtime_cpp/bounded_vector.hpp>
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <array>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "rosidl_runtime_cpp/bounded_vector.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 #ifndef _WIN32
@@ -56,30 +57,30 @@ struct TravelerConfig_
 
   // field types and members
   using _running_scenario_type =
-    std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other>;
+    std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>>;
   _running_scenario_type running_scenario;
   using _filename_type =
-    std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other>;
+    std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>>;
   _filename_type filename;
   using _data_type =
-    std::vector<float, typename ContainerAllocator::template rebind<float>::other>;
+    std::vector<float, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<float>>;
   _data_type data;
 
   // setters for named parameter idiom
   Type & set__running_scenario(
-    const std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other> & _arg)
+    const std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>> & _arg)
   {
     this->running_scenario = _arg;
     return *this;
   }
   Type & set__filename(
-    const std::basic_string<char, std::char_traits<char>, typename ContainerAllocator::template rebind<char>::other> & _arg)
+    const std::basic_string<char, std::char_traits<char>, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<char>> & _arg)
   {
     this->filename = _arg;
     return *this;
   }
   Type & set__data(
-    const std::vector<float, typename ContainerAllocator::template rebind<float>::other> & _arg)
+    const std::vector<float, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<float>> & _arg)
   {
     this->data = _arg;
     return *this;

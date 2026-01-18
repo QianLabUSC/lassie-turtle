@@ -5,10 +5,11 @@
 #ifndef TRAVELER_MSGS__MSG__DETAIL__ODRIVE_STATUS__BUILDER_HPP_
 #define TRAVELER_MSGS__MSG__DETAIL__ODRIVE_STATUS__BUILDER_HPP_
 
-#include "traveler_msgs/msg/detail/odrive_status__struct.hpp"
-#include <rosidl_runtime_cpp/message_initialization.hpp>
 #include <algorithm>
 #include <utility>
+
+#include "traveler_msgs/msg/detail/odrive_status__struct.hpp"
+#include "rosidl_runtime_cpp/message_initialization.hpp"
 
 
 namespace traveler_msgs
