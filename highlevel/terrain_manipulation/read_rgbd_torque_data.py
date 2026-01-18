@@ -87,9 +87,9 @@ def main() -> int:
     ap.add_argument(
         "session_dir",
         nargs="?",
-        default="/home/qianlab/Desktop/session_preliminary/preliminary_data",
+        default="/home/parnia/Projects/Turtle_workspace/highlevel/terrain_manipulation/data/session_20260117_202032",
         type=Path,
-        help="Session folder containing trial npy files (default: data/session_preliminary)",
+        help="Session folder containing trial npy files.",
     )
     args = ap.parse_args()
 
