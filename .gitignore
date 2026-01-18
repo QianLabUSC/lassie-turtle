@@ -1,0 +1,8 @@
+# Generated/build artifacts
+/build/
+/install/
+/log/
+
+# Local tooling caches
+/.mypy_cache/
+/.vscode/

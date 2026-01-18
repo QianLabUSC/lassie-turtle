@@ -1,0 +1,88 @@
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   1.60, 0.4363,  2,
+   1.60, -0.0873,  2,
+   1.60, -0.6109,  2,
+   1.60, -1.1345,  2,
+   1.60, -1.6581,  2
+]}"
+
+# theta_1 = 0
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   0, 0.4363,  2,
+   0, -0.0873,  2,
+   0, -0.6109,  2,
+   0, -1.1345,  2,
+   0, -1.6581,  2
+]}"
+
+# theta_1 = max (PI)
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   3.14, 0.4363,  2,
+   3.14, -0.0873,  2,
+   3.14, -0.6109,  2,
+   3.14, -1.1345,  2,
+   3.14, -1.6581,  2
+]}"
+
+# theta_2 = 0 - not mathematical 0
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   0, 0,  2,
+   0.628, 0,  2,
+   1.256, 0,  2,
+   1.884, 0,  2,
+   2.512, 0,  2, 
+   3.14, 0, 2
+]}"
+
+# move theta_1 to the middle, stop and move theta_2 front and back, move theta_1 to the max, go back in reverse. 
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   0, -0.53,  1,
+   0.628, -0.53,  1,
+   1.256, -0.53,  1,
+   1.884, -0.53,  1,
+   2.512, -0.53,  1, 
+   3.14, -0.53, 1, 
+   2.512, -0.53,  1,
+   1.884, -0.53,  1, 
+   1.256, -0.53,  1, 
+   0.628, -0.53,  1,
+   0, -0.523,  1
+]}"
+
+# move theta_1 to the middle, stop and move theta_2 front and back, move theta_1 to the max, go back in reverse. 
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   0, -0.53,  0.7,
+   0.785, -0.53,  0.7,
+   1.57, -0.53,  0.7,
+   1.57, -0.533,  0.001,
+   1.57, -1.315,  0.7,
+   1.57, -2.1,  0.7,
+   1.57, -2.15,  0.1,
+   1.57, -1.315,  0.7,
+   1.57, -0.53,  0.7,
+   1.573, -0.53,  0.001,
+   2.355, -0.53,  0.7,
+   3.14, -0.53, 0.7, 
+   3.19, -0.53, 0.1, 
+   2.355, -0.53,  0.7,
+   1.57, -0.53,  0.7,
+   1.57, -0.533,  0.001,
+   1.57, -1.315,  0.7,
+   1.57, -2.1,  0.7,
+   1.57, -2.15,  0.1,
+   1.57, -1.315,  0.7,
+   1.57, -0.53,  0.7,
+   1.567, -0.53,  0.001,
+   0.785, -0.53,  0.7, 
+   0, -0.523,  0.7
+]}" 
+
+ros2 topic pub --once /trajectory_points std_msgs/msg/Float64MultiArray "{data: [
+   0, -0.53,  0.7,
+   0, -1.315, 0.7,
+   0.785, -1.315, 0.7,
+   0.785, -0.53, 0.7, 
+   0.785, 0.255, 0.7, 
+   0, 0.255, 0.7, 
+   0, -0.53,  0.7
+]}"
