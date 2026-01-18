@@ -347,6 +347,8 @@ def main() -> None:
                 color_img, depth_raw, _depth_bgr = realsense.poll()
                 frame_time = time.time() - run_start
                 node.update_force_data(True)
+                # if node.time_list:
+                #     node.time_list[-1] = frame_time
                 recorder.write(color_img, depth_raw, frame_time)
                 if frame_time >= TRIAL_DURATION_SEC:
                     break
