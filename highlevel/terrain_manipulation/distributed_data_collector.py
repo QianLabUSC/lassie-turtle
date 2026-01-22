@@ -85,6 +85,7 @@ FIXED_TRAJECTORY = [
     -0.53,
     0.7,
 ]
+TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
 
 
 def _resolve_now(timezone_name: Optional[str]) -> datetime:
@@ -118,7 +119,6 @@ def ensure_session_dir(run_time: datetime) -> Path:
 
 def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
     return {
-        "trajectory_points": FIXED_TRAJECTORY,
         "start_time": start_time.isoformat(),
         "stop_time": stop_time.isoformat(),
         "duration_sec": (stop_time - start_time).total_seconds(),
@@ -323,7 +323,7 @@ def main() -> None:
     realsense.start()
 
     trajectory_msg = Float64MultiArray()
-    trajectory_msg.data = list(FIXED_TRAJECTORY)
+    trajectory_msg.data = list(TRAJECTORY_POINTS)
 
     print(
         "Robot command issued. Recording RGB-D + telemetry...\n"
@@ -366,6 +366,7 @@ def main() -> None:
             "rgb": rgbd_payload["rgb"],
             "depth": rgbd_payload["depth"],
             "timestamps": rgbd_payload["timestamps"],
+            "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
             "robot_state": robot_state,
             "metadata": metadata,
         }
