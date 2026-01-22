@@ -19,6 +19,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 import os
+import json
 
 import cv2
 import numpy as np
@@ -59,7 +60,7 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = True
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 1
+TRIAL_COUNT = 5
 TRIAL_DURATION_SEC = 7.0
 
 FIXED_TRAJECTORY = [
@@ -115,6 +116,74 @@ def ensure_session_dir(run_time: datetime) -> Path:
     session_dir = SESSION_ROOT / f"session_{timestamp}"
     session_dir.mkdir(parents=True, exist_ok=False)
     return session_dir
+
+
+def reset_robot_state_buffers(node: ControlNode_Turtle) -> None:
+    buffers = [
+        "time_list",
+        "turtle_state_list",
+        "leftadduction_pos_array",
+        "leftsweeping_pos_array",
+        "rightadduction_pos_array",
+        "rightsweeping_pos_array",
+        "leftadduction_curr_array",
+        "leftsweeping_curr_array",
+        "rightadduction_curr_array",
+        "rightsweeping_curr_array",
+        "OptitrackPosition_x_list",
+        "OptitrackPosition_y_list",
+        "OptitrackPosition_z_list",
+        "OptitrackOrientation_x_list",
+        "OptitrackOrientation_y_list",
+        "OptitrackOrientation_z_list",
+        "OptitrackOrientation_w_list",
+        "LeftFlipperPosition_x_list",
+        "LeftFlipperPosition_y_list",
+        "LeftFlipperPosition_z_list",
+        "LeftFlipperOrientation_x_list",
+        "LeftFlipperOrientation_y_list",
+        "LeftFlipperOrientation_z_list",
+        "LeftFlipperOrientation_w_list",
+        "RightFlipperPosition_x_list",
+        "RightFlipperPosition_y_list",
+        "RightFlipperPosition_z_list",
+        "RightFlipperOrientation_x_list",
+        "RightFlipperOrientation_y_list",
+        "RightFlipperOrientation_z_list",
+        "RightFlipperOrientation_w_list",
+    ]
+    for name in buffers:
+        buffer = getattr(node, name, None)
+        if buffer is None:
+            continue
+        try:
+            buffer.clear()
+        except AttributeError:
+            pass
+
+
+def save_session_metadata(
+    session_dir: Path,
+    start_time: datetime,
+    stop_time: datetime,
+    trials_planned: int,
+    trials_completed: int,
+    trial_duration_sec: float,
+) -> None:
+    payload = {
+        "start_time": start_time.isoformat(),
+        "stop_time": stop_time.isoformat(),
+        "duration_sec": (stop_time - start_time).total_seconds(),
+        "trials_planned": int(trials_planned),
+        "trials_completed": int(trials_completed),
+        "trial_duration_sec": float(trial_duration_sec),
+        "slope": 0,
+        "initial_compaction": -1,
+        "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
+        "fps": int(STREAM_FPS),
+    }
+    with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
+        json.dump(payload, fh, indent=2)
 
 
 def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
@@ -318,9 +387,14 @@ def main() -> None:
 
     node.calibrate()
 
-    serial = _select_realsense_serial()
-    realsense = RealSenseSession(serial)
-    realsense.start()
+    serials = _get_realsense_serials()
+    if len(serials) < 2:
+        raise SystemExit(f"Expected 2 RealSense devices, found {len(serials)}.")
+    serials = sorted(serials)
+    realsense_primary = RealSenseSession(serials[0])
+    realsense_secondary = RealSenseSession(serials[1])
+    realsense_primary.start()
+    realsense_secondary.start()
 
     trajectory_msg = Float64MultiArray()
     trajectory_msg.data = list(TRAJECTORY_POINTS)
@@ -330,10 +404,14 @@ def main() -> None:
         f"Each trial runs for {TRIAL_DURATION_SEC:.1f} seconds (CTRL+C to abort)."
     )
 
+    session_start_time = _resolve_now(DEFAULT_TIMEZONE)
+    trials_completed = 0
     for trial_idx in range(TRIAL_COUNT):
         if stop_requested.is_set():
             break
+        reset_robot_state_buffers(node)
         recorder = RGBDRecorder()
+        recorder_2 = RGBDRecorder()
         run_start = time.time()
         node.start_time = run_start
         start_time = _resolve_now(DEFAULT_TIMEZONE)
@@ -344,12 +422,14 @@ def main() -> None:
         try:
             while not stop_requested.is_set():
                 executor.spin_once(timeout_sec=0.0)
-                color_img, depth_raw, _depth_bgr = realsense.poll()
+                color_img, depth_raw, _depth_bgr = realsense_primary.poll()
+                color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
                 frame_time = time.time() - run_start
                 node.update_force_data(True)
                 # if node.time_list:
                 #     node.time_list[-1] = frame_time
                 recorder.write(color_img, depth_raw, frame_time)
+                recorder_2.write(color_img_2, depth_raw_2, frame_time)
                 if frame_time >= TRIAL_DURATION_SEC:
                     break
         except RuntimeError as exc:
@@ -360,12 +440,16 @@ def main() -> None:
         node.publish_gui_information(_build_gui_message(start_flag=0.0))
 
         rgbd_payload = recorder.finalize()
+        rgbd_payload_2 = recorder_2.finalize()
         robot_state = build_robot_state(node)
         metadata = build_metadata(start_time, stop_time)
         payload = {
-            "rgb": rgbd_payload["rgb"],
-            "depth": rgbd_payload["depth"],
-            "timestamps": rgbd_payload["timestamps"],
+            "rgb_0": rgbd_payload["rgb"],
+            "depth_0": rgbd_payload["depth"],
+            "camera_time_0": rgbd_payload["timestamps"],
+            "rgb_1": rgbd_payload_2["rgb"],
+            "depth_1": rgbd_payload_2["depth"],
+            "camera_time_1": rgbd_payload_2["timestamps"],
             "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
             "robot_state": robot_state,
             "metadata": metadata,
@@ -374,12 +458,24 @@ def main() -> None:
         trial_path = session_dir / f"trial_{trial_idx + 1}.npy"
         np.save(trial_path, payload, allow_pickle=True)
         print(f"Saved trial data to {trial_path}")
+        trials_completed += 1
 
-    realsense.stop()
+    realsense_primary.stop()
+    realsense_secondary.stop()
 
     executor.shutdown()
     node.destroy_node()
     rclpy.shutdown()
+
+    session_stop_time = _resolve_now(DEFAULT_TIMEZONE)
+    save_session_metadata(
+        session_dir,
+        session_start_time,
+        session_stop_time,
+        TRIAL_COUNT,
+        trials_completed,
+        TRIAL_DURATION_SEC,
+    )
 
     print("Session complete.")
     print(f"Data stored under: {session_dir}")
