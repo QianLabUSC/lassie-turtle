@@ -3,7 +3,7 @@
 RealSense D435i: viewer-like preview with safer defaults.
 
 Differences vs realsense_default.py:
-- Histogram equalization enabled by default.
+- Histogram equalization disabled by default.
 - Do not force min/max depth unless explicitly provided.
 
 Depth scale (meters per unit): 0.0010000000474974513
@@ -90,14 +90,14 @@ def main() -> None:
         "--hist-eq",
         dest="hist_eq",
         action="store_true",
-        default=True,
-        help="Enable histogram equalization (default).",
+        default=False,
+        help="Enable histogram equalization.",
     )
     ap.add_argument(
         "--no-hist-eq",
         dest="hist_eq",
         action="store_false",
-        help="Disable histogram equalization.",
+        help="Disable histogram equalization (default).",
     )
     ap.add_argument("--post", action="store_true", help="Enable post-processing filters (spatial/temporal/hole fill).")
 

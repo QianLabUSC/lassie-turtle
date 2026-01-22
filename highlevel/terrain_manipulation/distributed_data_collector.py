@@ -58,7 +58,7 @@ STREAM_FPS = 30
 DEPTH_MIN_M = None
 DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
-DEPTH_HIST_EQ = True
+DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
 TRIAL_COUNT = 5
 TRIAL_DURATION_SEC = 7.0
@@ -169,6 +169,7 @@ def save_session_metadata(
     trials_planned: int,
     trials_completed: int,
     trial_duration_sec: float,
+    depth_scale: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -181,6 +182,8 @@ def save_session_metadata(
         "initial_compaction": -1,
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
         "fps": int(STREAM_FPS),
+        "histogram_equalization": bool(DEPTH_HIST_EQ),
+        "depth_scale": float(depth_scale),
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
@@ -395,6 +398,7 @@ def main() -> None:
     realsense_secondary = RealSenseSession(serials[1])
     realsense_primary.start()
     realsense_secondary.start()
+    depth_scale = realsense_primary.pipeline.get_active_profile().get_device().first_depth_sensor().get_depth_scale()
 
     trajectory_msg = Float64MultiArray()
     trajectory_msg.data = list(TRAJECTORY_POINTS)
@@ -475,6 +479,7 @@ def main() -> None:
         TRIAL_COUNT,
         trials_completed,
         TRIAL_DURATION_SEC,
+        depth_scale,
     )
 
     print("Session complete.")
