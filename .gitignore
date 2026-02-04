@@ -10,6 +10,7 @@ install/
 log/
 *.bag
 *.db3
+highlevel/terrain_manipulation/data/
 
 # OS/editor
 .DS_Store

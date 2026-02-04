@@ -11,6 +11,7 @@ and metadata.
 
 from __future__ import annotations
 
+import argparse
 import signal
 import sys
 import threading
@@ -61,6 +62,7 @@ DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
 TRIAL_COUNT = 5
+SAVE_RGB_MP4 = False
 TRIAL_DURATION_SEC = 7.0
 
 FIXED_TRAJECTORY = [
@@ -77,10 +79,10 @@ FIXED_TRAJECTORY = [
     -0.53,
     0.7,
     0.785,
-    0.255,
+    0.1,
     0.7,
     0.0,
-    0.255,
+    0.1,
     0.7,
     0.0,
     -0.53,
@@ -264,6 +266,22 @@ def _make_colorizer() -> rs.colorizer:
     return cz
 
 
+def _open_rgb_writer(path: Path, fps: int, size: Tuple[int, int]) -> cv2.VideoWriter:
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    writer = cv2.VideoWriter(str(path), fourcc, float(fps), size)
+    if not writer.isOpened():
+        raise RuntimeError(f"Failed to open video writer for {path}")
+    return writer
+
+
+def _write_rgb_frame(writer: Optional[cv2.VideoWriter], frame: np.ndarray, size: Tuple[int, int]) -> None:
+    if writer is None:
+        return
+    if frame.shape[1] != size[0] or frame.shape[0] != size[1]:
+        frame = cv2.resize(frame, size, interpolation=cv2.INTER_AREA)
+    writer.write(frame)
+
+
 class RGBDRecorder:
     def __init__(self) -> None:
         self.color_raw_frames: List[np.ndarray] = []
@@ -368,6 +386,21 @@ def _select_realsense_serial() -> Optional[str]:
 
 
 def main() -> None:
+    ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--save-rgb-mp4",
+        action="store_true",
+        default=SAVE_RGB_MP4,
+        help="Save RGB MP4 videos for both cameras (per trial).",
+    )
+    ap.add_argument(
+        "--trials",
+        type=int,
+        default=TRIAL_COUNT,
+        help="Number of trials to run (default matches code setting).",
+    )
+    args = ap.parse_args()
+
     session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
     print(f"Session directory: {session_dir}")
 
@@ -410,12 +443,20 @@ def main() -> None:
 
     session_start_time = _resolve_now(DEFAULT_TIMEZONE)
     trials_completed = 0
-    for trial_idx in range(TRIAL_COUNT):
+    for trial_idx in range(args.trials):
         if stop_requested.is_set():
             break
         reset_robot_state_buffers(node)
         recorder = RGBDRecorder()
         recorder_2 = RGBDRecorder()
+        rgb_size = (STREAM_WIDTH, STREAM_HEIGHT)
+        rgb_writer_0: Optional[cv2.VideoWriter] = None
+        rgb_writer_1: Optional[cv2.VideoWriter] = None
+        if args.save_rgb_mp4:
+            rgb_path_0 = session_dir / f"trial_{trial_idx + 1}_rgb_0.mp4"
+            rgb_path_1 = session_dir / f"trial_{trial_idx + 1}_rgb_1.mp4"
+            rgb_writer_0 = _open_rgb_writer(rgb_path_0, STREAM_FPS, rgb_size)
+            rgb_writer_1 = _open_rgb_writer(rgb_path_1, STREAM_FPS, rgb_size)
         run_start = time.time()
         node.start_time = run_start
         start_time = _resolve_now(DEFAULT_TIMEZONE)
@@ -434,11 +475,18 @@ def main() -> None:
                 #     node.time_list[-1] = frame_time
                 recorder.write(color_img, depth_raw, frame_time)
                 recorder_2.write(color_img_2, depth_raw_2, frame_time)
+                _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
+                _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
                 if frame_time >= TRIAL_DURATION_SEC:
                     break
         except RuntimeError as exc:
             print(f"RealSense stream error: {exc}")
             stop_requested.set()
+        finally:
+            if rgb_writer_0 is not None:
+                rgb_writer_0.release()
+            if rgb_writer_1 is not None:
+                rgb_writer_1.release()
 
         stop_time = _resolve_now(DEFAULT_TIMEZONE)
         node.publish_gui_information(_build_gui_message(start_flag=0.0))
@@ -476,7 +524,7 @@ def main() -> None:
         session_dir,
         session_start_time,
         session_stop_time,
-        TRIAL_COUNT,
+        args.trials,
         trials_completed,
         TRIAL_DURATION_SEC,
         depth_scale,
