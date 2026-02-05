@@ -23,8 +23,12 @@ def _load_trial(path: Path) -> Dict[str, object]:
     raise ValueError(f"Unexpected npy payload format in {path}")
 
 
-def _describe_array(arr: np.ndarray) -> str:
-    return f"shape={arr.shape} dtype={arr.dtype}"
+def _describe_value(value: object) -> str:
+    if isinstance(value, np.ndarray):
+        return f"shape={value.shape} dtype={value.dtype}"
+    if isinstance(value, dict):
+        return f"dict keys={list(value.keys())}"
+    return f"type={type(value).__name__}"
 
 
 def _load_required_arrays(
@@ -36,6 +40,8 @@ def _load_required_arrays(
     np.ndarray,
     np.ndarray,
     np.ndarray,
+    Optional[np.ndarray],
+    Optional[np.ndarray],
     Optional[np.ndarray],
     Optional[np.ndarray],
     Optional[np.ndarray],
@@ -68,26 +74,35 @@ def _load_required_arrays(
         raise ValueError("missing or invalid 'robot_state' dict")
 
     robot_times = robot_state.get("time")
-    right_adduction = robot_state.get("rightadduction_curr")
-    right_sweeping = robot_state.get("rightsweeping_curr")
+    right_adduction_curr = robot_state.get("rightadduction_curr")
+    right_sweeping_curr = robot_state.get("rightsweeping_curr")
     if not isinstance(robot_times, np.ndarray):
         raise ValueError("robot_state missing 'time' array")
-    if not isinstance(right_adduction, np.ndarray):
+    if not isinstance(right_adduction_curr, np.ndarray):
         raise ValueError("robot_state missing 'rightadduction_curr' array")
-    if not isinstance(right_sweeping, np.ndarray):
+    if not isinstance(right_sweeping_curr, np.ndarray):
         raise ValueError("robot_state missing 'rightsweeping_curr' array")
+
+    right_adduction_pos = robot_state.get("rightadduction_pos")
+    right_sweeping_pos = robot_state.get("rightsweeping_pos")
+    if not isinstance(right_adduction_pos, np.ndarray):
+        raise ValueError("robot_state missing 'rightadduction_pos' array")
+    if not isinstance(right_sweeping_pos, np.ndarray):
+        raise ValueError("robot_state missing 'rightsweeping_pos' array")
 
     return (
         rgb,
         depth,
         timestamps,
         robot_times,
-        right_adduction,
-        right_sweeping,
+        right_adduction_curr,
+        right_sweeping_curr,
         rgb_2,
         depth_2,
         timestamps_2,
         trajectory_points,
+        right_adduction_pos,
+        right_sweeping_pos,
     )
 
 
@@ -99,18 +114,20 @@ def load_trial_arrays(path: Path) -> Dict[str, np.ndarray]:
             depth,
             timestamps,
             robot_times,
-            right_adduction,
-            right_sweeping,
+            right_adduction_curr,
+            right_sweeping_curr,
             rgb_2,
             depth_2,
             timestamps_2,
             trajectory_points,
+            right_adduction_pos,
+            right_sweeping_pos,
         ) = _load_required_arrays(payload)
     except Exception as exc:
         raise ValueError(f"{path.name}: {exc}") from exc
 
-    right_adduction_torque = right_adduction * TORQUE_SCALE
-    right_sweeping_torque = right_sweeping * TORQUE_SCALE
+    right_adduction_torque = right_adduction_curr * TORQUE_SCALE
+    right_sweeping_torque = right_sweeping_curr * TORQUE_SCALE
 
     result = {
         "rgb_0": rgb,
@@ -119,6 +136,8 @@ def load_trial_arrays(path: Path) -> Dict[str, np.ndarray]:
         "robot_time": robot_times,
         "rightadduction_torque": right_adduction_torque,
         "rightsweeping_torque": right_sweeping_torque,
+        "rightadduction_pos": right_adduction_pos,
+        "rightsweeping_pos": right_sweeping_pos,
     }
     if rgb_2 is not None:
         result["rgb_1"] = rgb_2
@@ -128,6 +147,9 @@ def load_trial_arrays(path: Path) -> Dict[str, np.ndarray]:
         result["camera_time_1"] = timestamps_2
     if trajectory_points is not None:
         result["trajectory_points"] = trajectory_points
+    metadata = payload.get("metadata")
+    if isinstance(metadata, dict):
+        result["trial_metadata"] = metadata
     return result
 
 
@@ -176,7 +198,7 @@ def main() -> int:
             continue
         print(f"{trial.name}: loaded")
         for key, value in arrays.items():
-            print(f"  {key}: {_describe_array(value)}")
+            print(f"  {key}: {_describe_value(value)}")
 
     return exit_code
 
