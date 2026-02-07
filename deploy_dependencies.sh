@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the folders to copy
-folders=("dependencies highlevel")
+folders=("dependencies")
 
 # SSH connection details
 user="ubuntu"

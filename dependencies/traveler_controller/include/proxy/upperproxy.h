@@ -15,6 +15,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "std_msgs/msg/float64_multi_array.hpp"
+#include "std_msgs/msg/bool.hpp"
 #include "control_msgs/msg/dynamic_joint_state.hpp"
 
 using namespace std::chrono_literals;
@@ -40,6 +41,7 @@ namespace turtle_namespace
 			void handle_trajectory_points(const std_msgs::msg::Float64MultiArray::SharedPtr msg);
 			void UpdateGuiCommand(turtle &turtle_);
 			void PublishStatusFeedback(turtle &turtle_);
+			void PublishTrajectoryComplete();
 			void manual_waypoints(); 
 			
 			// New method to handle trajectory points
@@ -49,14 +51,15 @@ namespace turtle_namespace
 			rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_publisher;
 			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr GUI_subscriber;
 			rclcpp::Subscription<std_msgs::msg::Float64MultiArray>::SharedPtr trajectory_subscriber;
+			rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr trajectory_complete_publisher;
 			// rclcpp::Subscription<traveler_msgs::msg::TravelerConfig>::SharedPtr start_subscriber;
 			
 			turtle turtle_inter_;
 			std::vector<TrajectoryWaypoint> waypoints;
+			bool last_traj_complete_ = false;
 		};
 
 	} // namespace control
 } // namespace turtle_namespace
 
 #endif
-

@@ -65,6 +65,7 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 
         turtle.turtle_control.if_control = 1; 
 
+        traj_complete_ = false;
         waypoint_index_ = 1;
         prev_waypoint_ = waypoints_[0];
         curr_waypoint_ = waypoints_[1];
@@ -75,6 +76,7 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 
     if (waypoint_index_ >= static_cast<int>(waypoints_.size())) {
         printf("Trajectory complete.\n");
+        traj_complete_ = true;
         return true;
     }
 
@@ -100,6 +102,7 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
     
     if (!turtle.turtle_gui.start_flag) {
         first_iteration = true;
+        traj_complete_ = false;
         waypoint_index_ = 0;
         waypoints_.clear();
         turtle.turtle_control.if_control = 0;  
@@ -111,4 +114,3 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
 
 } // namespace control
 } // namespace turtle_namespace
-

@@ -42,6 +42,7 @@ int main(int argc, char **argv)
         
         Can_driver_->change_odrive_state(turtle_);
         traj_parser.generateTempTraj(turtle_);
+        Upper_proxy_->PublishTrajectoryComplete();
         // Lower_proxy_->calculate_position(turtle_);  
         
         Can_driver_->setControl(turtle_);
@@ -52,4 +53,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-

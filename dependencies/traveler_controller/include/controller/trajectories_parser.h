@@ -25,6 +25,7 @@ public:
     bool waypointTrajectory(turtle &);
     void generateWaypoints(turtle &);
     bool processWaypoint(turtle &);
+    bool trajComplete() const { return traj_complete_; }
 
 private:
     // state for linear trajectory timing
@@ -53,5 +54,4 @@ private:
 } // namespace turtle_namespace
 
 #endif
-
 
