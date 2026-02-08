@@ -49,10 +49,10 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 3
+TRIAL_COUNT = 1
 SAVE_RGB_MP4 = False
 
-TRAJ_SPEED_RAD_S = 0.3
+TRAJ_SPEED_RAD_S = 0.4
 
 FIXED_TRAJECTORY = [
     0.0,
@@ -77,6 +77,55 @@ FIXED_TRAJECTORY = [
     -0.53,
     TRAJ_SPEED_RAD_S,
 ]
+
+# FIXED_TRAJECTORY = [
+#     0.0,
+#     -0.53,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -0.54,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -1.315,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -1.32,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -0.53,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -0.54,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -1.315,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -1.32,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -0.53,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -0.54,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -1.315,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -1.32,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -0.53,
+#     TRAJ_SPEED_RAD_S,
+#     0.0,
+#     -0.54,
+#     TRAJ_SPEED_RAD_S*0.01,
+#     0.0,
+#     -1.315,
+#     TRAJ_SPEED_RAD_S,
+# ]
+
 TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
 
 
@@ -116,7 +165,8 @@ def save_session_metadata(
     trials_planned: int,
     trials_completed: int,
     trial_duration_sec: float,
-    depth_scale: float,
+    depth_scale_0: float,
+    depth_scale_1: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -130,7 +180,8 @@ def save_session_metadata(
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
         "fps": int(STREAM_FPS),
         "histogram_equalization": bool(DEPTH_HIST_EQ),
-        "depth_scale": float(depth_scale),
+        "depth_scale_0": float(depth_scale_0),
+        "depth_scale_1": float(depth_scale_1),
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
@@ -505,8 +556,14 @@ def main() -> int:
     realsense_secondary = RealSenseSession(serials[1])
     realsense_primary.start()
     realsense_secondary.start()
-    depth_scale = (
+    depth_scale_0 = (
         realsense_primary.pipeline.get_active_profile()
+        .get_device()
+        .first_depth_sensor()
+        .get_depth_scale()
+    )
+    depth_scale_1 = (
+        realsense_secondary.pipeline.get_active_profile()
         .get_device()
         .first_depth_sensor()
         .get_depth_scale()
@@ -620,7 +677,8 @@ def main() -> int:
         args.trials,
         trials_completed,
         avg_trial_duration,
-        depth_scale,
+        depth_scale_0,
+        depth_scale_1,
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 

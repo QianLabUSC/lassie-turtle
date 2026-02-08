@@ -23,6 +23,8 @@ try:
 except ModuleNotFoundError as exc:
     raise SystemExit("matplotlib is required for plotting.") from exc
 
+DATA_ROOT = Path(__file__).resolve().parent / "data"
+
 
 def _load_payload(path: Path) -> Dict[str, object]:
     data = np.load(path, allow_pickle=True)
@@ -46,6 +48,15 @@ def _pick_trial(path: Path, trial_index: Optional[int]) -> Path:
     return trials[trial_index - 1]
 
 
+def _latest_session_dir(data_root: Path) -> Path:
+    if not data_root.exists():
+        raise FileNotFoundError(f"Data root not found: {data_root}")
+    sessions = [path for path in data_root.iterdir() if path.is_dir() and path.name.startswith("session_")]
+    if not sessions:
+        raise FileNotFoundError(f"No session folders found under {data_root}")
+    return max(sessions, key=lambda path: path.name)
+
+
 def _closest_indices(sample_times: np.ndarray, query_times: np.ndarray) -> np.ndarray:
     if sample_times.size == 0:
         return np.zeros_like(query_times, dtype=int)
@@ -59,17 +70,42 @@ def _closest_indices(sample_times: np.ndarray, query_times: np.ndarray) -> np.nd
     return np.where(choose_prev, prev_idx, next_idx)
 
 
-def _estimate_depth_range(depth: np.ndarray, max_frames: int = 50) -> Tuple[float, float]:
+def _depth_values(depth: np.ndarray, max_frames: int = 50) -> np.ndarray:
     if depth.size == 0:
-        return 0.0, 1.0
+        return np.empty((0,), dtype=depth.dtype)
     frames = depth
     if depth.ndim == 3 and depth.shape[0] > max_frames:
         idx = np.linspace(0, depth.shape[0] - 1, max_frames, dtype=int)
         frames = depth[idx]
     values = frames.reshape(-1)
-    values = values[values > 0]
+    return values[values > 0]
+
+
+def _estimate_depth_range(depth: np.ndarray, max_frames: int = 50) -> Tuple[float, float]:
+    values = _depth_values(depth, max_frames)
     if values.size == 0:
         return 0.0, 1.0
+    low, high = np.percentile(values, [1.0, 99.0])
+    if high <= low:
+        high = low + 1.0
+    return float(low), float(high)
+
+
+def _estimate_shared_depth_range(
+    depth_a: np.ndarray,
+    depth_b: np.ndarray,
+    max_frames: int = 50,
+) -> Tuple[float, float]:
+    values_a = _depth_values(depth_a, max_frames)
+    values_b = _depth_values(depth_b, max_frames)
+    if values_a.size == 0 and values_b.size == 0:
+        return 0.0, 1.0
+    if values_a.size == 0:
+        values = values_b
+    elif values_b.size == 0:
+        values = values_a
+    else:
+        values = np.concatenate([values_a, values_b])
     low, high = np.percentile(values, [1.0, 99.0])
     if high <= low:
         high = low + 1.0
@@ -139,7 +175,13 @@ def _plot_forces(
 
 def main() -> None:
     ap = argparse.ArgumentParser(description="Render sync-review MP4 for RGB-D + forces.")
-    ap.add_argument("session_or_trial", type=Path, help="Session directory or trial .npy file")
+    ap.add_argument(
+        "session_or_trial",
+        nargs="?",
+        default=None,
+        type=Path,
+        help="Session directory or trial .npy file (default: latest session).",
+    )
     ap.add_argument("--trial", type=int, default=None, help="Trial index (1-based) when a session dir is provided")
     ap.add_argument("--output", type=Path, default=None, help="Output mp4 path")
     ap.add_argument("--force-a", default="rightadduction_curr", help="robot_state key for force A")
@@ -147,7 +189,11 @@ def main() -> None:
     ap.add_argument("--torque-scale", type=float, default=0.072, help="Scale forces by this factor")
     args = ap.parse_args()
 
-    trial_path = _pick_trial(Path(str(args.session_or_trial).strip()), args.trial)
+    if args.session_or_trial is None:
+        session_dir = _latest_session_dir(DATA_ROOT)
+        trial_path = _pick_trial(session_dir, 1)
+    else:
+        trial_path = _pick_trial(Path(str(args.session_or_trial).strip()), args.trial)
     payload = _load_payload(trial_path)
 
     rgb0 = payload.get("rgb_0") if "rgb_0" in payload else payload.get("rgb")
@@ -182,8 +228,9 @@ def main() -> None:
     idx1_for_t0 = _closest_indices(np.asarray(t1, dtype=float), np.asarray(t0, dtype=float))
     robot_idx_for_t0 = _closest_indices(np.asarray(robot_time, dtype=float), np.asarray(t0, dtype=float))
 
-    depth0_min, depth0_max = _estimate_depth_range(depth0)
-    depth1_min, depth1_max = _estimate_depth_range(depth1)
+    depth_min, depth_max = _estimate_shared_depth_range(depth0, depth1)
+    depth0_min, depth0_max = depth_min, depth_max
+    depth1_min, depth1_max = depth_min, depth_max
 
     h, w = rgb0.shape[1], rgb0.shape[2]
     plot_w, plot_h = w, h * 2
