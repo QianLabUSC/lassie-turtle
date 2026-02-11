@@ -49,10 +49,10 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 30
+TRIAL_COUNT = 3
 SAVE_RGB_MP4 = False
 
-TRAJ_SPEED_RAD_S = 0.4
+TRAJ_SPEED_RAD_S = 1.0
 
 FIXED_TRAJECTORY = [
     0.0,
@@ -608,7 +608,6 @@ def main() -> int:
         node.reset(run_start)
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         trajectory_publisher.publish(trajectory_msg)
-        node.publish_gui_information(_build_gui_message(start_flag=1.0))
         print(f"Starting trial {trial_idx + 1}/{TRIAL_COUNT}...")
 
         try:
@@ -633,7 +632,6 @@ def main() -> int:
 
         stop_time = _resolve_now(DEFAULT_TIMEZONE)
         trial_duration_sec = (stop_time - start_time).total_seconds()
-        node.publish_gui_information(_build_gui_message(start_flag=0.0))
 
         rgbd_payload = recorder.finalize()
         rgbd_payload_2 = recorder_2.finalize()
@@ -659,6 +657,9 @@ def main() -> int:
         trials_completed += 1
         trial_durations.append(trial_duration_sec)
 
+    # Send one final stop command when exiting so motor control is released
+    node.publish_gui_information(_build_gui_message(start_flag=0.0))
+    
     realsense_primary.stop()
     realsense_secondary.stop()
 
