@@ -49,18 +49,21 @@ void upperproxy::handle_trajectory_points(
         const double x = msg->data[i];
         const double y = msg->data[i + 1];
         const double v = msg->data[i + 2];
-        // Keep your prints
-        std::cout << " (" << x << ", " << y << "), vel: " << v << std::endl; // print 
-        // Store 
+        std::cout << " (" << x << ", " << y << "), vel: " << v << std::endl;
         td.waypoints_x.push_back(static_cast<float>(x));
         td.waypoints_y.push_back(static_cast<float>(y));
         td.waypoints_v.push_back(static_cast<float>(v));
         td.num_waypoints++;
     }
+    
     RCLCPP_INFO(this->get_logger(), "Stored %d waypoints", td.num_waypoints);
+    
+    // If not currently running, auto-start the trajectory
+    if (turtle_inter_.turtle_gui.start_flag == 0) {
+        std::cout << "Auto-starting trajectory execution\n";
+        turtle_inter_.turtle_gui.start_flag = 1;
+    }
 }
-
-
 
 
 void upperproxy::handle_gui
