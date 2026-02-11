@@ -36,8 +36,6 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
                i, waypoints_[i].point.x, waypoints_[i].point.y, waypoints_[i].vel);
     }
     
-    // Mark that waypoints have been processed
-    last_num_waypoints_ = turtle.traj_data.num_waypoints;
 }
 
 bool TrajectoriesParser::processWaypoint(turtle &turtle) {
@@ -63,6 +61,12 @@ bool TrajectoriesParser::processWaypoint(turtle &turtle) {
 
 
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
+
+    if (traj_complete_) {
+        first_iteration = true;
+        traj_complete_ = false;
+    }
+    
     if (first_iteration) {
         generateWaypoints(turtle);
 
@@ -80,6 +84,8 @@ bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
     if (waypoint_index_ >= static_cast<int>(waypoints_.size())) {
         printf("Trajectory complete.\n");
         traj_complete_ = true;
+
+        turtle.turtle_gui.start_flag = 0;
         return true;
     }
 
@@ -103,23 +109,12 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
     int trajectory = turtle.turtle_gui.drag_traj; 
     int RUN = turtle.turtle_gui.start_flag; 
     
-    // Check if new waypoints have arrived while running
-    if (turtle.traj_data.num_waypoints > 0 && 
-        turtle.traj_data.num_waypoints != last_num_waypoints_ &&
-        !first_iteration) {
-        printf("New waypoints detected! Restarting trajectory...\n");
-        first_iteration = true;
-        traj_complete_ = false;
-        waypoint_index_ = 0;
-        waypoints_.clear();
-    }
     
     if (!turtle.turtle_gui.start_flag) {
         first_iteration = true;
         traj_complete_ = false;
         waypoint_index_ = 0;
         waypoints_.clear();
-        last_num_waypoints_ = 0;
         turtle.turtle_control.if_control = 0;  
         return;
     }
