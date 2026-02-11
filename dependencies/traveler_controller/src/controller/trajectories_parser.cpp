@@ -35,7 +35,8 @@ void TrajectoriesParser::generateWaypoints(turtle &turtle) {
         printf("Waypoint %zu: (%f, %f), vel: %f\n",
                i, waypoints_[i].point.x, waypoints_[i].point.y, waypoints_[i].vel);
     }
-    
+
+    last_trajectory_version_ = turtle.traj_data.trajectory_version;
 }
 
 bool TrajectoriesParser::processWaypoint(turtle &turtle) {
@@ -110,11 +111,14 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
         traj_complete_ = false;
         waypoint_index_ = 0;
         waypoints_.clear();
+        last_trajectory_version_ = 0;
         turtle.turtle_control.if_control = 0;  
         return;
     }
 
-    if (traj_complete_ && turtle.turtle_gui.start_flag == 1) {
+    if (turtle.traj_data.trajectory_version != last_trajectory_version_) {
+        printf("New trajectory detected (version %d -> %d). Restarting...\n",
+               last_trajectory_version_, turtle.traj_data.trajectory_version);
         first_iteration = true;
         traj_complete_ = false;
     }

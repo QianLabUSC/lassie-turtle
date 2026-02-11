@@ -56,6 +56,8 @@ void upperproxy::handle_trajectory_points(
         td.num_waypoints++;
     }
     
+    td.trajectory_version++;
+    
     RCLCPP_INFO(this->get_logger(), "Stored %d waypoints", td.num_waypoints);
     
     // If not currently running, auto-start the trajectory

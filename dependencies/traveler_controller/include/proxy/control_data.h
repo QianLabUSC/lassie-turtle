@@ -106,6 +106,7 @@ struct TrajectoryData {
     std::vector<float> waypoints_x;
     std::vector<float> waypoints_y;
     std::vector<float> waypoints_v;
+    int trajectory_version = 0; 
 };
 
 // Program state enum

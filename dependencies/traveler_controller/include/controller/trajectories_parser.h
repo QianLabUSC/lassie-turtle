@@ -49,6 +49,8 @@ private:
     float target_x = 0.0f;
     float target_y = 0.0f;
 
+    int last_trajectory_version_ = 0;
+
 };
 
 } // namespace control
