@@ -6,6 +6,7 @@
  */
 
 #include "proxy/upperproxy.h"
+#include "controller/trajectories_parser.h"
 
 
 /**
@@ -22,6 +23,8 @@ upperproxy::upperproxy(std::string name) : Node(name){
                 <<std::endl;
     GUI_publisher = this->create_publisher<std_msgs::msg::Float64MultiArray>
         ("/drag_times", 10);
+    trajectory_complete_publisher = this->create_publisher<std_msgs::msg::Bool>
+        ("/trajectory_complete", 10);
     GUI_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
         ("/Gui_information", 10, std::bind(&upperproxy::handle_gui, this, _1));
     trajectory_subscriber = this->create_subscription<std_msgs::msg::Float64MultiArray>
@@ -79,6 +82,17 @@ void upperproxy::handle_gui
 void upperproxy::UpdateGuiCommand(turtle& turtle_){
     turtle_.turtle_gui = turtle_inter_.turtle_gui;
     turtle_.traj_data = turtle_inter_.traj_data;
+}
+
+void upperproxy::PublishTrajectoryComplete(){
+    auto &traj_parser = turtle_namespace::control::TrajectoriesParser::getTrajParser();
+    const bool is_complete = traj_parser.trajComplete();
+    if (is_complete != last_traj_complete_) {
+        auto message = std_msgs::msg::Bool();
+        message.data = is_complete;
+        trajectory_complete_publisher->publish(message);
+        last_traj_complete_ = is_complete;
+    }
 }
 void upperproxy::PublishStatusFeedback(turtle& turtle_){
     if(turtle_.turtle_gui.status_update_flag == true){
