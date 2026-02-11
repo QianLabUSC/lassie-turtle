@@ -62,11 +62,6 @@ bool TrajectoriesParser::processWaypoint(turtle &turtle) {
 
 bool TrajectoriesParser::waypointTrajectory(turtle &turtle) {
 
-    if (traj_complete_) {
-        first_iteration = true;
-        traj_complete_ = false;
-    }
-    
     if (first_iteration) {
         generateWaypoints(turtle);
 
@@ -117,6 +112,11 @@ void TrajectoriesParser::generateTempTraj(turtle &turtle) {
         waypoints_.clear();
         turtle.turtle_control.if_control = 0;  
         return;
+    }
+
+    if (traj_complete_ && turtle.turtle_gui.start_flag == 1) {
+        first_iteration = true;
+        traj_complete_ = false;
     }
 
     waypointTrajectory(turtle);
