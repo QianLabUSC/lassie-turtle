@@ -65,6 +65,10 @@ MOCAP_RB_NAMES = {
     2: "Empty Half Sphere",
     3: "Lead Half Sphere",
 }
+# Orientation reference mode for roll/pitch/yaw:
+#   "trial"   -> re-zero each trial (can look like resets in experiment plots)
+#   "session" -> keep one reference for the whole run
+MOCAP_REFERENCE_MODE = "session"
 
 TRAJ_SPEED_RAD_S = 2.0
 
@@ -154,6 +158,7 @@ def save_session_metadata(
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_udp_ip": str(MOCAP_UDP_IP),
         "mocap_udp_port": int(MOCAP_UDP_PORT),
+        "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
         "mocap_rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
@@ -172,6 +177,7 @@ def build_metadata(
         "duration_sec": (stop_time - start_time).total_seconds(),
         "dwell_time_sec": float(dwell_time_sec),
         "mocap_enabled": bool(MOCAP_ENABLED),
+        "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
     }
     if mocap_summary is not None:
         metadata["mocap_summary"] = mocap_summary
@@ -390,11 +396,12 @@ class MocapUDPReceiver:
             self._thread.join(timeout=1.0)
             self._thread = None
 
-    def reset(self, run_start: float) -> None:
+    def reset(self, run_start: float, reset_reference: bool = True) -> None:
         with self._lock:
             self._run_start = run_start
             self._samples_by_rigid_body.clear()
-            self._initial_rot.clear()
+            if reset_reference:
+                self._initial_rot.clear()
             self._packets_received = 0
             self._decode_errors = 0
 
@@ -798,7 +805,7 @@ def main() -> int:
         run_start = time.time()
         node.reset(run_start)
         if mocap_receiver is not None:
-            mocap_receiver.reset(run_start)
+            mocap_receiver.reset(run_start, reset_reference=(MOCAP_REFERENCE_MODE == "trial"))
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         trajectory_publisher.publish(trajectory_msg)
         print(f"Starting trial {trial_idx + 1}/{args.trials}...")
@@ -911,3 +918,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+
+### mocap oriantationwrong. andf x y z swapped?
