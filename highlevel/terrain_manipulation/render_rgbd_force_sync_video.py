@@ -301,7 +301,7 @@ def _plot_forces(
         ax.plot(times[: idx + 1], force_b[: idx + 1], color="tab:blue", linewidth=1.5, label=label_b)
         ax.set_title("Motor Torque")
         ax.set_xlabel("time (s)")
-        ax.set_ylabel("torque (N.m)")
+        ax.set_ylabel("torque (scaled)")
         ax.legend(loc="upper right")
         ax.grid(True, alpha=0.3)
     else:
@@ -316,7 +316,7 @@ def _plot_forces(
         ax_force.plot(times[: idx + 1], force_a[: idx + 1], color="tab:red", linewidth=1.5, label=label_a)
         ax_force.plot(times[: idx + 1], force_b[: idx + 1], color="tab:blue", linewidth=1.5, label=label_b)
         ax_force.set_title("Motor Torque")
-        ax_force.set_ylabel("torque (N.m)")
+        ax_force.set_ylabel("torque (scaled)")
         ax_force.legend(loc="upper right")
         ax_force.grid(True, alpha=0.3)
 

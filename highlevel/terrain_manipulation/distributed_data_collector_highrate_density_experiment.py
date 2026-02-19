@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""High-rate robot_state logging with camera-time alignment.
+"""High-rate robot_state + UDP mocap logging with camera-time alignment.
 
 Captures every /robot_state message (plus OptiTrack body + flipper poses)
 at the native publish rate, then aligns those samples to RGB-D frame 
 timestamps (from camera 0) after each trial. Output includes:
   - robot_state_raw: full-rate samples
   - robot_state: nearest-neighbor aligned to camera_time_0
+  - mocap_raw: full-rate UDP mocap samples grouped by rigid body ID
+  - mocap: nearest-neighbor aligned to camera_time_0
   - per-trial metadata and session-level metadata.json
 """
 
@@ -14,7 +16,9 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import pickle
 import signal
+import socket
 import threading
 import time
 from dataclasses import dataclass
@@ -25,6 +29,7 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 import rclpy
+from scipy.spatial.transform import Rotation as R
 from geometry_msgs.msg import Pose
 from rclpy.executors import SingleThreadedExecutor
 from rclpy.node import Node
@@ -49,8 +54,17 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 2
+TRIAL_COUNT = 7
+DWELL_TIME_S = 2.0
 SAVE_RGB_MP4 = False
+MOCAP_ENABLED = True
+MOCAP_UDP_IP = "0.0.0.0"
+MOCAP_UDP_PORT = 8000
+MOCAP_PACKET_SIZE_BYTES = 4096
+MOCAP_RB_NAMES = {
+    2: "Empty Half Sphere",
+    3: "Lead Half Sphere",
+}
 
 TRAJ_SPEED_RAD_S = 2.0
 
@@ -78,54 +92,6 @@ FIXED_TRAJECTORY = [
     -0.53,
     TRAJ_SPEED_RAD_S,
 ]
-
-# FIXED_TRAJECTORY = [
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-# ]
 
 TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
 
@@ -166,6 +132,7 @@ def save_session_metadata(
     trials_planned: int,
     trials_completed: int,
     trial_duration_sec: float,
+    dwell_time_sec: float,
     depth_scale_0: float,
     depth_scale_1: float,
 ) -> None:
@@ -176,6 +143,7 @@ def save_session_metadata(
         "trials_planned": int(trials_planned),
         "trials_completed": int(trials_completed),
         "trial_duration_sec": float(trial_duration_sec),
+        "dwell_time_sec": float(dwell_time_sec),
         "slope": 0,
         "initial_compaction": -1,
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
@@ -183,17 +151,31 @@ def save_session_metadata(
         "histogram_equalization": bool(DEPTH_HIST_EQ),
         "depth_scale_0": float(depth_scale_0),
         "depth_scale_1": float(depth_scale_1),
+        "mocap_enabled": bool(MOCAP_ENABLED),
+        "mocap_udp_ip": str(MOCAP_UDP_IP),
+        "mocap_udp_port": int(MOCAP_UDP_PORT),
+        "mocap_rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
 
 
-def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
-    return {
+def build_metadata(
+    start_time: datetime,
+    stop_time: datetime,
+    dwell_time_sec: float,
+    mocap_summary: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
+    metadata = {
         "start_time": start_time.isoformat(),
         "stop_time": stop_time.isoformat(),
         "duration_sec": (stop_time - start_time).total_seconds(),
+        "dwell_time_sec": float(dwell_time_sec),
+        "mocap_enabled": bool(MOCAP_ENABLED),
     }
+    if mocap_summary is not None:
+        metadata["mocap_summary"] = mocap_summary
+    return metadata
 
 
 def bind_signal(sig: int, handler) -> None:
@@ -359,6 +341,164 @@ class RobotStateSample:
     right_flipper_orientation_w: float
 
 
+@dataclass
+class MocapSample:
+    time_s: float
+    rigid_body_id: int
+    position_x: float
+    position_y: float
+    position_z: float
+    orientation_x: float
+    orientation_y: float
+    orientation_z: float
+    orientation_w: float
+    roll_deg: float
+    pitch_deg: float
+    yaw_deg: float
+
+
+class MocapUDPReceiver:
+    def __init__(self, udp_ip: str, udp_port: int) -> None:
+        self.udp_ip = udp_ip
+        self.udp_port = int(udp_port)
+        self._lock = threading.Lock()
+        self._run_start = time.time()
+        self._samples_by_rigid_body: Dict[int, List[MocapSample]] = {}
+        self._initial_rot: Dict[int, R] = {}
+        self._packets_received = 0
+        self._decode_errors = 0
+        self._stop_requested = threading.Event()
+        self._thread: Optional[threading.Thread] = None
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._sock.bind((self.udp_ip, self.udp_port))
+        self._sock.settimeout(0.2)
+
+    def start(self) -> None:
+        if self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._recv_loop, daemon=True)
+        self._thread.start()
+
+    def stop(self) -> None:
+        self._stop_requested.set()
+        try:
+            self._sock.close()
+        except OSError:
+            pass
+        if self._thread is not None:
+            self._thread.join(timeout=1.0)
+            self._thread = None
+
+    def reset(self, run_start: float) -> None:
+        with self._lock:
+            self._run_start = run_start
+            self._samples_by_rigid_body.clear()
+            self._initial_rot.clear()
+            self._packets_received = 0
+            self._decode_errors = 0
+
+    def snapshot(self) -> Dict[int, List[MocapSample]]:
+        with self._lock:
+            return {rigid_body_id: list(samples) for rigid_body_id, samples in self._samples_by_rigid_body.items()}
+
+    def summary(self) -> Dict[str, object]:
+        with self._lock:
+            return {
+                "packets_received": int(self._packets_received),
+                "decode_errors": int(self._decode_errors),
+                "rigid_body_ids": [int(rigid_body_id) for rigid_body_id in sorted(self._samples_by_rigid_body.keys())],
+                "samples_per_rigid_body": {
+                    str(rigid_body_id): int(len(samples))
+                    for rigid_body_id, samples in sorted(self._samples_by_rigid_body.items())
+                },
+                "rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
+                "udp_ip": self.udp_ip,
+                "udp_port": self.udp_port,
+            }
+
+    def _recv_loop(self) -> None:
+        while not self._stop_requested.is_set():
+            try:
+                packet, _addr = self._sock.recvfrom(MOCAP_PACKET_SIZE_BYTES)
+            except socket.timeout:
+                continue
+            except OSError:
+                if self._stop_requested.is_set():
+                    break
+                continue
+            self._handle_packet(packet)
+
+    def _record_decode_error(self) -> None:
+        with self._lock:
+            self._decode_errors += 1
+
+    def _handle_packet(self, packet: bytes) -> None:
+        with self._lock:
+            self._packets_received += 1
+
+        try:
+            rb = pickle.loads(packet)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        if not hasattr(rb, "__len__") or len(rb) < 8:
+            self._record_decode_error()
+            return
+
+        try:
+            rigid_body_id = int(rb[0])
+            quat = np.asarray(rb[1:5], dtype=float)
+            pos = np.asarray(rb[5:8], dtype=float)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        if quat.shape != (4,) or pos.shape != (3,):
+            self._record_decode_error()
+            return
+        if not np.all(np.isfinite(quat)) or not np.all(np.isfinite(pos)):
+            self._record_decode_error()
+            return
+
+        quat_norm = float(np.linalg.norm(quat))
+        if quat_norm <= 1e-9:
+            self._record_decode_error()
+            return
+        quat = quat / quat_norm
+
+        try:
+            current_rot = R.from_quat(quat)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        with self._lock:
+            if rigid_body_id not in self._initial_rot:
+                self._initial_rot[rigid_body_id] = current_rot
+                relative_rot = R.identity()
+            else:
+                relative_rot = self._initial_rot[rigid_body_id].inv() * current_rot
+            roll_deg, pitch_deg, yaw_deg = relative_rot.as_euler("xyz", degrees=True)
+
+            sample = MocapSample(
+                time_s=time.time() - self._run_start,
+                rigid_body_id=rigid_body_id,
+                position_x=float(pos[0]),
+                position_y=float(pos[1]),
+                position_z=float(pos[2]),
+                orientation_x=float(quat[0]),
+                orientation_y=float(quat[1]),
+                orientation_z=float(quat[2]),
+                orientation_w=float(quat[3]),
+                roll_deg=float(roll_deg),
+                pitch_deg=float(pitch_deg),
+                yaw_deg=float(yaw_deg),
+            )
+            self._samples_by_rigid_body.setdefault(rigid_body_id, []).append(sample)
+
+
 class ControlNodeHighRate(Node):
     def __init__(self) -> None:
         super().__init__("control_node_highrate")
@@ -495,6 +635,27 @@ def _build_robot_state(samples: List[RobotStateSample]) -> Dict[str, np.ndarray]
     }
 
 
+def _build_mocap_state(samples_by_rigid_body: Dict[int, List[MocapSample]]) -> Dict[str, Dict[str, np.ndarray]]:
+    mocap_state: Dict[str, Dict[str, np.ndarray]] = {}
+    for rigid_body_id, samples in sorted(samples_by_rigid_body.items()):
+        key = str(rigid_body_id)
+        mocap_state[key] = {
+            "time": np.asarray([s.time_s for s in samples], dtype=float),
+            "rigid_body_id": np.asarray([s.rigid_body_id for s in samples], dtype=float),
+            "position_x": np.asarray([s.position_x for s in samples], dtype=float),
+            "position_y": np.asarray([s.position_y for s in samples], dtype=float),
+            "position_z": np.asarray([s.position_z for s in samples], dtype=float),
+            "orientation_x": np.asarray([s.orientation_x for s in samples], dtype=float),
+            "orientation_y": np.asarray([s.orientation_y for s in samples], dtype=float),
+            "orientation_z": np.asarray([s.orientation_z for s in samples], dtype=float),
+            "orientation_w": np.asarray([s.orientation_w for s in samples], dtype=float),
+            "roll_deg": np.asarray([s.roll_deg for s in samples], dtype=float),
+            "pitch_deg": np.asarray([s.pitch_deg for s in samples], dtype=float),
+            "yaw_deg": np.asarray([s.yaw_deg for s in samples], dtype=float),
+        }
+    return mocap_state
+
+
 def _nearest_indices(sample_times: np.ndarray, query_times: np.ndarray) -> np.ndarray:
     if sample_times.size == 0:
         return np.zeros_like(query_times, dtype=int)
@@ -517,6 +678,25 @@ def _align_robot_state(robot_state: Dict[str, np.ndarray], camera_times: np.ndar
             continue
         aligned[key] = values[indices]
     return aligned
+
+
+def _align_mocap_state(
+    mocap_state: Dict[str, Dict[str, np.ndarray]],
+    camera_times: np.ndarray,
+) -> Dict[str, Dict[str, np.ndarray]]:
+    aligned_mocap: Dict[str, Dict[str, np.ndarray]] = {}
+    for rigid_body_id, rigid_body_state in mocap_state.items():
+        sample_times = rigid_body_state.get("time")
+        if not isinstance(sample_times, np.ndarray) or sample_times.size == 0:
+            continue
+        indices = _nearest_indices(sample_times, camera_times)
+        aligned_state: Dict[str, np.ndarray] = {"time": sample_times[indices]}
+        for key, values in rigid_body_state.items():
+            if key == "time":
+                continue
+            aligned_state[key] = values[indices]
+        aligned_mocap[rigid_body_id] = aligned_state
+    return aligned_mocap
 
 
 def parse_args() -> argparse.Namespace:
@@ -573,6 +753,16 @@ def main() -> int:
     trajectory_msg = Float64MultiArray()
     trajectory_msg.data = list(TRAJECTORY_POINTS)
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
+    mocap_receiver: Optional[MocapUDPReceiver] = None
+    if MOCAP_ENABLED:
+        try:
+            mocap_receiver = MocapUDPReceiver(MOCAP_UDP_IP, MOCAP_UDP_PORT)
+            mocap_receiver.start()
+            print(f"Mocap UDP listener active on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT}")
+        except OSError as exc:
+            raise SystemExit(
+                f"Failed to bind mocap UDP listener on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT}: {exc}"
+            ) from exc
 
     print(
         "Robot command issued. Recording RGB-D + high-rate telemetry...\n"
@@ -607,9 +797,11 @@ def main() -> int:
 
         run_start = time.time()
         node.reset(run_start)
+        if mocap_receiver is not None:
+            mocap_receiver.reset(run_start)
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         trajectory_publisher.publish(trajectory_msg)
-        print(f"Starting trial {trial_idx + 1}/{TRIAL_COUNT}...")
+        print(f"Starting trial {trial_idx + 1}/{args.trials}...")
 
         try:
             while not stop_requested.is_set():
@@ -638,7 +830,23 @@ def main() -> int:
         rgbd_payload_2 = recorder_2.finalize()
         robot_state_raw = _build_robot_state(node.snapshot())
         robot_state_aligned = _align_robot_state(robot_state_raw, rgbd_payload["timestamps"])
-        metadata = build_metadata(start_time, stop_time)
+        if mocap_receiver is not None:
+            mocap_raw = _build_mocap_state(mocap_receiver.snapshot())
+            mocap_aligned = _align_mocap_state(mocap_raw, rgbd_payload["timestamps"])
+            mocap_summary = mocap_receiver.summary()
+        else:
+            mocap_raw = {}
+            mocap_aligned = {}
+            mocap_summary = {
+                "packets_received": 0,
+                "decode_errors": 0,
+                "rigid_body_ids": [],
+                "samples_per_rigid_body": {},
+                "rigid_body_names": {},
+                "udp_ip": "",
+                "udp_port": 0,
+            }
+        metadata = build_metadata(start_time, stop_time, DWELL_TIME_S, mocap_summary=mocap_summary)
         payload = {
             "rgb_0": rgbd_payload["rgb"],
             "depth_0": rgbd_payload["depth"],
@@ -649,6 +857,8 @@ def main() -> int:
             "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
             "robot_state_raw": robot_state_raw,
             "robot_state": robot_state_aligned,
+            "mocap_raw": mocap_raw,
+            "mocap": mocap_aligned,
             "metadata": metadata,
         }
 
@@ -658,11 +868,22 @@ def main() -> int:
         trials_completed += 1
         trial_durations.append(trial_duration_sec)
 
+        if trial_idx < args.trials - 1 and DWELL_TIME_S > 0.0 and not stop_requested.is_set():
+            print(f"Dwelling for {DWELL_TIME_S:.2f} second(s) before next trajectory...")
+            dwell_start = time.time()
+            while not stop_requested.is_set():
+                elapsed = time.time() - dwell_start
+                if elapsed >= DWELL_TIME_S:
+                    break
+                time.sleep(min(0.1, DWELL_TIME_S - elapsed))
+
     # Send one final stop command when exiting so motor control is released
     node.publish_gui_information(_build_gui_message(start_flag=0.0))
     
     realsense_primary.stop()
     realsense_secondary.stop()
+    if mocap_receiver is not None:
+        mocap_receiver.stop()
 
     stop_requested.set()
     executor.shutdown()
@@ -679,6 +900,7 @@ def main() -> int:
         args.trials,
         trials_completed,
         avg_trial_duration,
+        DWELL_TIME_S,
         depth_scale_0,
         depth_scale_1,
     )
