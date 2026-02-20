@@ -55,7 +55,8 @@ DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
 TRIAL_COUNT = 7
-DWELL_TIME_S = 2.0
+# Dwell duration after /trajectory_complete before ending the trial record.
+DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
 MOCAP_ENABLED = True
 MOCAP_UDP_IP = "0.0.0.0"
@@ -169,6 +170,7 @@ def build_metadata(
     start_time: datetime,
     stop_time: datetime,
     dwell_time_sec: float,
+    traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
     metadata = {
@@ -179,6 +181,8 @@ def build_metadata(
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
     }
+    if traj_complete_time_sec is not None:
+        metadata["traj_complete_time_sec"] = float(traj_complete_time_sec)
     if mocap_summary is not None:
         metadata["mocap_summary"] = mocap_summary
     return metadata
@@ -807,8 +811,9 @@ def main() -> int:
         if mocap_receiver is not None:
             mocap_receiver.reset(run_start, reset_reference=(MOCAP_REFERENCE_MODE == "trial"))
         start_time = _resolve_now(DEFAULT_TIMEZONE)
-        trajectory_publisher.publish(trajectory_msg)
         print(f"Starting trial {trial_idx + 1}/{args.trials}...")
+        trajectory_publisher.publish(trajectory_msg)
+        traj_complete_time_s: Optional[float] = None
 
         try:
             while not stop_requested.is_set():
@@ -820,7 +825,15 @@ def main() -> int:
                 _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
                 _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
                 if node.is_traj_complete():
-                    break
+                    if traj_complete_time_s is None:
+                        traj_complete_time_s = frame_time
+                        if DWELL_TIME_S > 0.0:
+                            print(
+                                "Trajectory complete received; "
+                                f"recording dwell for {DWELL_TIME_S:.2f} second(s)..."
+                            )
+                    if frame_time - traj_complete_time_s >= DWELL_TIME_S:
+                        break
         except RuntimeError as exc:
             print(f"RealSense stream error: {exc}")
             stop_requested.set()
@@ -853,7 +866,13 @@ def main() -> int:
                 "udp_ip": "",
                 "udp_port": 0,
             }
-        metadata = build_metadata(start_time, stop_time, DWELL_TIME_S, mocap_summary=mocap_summary)
+        metadata = build_metadata(
+            start_time,
+            stop_time,
+            DWELL_TIME_S,
+            traj_complete_time_sec=traj_complete_time_s,
+            mocap_summary=mocap_summary,
+        )
         payload = {
             "rgb_0": rgbd_payload["rgb"],
             "depth_0": rgbd_payload["depth"],
@@ -874,15 +893,6 @@ def main() -> int:
         print(f"Saved trial data to {trial_path}")
         trials_completed += 1
         trial_durations.append(trial_duration_sec)
-
-        if trial_idx < args.trials - 1 and DWELL_TIME_S > 0.0 and not stop_requested.is_set():
-            print(f"Dwelling for {DWELL_TIME_S:.2f} second(s) before next trajectory...")
-            dwell_start = time.time()
-            while not stop_requested.is_set():
-                elapsed = time.time() - dwell_start
-                if elapsed >= DWELL_TIME_S:
-                    break
-                time.sleep(min(0.1, DWELL_TIME_S - elapsed))
 
     # Send one final stop command when exiting so motor control is released
     node.publish_gui_information(_build_gui_message(start_flag=0.0))
@@ -921,4 +931,6 @@ if __name__ == "__main__":
 
 
 
-### mocap oriantationwrong. andf x y z swapped?
+### mocap x y z swapped. does it affect roll pitch yaw def? check
+# there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
+# also placing heaving object not buried is challengin cause it slides. haodi had small rods? not sure if effective
