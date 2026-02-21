@@ -54,9 +54,9 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 7
+TRIAL_COUNT = 5
 # Dwell duration after /trajectory_complete before ending the trial record.
-DWELL_TIME_S = 3.0
+DWELL_TIME_S = 2.0
 SAVE_RGB_MP4 = False
 MOCAP_ENABLED = True
 MOCAP_UDP_IP = "0.0.0.0"
@@ -933,4 +933,7 @@ if __name__ == "__main__":
 
 ### mocap x y z swapped. does it affect roll pitch yaw def? check
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
+# in the burried experiment i think there was a mocap error cause the direction of changes in x z doesn;t make sense. also for the angle. check
+# also i need to take into account the orientation to find out the displacement of the sphere, no? think
 # also placing heaving object not buried is challengin cause it slides. haodi had small rods? not sure if effective
+# after these, need to write script to process the blue info in the sheets
