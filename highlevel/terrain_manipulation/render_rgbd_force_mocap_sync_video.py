@@ -5,12 +5,13 @@ Creates an MP4 that stacks:
   - RGB camera 0 and RGB camera 1 (top row)
   - Depth camera 0 and Depth camera 1 (bottom row)
   - Right panel plots for torque, timing offset,
-    plus mocap for Empty Half Sphere (ID 2) and Lead Half Sphere (ID 3)
+    plus mocap for a selected half sphere (empty/lead/resin)
 """
 
 from __future__ import annotations
 
 import argparse
+import json
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -29,9 +30,16 @@ except ModuleNotFoundError as exc:
 DATA_ROOT = Path(__file__).resolve().parent / "data"
 MOCAP_RB_EMPTY_ID = 2
 MOCAP_RB_LEAD_ID = 3
+MOCAP_RB_RESIN_ID = 5
+MOCAP_RB_IDS_BY_KIND = {
+    "empty": MOCAP_RB_EMPTY_ID,
+    "lead": MOCAP_RB_LEAD_ID,
+    "resin": MOCAP_RB_RESIN_ID,
+}
 MOCAP_RB_NAMES = {
     MOCAP_RB_EMPTY_ID: "Empty Half Sphere",
     MOCAP_RB_LEAD_ID: "Lead Half Sphere",
+    MOCAP_RB_RESIN_ID: "Resin Half Sphere",
 }
 
 
@@ -42,6 +50,31 @@ def _load_payload(path: Path) -> Dict[str, object]:
     if isinstance(data, dict):
         return data
     raise ValueError(f"Unexpected npy payload format in {path}")
+
+
+def _scalar_float(value: object) -> Optional[float]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float, np.integer, np.floating)):
+        return float(value)
+    if isinstance(value, np.ndarray) and value.shape == ():
+        try:
+            return float(value.item())
+        except Exception:
+            return None
+    return None
+
+
+def _load_session_metadata(session_dir: Path) -> Dict[str, object]:
+    meta_path = session_dir / "metadata.json"
+    if not meta_path.is_file():
+        return {}
+    try:
+        with open(meta_path, "r", encoding="utf-8") as fh:
+            data = json.load(fh)
+    except Exception:
+        return {}
+    return data if isinstance(data, dict) else {}
 
 
 def _trial_number(path: Path) -> int:
@@ -135,11 +168,34 @@ def _extract_mocap_series(
     return signal_arr[idx]
 
 
+def _extract_first_mocap_series(
+    rb_state: Optional[Dict[str, object]],
+    signal_keys: Tuple[str, ...],
+    camera_times: np.ndarray,
+) -> np.ndarray:
+    if not isinstance(rb_state, dict):
+        return np.full(camera_times.shape, np.nan, dtype=float)
+    for key in signal_keys:
+        if key in rb_state:
+            return _extract_mocap_series(rb_state, key, camera_times)
+    return np.full(camera_times.shape, np.nan, dtype=float)
+
+
+def _get_mocap_state(mocap: object, rb_id: int) -> Optional[Dict[str, object]]:
+    if not isinstance(mocap, dict):
+        return None
+    state = mocap.get(str(rb_id))
+    if state is None:
+        state = mocap.get(rb_id)
+    return state if isinstance(state, dict) else None
+
+
 def _load_trial_arrays(
     trial_path: Path,
     force_a_key: str,
     force_b_key: str,
     torque_scale: float,
+    mocap_rb_id: int,
 ) -> Dict[str, np.ndarray]:
     payload = _load_payload(trial_path)
 
@@ -150,6 +206,26 @@ def _load_trial_arrays(
     depth1 = payload.get("depth_1") if "depth_1" in payload else payload.get("depth_2")
     t1 = payload.get("camera_time_1") if "camera_time_1" in payload else payload.get("timestamps_2")
     robot_state = payload.get("robot_state")
+    depth_scale0 = _scalar_float(payload.get("depth_scale_0"))
+    if depth_scale0 is None:
+        depth_scale0 = _scalar_float(payload.get("depth_scale"))
+    depth_scale1 = _scalar_float(payload.get("depth_scale_1"))
+    if depth_scale1 is None:
+        depth_scale1 = _scalar_float(payload.get("depth_scale_2"))
+    if depth_scale1 is None:
+        depth_scale1 = depth_scale0
+    if depth_scale0 is None or depth_scale1 is None:
+        session_meta = _load_session_metadata(trial_path.parent)
+        if depth_scale0 is None:
+            depth_scale0 = _scalar_float(session_meta.get("depth_scale_0"))
+            if depth_scale0 is None:
+                depth_scale0 = _scalar_float(session_meta.get("depth_scale"))
+        if depth_scale1 is None:
+            depth_scale1 = _scalar_float(session_meta.get("depth_scale_1"))
+            if depth_scale1 is None:
+                depth_scale1 = _scalar_float(session_meta.get("depth_scale_2"))
+        if depth_scale1 is None:
+            depth_scale1 = depth_scale0
 
     if not isinstance(rgb0, np.ndarray) or not isinstance(depth0, np.ndarray) or not isinstance(t0, np.ndarray):
         raise ValueError("missing rgb_0/depth_0/camera_time_0")
@@ -175,29 +251,14 @@ def _load_trial_arrays(
 
     t0_arr = np.asarray(t0, dtype=float)
     mocap = payload.get("mocap")
-    empty_state: Optional[Dict[str, object]] = None
-    lead_state: Optional[Dict[str, object]] = None
-    if isinstance(mocap, dict):
-        empty_state = mocap.get(str(MOCAP_RB_EMPTY_ID))
-        if empty_state is None:
-            empty_state = mocap.get(MOCAP_RB_EMPTY_ID)
-        lead_state = mocap.get(str(MOCAP_RB_LEAD_ID))
-        if lead_state is None:
-            lead_state = mocap.get(MOCAP_RB_LEAD_ID)
+    mocap_state = _get_mocap_state(mocap, mocap_rb_id)
 
-    empty_pos_x = _extract_mocap_series(empty_state, "position_x", t0_arr)
-    empty_pos_y = _extract_mocap_series(empty_state, "position_y", t0_arr)
-    empty_pos_z = _extract_mocap_series(empty_state, "position_z", t0_arr)
-    empty_roll = _extract_mocap_series(empty_state, "roll_deg", t0_arr)
-    empty_pitch = _extract_mocap_series(empty_state, "pitch_deg", t0_arr)
-    empty_yaw = _extract_mocap_series(empty_state, "yaw_deg", t0_arr)
-
-    lead_pos_x = _extract_mocap_series(lead_state, "position_x", t0_arr)
-    lead_pos_y = _extract_mocap_series(lead_state, "position_y", t0_arr)
-    lead_pos_z = _extract_mocap_series(lead_state, "position_z", t0_arr)
-    lead_roll = _extract_mocap_series(lead_state, "roll_deg", t0_arr)
-    lead_pitch = _extract_mocap_series(lead_state, "pitch_deg", t0_arr)
-    lead_yaw = _extract_mocap_series(lead_state, "yaw_deg", t0_arr)
+    mocap_pos_x = _extract_first_mocap_series(mocap_state, ("zeroed_position_x", "relative_position_x", "position_x"), t0_arr)
+    mocap_pos_y = _extract_first_mocap_series(mocap_state, ("zeroed_position_y", "relative_position_y", "position_y"), t0_arr)
+    mocap_pos_z = _extract_first_mocap_series(mocap_state, ("zeroed_position_z", "relative_position_z", "position_z"), t0_arr)
+    mocap_roll = _extract_mocap_series(mocap_state, "roll_deg", t0_arr)
+    mocap_pitch = _extract_mocap_series(mocap_state, "pitch_deg", t0_arr)
+    mocap_yaw = _extract_mocap_series(mocap_state, "yaw_deg", t0_arr)
 
     robot_time_arr = np.asarray(robot_time, dtype=float)
     time_diff = robot_time_arr - t0_arr
@@ -213,18 +274,14 @@ def _load_trial_arrays(
         "force_b": np.asarray(force_b, dtype=float) * float(torque_scale),
         "robot_time": robot_time_arr,
         "time_diff": np.asarray(time_diff, dtype=float),
-        "empty_pos_x": empty_pos_x,
-        "empty_pos_y": empty_pos_y,
-        "empty_pos_z": empty_pos_z,
-        "empty_roll": empty_roll,
-        "empty_pitch": empty_pitch,
-        "empty_yaw": empty_yaw,
-        "lead_pos_x": lead_pos_x,
-        "lead_pos_y": lead_pos_y,
-        "lead_pos_z": lead_pos_z,
-        "lead_roll": lead_roll,
-        "lead_pitch": lead_pitch,
-        "lead_yaw": lead_yaw,
+        "mocap_pos_x": mocap_pos_x,
+        "mocap_pos_y": mocap_pos_y,
+        "mocap_pos_z": mocap_pos_z,
+        "mocap_roll": mocap_roll,
+        "mocap_pitch": mocap_pitch,
+        "mocap_yaw": mocap_yaw,
+        "depth_scale0": np.asarray(np.nan if depth_scale0 is None else depth_scale0, dtype=float),
+        "depth_scale1": np.asarray(np.nan if depth_scale1 is None else depth_scale1, dtype=float),
     }
 
 
@@ -317,30 +374,18 @@ def _build_experiment_timeline(
     np.ndarray,
     np.ndarray,
     np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
     List[int],
 ]:
     all_times: List[np.ndarray] = []
     all_force_a: List[np.ndarray] = []
     all_force_b: List[np.ndarray] = []
     all_time_diffs: List[np.ndarray] = []
-    all_empty_pos_x: List[np.ndarray] = []
-    all_empty_pos_y: List[np.ndarray] = []
-    all_empty_pos_z: List[np.ndarray] = []
-    all_empty_roll: List[np.ndarray] = []
-    all_empty_pitch: List[np.ndarray] = []
-    all_empty_yaw: List[np.ndarray] = []
-    all_lead_pos_x: List[np.ndarray] = []
-    all_lead_pos_y: List[np.ndarray] = []
-    all_lead_pos_z: List[np.ndarray] = []
-    all_lead_roll: List[np.ndarray] = []
-    all_lead_pitch: List[np.ndarray] = []
-    all_lead_yaw: List[np.ndarray] = []
+    all_mocap_pos_x: List[np.ndarray] = []
+    all_mocap_pos_y: List[np.ndarray] = []
+    all_mocap_pos_z: List[np.ndarray] = []
+    all_mocap_roll: List[np.ndarray] = []
+    all_mocap_pitch: List[np.ndarray] = []
+    all_mocap_yaw: List[np.ndarray] = []
     trial_idx_offsets: List[int] = []
 
     running_time_offset = 0.0
@@ -368,18 +413,12 @@ def _build_experiment_timeline(
         all_force_a.append(force_a_local)
         all_force_b.append(force_b_local)
         all_time_diffs.append(time_diff_local)
-        all_empty_pos_x.append(trial["empty_pos_x"])
-        all_empty_pos_y.append(trial["empty_pos_y"])
-        all_empty_pos_z.append(trial["empty_pos_z"])
-        all_empty_roll.append(trial["empty_roll"])
-        all_empty_pitch.append(trial["empty_pitch"])
-        all_empty_yaw.append(trial["empty_yaw"])
-        all_lead_pos_x.append(trial["lead_pos_x"])
-        all_lead_pos_y.append(trial["lead_pos_y"])
-        all_lead_pos_z.append(trial["lead_pos_z"])
-        all_lead_roll.append(trial["lead_roll"])
-        all_lead_pitch.append(trial["lead_pitch"])
-        all_lead_yaw.append(trial["lead_yaw"])
+        all_mocap_pos_x.append(trial["mocap_pos_x"])
+        all_mocap_pos_y.append(trial["mocap_pos_y"])
+        all_mocap_pos_z.append(trial["mocap_pos_z"])
+        all_mocap_roll.append(trial["mocap_roll"])
+        all_mocap_pitch.append(trial["mocap_pitch"])
+        all_mocap_yaw.append(trial["mocap_yaw"])
 
         trial_span = max(float(frame_time_rel[-1]), float(robot_time_rel[-1])) if len(robot_time_rel) else float(frame_time_rel[-1])
         gap = max(_median_positive_step(frame_time_rel), _median_positive_step(robot_time_rel))
@@ -398,12 +437,6 @@ def _build_experiment_timeline(
             empty,
             empty,
             empty,
-            empty,
-            empty,
-            empty,
-            empty,
-            empty,
-            empty,
             trial_idx_offsets,
         )
 
@@ -412,18 +445,12 @@ def _build_experiment_timeline(
         np.concatenate(all_force_a),
         np.concatenate(all_force_b),
         np.concatenate(all_time_diffs),
-        np.concatenate(all_empty_pos_x),
-        np.concatenate(all_empty_pos_y),
-        np.concatenate(all_empty_pos_z),
-        np.concatenate(all_empty_roll),
-        np.concatenate(all_empty_pitch),
-        np.concatenate(all_empty_yaw),
-        np.concatenate(all_lead_pos_x),
-        np.concatenate(all_lead_pos_y),
-        np.concatenate(all_lead_pos_z),
-        np.concatenate(all_lead_roll),
-        np.concatenate(all_lead_pitch),
-        np.concatenate(all_lead_yaw),
+        np.concatenate(all_mocap_pos_x),
+        np.concatenate(all_mocap_pos_y),
+        np.concatenate(all_mocap_pos_z),
+        np.concatenate(all_mocap_roll),
+        np.concatenate(all_mocap_pitch),
+        np.concatenate(all_mocap_yaw),
         trial_idx_offsets,
     )
 
@@ -433,6 +460,19 @@ def _colorize_depth(depth_raw: np.ndarray, depth_min: float, depth_max: float) -
     depth = np.clip((depth - depth_min) / (depth_max - depth_min), 0.0, 1.0)
     depth_u8 = (depth * 255.0).astype(np.uint8)
     return cv2.applyColorMap(depth_u8, cv2.COLORMAP_JET)
+
+
+def _colorize_depth_meters(
+    depth_raw: np.ndarray,
+    depth_scale_m_per_unit: float,
+    depth_min_m: float,
+    depth_max_m: float,
+) -> np.ndarray:
+    if not np.isfinite(depth_scale_m_per_unit) or depth_scale_m_per_unit <= 0.0:
+        return _colorize_depth(depth_raw, depth_min_m, depth_max_m)
+    raw_min = depth_min_m / depth_scale_m_per_unit
+    raw_max = depth_max_m / depth_scale_m_per_unit
+    return _colorize_depth(depth_raw, raw_min, raw_max)
 
 
 def _torque_label_from_key(signal_key: str) -> str:
@@ -453,35 +493,30 @@ def _plot_signals(
     force_a: np.ndarray,
     force_b: np.ndarray,
     time_diffs: np.ndarray,
-    empty_pos_x: np.ndarray,
-    empty_pos_y: np.ndarray,
-    empty_pos_z: np.ndarray,
-    empty_roll: np.ndarray,
-    empty_pitch: np.ndarray,
-    empty_yaw: np.ndarray,
-    lead_pos_x: np.ndarray,
-    lead_pos_y: np.ndarray,
-    lead_pos_z: np.ndarray,
-    lead_roll: np.ndarray,
-    lead_pitch: np.ndarray,
-    lead_yaw: np.ndarray,
+    mocap_pos_x: np.ndarray,
+    mocap_pos_y: np.ndarray,
+    mocap_pos_z: np.ndarray,
+    mocap_roll: np.ndarray,
+    mocap_pitch: np.ndarray,
+    mocap_yaw: np.ndarray,
     idx: int,
     width: int,
     height: int,
     label_a: str,
     label_b: str,
+    mocap_name: str,
 ) -> np.ndarray:
-    fig, (ax_force, ax_diff, ax_empty_pos, ax_empty_rpy, ax_lead_pos, ax_lead_rpy) = plt.subplots(
-        6,
+    fig, (ax_force, ax_diff, ax_mocap_pos, ax_mocap_rpy) = plt.subplots(
+        4,
         1,
         figsize=(width / 100.0, height / 100.0),
         dpi=100,
         sharex=True,
-        gridspec_kw={"height_ratios": [2, 1, 2, 2, 2, 2]},
+        gridspec_kw={"height_ratios": [2, 1, 2, 2]},
     )
 
     if times.size == 0:
-        for ax in (ax_force, ax_diff, ax_empty_pos, ax_empty_rpy, ax_lead_pos, ax_lead_rpy):
+        for ax in (ax_force, ax_diff, ax_mocap_pos, ax_mocap_rpy):
             ax.text(0.5, 0.5, "no data", ha="center", va="center", transform=ax.transAxes)
             ax.set_xticks([])
             ax.set_yticks([])
@@ -511,53 +546,28 @@ def _plot_signals(
     ax_diff.grid(True, alpha=0.3)
     ax_diff.legend(loc="upper right")
 
-    empty_name = MOCAP_RB_NAMES.get(MOCAP_RB_EMPTY_ID, f"Rigid Body {MOCAP_RB_EMPTY_ID}")
-    lead_name = MOCAP_RB_NAMES.get(MOCAP_RB_LEAD_ID, f"Rigid Body {MOCAP_RB_LEAD_ID}")
-
-    ax_empty_pos.set_title(f"Mocap Position ({empty_name})")
-    if not _has_mocap_values(empty_pos_x[:end], empty_pos_y[:end], empty_pos_z[:end]):
-        ax_empty_pos.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_empty_pos.transAxes)
+    ax_mocap_pos.set_title(f"Mocap Position ({mocap_name})")
+    if not _has_mocap_values(mocap_pos_x[:end], mocap_pos_y[:end], mocap_pos_z[:end]):
+        ax_mocap_pos.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_mocap_pos.transAxes)
     else:
-        ax_empty_pos.plot(times[:end], 100.0 * empty_pos_x[:end], color="tab:purple", linewidth=1.2, label="x")
-        ax_empty_pos.plot(times[:end], 100.0 * empty_pos_y[:end], color="tab:orange", linewidth=1.2, label="y")
-        ax_empty_pos.plot(times[:end], 100.0 * empty_pos_z[:end], color="tab:cyan", linewidth=1.2, label="z")
-        ax_empty_pos.legend(loc="upper right")
-    ax_empty_pos.set_ylabel("position (cm)")
-    ax_empty_pos.grid(True, alpha=0.3)
+        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_x[:end], color="tab:purple", linewidth=1.2, label="x")
+        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_y[:end], color="tab:orange", linewidth=1.2, label="y")
+        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_z[:end], color="tab:cyan", linewidth=1.2, label="z")
+        ax_mocap_pos.legend(loc="upper right")
+    ax_mocap_pos.set_ylabel("position (cm)")
+    ax_mocap_pos.grid(True, alpha=0.3)
 
-    ax_empty_rpy.set_title(f"Mocap Orientation ({empty_name})")
-    if not _has_mocap_values(empty_roll[:end], empty_pitch[:end], empty_yaw[:end]):
-        ax_empty_rpy.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_empty_rpy.transAxes)
+    ax_mocap_rpy.set_title(f"Mocap Orientation ({mocap_name})")
+    if not _has_mocap_values(mocap_roll[:end], mocap_pitch[:end], mocap_yaw[:end]):
+        ax_mocap_rpy.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_mocap_rpy.transAxes)
     else:
-        ax_empty_rpy.plot(times[:end], empty_roll[:end], color="tab:red", linewidth=1.2, label="roll")
-        ax_empty_rpy.plot(times[:end], empty_pitch[:end], color="tab:blue", linewidth=1.2, label="pitch")
-        ax_empty_rpy.plot(times[:end], empty_yaw[:end], color="tab:green", linewidth=1.2, label="yaw")
-        ax_empty_rpy.legend(loc="upper right")
-    ax_empty_rpy.set_ylabel("deg")
-    ax_empty_rpy.grid(True, alpha=0.3)
-
-    ax_lead_pos.set_title(f"Mocap Position ({lead_name})")
-    if not _has_mocap_values(lead_pos_x[:end], lead_pos_y[:end], lead_pos_z[:end]):
-        ax_lead_pos.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_lead_pos.transAxes)
-    else:
-        ax_lead_pos.plot(times[:end], 100.0 * lead_pos_x[:end], color="tab:purple", linewidth=1.2, label="x")
-        ax_lead_pos.plot(times[:end], 100.0 * lead_pos_y[:end], color="tab:orange", linewidth=1.2, label="y")
-        ax_lead_pos.plot(times[:end], 100.0 * lead_pos_z[:end], color="tab:cyan", linewidth=1.2, label="z")
-        ax_lead_pos.legend(loc="upper right")
-    ax_lead_pos.set_ylabel("position (cm)")
-    ax_lead_pos.grid(True, alpha=0.3)
-
-    ax_lead_rpy.set_title(f"Mocap Orientation ({lead_name})")
-    if not _has_mocap_values(lead_roll[:end], lead_pitch[:end], lead_yaw[:end]):
-        ax_lead_rpy.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_lead_rpy.transAxes)
-    else:
-        ax_lead_rpy.plot(times[:end], lead_roll[:end], color="tab:red", linewidth=1.2, label="roll")
-        ax_lead_rpy.plot(times[:end], lead_pitch[:end], color="tab:blue", linewidth=1.2, label="pitch")
-        ax_lead_rpy.plot(times[:end], lead_yaw[:end], color="tab:green", linewidth=1.2, label="yaw")
-        ax_lead_rpy.legend(loc="upper right")
-    ax_lead_rpy.set_ylabel("deg")
-    ax_lead_rpy.set_xlabel("time (s)")
-    ax_lead_rpy.grid(True, alpha=0.3)
+        ax_mocap_rpy.plot(times[:end], mocap_roll[:end], color="tab:red", linewidth=1.2, label="roll")
+        ax_mocap_rpy.plot(times[:end], mocap_pitch[:end], color="tab:blue", linewidth=1.2, label="pitch")
+        ax_mocap_rpy.plot(times[:end], mocap_yaw[:end], color="tab:green", linewidth=1.2, label="yaw")
+        ax_mocap_rpy.legend(loc="upper right")
+    ax_mocap_rpy.set_ylabel("deg")
+    ax_mocap_rpy.set_xlabel("time (s)")
+    ax_mocap_rpy.grid(True, alpha=0.3)
 
     fig.tight_layout()
     fig.canvas.draw()
@@ -585,19 +595,16 @@ def _render_trial_frames(
     plot_force_a: Optional[np.ndarray] = None,
     plot_force_b: Optional[np.ndarray] = None,
     plot_time_diffs: Optional[np.ndarray] = None,
-    plot_empty_pos_x: Optional[np.ndarray] = None,
-    plot_empty_pos_y: Optional[np.ndarray] = None,
-    plot_empty_pos_z: Optional[np.ndarray] = None,
-    plot_empty_roll: Optional[np.ndarray] = None,
-    plot_empty_pitch: Optional[np.ndarray] = None,
-    plot_empty_yaw: Optional[np.ndarray] = None,
-    plot_lead_pos_x: Optional[np.ndarray] = None,
-    plot_lead_pos_y: Optional[np.ndarray] = None,
-    plot_lead_pos_z: Optional[np.ndarray] = None,
-    plot_lead_roll: Optional[np.ndarray] = None,
-    plot_lead_pitch: Optional[np.ndarray] = None,
-    plot_lead_yaw: Optional[np.ndarray] = None,
+    plot_mocap_pos_x: Optional[np.ndarray] = None,
+    plot_mocap_pos_y: Optional[np.ndarray] = None,
+    plot_mocap_pos_z: Optional[np.ndarray] = None,
+    plot_mocap_roll: Optional[np.ndarray] = None,
+    plot_mocap_pitch: Optional[np.ndarray] = None,
+    plot_mocap_yaw: Optional[np.ndarray] = None,
+    mocap_name: str = "Mocap Rigid Body",
     plot_idx_offset: int = 0,
+    depth_min_m: Optional[float] = None,
+    depth_max_m: Optional[float] = None,
 ) -> float:
     rgb0 = trial["rgb0"]
     depth0 = trial["depth0"]
@@ -605,22 +612,18 @@ def _render_trial_frames(
     rgb1 = trial["rgb1"]
     depth1 = trial["depth1"]
     t1 = trial["t1"]
+    depth_scale0 = float(np.asarray(trial.get("depth_scale0", np.nan)).reshape(()))
+    depth_scale1 = float(np.asarray(trial.get("depth_scale1", np.nan)).reshape(()))
 
     local_force_a = trial["force_a"]
     local_force_b = trial["force_b"]
     local_time_diffs = trial["time_diff"]
-    local_empty_pos_x = trial["empty_pos_x"]
-    local_empty_pos_y = trial["empty_pos_y"]
-    local_empty_pos_z = trial["empty_pos_z"]
-    local_empty_roll = trial["empty_roll"]
-    local_empty_pitch = trial["empty_pitch"]
-    local_empty_yaw = trial["empty_yaw"]
-    local_lead_pos_x = trial["lead_pos_x"]
-    local_lead_pos_y = trial["lead_pos_y"]
-    local_lead_pos_z = trial["lead_pos_z"]
-    local_lead_roll = trial["lead_roll"]
-    local_lead_pitch = trial["lead_pitch"]
-    local_lead_yaw = trial["lead_yaw"]
+    local_mocap_pos_x = trial["mocap_pos_x"]
+    local_mocap_pos_y = trial["mocap_pos_y"]
+    local_mocap_pos_z = trial["mocap_pos_z"]
+    local_mocap_roll = trial["mocap_roll"]
+    local_mocap_pitch = trial["mocap_pitch"]
+    local_mocap_yaw = trial["mocap_yaw"]
 
     idx1_for_t0 = _closest_indices(t1, t0)
 
@@ -628,18 +631,12 @@ def _render_trial_frames(
     plot_force_a_final = local_force_a if plot_force_a is None else plot_force_a
     plot_force_b_final = local_force_b if plot_force_b is None else plot_force_b
     plot_time_diffs_final = local_time_diffs if plot_time_diffs is None else plot_time_diffs
-    plot_empty_pos_x_final = local_empty_pos_x if plot_empty_pos_x is None else plot_empty_pos_x
-    plot_empty_pos_y_final = local_empty_pos_y if plot_empty_pos_y is None else plot_empty_pos_y
-    plot_empty_pos_z_final = local_empty_pos_z if plot_empty_pos_z is None else plot_empty_pos_z
-    plot_empty_roll_final = local_empty_roll if plot_empty_roll is None else plot_empty_roll
-    plot_empty_pitch_final = local_empty_pitch if plot_empty_pitch is None else plot_empty_pitch
-    plot_empty_yaw_final = local_empty_yaw if plot_empty_yaw is None else plot_empty_yaw
-    plot_lead_pos_x_final = local_lead_pos_x if plot_lead_pos_x is None else plot_lead_pos_x
-    plot_lead_pos_y_final = local_lead_pos_y if plot_lead_pos_y is None else plot_lead_pos_y
-    plot_lead_pos_z_final = local_lead_pos_z if plot_lead_pos_z is None else plot_lead_pos_z
-    plot_lead_roll_final = local_lead_roll if plot_lead_roll is None else plot_lead_roll
-    plot_lead_pitch_final = local_lead_pitch if plot_lead_pitch is None else plot_lead_pitch
-    plot_lead_yaw_final = local_lead_yaw if plot_lead_yaw is None else plot_lead_yaw
+    plot_mocap_pos_x_final = local_mocap_pos_x if plot_mocap_pos_x is None else plot_mocap_pos_x
+    plot_mocap_pos_y_final = local_mocap_pos_y if plot_mocap_pos_y is None else plot_mocap_pos_y
+    plot_mocap_pos_z_final = local_mocap_pos_z if plot_mocap_pos_z is None else plot_mocap_pos_z
+    plot_mocap_roll_final = local_mocap_roll if plot_mocap_roll is None else plot_mocap_roll
+    plot_mocap_pitch_final = local_mocap_pitch if plot_mocap_pitch is None else plot_mocap_pitch
+    plot_mocap_yaw_final = local_mocap_yaw if plot_mocap_yaw is None else plot_mocap_yaw
 
     max_diff = float(np.nanmax(np.abs(local_time_diffs))) if local_time_diffs.size else 0.0
 
@@ -651,8 +648,12 @@ def _render_trial_frames(
 
         rgb0_img = rgb0[i]
         rgb1_img = rgb1[idx1]
-        depth0_img = _colorize_depth(depth0[i], depth_min, depth_max)
-        depth1_img = _colorize_depth(depth1[idx1], depth_min, depth_max)
+        if depth_min_m is not None and depth_max_m is not None:
+            depth0_img = _colorize_depth_meters(depth0[i], depth_scale0, depth_min_m, depth_max_m)
+            depth1_img = _colorize_depth_meters(depth1[idx1], depth_scale1, depth_min_m, depth_max_m)
+        else:
+            depth0_img = _colorize_depth(depth0[i], depth_min, depth_max)
+            depth1_img = _colorize_depth(depth1[idx1], depth_min, depth_max)
 
         top = np.hstack([rgb0_img, rgb1_img])
         bottom = np.hstack([depth0_img, depth1_img])
@@ -663,23 +664,18 @@ def _render_trial_frames(
             plot_force_a_final,
             plot_force_b_final,
             plot_time_diffs_final,
-            plot_empty_pos_x_final,
-            plot_empty_pos_y_final,
-            plot_empty_pos_z_final,
-            plot_empty_roll_final,
-            plot_empty_pitch_final,
-            plot_empty_yaw_final,
-            plot_lead_pos_x_final,
-            plot_lead_pos_y_final,
-            plot_lead_pos_z_final,
-            plot_lead_roll_final,
-            plot_lead_pitch_final,
-            plot_lead_yaw_final,
+            plot_mocap_pos_x_final,
+            plot_mocap_pos_y_final,
+            plot_mocap_pos_z_final,
+            plot_mocap_roll_final,
+            plot_mocap_pitch_final,
+            plot_mocap_yaw_final,
             idx_plot,
             plot_w,
             plot_h,
             force_a_label,
             force_b_label,
+            mocap_name,
         )
         plot_bgr = cv2.cvtColor(plot_img, cv2.COLOR_RGB2BGR)
 
@@ -693,7 +689,7 @@ def _render_trial_frames(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="Render sync-review MP4 for RGB-D + torque + mocap (Empty/Lead spheres).")
+    ap = argparse.ArgumentParser(description="Render sync-review MP4 for RGB-D + torque + mocap (selected half sphere).")
     ap.add_argument(
         "session_or_trial",
         nargs="?",
@@ -712,7 +708,37 @@ def main() -> None:
     ap.add_argument("--force-a", default="rightadduction_curr", help="robot_state key for force A")
     ap.add_argument("--force-b", default="rightsweeping_curr", help="robot_state key for force B")
     ap.add_argument("--torque-scale", type=float, default=0.072, help="Scale forces by this factor")
+    ap.add_argument(
+        "--depth-min-m",
+        type=float,
+        default=None,
+        help="Fixed minimum depth in meters for depth colormap normalization.",
+    )
+    ap.add_argument(
+        "--depth-max-m",
+        type=float,
+        default=None,
+        help="Fixed maximum depth in meters for depth colormap normalization.",
+    )
+    ap.add_argument(
+        "--half-sphere",
+        choices=sorted(MOCAP_RB_IDS_BY_KIND.keys()),
+        default="lead",
+        help="Which half-sphere mocap body to plot (empty, lead, resin).",
+    )
     args = ap.parse_args()
+    if (args.depth_min_m is None) != (args.depth_max_m is None):
+        raise SystemExit("Provide both --depth-min-m and --depth-max-m, or neither.")
+    if (
+        args.depth_min_m is not None
+        and args.depth_max_m is not None
+        and float(args.depth_max_m) <= float(args.depth_min_m)
+    ):
+        raise SystemExit("--depth-max-m must be greater than --depth-min-m.")
+
+    selected_mocap_kind = args.half_sphere
+    selected_mocap_rb_id = MOCAP_RB_IDS_BY_KIND[selected_mocap_kind]
+    selected_mocap_name = MOCAP_RB_NAMES.get(selected_mocap_rb_id, f"Rigid Body {selected_mocap_rb_id}")
 
     source_path = _latest_session_dir(DATA_ROOT) if args.session_or_trial is None else Path(str(args.session_or_trial).strip())
     if args.mode == "trial":
@@ -726,7 +752,7 @@ def main() -> None:
             raise SystemExit(f"No trial_*.npy files found in {session_dir}")
 
     available_mocap_ids = sorted({rb_id for path in trial_paths for rb_id in _list_mocap_rb_ids(path)})
-    missing_named = [rb_id for rb_id in (MOCAP_RB_EMPTY_ID, MOCAP_RB_LEAD_ID) if rb_id not in available_mocap_ids]
+    missing_named = [selected_mocap_rb_id] if selected_mocap_rb_id not in available_mocap_ids else []
     for rb_id in missing_named:
         rb_name = MOCAP_RB_NAMES.get(rb_id, f"Rigid Body {rb_id}")
         print(f"Warning: {rb_name} (ID {rb_id}) not found. Its traces will be empty.")
@@ -734,7 +760,7 @@ def main() -> None:
     trials: List[Dict[str, np.ndarray]] = []
     for trial_path in trial_paths:
         try:
-            trials.append(_load_trial_arrays(trial_path, args.force_a, args.force_b, args.torque_scale))
+            trials.append(_load_trial_arrays(trial_path, args.force_a, args.force_b, args.torque_scale, selected_mocap_rb_id))
         except ValueError as exc:
             raise SystemExit(f"{trial_path.name}: {exc}") from exc
 
@@ -763,6 +789,13 @@ def main() -> None:
             raise SystemExit(f"{trial_path.name}: RGB resolution mismatch, expected ({h},{w})")
         if depth0.shape[1:3] != (h, w) or depth1.shape[1:3] != (h, w):
             raise SystemExit(f"{trial_path.name}: depth resolution mismatch, expected ({h},{w})")
+        if args.depth_min_m is not None:
+            depth_scale0 = float(np.asarray(trial.get("depth_scale0", np.nan)).reshape(()))
+            depth_scale1 = float(np.asarray(trial.get("depth_scale1", np.nan)).reshape(()))
+            if not np.isfinite(depth_scale0) or depth_scale0 <= 0.0:
+                raise SystemExit(f"{trial_path.name}: missing/invalid depth_scale_0 for meter-based depth rendering.")
+            if not np.isfinite(depth_scale1) or depth_scale1 <= 0.0:
+                raise SystemExit(f"{trial_path.name}: missing/invalid depth_scale_1 for meter-based depth rendering.")
 
     plot_w, plot_h = w, h * 2
     canvas_w, canvas_h = w * 3, h * 2
@@ -774,7 +807,10 @@ def main() -> None:
     else:
         output_path = trial_paths[0].parent / f"{trial_paths[0].parent.name}_sync_mocap.mp4"
 
-    depth_min, depth_max = _estimate_depth_range_for_trials(trials)
+    if args.depth_min_m is None:
+        depth_min, depth_max = _estimate_depth_range_for_trials(trials)
+    else:
+        depth_min, depth_max = 0.0, 1.0
     fps = _estimate_fps_from_trials(trials)
     torque_label_a = _torque_label_from_key(args.force_a)
     torque_label_b = _torque_label_from_key(args.force_b)
@@ -783,18 +819,12 @@ def main() -> None:
     experiment_plot_force_a: Optional[np.ndarray] = None
     experiment_plot_force_b: Optional[np.ndarray] = None
     experiment_plot_time_diffs: Optional[np.ndarray] = None
-    experiment_plot_empty_pos_x: Optional[np.ndarray] = None
-    experiment_plot_empty_pos_y: Optional[np.ndarray] = None
-    experiment_plot_empty_pos_z: Optional[np.ndarray] = None
-    experiment_plot_empty_roll: Optional[np.ndarray] = None
-    experiment_plot_empty_pitch: Optional[np.ndarray] = None
-    experiment_plot_empty_yaw: Optional[np.ndarray] = None
-    experiment_plot_lead_pos_x: Optional[np.ndarray] = None
-    experiment_plot_lead_pos_y: Optional[np.ndarray] = None
-    experiment_plot_lead_pos_z: Optional[np.ndarray] = None
-    experiment_plot_lead_roll: Optional[np.ndarray] = None
-    experiment_plot_lead_pitch: Optional[np.ndarray] = None
-    experiment_plot_lead_yaw: Optional[np.ndarray] = None
+    experiment_plot_mocap_pos_x: Optional[np.ndarray] = None
+    experiment_plot_mocap_pos_y: Optional[np.ndarray] = None
+    experiment_plot_mocap_pos_z: Optional[np.ndarray] = None
+    experiment_plot_mocap_roll: Optional[np.ndarray] = None
+    experiment_plot_mocap_pitch: Optional[np.ndarray] = None
+    experiment_plot_mocap_yaw: Optional[np.ndarray] = None
     experiment_plot_idx_offsets: List[int] = []
 
     if args.mode == "experiment":
@@ -803,18 +833,12 @@ def main() -> None:
             experiment_plot_force_a,
             experiment_plot_force_b,
             experiment_plot_time_diffs,
-            experiment_plot_empty_pos_x,
-            experiment_plot_empty_pos_y,
-            experiment_plot_empty_pos_z,
-            experiment_plot_empty_roll,
-            experiment_plot_empty_pitch,
-            experiment_plot_empty_yaw,
-            experiment_plot_lead_pos_x,
-            experiment_plot_lead_pos_y,
-            experiment_plot_lead_pos_z,
-            experiment_plot_lead_roll,
-            experiment_plot_lead_pitch,
-            experiment_plot_lead_yaw,
+            experiment_plot_mocap_pos_x,
+            experiment_plot_mocap_pos_y,
+            experiment_plot_mocap_pos_z,
+            experiment_plot_mocap_roll,
+            experiment_plot_mocap_pitch,
+            experiment_plot_mocap_yaw,
             experiment_plot_idx_offsets,
         ) = _build_experiment_timeline(trials)
 
@@ -850,19 +874,16 @@ def main() -> None:
                 plot_force_a=experiment_plot_force_a,
                 plot_force_b=experiment_plot_force_b,
                 plot_time_diffs=experiment_plot_time_diffs,
-                plot_empty_pos_x=experiment_plot_empty_pos_x,
-                plot_empty_pos_y=experiment_plot_empty_pos_y,
-                plot_empty_pos_z=experiment_plot_empty_pos_z,
-                plot_empty_roll=experiment_plot_empty_roll,
-                plot_empty_pitch=experiment_plot_empty_pitch,
-                plot_empty_yaw=experiment_plot_empty_yaw,
-                plot_lead_pos_x=experiment_plot_lead_pos_x,
-                plot_lead_pos_y=experiment_plot_lead_pos_y,
-                plot_lead_pos_z=experiment_plot_lead_pos_z,
-                plot_lead_roll=experiment_plot_lead_roll,
-                plot_lead_pitch=experiment_plot_lead_pitch,
-                plot_lead_yaw=experiment_plot_lead_yaw,
+                plot_mocap_pos_x=experiment_plot_mocap_pos_x,
+                plot_mocap_pos_y=experiment_plot_mocap_pos_y,
+                plot_mocap_pos_z=experiment_plot_mocap_pos_z,
+                plot_mocap_roll=experiment_plot_mocap_roll,
+                plot_mocap_pitch=experiment_plot_mocap_pitch,
+                plot_mocap_yaw=experiment_plot_mocap_yaw,
+                mocap_name=selected_mocap_name,
                 plot_idx_offset=plot_idx_offset,
+                depth_min_m=args.depth_min_m,
+                depth_max_m=args.depth_max_m,
             )
             max_diff = max(max_diff, trial_max_diff)
     finally:
@@ -871,11 +892,14 @@ def main() -> None:
     print(f"Mode: {args.mode}")
     print(f"Trials rendered: {len(trials)}")
     print(
-        "Mocap bodies: "
-        f"{MOCAP_RB_NAMES.get(MOCAP_RB_EMPTY_ID, 'Empty')} (ID {MOCAP_RB_EMPTY_ID}), "
-        f"{MOCAP_RB_NAMES.get(MOCAP_RB_LEAD_ID, 'Lead')} (ID {MOCAP_RB_LEAD_ID})"
+        "Mocap body: "
+        f"{selected_mocap_name} (ID {selected_mocap_rb_id}, kind={selected_mocap_kind})"
     )
     print(f"Saved {output_path}")
+    if args.depth_min_m is not None and args.depth_max_m is not None:
+        print(f"Depth colormap range: [{args.depth_min_m:.3f}, {args.depth_max_m:.3f}] m (fixed)")
+    else:
+        print(f"Depth colormap range: [{depth_min:.1f}, {depth_max:.1f}] raw units (percentile)")
     print(f"Max |t_force - t_frame|: {max_diff:.6f} s")
 
 

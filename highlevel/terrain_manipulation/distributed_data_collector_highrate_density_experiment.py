@@ -54,9 +54,9 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 5
+TRIAL_COUNT = 1
 # Dwell duration after /trajectory_complete before ending the trial record.
-DWELL_TIME_S = 2.0
+DWELL_TIME_S = 5.0
 SAVE_RGB_MP4 = False
 MOCAP_ENABLED = True
 MOCAP_UDP_IP = "0.0.0.0"
@@ -65,9 +65,10 @@ MOCAP_PACKET_SIZE_BYTES = 4096
 MOCAP_RB_NAMES = {
     2: "Empty Half Sphere",
     3: "Lead Half Sphere",
+    5: "Resin Half Sphere",
 }
 # Orientation reference mode for roll/pitch/yaw:
-#   "trial"   -> re-zero each trial (can look like resets in experiment plots)
+#   "trial"   -> re-zero each trial (recommended if object is re-placed each trial)
 #   "session" -> keep one reference for the whole run
 MOCAP_REFERENCE_MODE = "session"
 
@@ -358,10 +359,17 @@ class MocapSample:
     position_x: float
     position_y: float
     position_z: float
+    zeroed_position_x: float
+    zeroed_position_y: float
+    zeroed_position_z: float
     orientation_x: float
     orientation_y: float
     orientation_z: float
     orientation_w: float
+    zeroed_orientation_x: float
+    zeroed_orientation_y: float
+    zeroed_orientation_z: float
+    zeroed_orientation_w: float
     roll_deg: float
     pitch_deg: float
     yaw_deg: float
@@ -375,6 +383,7 @@ class MocapUDPReceiver:
         self._run_start = time.time()
         self._samples_by_rigid_body: Dict[int, List[MocapSample]] = {}
         self._initial_rot: Dict[int, R] = {}
+        self._initial_pos: Dict[int, np.ndarray] = {}
         self._packets_received = 0
         self._decode_errors = 0
         self._stop_requested = threading.Event()
@@ -406,6 +415,7 @@ class MocapUDPReceiver:
             self._samples_by_rigid_body.clear()
             if reset_reference:
                 self._initial_rot.clear()
+                self._initial_pos.clear()
             self._packets_received = 0
             self._decode_errors = 0
 
@@ -490,7 +500,14 @@ class MocapUDPReceiver:
                 self._initial_rot[rigid_body_id] = current_rot
                 relative_rot = R.identity()
             else:
-                relative_rot = self._initial_rot[rigid_body_id].inv() * current_rot
+                # World-relative zeroed rotation: initial pose is treated as the
+                # session reference frame, and deltas are expressed in fixed axes.
+                relative_rot = current_rot * self._initial_rot[rigid_body_id].inv()
+            if rigid_body_id not in self._initial_pos:
+                self._initial_pos[rigid_body_id] = pos.copy()
+            zeroed_pos = pos - self._initial_pos[rigid_body_id]
+            zeroed_quat = relative_rot.as_quat()
+            # Report RPY in fixed axes of the zeroed trial frame (extrinsic xyz).
             roll_deg, pitch_deg, yaw_deg = relative_rot.as_euler("xyz", degrees=True)
 
             sample = MocapSample(
@@ -499,10 +516,17 @@ class MocapUDPReceiver:
                 position_x=float(pos[0]),
                 position_y=float(pos[1]),
                 position_z=float(pos[2]),
+                zeroed_position_x=float(zeroed_pos[0]),
+                zeroed_position_y=float(zeroed_pos[1]),
+                zeroed_position_z=float(zeroed_pos[2]),
                 orientation_x=float(quat[0]),
                 orientation_y=float(quat[1]),
                 orientation_z=float(quat[2]),
                 orientation_w=float(quat[3]),
+                zeroed_orientation_x=float(zeroed_quat[0]),
+                zeroed_orientation_y=float(zeroed_quat[1]),
+                zeroed_orientation_z=float(zeroed_quat[2]),
+                zeroed_orientation_w=float(zeroed_quat[3]),
                 roll_deg=float(roll_deg),
                 pitch_deg=float(pitch_deg),
                 yaw_deg=float(yaw_deg),
@@ -656,10 +680,18 @@ def _build_mocap_state(samples_by_rigid_body: Dict[int, List[MocapSample]]) -> D
             "position_x": np.asarray([s.position_x for s in samples], dtype=float),
             "position_y": np.asarray([s.position_y for s in samples], dtype=float),
             "position_z": np.asarray([s.position_z for s in samples], dtype=float),
+            "zeroed_position_x": np.asarray([s.zeroed_position_x for s in samples], dtype=float),
+            "zeroed_position_y": np.asarray([s.zeroed_position_y for s in samples], dtype=float),
+            "zeroed_position_z": np.asarray([s.zeroed_position_z for s in samples], dtype=float),
             "orientation_x": np.asarray([s.orientation_x for s in samples], dtype=float),
             "orientation_y": np.asarray([s.orientation_y for s in samples], dtype=float),
             "orientation_z": np.asarray([s.orientation_z for s in samples], dtype=float),
             "orientation_w": np.asarray([s.orientation_w for s in samples], dtype=float),
+            # Zeroed orientation (initial pose treated as identity/world-aligned).
+            "zeroed_orientation_x": np.asarray([s.zeroed_orientation_x for s in samples], dtype=float),
+            "zeroed_orientation_y": np.asarray([s.zeroed_orientation_y for s in samples], dtype=float),
+            "zeroed_orientation_z": np.asarray([s.zeroed_orientation_z for s in samples], dtype=float),
+            "zeroed_orientation_w": np.asarray([s.zeroed_orientation_w for s in samples], dtype=float),
             "roll_deg": np.asarray([s.roll_deg for s in samples], dtype=float),
             "pitch_deg": np.asarray([s.pitch_deg for s in samples], dtype=float),
             "yaw_deg": np.asarray([s.yaw_deg for s in samples], dtype=float),
@@ -930,10 +962,6 @@ if __name__ == "__main__":
     raise SystemExit(main())
 
 
-
-### mocap x y z swapped. does it affect roll pitch yaw def? check
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
-# in the burried experiment i think there was a mocap error cause the direction of changes in x z doesn;t make sense. also for the angle. check
-# also i need to take into account the orientation to find out the displacement of the sphere, no? think
-# also placing heaving object not buried is challengin cause it slides. haodi had small rods? not sure if effective
 # after these, need to write script to process the blue info in the sheets
+# mocap roll-pitvh-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
