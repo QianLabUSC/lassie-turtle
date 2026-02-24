@@ -21,6 +21,8 @@ import numpy as np
 
 DATA_ROOT = Path(__file__).resolve().parent / "data"
 DEFAULT_TORQUE_SCALE = 0.072
+DEFAULT_GSHEET_ID = "1B-EuHAwquNCQMVgdqTAPPxMhi-4xVDhihVAg2atVA38"
+DEFAULT_GSHEET_WORKSHEET = "Run_Log_14x33_init"
 
 MOCAP_RB_IDS_BY_KIND = {
     "empty": 2,
@@ -58,6 +60,7 @@ CSV_COLUMNS: Sequence[str] = (
     "Mean_Force_rightadduction_N",
     "Max_Force_rightsweeping_N",
     "Mean_Force_rightsweeping_N",
+    "Compaction",
 )
 
 
@@ -287,6 +290,12 @@ def _force_placeholder_metrics() -> Dict[str, float]:
     }
 
 
+def _compaction_placeholder_metrics() -> Dict[str, float]:
+    return {
+        "Compaction": math.nan,
+    }
+
+
 def _format_value(value: object) -> object:
     if isinstance(value, (float, np.floating)):
         if not math.isfinite(float(value)):
@@ -321,6 +330,7 @@ def _row_for_trial(
     row.update(_compute_motion_metrics(mocap_state))
     row.update(_compute_right_torque_metrics(robot_state, torque_scale=torque_scale))
     row.update(_force_placeholder_metrics())
+    row.update(_compaction_placeholder_metrics())
     return row
 
 
@@ -414,6 +424,7 @@ def _row_for_experiment(
         )
 
     row.update(_force_placeholder_metrics())
+    row.update(_compaction_placeholder_metrics())
     return row
 
 
@@ -595,11 +606,15 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Upsert generated rows into a Google Sheet tab keyed by Session.",
     )
-    ap.add_argument("--gsheet-id", default=None, help="Google Sheet file ID (required with --push-google-sheet)")
+    ap.add_argument(
+        "--gsheet-id",
+        default=DEFAULT_GSHEET_ID,
+        help="Google Sheet file ID (defaults to DEFAULT_GSHEET_ID in this script)",
+    )
     ap.add_argument(
         "--gsheet-worksheet",
-        default=None,
-        help="Worksheet/tab name to upsert into (required with --push-google-sheet)",
+        default=DEFAULT_GSHEET_WORKSHEET,
+        help="Worksheet/tab name to upsert into (defaults to DEFAULT_GSHEET_WORKSHEET in this script)",
     )
     ap.add_argument(
         "--gsheet-key-column",
