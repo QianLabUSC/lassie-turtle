@@ -54,9 +54,9 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 1
+TRIAL_COUNT = 7
 # Dwell duration after /trajectory_complete before ending the trial record.
-DWELL_TIME_S = 5.0
+DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
 MOCAP_ENABLED = True
 MOCAP_UDP_IP = "0.0.0.0"
@@ -965,3 +965,5 @@ if __name__ == "__main__":
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
 # after these, need to write script to process the blue info in the sheets
 # mocap roll-pitvh-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
+# also make sure copy mocap scripts from pc
+# the resin mocap stuff should be smaller. tips over

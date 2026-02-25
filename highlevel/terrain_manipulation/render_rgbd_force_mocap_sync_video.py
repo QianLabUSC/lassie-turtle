@@ -6,6 +6,9 @@ Creates an MP4 that stacks:
   - Depth camera 0 and Depth camera 1 (bottom row)
   - Right panel plots for torque, timing offset,
     plus mocap for a selected half sphere (empty/lead/resin)
+    
+Usage e.g.:
+/home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
 """
 
 from __future__ import annotations

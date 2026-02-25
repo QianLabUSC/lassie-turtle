@@ -21,6 +21,8 @@ import numpy as np
 
 DATA_ROOT = Path(__file__).resolve().parent / "data"
 DEFAULT_TORQUE_SCALE = 0.072
+MOCAP_SPEED_SMOOTH_WINDOW_S = 0.02  # 20 ms moving-average smoothing before dp/dt
+MOCAP_SPEED_DERIV_WINDOW_S = 0.02  # 20 ms forward time-span derivative for robust speed
 DEFAULT_GSHEET_ID = "1B-EuHAwquNCQMVgdqTAPPxMhi-4xVDhihVAg2atVA38"
 DEFAULT_GSHEET_WORKSHEET = "Run_Log_14x33_init"
 
@@ -45,13 +47,16 @@ CSV_COLUMNS: Sequence[str] = (
     "Session",
     "Trial",
     "Mocap_RB_ID",
-    "Delta_x_cm",
-    "Delta_y_cm",
-    "Delta_z_cm",
-    "Planar_Displacement_cm",
+    "Max_Abs_Delta_x_cm",
+    "Max_Abs_Delta_y_cm",
+    "Max_Abs_Delta_z_cm",
+    "Max_Planar_Displacement_cm",
     "Max_Abs_Speed_x_cm_s",
     "Max_Abs_Speed_y_cm_s",
     "Max_Abs_Speed_z_cm_s",
+    "P95_Abs_Speed_x_cm_s",
+    "P95_Abs_Speed_y_cm_s",
+    "P95_Abs_Speed_z_cm_s",
     "Max_Torque_rightadduction_Nm",
     "Mean_Torque_rightadduction_Nm",
     "Max_Torque_rightsweeping_Nm",
@@ -166,23 +171,70 @@ def _finite_first_last(values: np.ndarray) -> Tuple[float, float]:
     return float(values[idx[0]]), float(values[idx[-1]])
 
 
-def _max_abs_speed_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> float:
+def _abs_speed_samples_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> np.ndarray:
+    """Return |speed| samples (cm/s) using a forward time-window derivative.
+
+    Speed is computed over an approximately fixed time span (default 20 ms):
+      |p(t+Δ) - p(t)| / Δ
+    after smoothing the position signal with a moving average.
+    """
     if position_m.size < 2 or time_s.size < 2 or position_m.size != time_s.size:
-        return math.nan
+        return np.empty((0,), dtype=float)
+
     mask = np.isfinite(position_m) & np.isfinite(time_s)
     pos = position_m[mask]
     t = time_s[mask]
     if pos.size < 2:
-        return math.nan
-    dt = np.diff(t)
-    dp = np.diff(pos)
-    valid = dt > 0.0
+        return np.empty((0,), dtype=float)
+
+    # Require strictly increasing time for derivative calculations.
+    keep = np.ones(pos.shape, dtype=bool)
+    keep[1:] = np.diff(t) > 0.0
+    pos = pos[keep]
+    t = t[keep]
+    if pos.size < 2:
+        return np.empty((0,), dtype=float)
+
+    dt_pos = np.diff(t)
+    if dt_pos.size == 0:
+        return np.empty((0,), dtype=float)
+    median_dt = float(np.median(dt_pos))
+    if not math.isfinite(median_dt) or median_dt <= 0.0:
+        return np.empty((0,), dtype=float)
+
+    smooth_window_samples = max(1, int(round(MOCAP_SPEED_SMOOTH_WINDOW_S / median_dt)))
+    pos_smooth = _moving_average_1d(pos, smooth_window_samples)
+
+    target_time = t + float(MOCAP_SPEED_DERIV_WINDOW_S)
+    future_idx = np.searchsorted(t, target_time, side="left")
+    base_idx = np.arange(t.size, dtype=int)
+    valid = future_idx < t.size
     if not np.any(valid):
+        return np.empty((0,), dtype=float)
+
+    base = base_idx[valid]
+    fut = future_idx[valid]
+    dt = t[fut] - t[base]
+    dp = pos_smooth[fut] - pos_smooth[base]
+    valid_dt = dt > 0.0
+    if not np.any(valid_dt):
+        return np.empty((0,), dtype=float)
+
+    return np.abs(dp[valid_dt] / dt[valid_dt]) * 100.0
+
+
+def _max_abs_speed_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> float:
+    speeds = _abs_speed_samples_cm_s(position_m, time_s)
+    if speeds.size == 0:
         return math.nan
-    speed_m_s = dp[valid] / dt[valid]
-    if speed_m_s.size == 0:
+    return float(np.nanmax(speeds))
+
+
+def _p95_abs_speed_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> float:
+    speeds = _abs_speed_samples_cm_s(position_m, time_s)
+    if speeds.size == 0:
         return math.nan
-    return float(np.nanmax(np.abs(speed_m_s)) * 100.0)
+    return float(np.nanpercentile(speeds, 95.0))
 
 
 def _max_abs_and_mean_abs(values: np.ndarray) -> Tuple[float, float]:
@@ -205,6 +257,27 @@ def _max_abs_sum_abs_count(values: np.ndarray) -> Tuple[float, float, int]:
         return math.nan, 0.0, 0
     abs_vals = np.abs(vals)
     return float(np.max(abs_vals)), float(np.sum(abs_vals)), int(abs_vals.size)
+
+
+def _moving_average_1d(values: np.ndarray, window_samples: int) -> np.ndarray:
+    if values.size == 0 or window_samples <= 1:
+        return values
+
+    window_samples = int(window_samples)
+    if window_samples % 2 == 0:
+        window_samples += 1
+    window_samples = min(window_samples, int(values.size))
+    if window_samples <= 1:
+        return values
+    if window_samples % 2 == 0:
+        window_samples -= 1
+    if window_samples <= 1:
+        return values
+
+    pad = window_samples // 2
+    kernel = np.ones(window_samples, dtype=float) / float(window_samples)
+    padded = np.pad(values, (pad, pad), mode="edge")
+    return np.convolve(padded, kernel, mode="valid")
 
 
 def _robot_state_for_metrics(payload: Dict[str, object]) -> Dict[str, object]:
@@ -241,14 +314,27 @@ def _compute_motion_metrics(mocap_state: Dict[str, object]) -> Dict[str, float]:
     else:
         planar_disp_cm = math.nan
 
+    speed_x = _abs_speed_samples_cm_s(x, t)
+    speed_y = _abs_speed_samples_cm_s(y, t)
+    speed_z = _abs_speed_samples_cm_s(z, t)
+    max_x = float(np.nanmax(speed_x)) if speed_x.size else math.nan
+    max_y = float(np.nanmax(speed_y)) if speed_y.size else math.nan
+    max_z = float(np.nanmax(speed_z)) if speed_z.size else math.nan
+    p95_x = float(np.nanpercentile(speed_x, 95.0)) if speed_x.size else math.nan
+    p95_y = float(np.nanpercentile(speed_y, 95.0)) if speed_y.size else math.nan
+    p95_z = float(np.nanpercentile(speed_z, 95.0)) if speed_z.size else math.nan
+
     return {
-        "Delta_x_cm": float(delta_x_cm),
-        "Delta_y_cm": float(delta_y_cm),
-        "Delta_z_cm": float(delta_z_cm),
-        "Planar_Displacement_cm": planar_disp_cm,
-        "Max_Abs_Speed_x_cm_s": _max_abs_speed_cm_s(x, t),
-        "Max_Abs_Speed_y_cm_s": _max_abs_speed_cm_s(y, t),
-        "Max_Abs_Speed_z_cm_s": _max_abs_speed_cm_s(z, t),
+        "Max_Abs_Delta_x_cm": abs(float(delta_x_cm)) if math.isfinite(delta_x_cm) else math.nan,
+        "Max_Abs_Delta_y_cm": abs(float(delta_y_cm)) if math.isfinite(delta_y_cm) else math.nan,
+        "Max_Abs_Delta_z_cm": abs(float(delta_z_cm)) if math.isfinite(delta_z_cm) else math.nan,
+        "Max_Planar_Displacement_cm": planar_disp_cm,
+        "Max_Abs_Speed_x_cm_s": max_x,
+        "Max_Abs_Speed_y_cm_s": max_y,
+        "Max_Abs_Speed_z_cm_s": max_z,
+        "P95_Abs_Speed_x_cm_s": p95_x,
+        "P95_Abs_Speed_y_cm_s": p95_y,
+        "P95_Abs_Speed_z_cm_s": p95_z,
     }
 
 
@@ -356,6 +442,7 @@ def _row_for_experiment(
     selected_rb_id_for_experiment: Optional[int] = None
 
     trial_motion_rows: List[Dict[str, float]] = []
+    speed_samples_by_axis: Dict[str, List[np.ndarray]] = {"x": [], "y": [], "z": []}
 
     # Aggregate torque stats across all samples of all trials (experiment-level).
     max_abs_tau: Dict[str, float] = {"rightadduction": math.nan, "rightsweeping": math.nan}
@@ -379,6 +466,14 @@ def _row_for_experiment(
         robot_state = _robot_state_for_metrics(payload)
 
         trial_motion_rows.append(_compute_motion_metrics(mocap_state))
+        t_arr = _as_float_array(mocap_state.get("time"))
+        x_arr = _as_float_array(mocap_state.get("position_x"))
+        y_arr = _as_float_array(mocap_state.get("position_y"))
+        z_arr = _as_float_array(mocap_state.get("position_z"))
+        if t_arr is not None and x_arr is not None and y_arr is not None and z_arr is not None:
+            speed_samples_by_axis["x"].append(_abs_speed_samples_cm_s(x_arr, t_arr))
+            speed_samples_by_axis["y"].append(_abs_speed_samples_cm_s(y_arr, t_arr))
+            speed_samples_by_axis["z"].append(_abs_speed_samples_cm_s(z_arr, t_arr))
 
         components = _compute_right_torque_aggregate_components(robot_state, torque_scale=torque_scale)
         for motor_name, (trial_max_abs, trial_sum_abs, trial_count) in components.items():
@@ -397,24 +492,38 @@ def _row_for_experiment(
         "Session": session_name,
         "Trial": f"ALL_{len(trial_paths)}",
         "Mocap_RB_ID": selected_rb_id_for_experiment,
-        # In experiment mode, displacement metrics are averaged across trials.
-        "Delta_x_cm": _nanmean(m["Delta_x_cm"] for m in trial_motion_rows),
-        "Delta_y_cm": _nanmean(m["Delta_y_cm"] for m in trial_motion_rows),
-        "Delta_z_cm": _nanmean(m["Delta_z_cm"] for m in trial_motion_rows),
-        "Planar_Displacement_cm": _nanmean(m["Planar_Displacement_cm"] for m in trial_motion_rows),
+        # In experiment mode, displacement metrics are maxima across trials.
+        "Max_Abs_Delta_x_cm": _nanmean([]),
+        "Max_Abs_Delta_y_cm": _nanmean([]),
+        "Max_Abs_Delta_z_cm": _nanmean([]),
+        "Max_Planar_Displacement_cm": _nanmean([]),
         # Peak speed metrics are maxima across all trials (experiment-level peak).
         "Max_Abs_Speed_x_cm_s": _nanmean([]),
         "Max_Abs_Speed_y_cm_s": _nanmean([]),
         "Max_Abs_Speed_z_cm_s": _nanmean([]),
+        "P95_Abs_Speed_x_cm_s": _nanmean([]),
+        "P95_Abs_Speed_y_cm_s": _nanmean([]),
+        "P95_Abs_Speed_z_cm_s": _nanmean([]),
     }
-    for axis_key in (
-        "Max_Abs_Speed_x_cm_s",
-        "Max_Abs_Speed_y_cm_s",
-        "Max_Abs_Speed_z_cm_s",
+    for disp_key in (
+        "Max_Abs_Delta_x_cm",
+        "Max_Abs_Delta_y_cm",
+        "Max_Abs_Delta_z_cm",
+        "Max_Planar_Displacement_cm",
     ):
-        vals = np.asarray([m[axis_key] for m in trial_motion_rows], dtype=float)
-        finite = vals[np.isfinite(vals)]
-        row[axis_key] = float(np.max(finite)) if finite.size else math.nan
+        vals = np.asarray([m.get(disp_key, math.nan) for m in trial_motion_rows], dtype=float)
+        finite_vals = vals[np.isfinite(vals)]
+        row[disp_key] = float(np.max(finite_vals)) if finite_vals.size else math.nan
+
+    for axis_suffix in ("x", "y", "z"):
+        chunks = [arr for arr in speed_samples_by_axis[axis_suffix] if isinstance(arr, np.ndarray) and arr.size > 0]
+        if chunks:
+            all_speeds = np.concatenate(chunks)
+            finite = all_speeds[np.isfinite(all_speeds)]
+        else:
+            finite = np.empty((0,), dtype=float)
+        row[f"Max_Abs_Speed_{axis_suffix}_cm_s"] = float(np.max(finite)) if finite.size else math.nan
+        row[f"P95_Abs_Speed_{axis_suffix}_cm_s"] = float(np.percentile(finite, 95.0)) if finite.size else math.nan
 
     for motor_name in ("rightadduction", "rightsweeping"):
         row[f"Max_Torque_{motor_name}_Nm"] = max_abs_tau[motor_name]
@@ -665,7 +774,7 @@ def main() -> int:
         rows.append(row)
         print(
             f"experiment: processed {len(trial_paths)} trial(s) "
-            f"(RB {row['Mocap_RB_ID']}, avg planar x-z disp {row['Planar_Displacement_cm']:.3f} cm)"
+            f"(RB {row['Mocap_RB_ID']}, max planar x-z disp {row['Max_Planar_Displacement_cm']:.3f} cm)"
         )
     else:
         for trial_path in trial_paths:
@@ -679,7 +788,7 @@ def main() -> int:
             print(
                 f"{trial_path.name}: processed "
                 f"(RB {row['Mocap_RB_ID']}, "
-                f"planar x-z disp {row['Planar_Displacement_cm']:.3f} cm)"
+                f"planar x-z disp {row['Max_Planar_Displacement_cm']:.3f} cm)"
             )
 
     if not rows:
@@ -723,3 +832,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# Change row updates to a single batch row write instead of per-cell writes:
+# one worksheet.update(...) call for the whole row range (e.g. A12:Z12)
