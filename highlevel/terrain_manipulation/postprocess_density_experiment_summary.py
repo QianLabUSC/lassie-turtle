@@ -47,13 +47,13 @@ CSV_COLUMNS: Sequence[str] = (
     "Session",
     "Trial",
     "Mocap_RB_ID",
-    "Max_Abs_Delta_x_cm",
-    "Max_Abs_Delta_y_cm",
-    "Max_Abs_Delta_z_cm",
-    "Max_Planar_Displacement_cm",
-    "Max_Abs_Speed_x_cm_s",
-    "Max_Abs_Speed_y_cm_s",
-    "Max_Abs_Speed_z_cm_s",
+    "Max_Pos_Delta_x_cm",
+    "Max_Neg_Delta_x_cm",
+    "Max_Pos_Delta_y_cm",
+    "Max_Neg_Delta_y_cm",
+    "Max_Pos_Delta_z_cm",
+    "Max_Neg_Delta_z_cm",
+    "Max_Planar_Displacement_yz_cm",
     "P95_Abs_Speed_x_cm_s",
     "P95_Abs_Speed_y_cm_s",
     "P95_Abs_Speed_z_cm_s",
@@ -223,13 +223,6 @@ def _abs_speed_samples_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> np.nd
     return np.abs(dp[valid_dt] / dt[valid_dt]) * 100.0
 
 
-def _max_abs_speed_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> float:
-    speeds = _abs_speed_samples_cm_s(position_m, time_s)
-    if speeds.size == 0:
-        return math.nan
-    return float(np.nanmax(speeds))
-
-
 def _p95_abs_speed_cm_s(position_m: np.ndarray, time_s: np.ndarray) -> float:
     speeds = _abs_speed_samples_cm_s(position_m, time_s)
     if speeds.size == 0:
@@ -308,30 +301,26 @@ def _compute_motion_metrics(mocap_state: Dict[str, object]) -> Dict[str, float]:
     delta_x_cm = (x1 - x0) * 100.0 if np.isfinite([x0, x1]).all() else math.nan
     delta_y_cm = (y1 - y0) * 100.0 if np.isfinite([y0, y1]).all() else math.nan
     delta_z_cm = (z1 - z0) * 100.0 if np.isfinite([z0, z1]).all() else math.nan
-
-    if math.isfinite(delta_x_cm) and math.isfinite(delta_z_cm):
-        planar_disp_cm = float(math.hypot(delta_x_cm, delta_z_cm))
+    if math.isfinite(delta_y_cm) and math.isfinite(delta_z_cm):
+        planar_yz_cm = float(math.hypot(delta_y_cm, delta_z_cm))
     else:
-        planar_disp_cm = math.nan
+        planar_yz_cm = math.nan
 
     speed_x = _abs_speed_samples_cm_s(x, t)
     speed_y = _abs_speed_samples_cm_s(y, t)
     speed_z = _abs_speed_samples_cm_s(z, t)
-    max_x = float(np.nanmax(speed_x)) if speed_x.size else math.nan
-    max_y = float(np.nanmax(speed_y)) if speed_y.size else math.nan
-    max_z = float(np.nanmax(speed_z)) if speed_z.size else math.nan
     p95_x = float(np.nanpercentile(speed_x, 95.0)) if speed_x.size else math.nan
     p95_y = float(np.nanpercentile(speed_y, 95.0)) if speed_y.size else math.nan
     p95_z = float(np.nanpercentile(speed_z, 95.0)) if speed_z.size else math.nan
 
     return {
-        "Max_Abs_Delta_x_cm": abs(float(delta_x_cm)) if math.isfinite(delta_x_cm) else math.nan,
-        "Max_Abs_Delta_y_cm": abs(float(delta_y_cm)) if math.isfinite(delta_y_cm) else math.nan,
-        "Max_Abs_Delta_z_cm": abs(float(delta_z_cm)) if math.isfinite(delta_z_cm) else math.nan,
-        "Max_Planar_Displacement_cm": planar_disp_cm,
-        "Max_Abs_Speed_x_cm_s": max_x,
-        "Max_Abs_Speed_y_cm_s": max_y,
-        "Max_Abs_Speed_z_cm_s": max_z,
+        "Max_Pos_Delta_x_cm": float(delta_x_cm) if math.isfinite(delta_x_cm) and delta_x_cm > 0.0 else math.nan,
+        "Max_Neg_Delta_x_cm": float(delta_x_cm) if math.isfinite(delta_x_cm) and delta_x_cm < 0.0 else math.nan,
+        "Max_Pos_Delta_y_cm": float(delta_y_cm) if math.isfinite(delta_y_cm) and delta_y_cm > 0.0 else math.nan,
+        "Max_Neg_Delta_y_cm": float(delta_y_cm) if math.isfinite(delta_y_cm) and delta_y_cm < 0.0 else math.nan,
+        "Max_Pos_Delta_z_cm": float(delta_z_cm) if math.isfinite(delta_z_cm) and delta_z_cm > 0.0 else math.nan,
+        "Max_Neg_Delta_z_cm": float(delta_z_cm) if math.isfinite(delta_z_cm) and delta_z_cm < 0.0 else math.nan,
+        "Max_Planar_Displacement_yz_cm": planar_yz_cm,
         "P95_Abs_Speed_x_cm_s": p95_x,
         "P95_Abs_Speed_y_cm_s": p95_y,
         "P95_Abs_Speed_z_cm_s": p95_z,
@@ -493,28 +482,28 @@ def _row_for_experiment(
         "Trial": f"ALL_{len(trial_paths)}",
         "Mocap_RB_ID": selected_rb_id_for_experiment,
         # In experiment mode, displacement metrics are maxima across trials.
-        "Max_Abs_Delta_x_cm": _nanmean([]),
-        "Max_Abs_Delta_y_cm": _nanmean([]),
-        "Max_Abs_Delta_z_cm": _nanmean([]),
-        "Max_Planar_Displacement_cm": _nanmean([]),
-        # Peak speed metrics are maxima across all trials (experiment-level peak).
-        "Max_Abs_Speed_x_cm_s": _nanmean([]),
-        "Max_Abs_Speed_y_cm_s": _nanmean([]),
-        "Max_Abs_Speed_z_cm_s": _nanmean([]),
+        "Max_Pos_Delta_x_cm": _nanmean([]),
+        "Max_Neg_Delta_x_cm": _nanmean([]),
+        "Max_Pos_Delta_y_cm": _nanmean([]),
+        "Max_Neg_Delta_y_cm": _nanmean([]),
+        "Max_Pos_Delta_z_cm": _nanmean([]),
+        "Max_Neg_Delta_z_cm": _nanmean([]),
+        "Max_Planar_Displacement_yz_cm": _nanmean([]),
         "P95_Abs_Speed_x_cm_s": _nanmean([]),
         "P95_Abs_Speed_y_cm_s": _nanmean([]),
         "P95_Abs_Speed_z_cm_s": _nanmean([]),
     }
-    for disp_key in (
-        "Max_Abs_Delta_x_cm",
-        "Max_Abs_Delta_y_cm",
-        "Max_Abs_Delta_z_cm",
-        "Max_Planar_Displacement_cm",
-    ):
+    for disp_key in ("Max_Pos_Delta_x_cm", "Max_Pos_Delta_y_cm", "Max_Pos_Delta_z_cm"):
         vals = np.asarray([m.get(disp_key, math.nan) for m in trial_motion_rows], dtype=float)
         finite_vals = vals[np.isfinite(vals)]
         row[disp_key] = float(np.max(finite_vals)) if finite_vals.size else math.nan
-
+    for disp_key in ("Max_Neg_Delta_x_cm", "Max_Neg_Delta_y_cm", "Max_Neg_Delta_z_cm"):
+        vals = np.asarray([m.get(disp_key, math.nan) for m in trial_motion_rows], dtype=float)
+        finite_vals = vals[np.isfinite(vals)]
+        row[disp_key] = float(np.min(finite_vals)) if finite_vals.size else math.nan
+    vals = np.asarray([m.get("Max_Planar_Displacement_yz_cm", math.nan) for m in trial_motion_rows], dtype=float)
+    finite_vals = vals[np.isfinite(vals)]
+    row["Max_Planar_Displacement_yz_cm"] = float(np.max(finite_vals)) if finite_vals.size else math.nan
     for axis_suffix in ("x", "y", "z"):
         chunks = [arr for arr in speed_samples_by_axis[axis_suffix] if isinstance(arr, np.ndarray) and arr.size > 0]
         if chunks:
@@ -522,7 +511,6 @@ def _row_for_experiment(
             finite = all_speeds[np.isfinite(all_speeds)]
         else:
             finite = np.empty((0,), dtype=float)
-        row[f"Max_Abs_Speed_{axis_suffix}_cm_s"] = float(np.max(finite)) if finite.size else math.nan
         row[f"P95_Abs_Speed_{axis_suffix}_cm_s"] = float(np.percentile(finite, 95.0)) if finite.size else math.nan
 
     for motor_name in ("rightadduction", "rightsweeping"):
@@ -570,7 +558,7 @@ def _ensure_columns_exist(worksheet, required_columns: Sequence[str]) -> List[st
     headers = _sheet_headers(worksheet)
     if not headers:
         # Initialize a new/empty tab with the columns we need.
-        worksheet.update("A1", [list(required_columns)])
+        worksheet.update(values=[list(required_columns)], range_name="A1")
         return list(required_columns)
 
     missing = [col for col in required_columns if col not in headers]
@@ -578,7 +566,7 @@ def _ensure_columns_exist(worksheet, required_columns: Sequence[str]) -> List[st
         return headers
 
     new_headers = headers + missing
-    worksheet.update("A1", [new_headers])
+    worksheet.update(values=[new_headers], range_name="A1")
     return new_headers
 
 
@@ -609,6 +597,17 @@ def _find_unique_row_index_by_key(
 
 def _row_to_sheet_cells(row: Dict[str, object], headers: Sequence[str]) -> List[str]:
     return [_format_value_for_sheet(row.get(col, "")) for col in headers]
+
+
+def _column_index_to_a1(col_index_1based: int) -> str:
+    if col_index_1based < 1:
+        raise ValueError("Column index must be >= 1")
+    n = int(col_index_1based)
+    letters: List[str] = []
+    while n > 0:
+        n, rem = divmod(n - 1, 26)
+        letters.append(chr(ord("A") + rem))
+    return "".join(reversed(letters))
 
 
 def _upsert_rows_to_google_sheet(
@@ -672,12 +671,21 @@ def _upsert_rows_to_google_sheet(
             print(f"[dry-run] update row {row_index} for {key_column}='{key_value}' in '{worksheet_name}'")
             continue
 
+        # Read current row so we can preserve manual columns while issuing one write.
+        existing_row = worksheet.row_values(row_index)
+        merged_row = list(existing_row)
+        if len(merged_row) < len(headers):
+            merged_row.extend([""] * (len(headers) - len(merged_row)))
+
         for col_name in CSV_COLUMNS:
             if col_name not in headers:
                 continue
-            col_index = headers.index(col_name) + 1
-            cell_value = _format_value_for_sheet(row.get(col_name, ""))
-            worksheet.update_cell(row_index, col_index, cell_value)
+            col_index_0based = headers.index(col_name)
+            merged_row[col_index_0based] = _format_value_for_sheet(row.get(col_name, ""))
+
+        end_col_a1 = _column_index_to_a1(len(headers))
+        row_range = f"A{row_index}:{end_col_a1}{row_index}"
+        worksheet.update(values=[merged_row[: len(headers)]], range_name=row_range)
 
 
 def parse_args() -> argparse.Namespace:
@@ -774,7 +782,7 @@ def main() -> int:
         rows.append(row)
         print(
             f"experiment: processed {len(trial_paths)} trial(s) "
-            f"(RB {row['Mocap_RB_ID']}, max planar x-z disp {row['Max_Planar_Displacement_cm']:.3f} cm)"
+            f"(RB {row['Mocap_RB_ID']}, max y-z planar disp {row['Max_Planar_Displacement_yz_cm']:.3f} cm)"
         )
     else:
         for trial_path in trial_paths:
@@ -787,8 +795,7 @@ def main() -> int:
             rows.append(row)
             print(
                 f"{trial_path.name}: processed "
-                f"(RB {row['Mocap_RB_ID']}, "
-                f"planar x-z disp {row['Max_Planar_Displacement_cm']:.3f} cm)"
+                f"(RB {row['Mocap_RB_ID']}, y-z planar disp {row['Max_Planar_Displacement_yz_cm']:.3f} cm)"
             )
 
     if not rows:
@@ -832,7 +839,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
-
-# Change row updates to a single batch row write instead of per-cell writes:
-# one worksheet.update(...) call for the whole row range (e.g. A12:Z12)

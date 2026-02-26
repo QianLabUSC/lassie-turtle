@@ -963,7 +963,7 @@ if __name__ == "__main__":
 
 
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
-# after these, need to write script to process the blue info in the sheets
-# mocap roll-pitvh-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
+# mocap roll-pitch-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
 # also make sure copy mocap scripts from pc
-# the resin mocap stuff should be smaller. tips over
+
+## investigating y changes. why resin almost similar to lead. notes on paper. examine youre measuring what you think yo are for depth especially
