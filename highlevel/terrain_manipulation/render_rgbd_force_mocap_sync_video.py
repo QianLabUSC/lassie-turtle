@@ -184,6 +184,22 @@ def _extract_first_mocap_series(
     return np.full(camera_times.shape, np.nan, dtype=float)
 
 
+def _rotate_yz_clockwise(
+    y: np.ndarray,
+    z: np.ndarray,
+    alpha_deg: float,
+) -> Tuple[np.ndarray, np.ndarray]:
+    alpha_rad = np.deg2rad(float(alpha_deg))
+    c = float(np.cos(alpha_rad))
+    s = float(np.sin(alpha_rad))
+    # Clockwise rotation in y-z plane:
+    # [y']   [ c  s][y]
+    # [z'] = [-s  c][z]
+    y_prime = c * y + s * z
+    z_prime = -s * y + c * z
+    return y_prime, z_prime
+
+
 def _get_mocap_state(mocap: object, rb_id: int) -> Optional[Dict[str, object]]:
     if not isinstance(mocap, dict):
         return None
@@ -199,6 +215,7 @@ def _load_trial_arrays(
     force_b_key: str,
     torque_scale: float,
     mocap_rb_id: int,
+    incline_deg: float,
 ) -> Dict[str, np.ndarray]:
     payload = _load_payload(trial_path)
 
@@ -259,6 +276,7 @@ def _load_trial_arrays(
     mocap_pos_x = _extract_first_mocap_series(mocap_state, ("zeroed_position_x", "relative_position_x", "position_x"), t0_arr)
     mocap_pos_y = _extract_first_mocap_series(mocap_state, ("zeroed_position_y", "relative_position_y", "position_y"), t0_arr)
     mocap_pos_z = _extract_first_mocap_series(mocap_state, ("zeroed_position_z", "relative_position_z", "position_z"), t0_arr)
+    mocap_pos_y, mocap_pos_z = _rotate_yz_clockwise(mocap_pos_y, mocap_pos_z, incline_deg)
     mocap_roll = _extract_mocap_series(mocap_state, "roll_deg", t0_arr)
     mocap_pitch = _extract_mocap_series(mocap_state, "pitch_deg", t0_arr)
     mocap_yaw = _extract_mocap_series(mocap_state, "yaw_deg", t0_arr)
@@ -554,8 +572,8 @@ def _plot_signals(
         ax_mocap_pos.text(0.5, 0.5, "no mocap samples", ha="center", va="center", transform=ax_mocap_pos.transAxes)
     else:
         ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_x[:end], color="tab:purple", linewidth=1.2, label="x")
-        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_y[:end], color="tab:orange", linewidth=1.2, label="y")
-        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_z[:end], color="tab:cyan", linewidth=1.2, label="z")
+        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_y[:end], color="tab:orange", linewidth=1.2, label="y'")
+        ax_mocap_pos.plot(times[:end], 100.0 * mocap_pos_z[:end], color="tab:cyan", linewidth=1.2, label="z'")
         ax_mocap_pos.legend(loc="upper right")
     ax_mocap_pos.set_ylabel("position (cm)")
     ax_mocap_pos.grid(True, alpha=0.3)
@@ -729,6 +747,12 @@ def main() -> None:
         default="lead",
         help="Which half-sphere mocap body to plot (empty, lead, resin).",
     )
+    ap.add_argument(
+        "--incline-deg",
+        type=float,
+        default=0.0,
+        help="Clockwise rotation angle alpha (deg) applied to mocap y-z into y'-z'.",
+    )
     args = ap.parse_args()
     if (args.depth_min_m is None) != (args.depth_max_m is None):
         raise SystemExit("Provide both --depth-min-m and --depth-max-m, or neither.")
@@ -763,7 +787,16 @@ def main() -> None:
     trials: List[Dict[str, np.ndarray]] = []
     for trial_path in trial_paths:
         try:
-            trials.append(_load_trial_arrays(trial_path, args.force_a, args.force_b, args.torque_scale, selected_mocap_rb_id))
+            trials.append(
+                _load_trial_arrays(
+                    trial_path,
+                    args.force_a,
+                    args.force_b,
+                    args.torque_scale,
+                    selected_mocap_rb_id,
+                    args.incline_deg,
+                )
+            )
         except ValueError as exc:
             raise SystemExit(f"{trial_path.name}: {exc}") from exc
 

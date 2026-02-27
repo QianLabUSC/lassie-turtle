@@ -966,4 +966,6 @@ if __name__ == "__main__":
 # mocap roll-pitch-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
 # also make sure copy mocap scripts from pc
 
-## investigating y changes. why resin almost similar to lead. notes on paper. examine youre measuring what you think yo are for depth especially
+## I changes the position to the rotated coord system. im not sure about orientation I think its currently wrong. need to investigate.
+
+## also the max delta does not help cause it basically tells you the biggest doispalcemtn in all trials. doesnt really matter.

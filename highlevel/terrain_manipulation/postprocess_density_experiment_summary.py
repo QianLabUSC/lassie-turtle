@@ -29,13 +29,23 @@ DEFAULT_GSHEET_WORKSHEET = "Run_Log_14x33_init"
 MOCAP_RB_IDS_BY_KIND = {
     "empty": 2,
     "lead": 3,
+    "steel": 6,
     "resin": 5,
 }
 
 MOCAP_RB_NAMES = {
     2: "Empty Half Sphere",
     3: "Lead Half Sphere",
+    6: "Steel Half Sphere",
     5: "Resin Half Sphere",
+}
+
+OBJECT_ID_COLUMN_NAME = "Object_ID"
+OBJECT_ID_TO_MOCAP_KIND = {
+    "a": "empty",
+    "b": "resin",
+    "c": "steel",
+    "d": "lead",
 }
 
 RIGHT_MOTOR_CURRENT_KEYS = (
@@ -157,7 +167,7 @@ def _select_mocap_rb_id(
     names = [f"{rb_id} ({MOCAP_RB_NAMES.get(rb_id, 'unknown')})" for rb_id in ids]
     raise ValueError(
         f"{trial_path.name}: multiple mocap rigid bodies found ({', '.join(names)}); "
-        "specify --mocap-rb-id or --mocap-kind"
+        "provide an explicit mapped RB ID"
     )
 
 
@@ -595,6 +605,72 @@ def _find_unique_row_index_by_key(
     return matches[0] if matches else None
 
 
+def _resolve_mocap_kind_from_object_id(object_id_value: str) -> str:
+    token = str(object_id_value).strip().casefold()
+    if token in OBJECT_ID_TO_MOCAP_KIND:
+        return OBJECT_ID_TO_MOCAP_KIND[token]
+    # Allow direct kind names as a convenience in case sheet values evolve.
+    if token in MOCAP_RB_IDS_BY_KIND:
+        return token
+    raise ValueError(
+        f"Unsupported Object_ID '{object_id_value}'. Expected one of: "
+        "A (empty), B (resin), C (steel), D (lead)."
+    )
+
+
+def _mocap_rb_id_from_sheet(
+    sheet_id: str,
+    worksheet_name: str,
+    session_key: str,
+    key_column: str,
+    creds_env_var: str,
+    object_id_column: str = OBJECT_ID_COLUMN_NAME,
+) -> int:
+    creds_path = os.environ.get(creds_env_var)
+    if not creds_path:
+        raise RuntimeError(
+            f"Credentials env var '{creds_env_var}' is not set. "
+            "Set it to your service account JSON path."
+        )
+
+    gspread, Credentials = _import_gspread_or_raise()
+    scopes = [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    creds = Credentials.from_service_account_file(creds_path, scopes=scopes)
+    client = gspread.authorize(creds)
+    spreadsheet = client.open_by_key(sheet_id)
+    worksheet = spreadsheet.worksheet(worksheet_name)
+
+    headers = _sheet_headers(worksheet)
+    if key_column not in headers:
+        raise ValueError(f"Worksheet is missing key column '{key_column}'")
+    if object_id_column not in headers:
+        raise ValueError(f"Worksheet is missing required column '{object_id_column}'")
+
+    row_index = _find_unique_row_index_by_key(worksheet, headers, key_column=key_column, key_value=session_key)
+    if row_index is None:
+        raise ValueError(
+            f"No sheet row found for {key_column}='{session_key}'. "
+            f"Add the row with '{object_id_column}' before running post-processing."
+        )
+
+    row_values = worksheet.row_values(row_index)
+    object_col_idx = headers.index(object_id_column)
+    object_id_value = row_values[object_col_idx].strip() if object_col_idx < len(row_values) else ""
+    if not object_id_value:
+        raise ValueError(
+            f"Row for {key_column}='{session_key}' has empty '{object_id_column}'. "
+            "Fill Object_ID first."
+        )
+
+    mocap_kind = _resolve_mocap_kind_from_object_id(object_id_value)
+    if mocap_kind not in MOCAP_RB_IDS_BY_KIND:
+        raise ValueError(f"No mocap RB mapping configured for kind '{mocap_kind}'")
+    return int(MOCAP_RB_IDS_BY_KIND[mocap_kind])
+
+
 def _row_to_sheet_cells(row: Dict[str, object], headers: Sequence[str]) -> List[str]:
     return [_format_value_for_sheet(row.get(col, "")) for col in headers]
 
@@ -703,14 +779,6 @@ def parse_args() -> argparse.Namespace:
         default="experiment",
         help="Output one row for the whole experiment (all trials) or one row per trial.",
     )
-    rb_group = ap.add_mutually_exclusive_group()
-    rb_group.add_argument("--mocap-rb-id", type=int, default=None, help="Rigid body ID to process (e.g. 2, 3, 5)")
-    rb_group.add_argument(
-        "--mocap-kind",
-        choices=sorted(MOCAP_RB_IDS_BY_KIND.keys()),
-        default=None,
-        help="Convenience alias for the mocap rigid body (empty, lead, resin)",
-    )
     ap.add_argument(
         "--torque-scale",
         type=float,
@@ -721,17 +789,17 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument(
         "--push-google-sheet",
         action="store_true",
-        help="Upsert generated rows into a Google Sheet tab keyed by Session.",
+        help="Upsert generated rows into the Google Sheet tab keyed by Session.",
     )
     ap.add_argument(
         "--gsheet-id",
         default=DEFAULT_GSHEET_ID,
-        help="Google Sheet file ID (defaults to DEFAULT_GSHEET_ID in this script)",
+        help="Google Sheet file ID used for Object_ID lookup (and upsert if enabled).",
     )
     ap.add_argument(
         "--gsheet-worksheet",
         default=DEFAULT_GSHEET_WORKSHEET,
-        help="Worksheet/tab name to upsert into (defaults to DEFAULT_GSHEET_WORKSHEET in this script)",
+        help="Worksheet/tab name used for Object_ID lookup (and upsert if enabled).",
     )
     ap.add_argument(
         "--gsheet-key-column",
@@ -760,9 +828,19 @@ def main() -> int:
         print(f"No trial_*.npy files found in {source_path}")
         return 1
 
-    requested_rb_id = args.mocap_rb_id
-    if requested_rb_id is None and args.mocap_kind is not None:
-        requested_rb_id = MOCAP_RB_IDS_BY_KIND[args.mocap_kind]
+    # Determine mocap object from sheet row (Object_ID) using the session key.
+    session_key = trial_paths[0].parent.name
+    try:
+        requested_rb_id = _mocap_rb_id_from_sheet(
+            sheet_id=str(args.gsheet_id).strip(),
+            worksheet_name=str(args.gsheet_worksheet).strip(),
+            session_key=session_key,
+            key_column=str(args.gsheet_key_column).strip(),
+            creds_env_var=str(args.gsheet_creds_env).strip(),
+        )
+    except Exception as exc:
+        print(f"Failed to resolve mocap object from Google Sheet for session '{session_key}': {exc}")
+        return 1
 
     output_path = _determine_output_path(source_path, args.output)
     output_path.parent.mkdir(parents=True, exist_ok=True)
