@@ -71,6 +71,7 @@ MOCAP_RB_NAMES = {
 #   "trial"   -> re-zero each trial (recommended if object is re-placed each trial)
 #   "session" -> keep one reference for the whole run
 MOCAP_REFERENCE_MODE = "session"
+MOCAP_INCLINE_DEG = 0.0
 
 TRAJ_SPEED_RAD_S = 2.0
 
@@ -141,6 +142,7 @@ def save_session_metadata(
     dwell_time_sec: float,
     depth_scale_0: float,
     depth_scale_1: float,
+    mocap_incline_deg: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -161,6 +163,7 @@ def save_session_metadata(
         "mocap_udp_ip": str(MOCAP_UDP_IP),
         "mocap_udp_port": int(MOCAP_UDP_PORT),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
+        "mocap_incline_deg": float(mocap_incline_deg),
         "mocap_rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
@@ -171,6 +174,7 @@ def build_metadata(
     start_time: datetime,
     stop_time: datetime,
     dwell_time_sec: float,
+    mocap_incline_deg: float,
     traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
@@ -181,6 +185,7 @@ def build_metadata(
         "dwell_time_sec": float(dwell_time_sec),
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
+        "mocap_incline_deg": float(mocap_incline_deg),
     }
     if traj_complete_time_sec is not None:
         metadata["traj_complete_time_sec"] = float(traj_complete_time_sec)
@@ -362,6 +367,12 @@ class MocapSample:
     zeroed_position_x: float
     zeroed_position_y: float
     zeroed_position_z: float
+    rotated_position_x: float
+    rotated_position_y: float
+    rotated_position_z: float
+    rotated_zeroed_position_x: float
+    rotated_zeroed_position_y: float
+    rotated_zeroed_position_z: float
     orientation_x: float
     orientation_y: float
     orientation_z: float
@@ -370,15 +381,29 @@ class MocapSample:
     zeroed_orientation_y: float
     zeroed_orientation_z: float
     zeroed_orientation_w: float
+    rotated_orientation_x: float
+    rotated_orientation_y: float
+    rotated_orientation_z: float
+    rotated_orientation_w: float
+    rotated_zeroed_orientation_x: float
+    rotated_zeroed_orientation_y: float
+    rotated_zeroed_orientation_z: float
+    rotated_zeroed_orientation_w: float
     roll_deg: float
     pitch_deg: float
     yaw_deg: float
+    rotated_roll_deg: float
+    rotated_pitch_deg: float
+    rotated_yaw_deg: float
 
 
 class MocapUDPReceiver:
-    def __init__(self, udp_ip: str, udp_port: int) -> None:
+    def __init__(self, udp_ip: str, udp_port: int, incline_deg: float = MOCAP_INCLINE_DEG) -> None:
         self.udp_ip = udp_ip
         self.udp_port = int(udp_port)
+        self.incline_deg = float(incline_deg)
+        # Clockwise y-z plane rotation equals a -x right-handed rotation.
+        self._frame_rot = R.from_euler("x", -self.incline_deg, degrees=True)
         self._lock = threading.Lock()
         self._run_start = time.time()
         self._samples_by_rigid_body: Dict[int, List[MocapSample]] = {}
@@ -436,6 +461,7 @@ class MocapUDPReceiver:
                 "rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
                 "udp_ip": self.udp_ip,
                 "udp_port": self.udp_port,
+                "incline_deg": float(self.incline_deg),
             }
 
     def _recv_loop(self) -> None:
@@ -509,6 +535,15 @@ class MocapUDPReceiver:
             zeroed_quat = relative_rot.as_quat()
             # Report RPY in fixed axes of the zeroed trial frame (extrinsic xyz).
             roll_deg, pitch_deg, yaw_deg = relative_rot.as_euler("xyz", degrees=True)
+            rotated_pos = self._frame_rot.apply(pos)
+            rotated_zeroed_pos = self._frame_rot.apply(zeroed_pos)
+            # Express orientation in the rotated frame via basis change:
+            # R' = F * R * F^{-1}
+            rotated_rot = self._frame_rot * current_rot * self._frame_rot.inv()
+            rotated_zeroed_rot = self._frame_rot * relative_rot * self._frame_rot.inv()
+            rotated_quat = rotated_rot.as_quat()
+            rotated_zeroed_quat = rotated_zeroed_rot.as_quat()
+            rotated_roll_deg, rotated_pitch_deg, rotated_yaw_deg = rotated_zeroed_rot.as_euler("xyz", degrees=True)
 
             sample = MocapSample(
                 time_s=time.time() - self._run_start,
@@ -519,6 +554,12 @@ class MocapUDPReceiver:
                 zeroed_position_x=float(zeroed_pos[0]),
                 zeroed_position_y=float(zeroed_pos[1]),
                 zeroed_position_z=float(zeroed_pos[2]),
+                rotated_position_x=float(rotated_pos[0]),
+                rotated_position_y=float(rotated_pos[1]),
+                rotated_position_z=float(rotated_pos[2]),
+                rotated_zeroed_position_x=float(rotated_zeroed_pos[0]),
+                rotated_zeroed_position_y=float(rotated_zeroed_pos[1]),
+                rotated_zeroed_position_z=float(rotated_zeroed_pos[2]),
                 orientation_x=float(quat[0]),
                 orientation_y=float(quat[1]),
                 orientation_z=float(quat[2]),
@@ -527,9 +568,20 @@ class MocapUDPReceiver:
                 zeroed_orientation_y=float(zeroed_quat[1]),
                 zeroed_orientation_z=float(zeroed_quat[2]),
                 zeroed_orientation_w=float(zeroed_quat[3]),
+                rotated_orientation_x=float(rotated_quat[0]),
+                rotated_orientation_y=float(rotated_quat[1]),
+                rotated_orientation_z=float(rotated_quat[2]),
+                rotated_orientation_w=float(rotated_quat[3]),
+                rotated_zeroed_orientation_x=float(rotated_zeroed_quat[0]),
+                rotated_zeroed_orientation_y=float(rotated_zeroed_quat[1]),
+                rotated_zeroed_orientation_z=float(rotated_zeroed_quat[2]),
+                rotated_zeroed_orientation_w=float(rotated_zeroed_quat[3]),
                 roll_deg=float(roll_deg),
                 pitch_deg=float(pitch_deg),
                 yaw_deg=float(yaw_deg),
+                rotated_roll_deg=float(rotated_roll_deg),
+                rotated_pitch_deg=float(rotated_pitch_deg),
+                rotated_yaw_deg=float(rotated_yaw_deg),
             )
             self._samples_by_rigid_body.setdefault(rigid_body_id, []).append(sample)
 
@@ -683,6 +735,12 @@ def _build_mocap_state(samples_by_rigid_body: Dict[int, List[MocapSample]]) -> D
             "zeroed_position_x": np.asarray([s.zeroed_position_x for s in samples], dtype=float),
             "zeroed_position_y": np.asarray([s.zeroed_position_y for s in samples], dtype=float),
             "zeroed_position_z": np.asarray([s.zeroed_position_z for s in samples], dtype=float),
+            "rotated_position_x": np.asarray([s.rotated_position_x for s in samples], dtype=float),
+            "rotated_position_y": np.asarray([s.rotated_position_y for s in samples], dtype=float),
+            "rotated_position_z": np.asarray([s.rotated_position_z for s in samples], dtype=float),
+            "rotated_zeroed_position_x": np.asarray([s.rotated_zeroed_position_x for s in samples], dtype=float),
+            "rotated_zeroed_position_y": np.asarray([s.rotated_zeroed_position_y for s in samples], dtype=float),
+            "rotated_zeroed_position_z": np.asarray([s.rotated_zeroed_position_z for s in samples], dtype=float),
             "orientation_x": np.asarray([s.orientation_x for s in samples], dtype=float),
             "orientation_y": np.asarray([s.orientation_y for s in samples], dtype=float),
             "orientation_z": np.asarray([s.orientation_z for s in samples], dtype=float),
@@ -692,9 +750,20 @@ def _build_mocap_state(samples_by_rigid_body: Dict[int, List[MocapSample]]) -> D
             "zeroed_orientation_y": np.asarray([s.zeroed_orientation_y for s in samples], dtype=float),
             "zeroed_orientation_z": np.asarray([s.zeroed_orientation_z for s in samples], dtype=float),
             "zeroed_orientation_w": np.asarray([s.zeroed_orientation_w for s in samples], dtype=float),
+            "rotated_orientation_x": np.asarray([s.rotated_orientation_x for s in samples], dtype=float),
+            "rotated_orientation_y": np.asarray([s.rotated_orientation_y for s in samples], dtype=float),
+            "rotated_orientation_z": np.asarray([s.rotated_orientation_z for s in samples], dtype=float),
+            "rotated_orientation_w": np.asarray([s.rotated_orientation_w for s in samples], dtype=float),
+            "rotated_zeroed_orientation_x": np.asarray([s.rotated_zeroed_orientation_x for s in samples], dtype=float),
+            "rotated_zeroed_orientation_y": np.asarray([s.rotated_zeroed_orientation_y for s in samples], dtype=float),
+            "rotated_zeroed_orientation_z": np.asarray([s.rotated_zeroed_orientation_z for s in samples], dtype=float),
+            "rotated_zeroed_orientation_w": np.asarray([s.rotated_zeroed_orientation_w for s in samples], dtype=float),
             "roll_deg": np.asarray([s.roll_deg for s in samples], dtype=float),
             "pitch_deg": np.asarray([s.pitch_deg for s in samples], dtype=float),
             "yaw_deg": np.asarray([s.yaw_deg for s in samples], dtype=float),
+            "rotated_roll_deg": np.asarray([s.rotated_roll_deg for s in samples], dtype=float),
+            "rotated_pitch_deg": np.asarray([s.rotated_pitch_deg for s in samples], dtype=float),
+            "rotated_yaw_deg": np.asarray([s.rotated_yaw_deg for s in samples], dtype=float),
         }
     return mocap_state
 
@@ -745,6 +814,12 @@ def _align_mocap_state(
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="High-rate robot_state logging with camera alignment.")
     ap.add_argument("--trials", type=int, default=TRIAL_COUNT, help="Number of trials to record.")
+    ap.add_argument(
+        "--incline-deg",
+        type=float,
+        default=MOCAP_INCLINE_DEG,
+        help="Clockwise y-z plane rotation angle (deg) used to save rotated mocap position/orientation.",
+    )
     ap.add_argument(
         "--save-rgb-mp4",
         action="store_true",
@@ -799,9 +874,12 @@ def main() -> int:
     mocap_receiver: Optional[MocapUDPReceiver] = None
     if MOCAP_ENABLED:
         try:
-            mocap_receiver = MocapUDPReceiver(MOCAP_UDP_IP, MOCAP_UDP_PORT)
+            mocap_receiver = MocapUDPReceiver(MOCAP_UDP_IP, MOCAP_UDP_PORT, incline_deg=float(args.incline_deg))
             mocap_receiver.start()
-            print(f"Mocap UDP listener active on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT}")
+            print(
+                f"Mocap UDP listener active on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT} "
+                f"(incline={float(args.incline_deg):.3f} deg)"
+            )
         except OSError as exc:
             raise SystemExit(
                 f"Failed to bind mocap UDP listener on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT}: {exc}"
@@ -902,6 +980,7 @@ def main() -> int:
             start_time,
             stop_time,
             DWELL_TIME_S,
+            mocap_incline_deg=float(args.incline_deg),
             traj_complete_time_sec=traj_complete_time_s,
             mocap_summary=mocap_summary,
         )
@@ -952,6 +1031,7 @@ def main() -> int:
         DWELL_TIME_S,
         depth_scale_0,
         depth_scale_1,
+        mocap_incline_deg=float(args.incline_deg),
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 
@@ -963,9 +1043,5 @@ if __name__ == "__main__":
 
 
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
-# mocap roll-pitch-yaw (RPY) is currently session-zeroed + world-relative (fixed-axis extrinsic xyz). this keeps a consistent frame across a session, but roll/pitch/yaw can still couple after prior rotations because euler angles are not independent. future improvement: also log rotvec / incremental rotvec.
 # also make sure copy mocap scripts from pc
-
-## I changes the position to the rotated coord system. im not sure about orientation I think its currently wrong. need to investigate.
-
-## also the max delta does not help cause it basically tells you the biggest doispalcemtn in all trials. doesnt really matter.
+## I need to think about RPY. I think the orientatins are coupled. 

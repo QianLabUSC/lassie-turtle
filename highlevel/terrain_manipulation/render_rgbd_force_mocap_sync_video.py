@@ -5,7 +5,7 @@ Creates an MP4 that stacks:
   - RGB camera 0 and RGB camera 1 (top row)
   - Depth camera 0 and Depth camera 1 (bottom row)
   - Right panel plots for torque, timing offset,
-    plus mocap for a selected half sphere (empty/lead/resin)
+    plus mocap for a selected half sphere (empty/lead/resin/steel)
     
 Usage e.g.:
 /home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
@@ -34,15 +34,18 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 MOCAP_RB_EMPTY_ID = 2
 MOCAP_RB_LEAD_ID = 3
 MOCAP_RB_RESIN_ID = 5
+MOCAP_RB_STEEL_ID = 6
 MOCAP_RB_IDS_BY_KIND = {
     "empty": MOCAP_RB_EMPTY_ID,
     "lead": MOCAP_RB_LEAD_ID,
     "resin": MOCAP_RB_RESIN_ID,
+    "steel": MOCAP_RB_STEEL_ID,
 }
 MOCAP_RB_NAMES = {
     MOCAP_RB_EMPTY_ID: "Empty Half Sphere",
     MOCAP_RB_LEAD_ID: "Lead Half Sphere",
     MOCAP_RB_RESIN_ID: "Resin Half Sphere",
+    MOCAP_RB_STEEL_ID: "Steel Half Sphere",
 }
 
 
@@ -184,22 +187,6 @@ def _extract_first_mocap_series(
     return np.full(camera_times.shape, np.nan, dtype=float)
 
 
-def _rotate_yz_clockwise(
-    y: np.ndarray,
-    z: np.ndarray,
-    alpha_deg: float,
-) -> Tuple[np.ndarray, np.ndarray]:
-    alpha_rad = np.deg2rad(float(alpha_deg))
-    c = float(np.cos(alpha_rad))
-    s = float(np.sin(alpha_rad))
-    # Clockwise rotation in y-z plane:
-    # [y']   [ c  s][y]
-    # [z'] = [-s  c][z]
-    y_prime = c * y + s * z
-    z_prime = -s * y + c * z
-    return y_prime, z_prime
-
-
 def _get_mocap_state(mocap: object, rb_id: int) -> Optional[Dict[str, object]]:
     if not isinstance(mocap, dict):
         return None
@@ -215,7 +202,6 @@ def _load_trial_arrays(
     force_b_key: str,
     torque_scale: float,
     mocap_rb_id: int,
-    incline_deg: float,
 ) -> Dict[str, np.ndarray]:
     payload = _load_payload(trial_path)
 
@@ -273,13 +259,24 @@ def _load_trial_arrays(
     mocap = payload.get("mocap")
     mocap_state = _get_mocap_state(mocap, mocap_rb_id)
 
-    mocap_pos_x = _extract_first_mocap_series(mocap_state, ("zeroed_position_x", "relative_position_x", "position_x"), t0_arr)
-    mocap_pos_y = _extract_first_mocap_series(mocap_state, ("zeroed_position_y", "relative_position_y", "position_y"), t0_arr)
-    mocap_pos_z = _extract_first_mocap_series(mocap_state, ("zeroed_position_z", "relative_position_z", "position_z"), t0_arr)
-    mocap_pos_y, mocap_pos_z = _rotate_yz_clockwise(mocap_pos_y, mocap_pos_z, incline_deg)
-    mocap_roll = _extract_mocap_series(mocap_state, "roll_deg", t0_arr)
-    mocap_pitch = _extract_mocap_series(mocap_state, "pitch_deg", t0_arr)
-    mocap_yaw = _extract_mocap_series(mocap_state, "yaw_deg", t0_arr)
+    mocap_pos_x = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_x", "rotated_position_x", "zeroed_position_x", "relative_position_x", "position_x"),
+        t0_arr,
+    )
+    mocap_pos_y = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_y", "rotated_position_y", "zeroed_position_y", "relative_position_y", "position_y"),
+        t0_arr,
+    )
+    mocap_pos_z = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_z", "rotated_position_z", "zeroed_position_z", "relative_position_z", "position_z"),
+        t0_arr,
+    )
+    mocap_roll = _extract_first_mocap_series(mocap_state, ("rotated_roll_deg", "roll_deg"), t0_arr)
+    mocap_pitch = _extract_first_mocap_series(mocap_state, ("rotated_pitch_deg", "pitch_deg"), t0_arr)
+    mocap_yaw = _extract_first_mocap_series(mocap_state, ("rotated_yaw_deg", "yaw_deg"), t0_arr)
 
     robot_time_arr = np.asarray(robot_time, dtype=float)
     time_diff = robot_time_arr - t0_arr
@@ -745,13 +742,7 @@ def main() -> None:
         "--half-sphere",
         choices=sorted(MOCAP_RB_IDS_BY_KIND.keys()),
         default="lead",
-        help="Which half-sphere mocap body to plot (empty, lead, resin).",
-    )
-    ap.add_argument(
-        "--incline-deg",
-        type=float,
-        default=0.0,
-        help="Clockwise rotation angle alpha (deg) applied to mocap y-z into y'-z'.",
+        help="Which half-sphere mocap body to plot (empty, lead, resin, steel).",
     )
     args = ap.parse_args()
     if (args.depth_min_m is None) != (args.depth_max_m is None):
@@ -794,7 +785,6 @@ def main() -> None:
                     args.force_b,
                     args.torque_scale,
                     selected_mocap_rb_id,
-                    args.incline_deg,
                 )
             )
         except ValueError as exc:

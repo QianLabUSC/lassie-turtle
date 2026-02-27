@@ -57,13 +57,10 @@ CSV_COLUMNS: Sequence[str] = (
     "Session",
     "Trial",
     "Mocap_RB_ID",
-    "Max_Pos_Delta_x_cm",
-    "Max_Neg_Delta_x_cm",
-    "Max_Pos_Delta_y_cm",
-    "Max_Neg_Delta_y_cm",
-    "Max_Pos_Delta_z_cm",
-    "Max_Neg_Delta_z_cm",
-    "Max_Planar_Displacement_yz_cm",
+    "Net_Delta_x_cm",
+    "Net_Delta_y_cm",
+    "Net_Delta_z_cm",
+    "Net_Planar_Displacement_yz_cm",
     "P95_Abs_Speed_x_cm_s",
     "P95_Abs_Speed_y_cm_s",
     "P95_Abs_Speed_z_cm_s",
@@ -120,6 +117,14 @@ def _as_float_array(value: object) -> Optional[np.ndarray]:
         return np.asarray(value, dtype=float)
     except Exception:
         return None
+
+
+def _extract_first_mocap_series(mocap_state: Dict[str, object], keys: Sequence[str]) -> Optional[np.ndarray]:
+    for key in keys:
+        arr = _as_float_array(mocap_state.get(key))
+        if arr is not None:
+            return arr
+    return None
 
 
 def _get_mocap_state(payload: Dict[str, object], rb_id: int) -> Optional[Dict[str, object]]:
@@ -295,11 +300,23 @@ def _robot_state_for_metrics(payload: Dict[str, object]) -> Dict[str, object]:
 
 def _compute_motion_metrics(mocap_state: Dict[str, object]) -> Dict[str, float]:
     t = _as_float_array(mocap_state.get("time"))
-    x = _as_float_array(mocap_state.get("position_x"))
-    y = _as_float_array(mocap_state.get("position_y"))
-    z = _as_float_array(mocap_state.get("position_z"))
+    x = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_x", "rotated_position_x", "zeroed_position_x", "position_x"),
+    )
+    y = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_y", "rotated_position_y", "zeroed_position_y", "position_y"),
+    )
+    z = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_position_z", "rotated_position_z", "zeroed_position_z", "position_z"),
+    )
     if t is None or x is None or y is None or z is None:
-        raise ValueError("mocap state missing time/position_x/position_y/position_z arrays")
+        raise ValueError(
+            "mocap state missing time/position arrays "
+            "(expected rotated_zeroed_*, rotated_*, zeroed_*, or position_*)"
+        )
 
     if not (len(t) == len(x) == len(y) == len(z)):
         raise ValueError("mocap position arrays length mismatch")
@@ -324,13 +341,10 @@ def _compute_motion_metrics(mocap_state: Dict[str, object]) -> Dict[str, float]:
     p95_z = float(np.nanpercentile(speed_z, 95.0)) if speed_z.size else math.nan
 
     return {
-        "Max_Pos_Delta_x_cm": float(delta_x_cm) if math.isfinite(delta_x_cm) and delta_x_cm > 0.0 else math.nan,
-        "Max_Neg_Delta_x_cm": float(delta_x_cm) if math.isfinite(delta_x_cm) and delta_x_cm < 0.0 else math.nan,
-        "Max_Pos_Delta_y_cm": float(delta_y_cm) if math.isfinite(delta_y_cm) and delta_y_cm > 0.0 else math.nan,
-        "Max_Neg_Delta_y_cm": float(delta_y_cm) if math.isfinite(delta_y_cm) and delta_y_cm < 0.0 else math.nan,
-        "Max_Pos_Delta_z_cm": float(delta_z_cm) if math.isfinite(delta_z_cm) and delta_z_cm > 0.0 else math.nan,
-        "Max_Neg_Delta_z_cm": float(delta_z_cm) if math.isfinite(delta_z_cm) and delta_z_cm < 0.0 else math.nan,
-        "Max_Planar_Displacement_yz_cm": planar_yz_cm,
+        "Net_Delta_x_cm": float(delta_x_cm) if math.isfinite(delta_x_cm) else math.nan,
+        "Net_Delta_y_cm": float(delta_y_cm) if math.isfinite(delta_y_cm) else math.nan,
+        "Net_Delta_z_cm": float(delta_z_cm) if math.isfinite(delta_z_cm) else math.nan,
+        "Net_Planar_Displacement_yz_cm": planar_yz_cm,
         "P95_Abs_Speed_x_cm_s": p95_x,
         "P95_Abs_Speed_y_cm_s": p95_y,
         "P95_Abs_Speed_z_cm_s": p95_z,
@@ -440,8 +454,9 @@ def _row_for_experiment(
     session_name = trial_paths[0].parent.name
     selected_rb_id_for_experiment: Optional[int] = None
 
-    trial_motion_rows: List[Dict[str, float]] = []
     speed_samples_by_axis: Dict[str, List[np.ndarray]] = {"x": [], "y": [], "z": []}
+    net_start_m: Dict[str, float] = {"x": math.nan, "y": math.nan, "z": math.nan}
+    net_end_m: Dict[str, float] = {"x": math.nan, "y": math.nan, "z": math.nan}
 
     # Aggregate torque stats across all samples of all trials (experiment-level).
     max_abs_tau: Dict[str, float] = {"rightadduction": math.nan, "rightsweeping": math.nan}
@@ -464,15 +479,46 @@ def _row_for_experiment(
             raise ValueError(f"{trial_path.name}: mocap state for RB ID {rb_id} not found")
         robot_state = _robot_state_for_metrics(payload)
 
-        trial_motion_rows.append(_compute_motion_metrics(mocap_state))
         t_arr = _as_float_array(mocap_state.get("time"))
-        x_arr = _as_float_array(mocap_state.get("position_x"))
-        y_arr = _as_float_array(mocap_state.get("position_y"))
-        z_arr = _as_float_array(mocap_state.get("position_z"))
+        x_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_zeroed_position_x", "rotated_position_x", "zeroed_position_x", "position_x"),
+        )
+        y_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_zeroed_position_y", "rotated_position_y", "zeroed_position_y", "position_y"),
+        )
+        z_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_zeroed_position_z", "rotated_position_z", "zeroed_position_z", "position_z"),
+        )
         if t_arr is not None and x_arr is not None and y_arr is not None and z_arr is not None:
             speed_samples_by_axis["x"].append(_abs_speed_samples_cm_s(x_arr, t_arr))
             speed_samples_by_axis["y"].append(_abs_speed_samples_cm_s(y_arr, t_arr))
             speed_samples_by_axis["z"].append(_abs_speed_samples_cm_s(z_arr, t_arr))
+        # Net experiment displacement should use a non-zeroed frame so it is
+        # measured from experiment start to experiment end across all trials.
+        x_net_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_position_x", "position_x", "rotated_zeroed_position_x", "zeroed_position_x"),
+        )
+        y_net_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_position_y", "position_y", "rotated_zeroed_position_y", "zeroed_position_y"),
+        )
+        z_net_arr = _extract_first_mocap_series(
+            mocap_state,
+            ("rotated_position_z", "position_z", "rotated_zeroed_position_z", "zeroed_position_z"),
+        )
+        axis_to_arr = {"x": x_net_arr, "y": y_net_arr, "z": z_net_arr}
+        for axis_suffix, arr in axis_to_arr.items():
+            if arr is None:
+                continue
+            first_val, last_val = _finite_first_last(arr)
+            if not math.isfinite(net_start_m[axis_suffix]) and math.isfinite(first_val):
+                net_start_m[axis_suffix] = float(first_val)
+            if math.isfinite(last_val):
+                net_end_m[axis_suffix] = float(last_val)
 
         components = _compute_right_torque_aggregate_components(robot_state, torque_scale=torque_scale)
         for motor_name, (trial_max_abs, trial_sum_abs, trial_count) in components.items():
@@ -491,29 +537,34 @@ def _row_for_experiment(
         "Session": session_name,
         "Trial": f"ALL_{len(trial_paths)}",
         "Mocap_RB_ID": selected_rb_id_for_experiment,
-        # In experiment mode, displacement metrics are maxima across trials.
-        "Max_Pos_Delta_x_cm": _nanmean([]),
-        "Max_Neg_Delta_x_cm": _nanmean([]),
-        "Max_Pos_Delta_y_cm": _nanmean([]),
-        "Max_Neg_Delta_y_cm": _nanmean([]),
-        "Max_Pos_Delta_z_cm": _nanmean([]),
-        "Max_Neg_Delta_z_cm": _nanmean([]),
-        "Max_Planar_Displacement_yz_cm": _nanmean([]),
+        "Net_Delta_x_cm": _nanmean([]),
+        "Net_Delta_y_cm": _nanmean([]),
+        "Net_Delta_z_cm": _nanmean([]),
+        "Net_Planar_Displacement_yz_cm": _nanmean([]),
         "P95_Abs_Speed_x_cm_s": _nanmean([]),
         "P95_Abs_Speed_y_cm_s": _nanmean([]),
         "P95_Abs_Speed_z_cm_s": _nanmean([]),
     }
-    for disp_key in ("Max_Pos_Delta_x_cm", "Max_Pos_Delta_y_cm", "Max_Pos_Delta_z_cm"):
-        vals = np.asarray([m.get(disp_key, math.nan) for m in trial_motion_rows], dtype=float)
-        finite_vals = vals[np.isfinite(vals)]
-        row[disp_key] = float(np.max(finite_vals)) if finite_vals.size else math.nan
-    for disp_key in ("Max_Neg_Delta_x_cm", "Max_Neg_Delta_y_cm", "Max_Neg_Delta_z_cm"):
-        vals = np.asarray([m.get(disp_key, math.nan) for m in trial_motion_rows], dtype=float)
-        finite_vals = vals[np.isfinite(vals)]
-        row[disp_key] = float(np.min(finite_vals)) if finite_vals.size else math.nan
-    vals = np.asarray([m.get("Max_Planar_Displacement_yz_cm", math.nan) for m in trial_motion_rows], dtype=float)
-    finite_vals = vals[np.isfinite(vals)]
-    row["Max_Planar_Displacement_yz_cm"] = float(np.max(finite_vals)) if finite_vals.size else math.nan
+    delta_x_cm = (
+        (net_end_m["x"] - net_start_m["x"]) * 100.0
+        if math.isfinite(net_start_m["x"]) and math.isfinite(net_end_m["x"])
+        else math.nan
+    )
+    delta_y_cm = (
+        (net_end_m["y"] - net_start_m["y"]) * 100.0
+        if math.isfinite(net_start_m["y"]) and math.isfinite(net_end_m["y"])
+        else math.nan
+    )
+    delta_z_cm = (
+        (net_end_m["z"] - net_start_m["z"]) * 100.0
+        if math.isfinite(net_start_m["z"]) and math.isfinite(net_end_m["z"])
+        else math.nan
+    )
+    planar_yz_cm = float(math.hypot(delta_y_cm, delta_z_cm)) if np.isfinite([delta_y_cm, delta_z_cm]).all() else math.nan
+    row["Net_Delta_x_cm"] = float(delta_x_cm) if math.isfinite(delta_x_cm) else math.nan
+    row["Net_Delta_y_cm"] = float(delta_y_cm) if math.isfinite(delta_y_cm) else math.nan
+    row["Net_Delta_z_cm"] = float(delta_z_cm) if math.isfinite(delta_z_cm) else math.nan
+    row["Net_Planar_Displacement_yz_cm"] = planar_yz_cm
     for axis_suffix in ("x", "y", "z"):
         chunks = [arr for arr in speed_samples_by_axis[axis_suffix] if isinstance(arr, np.ndarray) and arr.size > 0]
         if chunks:
@@ -860,7 +911,7 @@ def main() -> int:
         rows.append(row)
         print(
             f"experiment: processed {len(trial_paths)} trial(s) "
-            f"(RB {row['Mocap_RB_ID']}, max y-z planar disp {row['Max_Planar_Displacement_yz_cm']:.3f} cm)"
+            f"(RB {row['Mocap_RB_ID']}, net y-z planar disp {row['Net_Planar_Displacement_yz_cm']:.3f} cm)"
         )
     else:
         for trial_path in trial_paths:
@@ -873,7 +924,7 @@ def main() -> int:
             rows.append(row)
             print(
                 f"{trial_path.name}: processed "
-                f"(RB {row['Mocap_RB_ID']}, y-z planar disp {row['Max_Planar_Displacement_yz_cm']:.3f} cm)"
+                f"(RB {row['Mocap_RB_ID']}, y-z planar disp {row['Net_Planar_Displacement_yz_cm']:.3f} cm)"
             )
 
     if not rows:
