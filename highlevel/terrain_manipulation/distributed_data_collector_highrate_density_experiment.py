@@ -919,7 +919,8 @@ def main() -> int:
         run_start = time.time()
         node.reset(run_start)
         if mocap_receiver is not None:
-            mocap_receiver.reset(run_start, reset_reference=(MOCAP_REFERENCE_MODE == "trial"))
+            reset_reference = (MOCAP_REFERENCE_MODE == "trial") or (trial_idx == 0)
+            mocap_receiver.reset(run_start, reset_reference=reset_reference)
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         print(f"Starting trial {trial_idx + 1}/{args.trials}...")
         trajectory_publisher.publish(trajectory_msg)
@@ -1045,3 +1046,5 @@ if __name__ == "__main__":
 # there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
 # also make sure copy mocap scripts from pc
 ## I need to think about RPY. I think the orientatins are coupled. 
+# i think ppl changed the location of cameras. need to readjust. having issue with mocap
+# to expediate data collection, maybe I should make a plotting script so I dont have to wait for the full render to check the accuracy of mocap etc.
