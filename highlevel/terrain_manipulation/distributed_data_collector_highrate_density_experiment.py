@@ -1048,3 +1048,4 @@ if __name__ == "__main__":
 ## I need to think about RPY. I think the orientatins are coupled. 
 # i think ppl changed the location of cameras. need to readjust. having issue with mocap
 # to expediate data collection, maybe I should make a plotting script so I dont have to wait for the full render to check the accuracy of mocap etc.
+# why is the delay increasing?

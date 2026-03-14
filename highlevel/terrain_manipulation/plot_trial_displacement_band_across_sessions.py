@@ -29,12 +29,34 @@ import numpy as np
 
 DATA_ROOT = Path(__file__).resolve().parent / "data"
 # Default sessions used when no positional session args are provided.
+
+# empty
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+#     "session_20260313_111621",
+#     "session_20260313_112741",
+#     "session_20260313_125836",
+#     "session_20260313_121725",
+#     "session_20260313_123622",
+# )
+
+# lead
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+#     "session_20260314_114731",
+#     "session_20260314_115216",
+#     "session_20260314_115730",
+#     "session_20260314_120728",
+#     "session_20260314_121349",
+#     "session_20260314_121907"
+# )
+
+# steel
 DEFAULT_SESSION_NAMES: Sequence[str] = (
-    "session_20260313_111621",
-    "session_20260313_112741",
-    "session_20260313_121100",
-    "session_20260313_121725",
-    "session_20260313_123622",
+    "session_20260314_122949",
+    "session_20260314_123416",
+    "session_20260314_123744",
+    "session_20260314_124126",
+    "session_20260314_124658",
+    "session_20260314_125646"
 )
 
 MOCAP_RB_IDS_BY_KIND: Dict[str, int] = {
