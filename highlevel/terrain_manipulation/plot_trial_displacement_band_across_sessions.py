@@ -49,21 +49,34 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 #     "session_20260314_121907"
 # )
 
-# steel
+# # steel
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+#     "session_20260314_122949",
+#     "session_20260314_123416",
+#     "session_20260314_123744",
+#     "session_20260314_124126",
+#     "session_20260314_124658",
+#     "session_20260314_125646"
+# )
+
+# resin
 DEFAULT_SESSION_NAMES: Sequence[str] = (
-    "session_20260314_122949",
-    "session_20260314_123416",
-    "session_20260314_123744",
-    "session_20260314_124126",
-    "session_20260314_124658",
-    "session_20260314_125646"
+"session_20260316_132543",
+"session_20260316_142942",
+"session_20260316_144047",
+"session_20260316_145733",
+"session_20260316_150341",
+"session_20260316_152118",
+"session_20260316_152712"
 )
+
 
 MOCAP_RB_IDS_BY_KIND: Dict[str, int] = {
     "empty": 2,
     "lead": 3,
     "resin": 5,
     "steel": 6,
+    "sand": 8,
 }
 # Used when neither --mocap-rb-id nor --mocap-kind is passed.
 DEFAULT_MOCAP_KIND = "steel"

@@ -65,7 +65,9 @@ MOCAP_PACKET_SIZE_BYTES = 4096
 MOCAP_RB_NAMES = {
     2: "Empty Half Sphere",
     3: "Lead Half Sphere",
+    6: "Steel Half Sphere",
     5: "Resin Half Sphere",
+    8: "Sand Half Sphere",
 }
 # Orientation reference mode for roll/pitch/yaw:
 #   "trial"   -> re-zero each trial (recommended if object is re-placed each trial)

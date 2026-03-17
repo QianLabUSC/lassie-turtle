@@ -5,7 +5,7 @@ Creates an MP4 that stacks:
   - RGB camera 0 and RGB camera 1 (top row)
   - Depth camera 0 and Depth camera 1 (bottom row)
   - Right panel plots for torque, timing offset,
-    plus mocap for a selected half sphere (empty/lead/resin/steel)
+    plus mocap for a selected half sphere (empty/lead/resin/steel/sand)
     
 Usage e.g.:
 /home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
@@ -35,17 +35,20 @@ MOCAP_RB_EMPTY_ID = 2
 MOCAP_RB_LEAD_ID = 3
 MOCAP_RB_RESIN_ID = 5
 MOCAP_RB_STEEL_ID = 6
+MOCAP_RB_SAND_ID = 8
 MOCAP_RB_IDS_BY_KIND = {
     "empty": MOCAP_RB_EMPTY_ID,
     "lead": MOCAP_RB_LEAD_ID,
     "resin": MOCAP_RB_RESIN_ID,
     "steel": MOCAP_RB_STEEL_ID,
+    "sand": MOCAP_RB_SAND_ID,
 }
 MOCAP_RB_NAMES = {
     MOCAP_RB_EMPTY_ID: "Empty Half Sphere",
     MOCAP_RB_LEAD_ID: "Lead Half Sphere",
     MOCAP_RB_RESIN_ID: "Resin Half Sphere",
     MOCAP_RB_STEEL_ID: "Steel Half Sphere",
+    MOCAP_RB_SAND_ID: "Sand Half Sphere",
 }
 
 
@@ -742,7 +745,7 @@ def main() -> None:
         "--half-sphere",
         choices=sorted(MOCAP_RB_IDS_BY_KIND.keys()),
         default="lead",
-        help="Which half-sphere mocap body to plot (empty, lead, resin, steel).",
+        help="Which half-sphere mocap body to plot (empty, lead, resin, steel, sand).",
     )
     args = ap.parse_args()
     if (args.depth_min_m is None) != (args.depth_max_m is None):
