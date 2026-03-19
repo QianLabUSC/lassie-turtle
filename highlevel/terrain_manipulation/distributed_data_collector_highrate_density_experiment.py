@@ -1051,3 +1051,7 @@ if __name__ == "__main__":
 # i think ppl changed the location of cameras. need to readjust. having issue with mocap
 # to expediate data collection, maybe I should make a plotting script so I dont have to wait for the full render to check the accuracy of mocap etc.
 # why is the delay increasing?
+
+
+# the plots for sand vs resin doesn't make sense. recalculate resin with correct COM or redo (same with steel) and observe.
+# also check sand videos for validation.

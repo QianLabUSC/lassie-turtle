@@ -10,6 +10,11 @@ Creates an MP4 that stacks:
 Usage e.g.:
 /home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
 """
+# NOTE:
+# Steel experiments on March 14, 2026 and resin experiments on
+# March 16, 2026 used an incorrect Motive pivot/COM definition.
+# For those sessions, pass:
+#   --com-offset-y-m -0.00375
 
 from __future__ import annotations
 
@@ -190,6 +195,57 @@ def _extract_first_mocap_series(
     return np.full(camera_times.shape, np.nan, dtype=float)
 
 
+def _rotate_vector_by_quaternion_batch(quat_wxyz: np.ndarray, vector_xyz: np.ndarray) -> np.ndarray:
+    # Uses v' = q * v * q_conjugate; inputs are expected to be normalized.
+    u = quat_wxyz[:, 1:4]
+    s = quat_wxyz[:, :1]
+    v = vector_xyz
+    dot_uv = np.sum(u * v, axis=1, keepdims=True)
+    dot_uu = np.sum(u * u, axis=1, keepdims=True)
+    cross_uv = np.cross(u, v)
+    return 2.0 * dot_uv * u + (s * s - dot_uu) * v + 2.0 * s * cross_uv
+
+
+def _apply_body_com_offset(
+    pos_x: np.ndarray,
+    pos_y: np.ndarray,
+    pos_z: np.ndarray,
+    quat_w: np.ndarray,
+    quat_x: np.ndarray,
+    quat_y: np.ndarray,
+    quat_z: np.ndarray,
+    offset_body_xyz_m: Tuple[float, float, float],
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
+    offset = np.asarray(offset_body_xyz_m, dtype=float).reshape(3)
+    if np.allclose(offset, 0.0):
+        return pos_x, pos_y, pos_z, False
+
+    pos = np.column_stack([pos_x, pos_y, pos_z]).astype(float, copy=True)
+    quat = np.column_stack([quat_w, quat_x, quat_y, quat_z]).astype(float, copy=False)
+
+    finite_mask = np.isfinite(pos).all(axis=1) & np.isfinite(quat).all(axis=1)
+    if not np.any(finite_mask):
+        return pos_x, pos_y, pos_z, False
+
+    quat_valid = quat[finite_mask]
+    norms = np.linalg.norm(quat_valid, axis=1, keepdims=True)
+    norm_mask = (norms[:, 0] > 1e-12) & np.isfinite(norms[:, 0])
+    if not np.any(norm_mask):
+        return pos_x, pos_y, pos_z, False
+
+    quat_valid = quat_valid[norm_mask] / norms[norm_mask]
+    rotated_offset = _rotate_vector_by_quaternion_batch(
+        quat_valid,
+        np.broadcast_to(offset, (quat_valid.shape[0], 3)),
+    )
+
+    finite_indices = np.flatnonzero(finite_mask)
+    target_indices = finite_indices[norm_mask]
+    pos[target_indices] += rotated_offset
+
+    return pos[:, 0], pos[:, 1], pos[:, 2], True
+
+
 def _get_mocap_state(mocap: object, rb_id: int) -> Optional[Dict[str, object]]:
     if not isinstance(mocap, dict):
         return None
@@ -205,6 +261,7 @@ def _load_trial_arrays(
     force_b_key: str,
     torque_scale: float,
     mocap_rb_id: int,
+    com_offset_y_m: float,
 ) -> Dict[str, np.ndarray]:
     payload = _load_payload(trial_path)
 
@@ -280,6 +337,40 @@ def _load_trial_arrays(
     mocap_roll = _extract_first_mocap_series(mocap_state, ("rotated_roll_deg", "roll_deg"), t0_arr)
     mocap_pitch = _extract_first_mocap_series(mocap_state, ("rotated_pitch_deg", "pitch_deg"), t0_arr)
     mocap_yaw = _extract_first_mocap_series(mocap_state, ("rotated_yaw_deg", "yaw_deg"), t0_arr)
+    mocap_qw = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_orientation_w", "rotated_orientation_w", "zeroed_orientation_w", "orientation_w"),
+        t0_arr,
+    )
+    mocap_qx = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_orientation_x", "rotated_orientation_x", "zeroed_orientation_x", "orientation_x"),
+        t0_arr,
+    )
+    mocap_qy = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_orientation_y", "rotated_orientation_y", "zeroed_orientation_y", "orientation_y"),
+        t0_arr,
+    )
+    mocap_qz = _extract_first_mocap_series(
+        mocap_state,
+        ("rotated_zeroed_orientation_z", "rotated_orientation_z", "zeroed_orientation_z", "orientation_z"),
+        t0_arr,
+    )
+    mocap_pos_x, mocap_pos_y, mocap_pos_z, com_applied = _apply_body_com_offset(
+        mocap_pos_x,
+        mocap_pos_y,
+        mocap_pos_z,
+        mocap_qw,
+        mocap_qx,
+        mocap_qy,
+        mocap_qz,
+        (0.0, float(com_offset_y_m), 0.0),
+    )
+    if float(com_offset_y_m) != 0.0 and not com_applied:
+        print(
+            f"Warning: {trial_path.name}: unable to apply COM offset because valid mocap orientation samples were not found."
+        )
 
     robot_time_arr = np.asarray(robot_time, dtype=float)
     time_diff = robot_time_arr - t0_arr
@@ -726,9 +817,20 @@ def main() -> None:
     )
     ap.add_argument("--trial", type=int, default=None, help="Trial index (1-based) when a session dir is provided")
     ap.add_argument("--output", type=Path, default=None, help="Output mp4 path")
+    ap.add_argument(
+        "--compare-output",
+        action="store_true",
+        help="Append '_compare' to the default output filename (ignored when --output is set).",
+    )
     ap.add_argument("--force-a", default="rightadduction_curr", help="robot_state key for force A")
     ap.add_argument("--force-b", default="rightsweeping_curr", help="robot_state key for force B")
     ap.add_argument("--torque-scale", type=float, default=0.072, help="Scale forces by this factor")
+    ap.add_argument(
+        "--com-offset-y-m",
+        type=float,
+        default=0.0,
+        help="Constant COM offset along body Y (meters), rotated into world frame per sample.",
+    )
     ap.add_argument(
         "--depth-min-m",
         type=float,
@@ -788,6 +890,7 @@ def main() -> None:
                     args.force_b,
                     args.torque_scale,
                     selected_mocap_rb_id,
+                    args.com_offset_y_m,
                 )
             )
         except ValueError as exc:
@@ -831,10 +934,14 @@ def main() -> None:
 
     if args.output is not None:
         output_path = args.output
-    elif args.mode == "trial":
-        output_path = trial_paths[0].parent / f"{trial_paths[0].stem}_sync_mocap.mp4"
     else:
-        output_path = trial_paths[0].parent / f"{trial_paths[0].parent.name}_sync_mocap.mp4"
+        if args.mode == "trial":
+            output_stem = f"{trial_paths[0].stem}_sync_mocap"
+        else:
+            output_stem = f"{trial_paths[0].parent.name}_sync_mocap"
+        if args.compare_output:
+            output_stem = f"{output_stem}_compare"
+        output_path = trial_paths[0].parent / f"{output_stem}.mp4"
 
     if args.depth_min_m is None:
         depth_min, depth_max = _estimate_depth_range_for_trials(trials)
@@ -925,6 +1032,7 @@ def main() -> None:
         f"{selected_mocap_name} (ID {selected_mocap_rb_id}, kind={selected_mocap_kind})"
     )
     print(f"Saved {output_path}")
+    print(f"COM offset (body y): {args.com_offset_y_m:.6f} m")
     if args.depth_min_m is not None and args.depth_max_m is not None:
         print(f"Depth colormap range: [{args.depth_min_m:.3f}, {args.depth_max_m:.3f}] m (fixed)")
     else:

@@ -49,7 +49,11 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 #     "session_20260314_121907"
 # )
 
-# # steel
+# steel
+# NOTE: Steel sessions recorded on March 14, 2026 were collected with an
+# incorrect Motive pivot/COM definition.
+# Apply COM correction with:
+#   --com-offset-y-m -0.00375
 # DEFAULT_SESSION_NAMES: Sequence[str] = (
 #     "session_20260314_122949",
 #     "session_20260314_123416",
@@ -60,6 +64,10 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 # )
 
 # resin
+# NOTE: Resin sessions recorded on March 16, 2026 were collected with the same
+# incorrect Motive pivot/COM definition.
+# Apply COM correction with:
+#   --com-offset-y-m -0.00375
 DEFAULT_SESSION_NAMES: Sequence[str] = (
 "session_20260316_132543",
 "session_20260316_142942",
@@ -69,6 +77,17 @@ DEFAULT_SESSION_NAMES: Sequence[str] = (
 "session_20260316_152118",
 "session_20260316_152712"
 )
+
+# # sand
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+# "session_20260317_153944",
+# "session_20260317_154742",
+# "session_20260317_155128",
+# "session_20260317_155550",
+# "session_20260317_160026",
+# "session_20260317_160410"
+# )
+
 
 
 MOCAP_RB_IDS_BY_KIND: Dict[str, int] = {
@@ -122,6 +141,111 @@ def _extract_first_mocap_series(mocap_state: Dict[str, object], keys: Sequence[s
     return None
 
 
+def _extract_first_mocap_series_with_key(
+    mocap_state: Dict[str, object],
+    keys: Sequence[str],
+) -> Tuple[Optional[np.ndarray], Optional[str]]:
+    for key in keys:
+        arr = _as_float_array(mocap_state.get(key))
+        if arr is not None:
+            return arr, key
+    return None, None
+
+
+def _position_family_from_key(position_key: str) -> Optional[str]:
+    if position_key.startswith("rotated_zeroed_position_"):
+        return "rotated_zeroed"
+    if position_key.startswith("rotated_position_"):
+        return "rotated"
+    if position_key.startswith("zeroed_position_"):
+        return "zeroed"
+    if position_key.startswith("position_"):
+        return "raw"
+    return None
+
+
+def _orientation_keys_for_family(family: str) -> Tuple[str, str, str, str]:
+    if family == "rotated_zeroed":
+        return (
+            "rotated_zeroed_orientation_w",
+            "rotated_zeroed_orientation_x",
+            "rotated_zeroed_orientation_y",
+            "rotated_zeroed_orientation_z",
+        )
+    if family == "rotated":
+        return (
+            "rotated_orientation_w",
+            "rotated_orientation_x",
+            "rotated_orientation_y",
+            "rotated_orientation_z",
+        )
+    if family == "zeroed":
+        return (
+            "zeroed_orientation_w",
+            "zeroed_orientation_x",
+            "zeroed_orientation_y",
+            "zeroed_orientation_z",
+        )
+    return (
+        "orientation_w",
+        "orientation_x",
+        "orientation_y",
+        "orientation_z",
+    )
+
+
+def _rotate_vector_by_quaternion_batch(quat_wxyz: np.ndarray, vector_xyz: np.ndarray) -> np.ndarray:
+    # Uses v' = q * v * q_conjugate with normalized quaternions.
+    u = quat_wxyz[:, 1:4]
+    s = quat_wxyz[:, :1]
+    v = vector_xyz
+    dot_uv = np.sum(u * v, axis=1, keepdims=True)
+    dot_uu = np.sum(u * u, axis=1, keepdims=True)
+    cross_uv = np.cross(u, v)
+    return 2.0 * dot_uv * u + (s * s - dot_uu) * v + 2.0 * s * cross_uv
+
+
+def _apply_body_com_offset_to_series(
+    x: np.ndarray,
+    y: np.ndarray,
+    z: np.ndarray,
+    qw: np.ndarray,
+    qx: np.ndarray,
+    qy: np.ndarray,
+    qz: np.ndarray,
+    offset_body_xyz_m: Tuple[float, float, float],
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, bool]:
+    offset = np.asarray(offset_body_xyz_m, dtype=float).reshape(3)
+    if np.allclose(offset, 0.0):
+        return x, y, z, False
+    if not (len(x) == len(y) == len(z) == len(qw) == len(qx) == len(qy) == len(qz)):
+        return x, y, z, False
+
+    pos = np.column_stack([x, y, z]).astype(float, copy=True)
+    quat = np.column_stack([qw, qx, qy, qz]).astype(float, copy=False)
+
+    finite_mask = np.isfinite(pos).all(axis=1) & np.isfinite(quat).all(axis=1)
+    if not np.any(finite_mask):
+        return x, y, z, False
+
+    quat_valid = quat[finite_mask]
+    norms = np.linalg.norm(quat_valid, axis=1, keepdims=True)
+    norm_mask = (norms[:, 0] > 1e-12) & np.isfinite(norms[:, 0])
+    if not np.any(norm_mask):
+        return x, y, z, False
+
+    quat_valid = quat_valid[norm_mask] / norms[norm_mask]
+    rotated_offset = _rotate_vector_by_quaternion_batch(
+        quat_valid,
+        np.broadcast_to(offset, (quat_valid.shape[0], 3)),
+    )
+
+    finite_indices = np.flatnonzero(finite_mask)
+    target_indices = finite_indices[norm_mask]
+    pos[target_indices] += rotated_offset
+    return pos[:, 0], pos[:, 1], pos[:, 2], True
+
+
 def _get_mocap_state(payload: Dict[str, object], rb_id: int) -> Optional[Dict[str, object]]:
     for container_key in ("mocap_raw", "mocap"):
         mocap = payload.get(container_key)
@@ -170,25 +294,56 @@ def _finite_first_last(values: np.ndarray) -> Tuple[float, float]:
     return float(values[finite_idx[0]]), float(values[finite_idx[-1]])
 
 
-def _trial_delta_xyz_cm(payload: Dict[str, object], rb_id: int) -> Dict[str, float]:
+def _trial_delta_xyz_cm(payload: Dict[str, object], rb_id: int, com_offset_y_m: float) -> Dict[str, float]:
     mocap_state = _get_mocap_state(payload, rb_id)
     if mocap_state is None:
         raise ValueError(f"mocap state for RB ID {rb_id} not found")
 
-    x = _extract_first_mocap_series(
+    x, x_key = _extract_first_mocap_series_with_key(
         mocap_state,
         ("rotated_position_x", "position_x", "rotated_zeroed_position_x", "zeroed_position_x"),
     )
-    y = _extract_first_mocap_series(
+    y, y_key = _extract_first_mocap_series_with_key(
         mocap_state,
         ("rotated_position_y", "position_y", "rotated_zeroed_position_y", "zeroed_position_y"),
     )
-    z = _extract_first_mocap_series(
+    z, z_key = _extract_first_mocap_series_with_key(
         mocap_state,
         ("rotated_position_z", "position_z", "rotated_zeroed_position_z", "zeroed_position_z"),
     )
     if x is None or y is None or z is None:
         raise ValueError("missing mocap position arrays (expected rotated_position_* or fallback position_*)")
+    if float(com_offset_y_m) != 0.0:
+        x_family = _position_family_from_key(x_key or "")
+        y_family = _position_family_from_key(y_key or "")
+        z_family = _position_family_from_key(z_key or "")
+        if x_family is None or y_family is None or z_family is None or len({x_family, y_family, z_family}) != 1:
+            raise ValueError(
+                "unable to determine a consistent mocap position family for COM correction "
+                f"(x={x_key}, y={y_key}, z={z_key})"
+            )
+        qw_key, qx_key, qy_key, qz_key = _orientation_keys_for_family(x_family)
+        qw = _as_float_array(mocap_state.get(qw_key))
+        qx = _as_float_array(mocap_state.get(qx_key))
+        qy = _as_float_array(mocap_state.get(qy_key))
+        qz = _as_float_array(mocap_state.get(qz_key))
+        if qw is None or qx is None or qy is None or qz is None:
+            raise ValueError(
+                "missing mocap orientation arrays for COM correction "
+                f"(expected {qw_key}/{qx_key}/{qy_key}/{qz_key})"
+            )
+        x, y, z, com_applied = _apply_body_com_offset_to_series(
+            x,
+            y,
+            z,
+            qw,
+            qx,
+            qy,
+            qz,
+            (0.0, float(com_offset_y_m), 0.0),
+        )
+        if not com_applied:
+            raise ValueError("unable to apply COM correction due to invalid or mismatched mocap pose arrays")
 
     x0, x1 = _finite_first_last(x)
     y0, y1 = _finite_first_last(y)
@@ -200,7 +355,11 @@ def _trial_delta_xyz_cm(payload: Dict[str, object], rb_id: int) -> Dict[str, flo
     }
 
 
-def _session_trial_deltas_cm(session_dir: Path, requested_rb_id: Optional[int]) -> Dict[int, Dict[str, float]]:
+def _session_trial_deltas_cm(
+    session_dir: Path,
+    requested_rb_id: Optional[int],
+    com_offset_y_m: float,
+) -> Dict[int, Dict[str, float]]:
     trials = _list_trials(session_dir)
     if not trials:
         raise ValueError(f"no trial_*.npy files found in {session_dir}")
@@ -219,7 +378,7 @@ def _session_trial_deltas_cm(session_dir: Path, requested_rb_id: Optional[int]) 
             raise ValueError(
                 f"{session_dir.name}: inconsistent selected RB IDs ({selected_rb_id} vs {rb_id})"
             )
-        out[trial_num] = _trial_delta_xyz_cm(payload, rb_id)
+        out[trial_num] = _trial_delta_xyz_cm(payload, rb_id, com_offset_y_m=com_offset_y_m)
     return out
 
 
@@ -271,6 +430,12 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         default=None,
         help="Output PNG path (default: ./trial_displacement_band_across_sessions.png).",
     )
+    ap.add_argument(
+        "--com-offset-y-m",
+        type=float,
+        default=0.0,
+        help="Constant COM offset along body Y (meters), rotated into world frame per sample.",
+    )
     return ap
 
 
@@ -301,7 +466,11 @@ def main() -> int:
 
     per_session: List[Dict[int, Dict[str, float]]] = []
     for session_dir in session_dirs:
-        trial_deltas = _session_trial_deltas_cm(session_dir, requested_rb_id=requested_rb_id)
+        trial_deltas = _session_trial_deltas_cm(
+            session_dir,
+            requested_rb_id=requested_rb_id,
+            com_offset_y_m=float(args.com_offset_y_m),
+        )
         per_session.append(trial_deltas)
         print(f"{session_dir.name}: loaded {len(trial_deltas)} trial delta(s)")
 
@@ -355,6 +524,7 @@ def main() -> int:
     fig.savefig(output_path, dpi=180)
     plt.close(fig)
     print(f"Wrote plot: {output_path}")
+    print(f"COM offset (body y): {float(args.com_offset_y_m):.6f} m")
     return 0
 
 

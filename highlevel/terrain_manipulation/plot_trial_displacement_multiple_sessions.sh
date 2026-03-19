@@ -4,14 +4,14 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 SESSIONS=(
-  "$SCRIPT_DIR/data/session_20260316_132543"
-  "$SCRIPT_DIR/data/session_20260316_142942"
-  "$SCRIPT_DIR/data/session_20260316_144047"
-  "$SCRIPT_DIR/data/session_20260316_145733"
-  "$SCRIPT_DIR/data/session_20260316_150341"
-  "$SCRIPT_DIR/data/session_20260316_152118"
-  "$SCRIPT_DIR/data/session_20260316_152712"
+  "$SCRIPT_DIR/data/session_20260317_153944"
+  "$SCRIPT_DIR/data/session_20260317_154742"
+  "$SCRIPT_DIR/data/session_20260317_155128"
+  "$SCRIPT_DIR/data/session_20260317_155550"
+  "$SCRIPT_DIR/data/session_20260317_160026"
+  "$SCRIPT_DIR/data/session_20260317_160410"
 )
+
 
 # Default MPLCONFIGDIR avoids matplotlib cache permission issues.
 export MPLCONFIGDIR="${MPLCONFIGDIR:-/tmp}"
