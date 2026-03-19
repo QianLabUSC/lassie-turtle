@@ -38,7 +38,7 @@ for session_dir in "${STEEL_SESSIONS[@]}"; do
     --mode experiment \
     --half-sphere steel \
     --com-offset-y-m "$COM_OFFSET_Y_M" \
-    --depth-min-m 0.4 --depth-max-m 0.7
+    --depth-min-m 0.4 --depth-max-m 0.7 \
     --compare-output \
     "$@"
 done
@@ -50,7 +50,7 @@ for session_dir in "${RESIN_SESSIONS[@]}"; do
     --mode experiment \
     --half-sphere resin \
     --com-offset-y-m "$COM_OFFSET_Y_M" \
-    --depth-min-m 0.4 --depth-max-m 0.7
+    --depth-min-m 0.4 --depth-max-m 0.7 \
     --compare-output \
     "$@"
 done
