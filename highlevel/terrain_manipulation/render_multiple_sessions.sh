@@ -3,28 +3,28 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# NOTE:
-# Steel sessions from 2026-03-14 and resin sessions from 2026-03-16
-# used an incorrect Motive pivot/COM definition and require correction.
-COM_OFFSET_Y_M="-0.00375"
+# For recollected sessions, keep COM correction off by default.
+# Override at runtime if needed, e.g.:
+#   COM_OFFSET_Y_M=-0.00375 bash render_multiple_sessions.sh
+COM_OFFSET_Y_M="${COM_OFFSET_Y_M:-0.0}"
 
 STEEL_SESSIONS=(
-  "$SCRIPT_DIR/data/session_20260314_122949"
-  "$SCRIPT_DIR/data/session_20260314_123416"
-  "$SCRIPT_DIR/data/session_20260314_123744"
-  "$SCRIPT_DIR/data/session_20260314_124126"
-  "$SCRIPT_DIR/data/session_20260314_124658"
-  "$SCRIPT_DIR/data/session_20260314_125646"
+  "$SCRIPT_DIR/data/session_20260319_134621"
+  "$SCRIPT_DIR/data/session_20260319_135104"
+  "$SCRIPT_DIR/data/session_20260319_140118"
+  "$SCRIPT_DIR/data/session_20260319_140705"
+  "$SCRIPT_DIR/data/session_20260319_141232"
+  "$SCRIPT_DIR/data/session_20260319_141641"
 )
 
 RESIN_SESSIONS=(
-  "$SCRIPT_DIR/data/session_20260316_132543"
-  "$SCRIPT_DIR/data/session_20260316_142942"
-  "$SCRIPT_DIR/data/session_20260316_144047"
-  "$SCRIPT_DIR/data/session_20260316_145733"
-  "$SCRIPT_DIR/data/session_20260316_150341"
-  "$SCRIPT_DIR/data/session_20260316_152118"
-  "$SCRIPT_DIR/data/session_20260316_152712"
+  "$SCRIPT_DIR/data/session_20260319_142653"
+  "$SCRIPT_DIR/data/session_20260319_145057"
+  "$SCRIPT_DIR/data/session_20260319_145447"
+  "$SCRIPT_DIR/data/session_20260319_145955"
+  "$SCRIPT_DIR/data/session_20260319_151418"
+  "$SCRIPT_DIR/data/session_20260319_151845"
+  "$SCRIPT_DIR/data/session_20260319_152329"
 )
 
 

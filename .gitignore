@@ -15,3 +15,4 @@ highlevel/terrain_manipulation/data/
 # OS/editor
 .DS_Store
 .vscode/
+highlevel/terrain_manipulation/plot_avg_displacement_vs_density.py

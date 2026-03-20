@@ -49,34 +49,26 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 #     "session_20260314_121907"
 # )
 
-# steel
-# NOTE: Steel sessions recorded on March 14, 2026 were collected with an
-# incorrect Motive pivot/COM definition.
-# Apply COM correction with:
-#   --com-offset-y-m -0.00375
-# DEFAULT_SESSION_NAMES: Sequence[str] = (
-#     "session_20260314_122949",
-#     "session_20260314_123416",
-#     "session_20260314_123744",
-#     "session_20260314_124126",
-#     "session_20260314_124658",
-#     "session_20260314_125646"
-# )
+#steel
+DEFAULT_SESSION_NAMES: Sequence[str] = (
+"session_20260319_134621",
+"session_20260319_135104",
+"session_20260319_140118",
+"session_20260319_140705",
+"session_20260319_141232",
+"session_20260319_141641"
+)
 
 # resin
-# NOTE: Resin sessions recorded on March 16, 2026 were collected with the same
-# incorrect Motive pivot/COM definition.
-# Apply COM correction with:
-#   --com-offset-y-m -0.00375
-DEFAULT_SESSION_NAMES: Sequence[str] = (
-"session_20260316_132543",
-"session_20260316_142942",
-"session_20260316_144047",
-"session_20260316_145733",
-"session_20260316_150341",
-"session_20260316_152118",
-"session_20260316_152712"
-)
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+# "session_20260319_142653",
+# "session_20260319_145057",
+# "session_20260319_145447",
+# "session_20260319_145955",
+# "session_20260319_151418",
+# "session_20260319_151845",
+# "session_20260319_152329"
+# )
 
 # # sand
 # DEFAULT_SESSION_NAMES: Sequence[str] = (
