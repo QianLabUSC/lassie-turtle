@@ -1055,3 +1055,6 @@ if __name__ == "__main__":
 
 # the plots for sand vs resin doesn't make sense. recalculate resin with correct COM or redo (same with steel) and observe.
 # also check sand videos for validation.
+
+
+# check rendered vbideos for resin and steel to see what changed vs previous time.
