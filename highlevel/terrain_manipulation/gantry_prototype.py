@@ -31,7 +31,16 @@ def main():
     read_until_ok(ser, "M211 S0") # ignore endstops
     read_until_ok(ser, "G91")     # relative mode
     # for G0 movement commands, the distance is in mm and the speed is in mm/min (for first axis movement)
-    read_until_ok(ser, "G0 Z-50 F1200") # movement command using the following format: "G0 X/Y/Z{insert distance} F1{insert speed}"
+    # 4-move XY loop: 25 mm per move, Z unchanged, pause 2 s at each point
+    moves = [
+        ("G0 X25 Y0 F1200", 2000),
+        ("G0 X0 Y25 F1200", 2000),
+        ("G0 X-25 Y0 F1200", 2000),
+        ("G0 X0 Y-25 F1200", 2000),
+    ]
+    for cmd, pause_ms in moves:
+        read_until_ok(ser, cmd)
+        read_until_ok(ser, f"G4 P{pause_ms}")
     # Cleanup (optional)
     read_until_ok(ser, "G90")
     read_until_ok(ser, "M211 S1")
