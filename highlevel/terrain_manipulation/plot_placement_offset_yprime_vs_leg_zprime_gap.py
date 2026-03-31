@@ -21,6 +21,7 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib import transforms as mtransforms
 
 
 DATA_ROOT = Path(__file__).resolve().parent / "data"
@@ -39,6 +40,9 @@ DEFAULT_LEG_X_MM = 147.16
 DEFAULT_LEG_Y_MM = -98.43
 DEFAULT_LEG_Z_MM = 809.53
 DEFAULT_INCLINE_DEG = 23.0
+DEFAULT_Y_AXIS_LABEL = "Obstacle position y' (mm)"
+DEFAULT_X_AXIS_LABEL = "Absolute vertical gap to leg, |z' - z'_leg| (mm)"
+DEFAULT_DELTA_Y_AXIS_LABEL = "Trial vertical displacement, Δy' (mm)"
 
 # Hardcoded experiment groups for per-object plotting (same sessions used by
 # displacement-vs-density plotting scripts).
@@ -268,15 +272,25 @@ def _collect_xy_mm(
     session_dirs: Sequence[Path],
     requested_rb_id: int,
     leg_z_prime_m: float,
-) -> Tuple[np.ndarray, np.ndarray, int, int, Dict[int, Dict[str, float]]]:
+) -> Tuple[
+    np.ndarray,
+    np.ndarray,
+    int,
+    int,
+    Dict[int, Dict[str, float]],
+    Dict[str, Dict[int, Dict[str, float]]],
+]:
     x_all_mm: List[np.ndarray] = []
     y_all_mm: List[np.ndarray] = []
     total_trials = 0
     total_points = 0
     per_trial_x_mm: Dict[int, List[np.ndarray]] = {}
     per_trial_y_mm: Dict[int, List[np.ndarray]] = {}
+    per_session_trial_x_mm: Dict[str, Dict[int, List[np.ndarray]]] = {}
+    per_session_trial_y_mm: Dict[str, Dict[int, List[np.ndarray]]] = {}
 
     for session_dir in session_dirs:
+        session_key = session_dir.name
         trials = _list_trials(session_dir)
         if not trials:
             print(f"{session_dir.name}: no trial_*.npy files found; skipping.")
@@ -312,6 +326,8 @@ def _collect_xy_mm(
             y_all_mm.append(y_vals_mm)
             per_trial_x_mm.setdefault(trial_num, []).append(x_vals_mm)
             per_trial_y_mm.setdefault(trial_num, []).append(y_vals_mm)
+            per_session_trial_x_mm.setdefault(session_key, {}).setdefault(trial_num, []).append(x_vals_mm)
+            per_session_trial_y_mm.setdefault(session_key, {}).setdefault(trial_num, []).append(y_vals_mm)
             total_trials += 1
             total_points += int(np.count_nonzero(finite))
 
@@ -332,19 +348,155 @@ def _collect_xy_mm(
             "n_points": float(x_vals_mm.size),
         }
 
+    session_trial_summary: Dict[str, Dict[int, Dict[str, float]]] = {}
+    for session_key, trials_x in per_session_trial_x_mm.items():
+        out_trials: Dict[int, Dict[str, float]] = {}
+        for trial_num, x_chunks in trials_x.items():
+            y_chunks = per_session_trial_y_mm.get(session_key, {}).get(trial_num, [])
+            if not x_chunks or not y_chunks:
+                continue
+            x_vals_mm = np.concatenate(x_chunks)
+            y_vals_mm = np.concatenate(y_chunks)
+            finite = np.isfinite(x_vals_mm) & np.isfinite(y_vals_mm)
+            x_vals_mm = x_vals_mm[finite]
+            y_vals_mm = y_vals_mm[finite]
+            if x_vals_mm.size < 5 or y_vals_mm.size < 5:
+                continue
+            out_trials[trial_num] = {
+                "x_med_mm": float(np.median(x_vals_mm)),
+                "y_med_mm": float(np.median(y_vals_mm)),
+                "x_first_mm": float(x_vals_mm[0]),
+                "x_last_mm": float(x_vals_mm[-1]),
+                "y_first_mm": float(y_vals_mm[0]),
+                "y_last_mm": float(y_vals_mm[-1]),
+                "n_points": float(x_vals_mm.size),
+            }
+        if out_trials:
+            session_trial_summary[session_key] = out_trials
+
     if not x_all_mm:
-        return np.empty((0,), dtype=float), np.empty((0,), dtype=float), total_trials, total_points, trial_summary
-    return np.concatenate(x_all_mm), np.concatenate(y_all_mm), total_trials, total_points, trial_summary
+        return (
+            np.empty((0,), dtype=float),
+            np.empty((0,), dtype=float),
+            total_trials,
+            total_points,
+            trial_summary,
+            session_trial_summary,
+        )
+    return (
+        np.concatenate(x_all_mm),
+        np.concatenate(y_all_mm),
+        total_trials,
+        total_points,
+        trial_summary,
+        session_trial_summary,
+    )
+
+
+def _compute_trial_segments(
+    trial_summary: Dict[int, Dict[str, float]],
+    x_data_min: float,
+    x_data_max: float,
+) -> Tuple[List[int], Dict[int, Tuple[float, float]], np.ndarray]:
+    ordered_trials = sorted(trial_summary.keys())
+    if not ordered_trials:
+        return [], {}, np.empty((0,), dtype=float)
+    x_meds = np.asarray([float(trial_summary[t]["x_med_mm"]) for t in ordered_trials], dtype=float)
+    if x_meds.size == 1:
+        return ordered_trials, {ordered_trials[0]: (x_data_min, x_data_max)}, np.empty((0,), dtype=float)
+
+    boundaries = 0.5 * (x_meds[:-1] + x_meds[1:])
+    increasing = bool(x_meds[-1] >= x_meds[0])
+    if increasing:
+        for i in range(1, boundaries.size):
+            if boundaries[i] <= boundaries[i - 1]:
+                boundaries[i] = boundaries[i - 1] + 1e-6
+    else:
+        for i in range(1, boundaries.size):
+            if boundaries[i] >= boundaries[i - 1]:
+                boundaries[i] = boundaries[i - 1] - 1e-6
+
+    segments: Dict[int, Tuple[float, float]] = {}
+    for idx, trial_num in enumerate(ordered_trials):
+        if increasing:
+            x_lo = x_data_min if idx == 0 else float(boundaries[idx - 1])
+            x_hi = x_data_max if idx == len(ordered_trials) - 1 else float(boundaries[idx])
+        else:
+            x_hi = x_data_max if idx == 0 else float(boundaries[idx - 1])
+            x_lo = x_data_min if idx == len(ordered_trials) - 1 else float(boundaries[idx])
+        if x_hi < x_lo:
+            x_lo, x_hi = x_hi, x_lo
+        segments[trial_num] = (x_lo, x_hi)
+    return ordered_trials, segments, np.asarray(boundaries, dtype=float)
+
+
+def _compute_trial_delta_y_stats(
+    trial_summary: Dict[int, Dict[str, float]],
+    session_trial_summary: Dict[str, Dict[int, Dict[str, float]]],
+    x_data_min: float,
+    x_data_max: float,
+) -> List[Dict[str, float]]:
+    ordered_trials, segments, boundaries = _compute_trial_segments(trial_summary, x_data_min, x_data_max)
+    if not ordered_trials:
+        return []
+
+    stats: List[Dict[str, float]] = []
+    for idx, trial_num in enumerate(ordered_trials):
+        deltas: List[float] = []
+        for _session_key, per_trial in session_trial_summary.items():
+            cur_stats = per_trial.get(trial_num)
+            if cur_stats is None:
+                continue
+            y_first = float(cur_stats.get("y_first_mm", math.nan))
+            y_last = float(cur_stats.get("y_last_mm", math.nan))
+            if np.isfinite(y_first) and np.isfinite(y_last):
+                deltas.append(y_last - y_first)
+        if not deltas:
+            continue
+        delta_arr = np.asarray(deltas, dtype=float)
+        delta_arr = delta_arr[np.isfinite(delta_arr)]
+        if delta_arr.size == 0:
+            continue
+        seg = segments.get(trial_num)
+        if seg is not None:
+            x_start, x_end = float(seg[0]), float(seg[1])
+        else:
+            if idx == 0:
+                x_boundary = float(boundaries[0]) if boundaries.size else float(trial_summary[trial_num]["x_med_mm"])
+            elif idx - 1 < boundaries.size:
+                x_boundary = float(boundaries[idx - 1])
+            else:
+                x_boundary = float(trial_summary[trial_num]["x_med_mm"])
+            x_start = x_boundary
+            x_end = x_boundary
+        x_lo = min(x_start, x_end)
+        x_hi = max(x_start, x_end)
+        x_center = 0.5 * (x_lo + x_hi)
+        stats.append(
+            {
+                "x_boundary_mm": x_center,
+                "x_span_lo_mm": x_lo,
+                "x_span_hi_mm": x_hi,
+                "delta_y_mean_mm": float(np.mean(delta_arr)),
+                "delta_y_std_mm": float(np.std(delta_arr)) if delta_arr.size > 1 else 0.0,
+                "n_sessions": float(delta_arr.size),
+                "trial_num": float(trial_num),
+            }
+        )
+    return stats
 
 
 def _write_plot(
     x: np.ndarray,
     y: np.ndarray,
     trial_summary: Dict[int, Dict[str, float]],
+    trial_delta_stats: List[Dict[str, float]],
     bins: int,
     point_size: float,
     point_alpha: float,
     show_trial_overlays: bool,
+    x_axis_label: str,
+    y_axis_label: str,
     y_lim_mm: Optional[Tuple[float, float]],
     y_zoom_percentiles: Tuple[float, float],
     full_y_range: bool,
@@ -363,11 +515,11 @@ def _write_plot(
 
     centers, means, stds = _binned_mean_std(x, y, bins=int(bins))
     if centers.size > 0:
-        ax.plot(centers, means, color="black", linewidth=2.0, label="binned mean trend")
+        ax.plot(centers, means, color="black", linewidth=2.0, label="mean trend")
         ax.fill_between(centers, means - stds, means + stds, color="gray", alpha=0.2, linewidth=0.0, label="±1 std")
 
-    ax.set_xlabel("|z'_obstacle - z'_robot_leg| (mm)")
-    ax.set_ylabel("obstacle_y' = y'(t) (mm)")
+    ax.set_xlabel(str(x_axis_label))
+    ax.set_ylabel(str(y_axis_label))
     ax.grid(True, alpha=0.3)
     ax.axhline(0.0, color="black", linewidth=1.0, alpha=0.25)
     ax.legend(loc="best")
@@ -384,37 +536,13 @@ def _write_plot(
             ax.set_ylim(auto_lim[0], auto_lim[1])
 
     if bool(show_trial_overlays) and trial_summary:
-        ordered_trials = sorted(trial_summary.keys())
-        x_meds = np.asarray([float(trial_summary[t]["x_med_mm"]) for t in ordered_trials], dtype=float)
         x_data_min = float(np.min(x))
         x_data_max = float(np.max(x))
-        if x_meds.size == 1:
-            segments = {ordered_trials[0]: (x_data_min, x_data_max)}
-            boundaries = []
-        else:
-            raw_boundaries = 0.5 * (x_meds[:-1] + x_meds[1:])
-            increasing = bool(x_meds[-1] >= x_meds[0])
-            boundaries = raw_boundaries.copy()
-            if increasing:
-                for i in range(1, boundaries.size):
-                    if boundaries[i] <= boundaries[i - 1]:
-                        boundaries[i] = boundaries[i - 1] + 1e-6
-            else:
-                for i in range(1, boundaries.size):
-                    if boundaries[i] >= boundaries[i - 1]:
-                        boundaries[i] = boundaries[i - 1] - 1e-6
-
-            segments: Dict[int, Tuple[float, float]] = {}
-            for idx, trial_num in enumerate(ordered_trials):
-                if increasing:
-                    x_lo = x_data_min if idx == 0 else float(boundaries[idx - 1])
-                    x_hi = x_data_max if idx == len(ordered_trials) - 1 else float(boundaries[idx])
-                else:
-                    x_hi = x_data_max if idx == 0 else float(boundaries[idx - 1])
-                    x_lo = x_data_min if idx == len(ordered_trials) - 1 else float(boundaries[idx])
-                if x_hi < x_lo:
-                    x_lo, x_hi = x_hi, x_lo
-                segments[trial_num] = (x_lo, x_hi)
+        ordered_trials, segments, _boundaries = _compute_trial_segments(
+            trial_summary,
+            x_data_min=x_data_min,
+            x_data_max=x_data_max,
+        )
 
         ymin, ymax = ax.get_ylim()
         y_text = ymax - 0.02 * (ymax - ymin)
@@ -433,28 +561,88 @@ def _write_plot(
                 drawn.add(key)
 
         dy_lines: List[str] = []
-        for prev_trial, curr_trial in zip(ordered_trials[:-1], ordered_trials[1:]):
-            y_prev = float(trial_summary[prev_trial]["y_med_mm"])
-            y_curr = float(trial_summary[curr_trial]["y_med_mm"])
-            dy_lines.append(f"Δy' T{prev_trial}→T{curr_trial}: {y_curr - y_prev:+.2f} mm")
+        for item in sorted(trial_delta_stats, key=lambda a: int(a["trial_num"])):
+            trial_num = int(item["trial_num"])
+            dy_lines.append(f"Δy' T{trial_num}: {float(item['delta_y_mean_mm']):+.2f} mm")
         if dy_lines:
             text = "\n".join(dy_lines)
             ax.text(
                 0.02,
-                0.98,
+                0.02,
                 text,
                 transform=ax.transAxes,
                 fontsize=8,
-                va="top",
+                va="bottom",
                 ha="left",
                 bbox={"boxstyle": "round,pad=0.25", "facecolor": "white", "alpha": 0.8, "edgecolor": "0.5"},
             )
 
-    fig.suptitle(title)
     fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(output_path, dpi=180)
     plt.close(fig)
+
+
+def _write_boundary_delta_y_plot(
+    boundary_stats: List[Dict[str, float]],
+    x_axis_label: str,
+    delta_y_axis_label: str,
+    title: str,
+    output_path: Path,
+) -> bool:
+    if not boundary_stats:
+        return False
+
+    x_vals = np.asarray([float(item["x_boundary_mm"]) for item in boundary_stats], dtype=float)
+    x_lo_vals = np.asarray([float(item.get("x_span_lo_mm", item["x_boundary_mm"])) for item in boundary_stats], dtype=float)
+    x_hi_vals = np.asarray([float(item.get("x_span_hi_mm", item["x_boundary_mm"])) for item in boundary_stats], dtype=float)
+    y_means = np.asarray([float(item["delta_y_mean_mm"]) for item in boundary_stats], dtype=float)
+    y_stds = np.asarray([float(item["delta_y_std_mm"]) for item in boundary_stats], dtype=float)
+    labels = [
+        f"T{int(item['trial_num'])}"
+        for item in boundary_stats
+    ]
+
+    fig, ax = plt.subplots(1, 1, figsize=(8.5, 5.8))
+    bar_widths = np.maximum(x_hi_vals - x_lo_vals, 2.0)
+    ax.bar(
+        x_lo_vals,
+        y_means,
+        width=bar_widths,
+        color="tab:green",
+        alpha=0.40,
+        edgecolor="tab:green",
+        linewidth=1.0,
+        label="mean Δy'",
+        align="edge",
+    )
+    ax.errorbar(
+        x_vals,
+        y_means,
+        yerr=y_stds,
+        fmt="none",
+        ecolor="black",
+        elinewidth=1.1,
+        capsize=4,
+        label="±1 std",
+    )
+
+    label_transform = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
+    for x_i, y_i, lbl, x_lo, x_hi in zip(x_vals, y_means, labels, x_lo_vals, x_hi_vals):
+        ax.text(x_i, 0.02, f"{lbl}", transform=label_transform, ha="center", va="bottom", fontsize=8)
+        ax.axvline(float(x_lo), color="tab:green", linestyle=":", linewidth=0.8, alpha=0.35)
+        ax.axvline(float(x_hi), color="tab:green", linestyle=":", linewidth=0.8, alpha=0.35)
+
+    ax.axhline(0.0, color="black", linewidth=1.0, alpha=0.35)
+    ax.grid(True, alpha=0.3)
+    ax.set_xlabel(str(x_axis_label))
+    ax.set_ylabel(str(delta_y_axis_label))
+    ax.legend(loc="best")
+    fig.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=180)
+    plt.close(fig)
+    return True
 
 
 def _build_arg_parser() -> argparse.ArgumentParser:
@@ -500,6 +688,37 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     ap.add_argument("--bins", type=int, default=30, help="Number of x-bins for trend mean±std.")
     ap.add_argument("--point-size", type=float, default=7.0, help="Scatter marker size.")
     ap.add_argument("--point-alpha", type=float, default=0.35, help="Scatter marker alpha.")
+    ap.add_argument(
+        "--x-axis-label",
+        type=str,
+        default=DEFAULT_X_AXIS_LABEL,
+        help="X-axis label text.",
+    )
+    ap.add_argument(
+        "--y-axis-label",
+        type=str,
+        default=DEFAULT_Y_AXIS_LABEL,
+        help="Y-axis label text.",
+    )
+    ap.add_argument(
+        "--delta-y-axis-label",
+        type=str,
+        default=DEFAULT_DELTA_Y_AXIS_LABEL,
+        help="Y-axis label for trial-wise Δy' bar/error plot.",
+    )
+    ap.set_defaults(make_delta_y_boundary_plot=True)
+    ap.add_argument(
+        "--make-delta-y-boundary-plot",
+        action="store_true",
+        dest="make_delta_y_boundary_plot",
+        help="Also write trial-wise Δy' mean/std vs relative-z plot (default).",
+    )
+    ap.add_argument(
+        "--no-delta-y-boundary-plot",
+        action="store_false",
+        dest="make_delta_y_boundary_plot",
+        help="Do not write trial-wise Δy' plot.",
+    )
     ap.set_defaults(show_trial_overlays=True)
     ap.add_argument(
         "--show-trial-overlays",
@@ -534,12 +753,32 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         metavar=("YMIN", "YMAX"),
         help="Explicit y-axis limits in mm (overrides zoom/full-range behavior).",
     )
+    ap.add_argument(
+        "--fixed-y-range-mm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("YMIN", "YMAX"),
+        help="Convenience alias for --y-lim-mm; use this to enforce same y-range across all plots.",
+    )
     ap.add_argument("--output", type=Path, default=None, help="Output PNG path.")
+    ap.add_argument(
+        "--delta-y-boundary-output",
+        type=Path,
+        default=None,
+        help="Output path for trial-wise Δy' plot (single-run mode).",
+    )
     ap.add_argument(
         "--output-dir",
         type=Path,
         default=(DATA_ROOT / "obstacle_yprime_vs_leg_zprime_gap"),
         help="Directory used for per-object outputs when sessions are omitted.",
+    )
+    ap.add_argument(
+        "--delta-y-boundary-output-dir",
+        type=Path,
+        default=None,
+        help="Directory for per-object trial-wise Δy' outputs (defaults to --output-dir).",
     )
     ap.add_argument("--title", type=str, default=None, help="Custom figure title.")
     return ap
@@ -548,9 +787,12 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 def main() -> int:
     args = _build_arg_parser().parse_args()
     y_lim_mm: Optional[Tuple[float, float]] = None
-    if args.y_lim_mm is not None:
-        y_min = float(args.y_lim_mm[0])
-        y_max = float(args.y_lim_mm[1])
+    if args.y_lim_mm is not None and args.fixed_y_range_mm is not None:
+        raise SystemExit("Use only one of --y-lim-mm or --fixed-y-range-mm.")
+    y_range_arg = args.fixed_y_range_mm if args.fixed_y_range_mm is not None else args.y_lim_mm
+    if y_range_arg is not None:
+        y_min = float(y_range_arg[0])
+        y_max = float(y_range_arg[1])
         if y_max <= y_min:
             raise SystemExit(f"--y-lim-mm requires YMAX > YMIN (got {y_min}, {y_max}).")
         y_lim_mm = (y_min, y_max)
@@ -595,13 +837,19 @@ def main() -> int:
             if not session_dir.is_dir():
                 raise SystemExit(f"Not a session directory: {session_dir}")
 
-        x, y, total_trials, total_points, trial_summary = _collect_xy_mm(
+        x, y, total_trials, total_points, trial_summary, session_trial_summary = _collect_xy_mm(
             session_dirs=session_dirs,
             requested_rb_id=requested_rb_id,
             leg_z_prime_m=float(leg_z_prime_m),
         )
         if x.size == 0:
             raise SystemExit("No finite points found for plotting.")
+        trial_delta_stats = _compute_trial_delta_y_stats(
+            trial_summary=trial_summary,
+            session_trial_summary=session_trial_summary,
+            x_data_min=float(np.min(x)),
+            x_data_max=float(np.max(x)),
+        )
 
         title = args.title or f"obstacle_y' vs leg_z'_gap | RB {requested_rb_id}"
         output_path = args.output or (Path.cwd() / "obstacle_yprime_vs_leg_zprime_gap.png")
@@ -609,10 +857,13 @@ def main() -> int:
             x=x,
             y=y,
             trial_summary=trial_summary,
+            trial_delta_stats=trial_delta_stats,
             bins=int(args.bins),
             point_size=float(args.point_size),
             point_alpha=float(args.point_alpha),
             show_trial_overlays=bool(args.show_trial_overlays),
+            x_axis_label=str(args.x_axis_label),
+            y_axis_label=str(args.y_axis_label),
             y_lim_mm=y_lim_mm,
             y_zoom_percentiles=(low_pct, high_pct),
             full_y_range=bool(args.full_y_range),
@@ -621,6 +872,27 @@ def main() -> int:
         )
         print(f"Wrote plot: {output_path}")
         print(f"Sessions: {len(session_dirs)}, trials used: {total_trials}, points used: {total_points}")
+        if bool(args.make_delta_y_boundary_plot):
+            if args.delta_y_boundary_output is not None:
+                delta_output_path = args.delta_y_boundary_output
+            elif args.output is not None:
+                delta_output_path = output_path.with_name(f"{output_path.stem}_delta_y_trial{output_path.suffix}")
+            else:
+                delta_output_path = Path.cwd() / "obstacle_delta_y_vs_leg_zprime_trial.png"
+            delta_title = (args.title + " | trial Δy'") if args.title is not None else (
+                f"trial-wise Δy' vs leg-z' segment | RB {requested_rb_id}"
+            )
+            wrote_delta = _write_boundary_delta_y_plot(
+                boundary_stats=trial_delta_stats,
+                x_axis_label=str(args.x_axis_label),
+                delta_y_axis_label=str(args.delta_y_axis_label),
+                title=delta_title,
+                output_path=delta_output_path,
+            )
+            if wrote_delta:
+                print(f"Wrote trial Δy' plot: {delta_output_path}")
+            else:
+                print("Trial Δy' plot skipped (insufficient trial/session data).")
     else:
         if args.mocap_kind is None:
             kinds = list(DEFAULT_SESSIONS_BY_KIND.keys())
@@ -642,7 +914,7 @@ def main() -> int:
                 raise SystemExit(f"{kind}: missing session directories: {missing_str}")
 
             requested_rb_id = _resolve_requested_rb_id(kind=kind, rb_id=args.mocap_rb_id)
-            x, y, total_trials, total_points, trial_summary = _collect_xy_mm(
+            x, y, total_trials, total_points, trial_summary, session_trial_summary = _collect_xy_mm(
                 session_dirs=session_dirs,
                 requested_rb_id=requested_rb_id,
                 leg_z_prime_m=float(leg_z_prime_m),
@@ -650,6 +922,12 @@ def main() -> int:
             if x.size == 0:
                 print(f"{kind}: no finite points found; skipping.")
                 continue
+            trial_delta_stats = _compute_trial_delta_y_stats(
+                trial_summary=trial_summary,
+                session_trial_summary=session_trial_summary,
+                x_data_min=float(np.min(x)),
+                x_data_max=float(np.max(x)),
+            )
 
             output_dir = Path(args.output_dir)
             if args.output is not None and len(kinds) == 1:
@@ -661,10 +939,13 @@ def main() -> int:
                 x=x,
                 y=y,
                 trial_summary=trial_summary,
+                trial_delta_stats=trial_delta_stats,
                 bins=int(args.bins),
                 point_size=float(args.point_size),
                 point_alpha=float(args.point_alpha),
                 show_trial_overlays=bool(args.show_trial_overlays),
+                x_axis_label=str(args.x_axis_label),
+                y_axis_label=str(args.y_axis_label),
                 y_lim_mm=y_lim_mm,
                 y_zoom_percentiles=(low_pct, high_pct),
                 full_y_range=bool(args.full_y_range),
@@ -674,6 +955,27 @@ def main() -> int:
             wrote_any = True
             print(f"{kind}: wrote plot: {output_path}")
             print(f"{kind}: sessions={len(session_dirs)}, trials used={total_trials}, points used={total_points}")
+            if bool(args.make_delta_y_boundary_plot):
+                delta_output_dir = Path(args.delta_y_boundary_output_dir) if args.delta_y_boundary_output_dir is not None else output_dir
+                if args.delta_y_boundary_output is not None and len(kinds) == 1:
+                    delta_output_path = args.delta_y_boundary_output
+                else:
+                    delta_output_path = delta_output_dir / f"obstacle_delta_y_vs_leg_zprime_trial_{kind}.png"
+                delta_title = (
+                    (args.title + " | trial Δy'") if args.title is not None
+                    else f"{kind}: trial-wise Δy' vs leg-z' segment | RB {requested_rb_id}"
+                )
+                wrote_delta = _write_boundary_delta_y_plot(
+                    boundary_stats=trial_delta_stats,
+                    x_axis_label=str(args.x_axis_label),
+                    delta_y_axis_label=str(args.delta_y_axis_label),
+                    title=delta_title,
+                    output_path=delta_output_path,
+                )
+                if wrote_delta:
+                    print(f"{kind}: wrote trial Δy' plot: {delta_output_path}")
+                else:
+                    print(f"{kind}: trial Δy' plot skipped (insufficient trial/session data).")
 
         if not wrote_any:
             raise SystemExit("No plots were generated.")
@@ -691,3 +993,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# need to thing about trial boundary
