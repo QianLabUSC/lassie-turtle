@@ -31,15 +31,15 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 # Default sessions used when no positional session args are provided.
 
 # empty
-# DEFAULT_SESSION_NAMES: Sequence[str] = (
-#     "session_20260313_111621",
-#     "session_20260313_112741",
-#     "session_20260313_125836",
-#     "session_20260313_121725",
-#     "session_20260313_123622",
-# )
+DEFAULT_SESSION_NAMES: Sequence[str] = (
+    "session_20260313_111621",
+    "session_20260313_112741",
+    "session_20260313_125836",
+    "session_20260313_121725",
+    "session_20260313_123622",
+)
 
-# lead
+# # lead
 # DEFAULT_SESSION_NAMES: Sequence[str] = (
 #     "session_20260314_114731",
 #     "session_20260314_115216",
@@ -49,15 +49,15 @@ DATA_ROOT = Path(__file__).resolve().parent / "data"
 #     "session_20260314_121907"
 # )
 
-#steel
-DEFAULT_SESSION_NAMES: Sequence[str] = (
-"session_20260319_134621",
-"session_20260319_135104",
-"session_20260319_140118",
-"session_20260319_140705",
-"session_20260319_141232",
-"session_20260319_141641"
-)
+# #steel
+# DEFAULT_SESSION_NAMES: Sequence[str] = (
+# "session_20260319_134621",
+# "session_20260319_135104",
+# "session_20260319_140118",
+# "session_20260319_140705",
+# "session_20260319_141232",
+# "session_20260319_141641"
+# )
 
 # resin
 # DEFAULT_SESSION_NAMES: Sequence[str] = (
@@ -90,7 +90,13 @@ MOCAP_RB_IDS_BY_KIND: Dict[str, int] = {
     "sand": 8,
 }
 # Used when neither --mocap-rb-id nor --mocap-kind is passed.
-DEFAULT_MOCAP_KIND = "steel"
+DEFAULT_MOCAP_KIND = "empty"
+DEFAULT_PLOT_MODE = "default"
+PAPER_FONT_SCALE = 3.0
+POSTER_FONT_SCALE = 3.5
+PAPER_DEFAULT_X_LIM_CM: Tuple[float, float] = (-0.2, 1.0)
+PAPER_DEFAULT_Y_LIM_CM: Tuple[float, float] = (-1.2, 1.25)
+PAPER_DEFAULT_Z_LIM_CM: Tuple[float, float] = (-5.0, 35.0)
 
 
 def _load_payload(path: Path) -> Dict[str, object]:
@@ -382,6 +388,16 @@ def _nanmean_std(values: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     return mean, std
 
 
+def _validate_axis_lim(name: str, lim: Optional[Sequence[float]]) -> Optional[Tuple[float, float]]:
+    if lim is None:
+        return None
+    lo = float(lim[0])
+    hi = float(lim[1])
+    if hi <= lo:
+        raise SystemExit(f"--{name} requires MAX > MIN (got {lo}, {hi}).")
+    return lo, hi
+
+
 def _build_arg_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(
         description=(
@@ -428,11 +444,70 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         default=0.0,
         help="Constant COM offset along body Y (meters), rotated into world frame per sample.",
     )
+    ap.add_argument(
+        "--plot-mode",
+        type=str,
+        choices=("default", "paper", "poster"),
+        default=DEFAULT_PLOT_MODE,
+        help=(
+            "Plot styling mode. "
+            "'paper' uses 3x text, removes legends, and adds dy direction arrow on y'. "
+            "'poster' uses 1.5x text and presentation-friendly axis labels."
+        ),
+    )
+    ap.add_argument(
+        "--x-lim-cm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("XMIN", "XMAX"),
+        help="Y-limits for x subplot in cm.",
+    )
+    ap.add_argument(
+        "--y-lim-cm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("YMIN", "YMAX"),
+        help="Y-limits for y' subplot in cm.",
+    )
+    ap.add_argument(
+        "--z-lim-cm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("ZMIN", "ZMAX"),
+        help="Y-limits for z' subplot in cm.",
+    )
     return ap
 
 
 def main() -> int:
     args = _build_arg_parser().parse_args()
+    plot_mode = str(args.plot_mode).lower()
+    is_paper_mode = plot_mode in ("paper", "poster")
+    is_poster_mode = plot_mode == "poster"
+    if is_poster_mode:
+        font_scale = POSTER_FONT_SCALE
+    elif is_paper_mode:
+        font_scale = PAPER_FONT_SCALE
+    else:
+        font_scale = 1.0
+    title_fontsize = 12.0 * font_scale
+    axis_label_fontsize = 10.0 * font_scale
+    tick_fontsize = 9.0 * font_scale
+    legend_fontsize = 9.0 * font_scale
+
+    x_lim_cm = _validate_axis_lim("x-lim-cm", args.x_lim_cm)
+    y_lim_cm = _validate_axis_lim("y-lim-cm", args.y_lim_cm)
+    z_lim_cm = _validate_axis_lim("z-lim-cm", args.z_lim_cm)
+    if is_paper_mode:
+        if x_lim_cm is None:
+            x_lim_cm = PAPER_DEFAULT_X_LIM_CM
+        if y_lim_cm is None:
+            y_lim_cm = PAPER_DEFAULT_Y_LIM_CM
+        if z_lim_cm is None:
+            z_lim_cm = PAPER_DEFAULT_Z_LIM_CM
     requested_rb_id = args.mocap_rb_id
     if args.mocap_kind is not None:
         kind_id = MOCAP_RB_IDS_BY_KIND[args.mocap_kind]
@@ -488,12 +563,18 @@ def main() -> int:
     y_mean, y_std = _nanmean_std(y_mat)
     z_mean, z_std = _nanmean_std(z_mat)
 
-    fig, axes = plt.subplots(3, 1, figsize=(10, 10), sharex=True)
+    fig_size = (16.0, 16.0) if is_paper_mode else (10.0, 10.0)
+    fig, axes = plt.subplots(3, 1, figsize=fig_size, sharex=True, constrained_layout=False)
     dims: Sequence[Tuple[str, np.ndarray, np.ndarray, str, str]] = (
         ("x", x_mean, x_std, "tab:purple", "x"),
         ("y'", y_mean, y_std, "tab:orange", "y'"),
         ("z'", z_mean, z_std, "tab:cyan", "z'"),
     )
+    axis_lims_by_dim: Dict[str, Optional[Tuple[float, float]]] = {
+        "x": x_lim_cm,
+        "y'": y_lim_cm,
+        "z'": z_lim_cm,
+    }
 
     x_axis = np.asarray(trial_numbers, dtype=int)
     for ax, (dim_label, mean_vals, std_vals, color, legend_label) in zip(axes, dims):
@@ -502,18 +583,81 @@ def main() -> int:
         ax.fill_between(x_axis, lower, upper, color=color, alpha=0.25, linewidth=0.0, label=f"{legend_label} ±1 std")
         ax.plot(x_axis, mean_vals, color=color, linewidth=2.0, marker="o", label=f"{legend_label} mean")
         ax.axhline(0.0, color="black", linewidth=1.0, alpha=0.35)
-        ax.set_ylabel(f"{dim_label} delta (cm)")
+        if is_poster_mode:
+            poster_ylabel_by_dim = {
+                "x": "Lateral disp. (cm)",
+                "y'": "Vertical disp. (cm)",
+                "z'": "Fore-aft disp. (cm)",
+            }
+            ylabel_text = poster_ylabel_by_dim.get(dim_label, f"{dim_label} delta (cm)")
+        else:
+            ylabel_text = f"{dim_label} delta (cm)"
+        ax.set_ylabel(ylabel_text, fontsize=axis_label_fontsize)
+        ax.tick_params(axis="both", labelsize=tick_fontsize)
         ax.grid(True, alpha=0.3)
-        ax.legend(loc="best")
+        lim = axis_lims_by_dim.get(dim_label)
+        if lim is not None:
+            ax.set_ylim(float(lim[0]), float(lim[1]))
+        if not is_paper_mode:
+            ax.legend(loc="best", fontsize=legend_fontsize)
 
-    axes[-1].set_xlabel("trial number")
-    title = args.title or f"Per-trial net displacement across {n_sessions} session(s)"
-    fig.suptitle(title)
-    fig.tight_layout()
+    if is_paper_mode:
+        dy_arrow_color = "tab:red"
+        dy_arrow_lw = max(2.4, 1.1 * font_scale)
+        dy_arrow_head = max(20.0, 9.0 * font_scale)
+        dy_label_font = axis_label_fontsize
+
+        def _add_direction_arrow(ax, positive_text: str) -> None:
+            ax.yaxis.labelpad = 10.0 * font_scale
+            ax.annotate(
+                "",
+                xy=(-0.19, 0.72),
+                xytext=(-0.19, 0.28),
+                xycoords="axes fraction",
+                textcoords="axes fraction",
+                arrowprops={
+                    "arrowstyle": "-|>",
+                    "linewidth": dy_arrow_lw,
+                    "color": dy_arrow_color,
+                    "mutation_scale": dy_arrow_head,
+                },
+                annotation_clip=False,
+            )
+            ax.text(
+                -0.24,
+                0.50,
+                positive_text,
+                transform=ax.transAxes,
+                rotation=90,
+                ha="right",
+                va="center",
+                fontsize=dy_label_font,
+                color=dy_arrow_color,
+                clip_on=False,
+            )
+
+        _add_direction_arrow(axes[0], "x+ left lateral")
+        _add_direction_arrow(axes[1], "y+ into sand")
+        _add_direction_arrow(axes[2], "z+ downslope")
+        for ax in axes:
+            ax.yaxis.set_label_coords(-0.12, 0.5)
+        fig.subplots_adjust(left=0.28, right=0.98, top=0.96, bottom=0.08, hspace=0.18)
+
+    axes[-1].set_xlabel("trial number", fontsize=axis_label_fontsize)
+    if is_paper_mode:
+        if args.title:
+            fig.suptitle(args.title, fontsize=title_fontsize)
+    else:
+        title = args.title or f"Per-trial net displacement across {n_sessions} session(s)"
+        fig.suptitle(title, fontsize=title_fontsize)
+        fig.tight_layout()
 
     output_path = args.output or (Path.cwd() / "trial_displacement_band_across_sessions.png")
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, dpi=180)
+    if is_paper_mode:
+        fig.savefig(output_path, dpi=180, bbox_inches="tight", pad_inches=0.15)
+    else:
+        fig.savefig(output_path, dpi=180)
     plt.close(fig)
     print(f"Wrote plot: {output_path}")
     print(f"COM offset (body y): {float(args.com_offset_y_m):.6f} m")

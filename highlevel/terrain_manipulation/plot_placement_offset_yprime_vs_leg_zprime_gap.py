@@ -5,6 +5,9 @@ Definitions used by this script:
   - obstacle_y_prime = y'(t)
   - leg_z_prime_gap = |z'_obstacle(t) - z'_leg|
 """
+# usage
+# python3 highlevel/terrain_manipulation/plot_placement_offset_yprime_vs_leg_zprime_gap.py   --fixed-y-range-mm 150 250   --x-axis-label "Absolute vertical separation from leg, |z' - z'_leg| (mm)"   --y-axis-label "Vertical obstacle position y' (mm)"   --output-dir highlevel/terrain_manipulation/data/obstacle_yprime_vs_leg_zprime_gap_both_plots
+
 
 from __future__ import annotations
 
@@ -21,7 +24,6 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib import transforms as mtransforms
 
 
 DATA_ROOT = Path(__file__).resolve().parent / "data"
@@ -43,6 +45,8 @@ DEFAULT_INCLINE_DEG = 23.0
 DEFAULT_Y_AXIS_LABEL = "Obstacle position y' (mm)"
 DEFAULT_X_AXIS_LABEL = "Absolute vertical gap to leg, |z' - z'_leg| (mm)"
 DEFAULT_DELTA_Y_AXIS_LABEL = "Trial vertical displacement, Δy' (mm)"
+DEFAULT_PLOT_MODE = "default"
+PAPER_FONT_SCALE = 3
 
 # Hardcoded experiment groups for per-object plotting (same sessions used by
 # displacement-vs-density plotting scripts).
@@ -55,7 +59,7 @@ DEFAULT_SESSIONS_BY_KIND: Mapping[str, Sequence[str]] = OrderedDict(
                 "session_20260313_112741",
                 "session_20260313_125836",
                 "session_20260313_121725",
-                "session_20260313_123622",
+                # "session_20260313_123622",
             ),
         ),
         (
@@ -87,8 +91,8 @@ DEFAULT_SESSIONS_BY_KIND: Mapping[str, Sequence[str]] = OrderedDict(
                 "session_20260319_145057",
                 "session_20260319_145447",
                 "session_20260319_145955",
-                "session_20260319_151418",
-                "session_20260319_151845",
+                # "session_20260319_151418",
+                # "session_20260319_151845",
                 "session_20260319_152329",
             ),
         ),
@@ -497,13 +501,23 @@ def _write_plot(
     show_trial_overlays: bool,
     x_axis_label: str,
     y_axis_label: str,
+    x_lim_mm: Optional[Tuple[float, float]],
     y_lim_mm: Optional[Tuple[float, float]],
     y_zoom_percentiles: Tuple[float, float],
     full_y_range: bool,
     title: str,
     output_path: Path,
+    plot_mode: str,
 ) -> None:
-    fig, ax = plt.subplots(1, 1, figsize=(8.5, 6.2))
+    is_paper_mode = str(plot_mode).lower() == "paper"
+    font_scale = PAPER_FONT_SCALE if is_paper_mode else 1.0
+    axis_fontsize = 11.0 * font_scale
+    tick_fontsize = 10.0 * font_scale
+    overlay_fontsize = 8.0 * font_scale
+    legend_fontsize = 9.0 * font_scale
+
+    fig_size = (14.0, 10.0) if is_paper_mode else (8.5, 6.2)
+    fig, ax = plt.subplots(1, 1, figsize=fig_size, constrained_layout=is_paper_mode)
     ax.scatter(
         x,
         y,
@@ -518,12 +532,20 @@ def _write_plot(
         ax.plot(centers, means, color="black", linewidth=2.0, label="mean trend")
         ax.fill_between(centers, means - stds, means + stds, color="gray", alpha=0.2, linewidth=0.0, label="±1 std")
 
-    ax.set_xlabel(str(x_axis_label))
-    ax.set_ylabel(str(y_axis_label))
-    ax.grid(True, alpha=0.3)
+    ax.set_xlabel(str(x_axis_label), fontsize=axis_fontsize)
+    ax.set_ylabel(str(y_axis_label), fontsize=axis_fontsize)
+    ax.tick_params(axis="x", labelsize=tick_fontsize, pad=10)
+    ax.tick_params(axis="y", labelsize=tick_fontsize, pad=10)
+    if is_paper_mode:
+        ax.grid(False)
+    else:
+        ax.grid(True, alpha=0.3)
     ax.axhline(0.0, color="black", linewidth=1.0, alpha=0.25)
-    ax.legend(loc="best")
+    if not is_paper_mode:
+        ax.legend(loc="best", fontsize=legend_fontsize)
 
+    if x_lim_mm is not None:
+        ax.set_xlim(float(x_lim_mm[0]), float(x_lim_mm[1]))
     if y_lim_mm is not None:
         ax.set_ylim(float(y_lim_mm[0]), float(y_lim_mm[1]))
     elif not bool(full_y_range):
@@ -551,35 +573,146 @@ def _write_plot(
         for trial_num in ordered_trials:
             x_lo, x_hi = segments[trial_num]
             x_mid = 0.5 * (x_lo + x_hi)
-            ax.text(x_mid, y_text, f"T{trial_num}", fontsize=8, ha="center", va="top", color="tab:purple")
+            ax.text(
+                x_mid,
+                y_text,
+                f"T{trial_num}",
+                fontsize=overlay_fontsize,
+                ha="center",
+                va="top",
+                color="tab:purple",
+            )
             for xb in (x_lo, x_hi):
                 key = round(float(xb), 6)
                 if key in drawn:
                     continue
                 label = "trial boundary" if not drawn else None
-                ax.axvline(float(xb), color="tab:purple", linestyle="--", linewidth=0.9, alpha=0.32, label=label)
+                boundary_lw = 2.2 if is_paper_mode else 1.4
+                boundary_alpha = 0.52 if is_paper_mode else 0.42
+                ax.axvline(
+                    float(xb),
+                    color="tab:purple",
+                    linestyle="--",
+                    linewidth=boundary_lw,
+                    alpha=boundary_alpha,
+                    label=label,
+                )
                 drawn.add(key)
 
-        dy_lines: List[str] = []
-        for item in sorted(trial_delta_stats, key=lambda a: int(a["trial_num"])):
-            trial_num = int(item["trial_num"])
-            dy_lines.append(f"Δy' T{trial_num}: {float(item['delta_y_mean_mm']):+.2f} mm")
-        if dy_lines:
-            text = "\n".join(dy_lines)
-            ax.text(
-                0.02,
-                0.02,
-                text,
-                transform=ax.transAxes,
-                fontsize=8,
-                va="bottom",
-                ha="left",
-                bbox={"boxstyle": "round,pad=0.25", "facecolor": "white", "alpha": 0.8, "edgecolor": "0.5"},
-            )
+        if not is_paper_mode:
+            dy_lines: List[str] = []
+            for item in sorted(trial_delta_stats, key=lambda a: int(a["trial_num"])):
+                trial_num = int(item["trial_num"])
+                dy_lines.append(f"Δy' T{trial_num}: {float(item['delta_y_mean_mm']):+.2f} mm")
+            if dy_lines:
+                text = "\n".join(dy_lines)
+                ax.text(
+                    0.02,
+                    0.02,
+                    text,
+                    transform=ax.transAxes,
+                    fontsize=overlay_fontsize,
+                    va="bottom",
+                    ha="left",
+                    bbox={"boxstyle": "round,pad=0.25", "facecolor": "white", "alpha": 0.8, "edgecolor": "0.5"},
+                )
 
-    fig.tight_layout()
+    if is_paper_mode:
+        arrow_linewidth = max(2.0, 1.2 * font_scale)
+        arrow_fontsize = axis_fontsize
+        arrow_color = "tab:red"
+        arrow_head_scale = max(24.0, 0.95 * axis_fontsize)
+
+        # Move axis labels a bit away from ticks so the added direction arrows can
+        # sit in separate whitespace and not collide with axis text.
+        ax.xaxis.labelpad = 11.0 * font_scale
+        ax.yaxis.labelpad = 8.0 * font_scale
+
+        # Vertical direction indicator: placed well outside the y-axis label area.
+        ax.annotate(
+            "",
+            xy=(-0.20, 0.95),
+            xytext=(-0.20, 0.05),
+            xycoords="axes fraction",
+            textcoords="axes fraction",
+            arrowprops={
+                "arrowstyle": "<->",
+                "linewidth": arrow_linewidth,
+                "color": arrow_color,
+                "mutation_scale": arrow_head_scale,
+            },
+            annotation_clip=False,
+        )
+        ax.text(
+            -0.24,
+            0.82,
+            "upward",
+            transform=ax.transAxes,
+            ha="right",
+            va="center",
+            fontsize=arrow_fontsize,
+            color=arrow_color,
+            rotation=90,
+            clip_on=False,
+        )
+        ax.text(
+            -0.24,
+            0.18,
+            "downward",
+            transform=ax.transAxes,
+            ha="right",
+            va="center",
+            fontsize=arrow_fontsize,
+            color=arrow_color,
+            rotation=90,
+            clip_on=False,
+        )
+
+        # Horizontal direction indicator: placed below x-axis label with extra gap.
+        ax.annotate(
+            "",
+            xy=(0.95, -0.24),
+            xytext=(0.05, -0.24),
+            xycoords="axes fraction",
+            textcoords="axes fraction",
+            arrowprops={
+                "arrowstyle": "<->",
+                "linewidth": arrow_linewidth,
+                "color": arrow_color,
+                "mutation_scale": arrow_head_scale,
+            },
+            annotation_clip=False,
+        )
+        ax.text(
+            0.03,
+            -0.30,
+            "closer to flipper",
+            transform=ax.transAxes,
+            ha="left",
+            va="top",
+            fontsize=arrow_fontsize,
+            color=arrow_color,
+            clip_on=False,
+        )
+        ax.text(
+            0.97,
+            -0.30,
+            "further from flipper",
+            transform=ax.transAxes,
+            ha="right",
+            va="top",
+            fontsize=arrow_fontsize,
+            color=arrow_color,
+            clip_on=False,
+        )
+
+    if not is_paper_mode:
+        fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, dpi=180)
+    if is_paper_mode:
+        fig.savefig(output_path, dpi=180, bbox_inches="tight", pad_inches=0.15)
+    else:
+        fig.savefig(output_path, dpi=180)
     plt.close(fig)
 
 
@@ -589,9 +722,16 @@ def _write_boundary_delta_y_plot(
     delta_y_axis_label: str,
     title: str,
     output_path: Path,
+    plot_mode: str,
 ) -> bool:
     if not boundary_stats:
         return False
+    is_paper_mode = str(plot_mode).lower() == "paper"
+    font_scale = PAPER_FONT_SCALE if is_paper_mode else 1.0
+    axis_fontsize = 11.0 * font_scale
+    tick_fontsize = 10.0 * font_scale
+    overlay_fontsize = 8.0 * font_scale
+    legend_fontsize = 9.0 * font_scale
 
     x_vals = np.asarray([float(item["x_boundary_mm"]) for item in boundary_stats], dtype=float)
     x_lo_vals = np.asarray([float(item.get("x_span_lo_mm", item["x_boundary_mm"])) for item in boundary_stats], dtype=float)
@@ -603,7 +743,8 @@ def _write_boundary_delta_y_plot(
         for item in boundary_stats
     ]
 
-    fig, ax = plt.subplots(1, 1, figsize=(8.5, 5.8))
+    fig_size = (14.0, 9.5) if is_paper_mode else (8.5, 5.8)
+    fig, ax = plt.subplots(1, 1, figsize=fig_size, constrained_layout=is_paper_mode)
     bar_widths = np.maximum(x_hi_vals - x_lo_vals, 2.0)
     ax.bar(
         x_lo_vals,
@@ -627,20 +768,34 @@ def _write_boundary_delta_y_plot(
         label="±1 std",
     )
 
-    label_transform = mtransforms.blended_transform_factory(ax.transData, ax.transAxes)
-    for x_i, y_i, lbl, x_lo, x_hi in zip(x_vals, y_means, labels, x_lo_vals, x_hi_vals):
-        ax.text(x_i, 0.02, f"{lbl}", transform=label_transform, ha="center", va="bottom", fontsize=8)
-        ax.axvline(float(x_lo), color="tab:green", linestyle=":", linewidth=0.8, alpha=0.35)
-        ax.axvline(float(x_hi), color="tab:green", linestyle=":", linewidth=0.8, alpha=0.35)
-
     ax.axhline(0.0, color="black", linewidth=1.0, alpha=0.35)
     ax.grid(True, alpha=0.3)
-    ax.set_xlabel(str(x_axis_label))
-    ax.set_ylabel(str(delta_y_axis_label))
-    ax.legend(loc="best")
-    fig.tight_layout()
+    ax.set_xlabel(str(x_axis_label), fontsize=axis_fontsize)
+    ax.set_ylabel(str(delta_y_axis_label), fontsize=axis_fontsize)
+    ax.tick_params(axis="both", labelsize=tick_fontsize)
+
+    ymin, ymax = ax.get_ylim()
+    y_text = ymax - 0.02 * (ymax - ymin)
+    drawn = set()
+    for lbl, x_lo, x_hi in zip(labels, x_lo_vals, x_hi_vals):
+        x_mid = 0.5 * (float(x_lo) + float(x_hi))
+        ax.text(x_mid, y_text, f"{lbl}", ha="center", va="top", fontsize=overlay_fontsize, color="tab:purple")
+        for xb in (float(x_lo), float(x_hi)):
+            key = round(xb, 6)
+            if key in drawn:
+                continue
+            ax.axvline(xb, color="tab:purple", linestyle="--", linewidth=0.9, alpha=0.32)
+            drawn.add(key)
+
+    if not is_paper_mode:
+        ax.legend(loc="best", fontsize=legend_fontsize)
+    if not is_paper_mode:
+        fig.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(output_path, dpi=180)
+    if is_paper_mode:
+        fig.savefig(output_path, dpi=180, bbox_inches="tight", pad_inches=0.15)
+    else:
+        fig.savefig(output_path, dpi=180)
     plt.close(fig)
     return True
 
@@ -746,6 +901,22 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="Disable percentile-based y-axis zoom and show full y-range.",
     )
     ap.add_argument(
+        "--x-lim-mm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("XMIN", "XMAX"),
+        help="Explicit x-axis limits in mm (overrides auto x-range behavior).",
+    )
+    ap.add_argument(
+        "--fixed-x-range-mm",
+        nargs=2,
+        type=float,
+        default=None,
+        metavar=("XMIN", "XMAX"),
+        help="Convenience alias for --x-lim-mm; use this to enforce same x-range across all plots.",
+    )
+    ap.add_argument(
         "--y-lim-mm",
         nargs=2,
         type=float,
@@ -781,11 +952,31 @@ def _build_arg_parser() -> argparse.ArgumentParser:
         help="Directory for per-object trial-wise Δy' outputs (defaults to --output-dir).",
     )
     ap.add_argument("--title", type=str, default=None, help="Custom figure title.")
+    ap.add_argument(
+        "--plot-mode",
+        type=str,
+        choices=("default", "paper"),
+        default=DEFAULT_PLOT_MODE,
+        help=(
+            "Plot styling mode. "
+            "'paper' increases text size (~4.5x), removes legends, and adds axis direction arrows."
+        ),
+    )
     return ap
 
 
 def main() -> int:
     args = _build_arg_parser().parse_args()
+    x_lim_mm: Optional[Tuple[float, float]] = None
+    if args.x_lim_mm is not None and args.fixed_x_range_mm is not None:
+        raise SystemExit("Use only one of --x-lim-mm or --fixed-x-range-mm.")
+    x_range_arg = args.fixed_x_range_mm if args.fixed_x_range_mm is not None else args.x_lim_mm
+    if x_range_arg is not None:
+        x_min = float(x_range_arg[0])
+        x_max = float(x_range_arg[1])
+        if x_max <= x_min:
+            raise SystemExit(f"--x-lim-mm requires XMAX > XMIN (got {x_min}, {x_max}).")
+        x_lim_mm = (x_min, x_max)
     y_lim_mm: Optional[Tuple[float, float]] = None
     if args.y_lim_mm is not None and args.fixed_y_range_mm is not None:
         raise SystemExit("Use only one of --y-lim-mm or --fixed-y-range-mm.")
@@ -864,11 +1055,13 @@ def main() -> int:
             show_trial_overlays=bool(args.show_trial_overlays),
             x_axis_label=str(args.x_axis_label),
             y_axis_label=str(args.y_axis_label),
+            x_lim_mm=x_lim_mm,
             y_lim_mm=y_lim_mm,
             y_zoom_percentiles=(low_pct, high_pct),
             full_y_range=bool(args.full_y_range),
             title=title,
             output_path=output_path,
+            plot_mode=str(args.plot_mode),
         )
         print(f"Wrote plot: {output_path}")
         print(f"Sessions: {len(session_dirs)}, trials used: {total_trials}, points used: {total_points}")
@@ -888,6 +1081,7 @@ def main() -> int:
                 delta_y_axis_label=str(args.delta_y_axis_label),
                 title=delta_title,
                 output_path=delta_output_path,
+                plot_mode=str(args.plot_mode),
             )
             if wrote_delta:
                 print(f"Wrote trial Δy' plot: {delta_output_path}")
@@ -946,11 +1140,13 @@ def main() -> int:
                 show_trial_overlays=bool(args.show_trial_overlays),
                 x_axis_label=str(args.x_axis_label),
                 y_axis_label=str(args.y_axis_label),
+                x_lim_mm=x_lim_mm,
                 y_lim_mm=y_lim_mm,
                 y_zoom_percentiles=(low_pct, high_pct),
                 full_y_range=bool(args.full_y_range),
                 title=title,
                 output_path=output_path,
+                plot_mode=str(args.plot_mode),
             )
             wrote_any = True
             print(f"{kind}: wrote plot: {output_path}")
@@ -971,6 +1167,7 @@ def main() -> int:
                     delta_y_axis_label=str(args.delta_y_axis_label),
                     title=delta_title,
                     output_path=delta_output_path,
+                    plot_mode=str(args.plot_mode),
                 )
                 if wrote_delta:
                     print(f"{kind}: wrote trial Δy' plot: {delta_output_path}")
@@ -995,4 +1192,4 @@ if __name__ == "__main__":
     raise SystemExit(main())
 
 
-# need to thing about trial boundary
+# need to think about trial boundary
