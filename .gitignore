@@ -10,9 +10,26 @@ install/
 log/
 *.bag
 *.db3
+*.mcap
+
+# Python/tool caches
+.mypy_cache/
+
+# Generated experiment/session data
 highlevel/terrain_manipulation/data/
+highlevel/experiment_data/
+highlevel/LASSIE_GUI/experiment_data/
+
+# Large/generated collector outputs
+*.npy
+*.npz
+*.mp4
+*.avi
+*.mov
+*.zip
 
 # OS/editor
 .DS_Store
 .vscode/
+.codex
 highlevel/terrain_manipulation/plot_avg_displacement_vs_density.py

@@ -2,7 +2,7 @@
 
 # Replace these variables with your actual SSH connection details
 remote_user="ubuntu"
-remote_host="192.168.8.203"
+remote_host="192.168.10.19"
 
 echo "Attempting to establish SSH connection to $remote_user@$remote_host..."
 
@@ -17,6 +17,5 @@ while true; do
         sleep 5
     fi
 done
-
 
 

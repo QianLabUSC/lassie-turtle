@@ -54,7 +54,7 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 7
+TRIAL_COUNT = 3
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
