@@ -10,7 +10,10 @@ Depth scale (meters per unit): 0.0010000000474974513
 """
 
 import argparse
+import json
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict
 
 import cv2
 import numpy as np
@@ -26,6 +29,7 @@ class StreamCfg:
 
 DEFAULT_DEPTH = StreamCfg(848, 480, 30)
 DEFAULT_COLOR = StreamCfg(848, 480, 30)
+DEFAULT_RS_CONFIG = Path(__file__).with_name("rs_config_gui.json")
 
 
 def _try_set(opt_owner, option, value) -> bool:
@@ -64,8 +68,51 @@ def _make_colorizer(min_m, max_m, scheme: str, hist_eq: bool) -> rs.colorizer:
     return cz
 
 
+def _load_gui_config(config_path: Path) -> Dict[str, Any]:
+    with open(config_path, "r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _stream_cfg_from_gui_config(gui_config: Dict[str, Any], fallback: StreamCfg) -> StreamCfg:
+    viewer = gui_config.get("viewer", {})
+    return StreamCfg(
+        int(viewer.get("stream-width", fallback.w)),
+        int(viewer.get("stream-height", fallback.h)),
+        int(viewer.get("stream-fps", fallback.fps)),
+    )
+
+
+def _apply_gui_config(device: rs.device, config_path: Path) -> None:
+    if not config_path.exists():
+        raise FileNotFoundError(f"RealSense GUI config not found: {config_path}")
+
+    raw_config = config_path.read_text(encoding="utf-8")
+    try:
+        advanced = rs.rs400_advanced_mode(device)
+    except Exception as exc:
+        print(f"[WARN] Device does not expose D400 advanced mode; GUI config not loaded: {exc}")
+        return
+
+    try:
+        if not advanced.is_enabled():
+            print("[WARN] D400 advanced mode is disabled; GUI JSON was not loaded.")
+            print("[WARN] Open Intel RealSense Viewer once, enable Advanced Mode, then rerun this script.")
+            return
+        advanced.load_json(raw_config)
+        print(f"Loaded RealSense GUI config: {config_path}")
+    except Exception as exc:
+        print(f"[WARN] Failed to load RealSense GUI config {config_path}: {exc}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
+    ap.add_argument(
+        "--rs-config",
+        type=Path,
+        default=DEFAULT_RS_CONFIG,
+        help="Intel RealSense Viewer JSON config to load onto the device.",
+    )
+    ap.add_argument("--no-rs-config", action="store_true", help="Do not load the Intel RealSense Viewer JSON config.")
     ap.add_argument("--min-depth", type=float, default=None, help="Colorizer min distance in meters.")
     ap.add_argument("--max-depth", type=float, default=None, help="Colorizer max distance in meters.")
     ap.add_argument(
@@ -120,6 +167,16 @@ def main() -> None:
 
     args = ap.parse_args()
 
+    gui_config = None if args.no_rs_config else _load_gui_config(args.rs_config)
+    if gui_config is not None:
+        gui_stream = _stream_cfg_from_gui_config(gui_config, DEFAULT_DEPTH)
+        args.depth_w = gui_stream.w
+        args.depth_h = gui_stream.h
+        args.depth_fps = gui_stream.fps
+        args.color_w = gui_stream.w
+        args.color_h = gui_stream.h
+        args.color_fps = gui_stream.fps
+
     pipeline = rs.pipeline()
     cfg = rs.config()
     cfg.enable_stream(rs.stream.depth, args.depth_w, args.depth_h, rs.format.z16, args.depth_fps)
@@ -128,6 +185,8 @@ def main() -> None:
     profile = pipeline.start(cfg)
 
     dev = profile.get_device()
+    if gui_config is not None:
+        _apply_gui_config(dev, args.rs_config)
     depth_sensor = dev.first_depth_sensor()
     depth_scale = depth_sensor.get_depth_scale()
     print(f"Depth scale (meters per unit): {depth_scale}")
