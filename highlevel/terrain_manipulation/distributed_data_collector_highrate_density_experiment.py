@@ -54,7 +54,8 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 3
+TRIAL_COUNT = 5
+HEIGHT_CM = 4.0
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
@@ -126,10 +127,16 @@ def _resolve_now(timezone_name: Optional[str]) -> datetime:
     return now
 
 
-def ensure_session_dir(run_time: datetime) -> Path:
+def _format_height_cm_label(height_cm: float) -> str:
+    label = f"{float(height_cm):g}"
+    return label.replace("-", "minus").replace(".", "p")
+
+
+def ensure_session_dir(run_time: datetime, height_cm: float) -> Path:
     SESSION_ROOT.mkdir(parents=True, exist_ok=True)
     timestamp = run_time.strftime("%Y%m%d_%H%M%S")
-    session_dir = SESSION_ROOT / f"session_{timestamp}"
+    height_label = _format_height_cm_label(height_cm)
+    session_dir = SESSION_ROOT / f"session_{timestamp}_height_{height_label}cm"
     session_dir.mkdir(parents=True, exist_ok=False)
     return session_dir
 
@@ -145,6 +152,7 @@ def save_session_metadata(
     depth_scale_0: float,
     depth_scale_1: float,
     mocap_incline_deg: float,
+    height_cm: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -156,6 +164,7 @@ def save_session_metadata(
         "dwell_time_sec": float(dwell_time_sec),
         "slope": 0,
         "initial_compaction": -1,
+        "height_cm": float(height_cm),
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
         "fps": int(STREAM_FPS),
         "histogram_equalization": bool(DEPTH_HIST_EQ),
@@ -177,6 +186,7 @@ def build_metadata(
     stop_time: datetime,
     dwell_time_sec: float,
     mocap_incline_deg: float,
+    height_cm: float,
     traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
@@ -185,6 +195,7 @@ def build_metadata(
         "stop_time": stop_time.isoformat(),
         "duration_sec": (stop_time - start_time).total_seconds(),
         "dwell_time_sec": float(dwell_time_sec),
+        "height_cm": float(height_cm),
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
         "mocap_incline_deg": float(mocap_incline_deg),
@@ -218,8 +229,20 @@ def _try_set(opt_owner, option, value) -> None:
 
 
 def _make_colorizer() -> rs.colorizer:
+    scheme_map = {
+        "jet": 0,
+        "classic": 1,
+        "white_to_black": 2,
+        "black_to_white": 3,
+        "bio": 4,
+        "cold": 5,
+        "warm": 6,
+        "quantized": 7,
+        "pattern": 8,
+        "turbo": 9,
+    }
     cz = rs.colorizer()
-    scheme = 2.0 if DEPTH_SCHEME == "jet" else 0.0
+    scheme = scheme_map.get(DEPTH_SCHEME, 0)
     _try_set(cz, rs.option.color_scheme, float(scheme))
     if DEPTH_MIN_M is not None:
         _try_set(cz, rs.option.min_distance, float(DEPTH_MIN_M))
@@ -817,6 +840,12 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="High-rate robot_state logging with camera alignment.")
     ap.add_argument("--trials", type=int, default=TRIAL_COUNT, help="Number of trials to record.")
     ap.add_argument(
+        "--height-cm",
+        type=float,
+        default=HEIGHT_CM,
+        help="Physically set experiment height in cm; used for run naming and metadata only.",
+    )
+    ap.add_argument(
         "--incline-deg",
         type=float,
         default=MOCAP_INCLINE_DEG,
@@ -833,8 +862,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
+    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE), height_cm=float(args.height_cm))
     print(f"Session directory: {session_dir}")
+    print(f"Experiment height: {float(args.height_cm):g} cm")
 
     rclpy.init()
     node = ControlNodeHighRate()
@@ -984,6 +1014,7 @@ def main() -> int:
             stop_time,
             DWELL_TIME_S,
             mocap_incline_deg=float(args.incline_deg),
+            height_cm=float(args.height_cm),
             traj_complete_time_sec=traj_complete_time_s,
             mocap_summary=mocap_summary,
         )
@@ -1035,6 +1066,7 @@ def main() -> int:
         depth_scale_0,
         depth_scale_1,
         mocap_incline_deg=float(args.incline_deg),
+        height_cm=float(args.height_cm),
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 
