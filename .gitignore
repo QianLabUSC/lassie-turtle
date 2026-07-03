@@ -17,6 +17,7 @@ log/
 
 # Generated experiment/session data
 highlevel/terrain_manipulation/data/
+highlevel/terrain_manipulation/output/
 highlevel/experiment_data/
 highlevel/LASSIE_GUI/experiment_data/
 
