@@ -38,8 +38,8 @@ class Intrinsics:
 
 
 DEFAULT_DEPTH = StreamCfg(848, 480, 30)
-DEFAULT_RS_CONFIG = Path(__file__).with_name("rs_config_gui.json")
-DEFAULT_OUTPUT_ROOT = Path(__file__).with_name("output") / "references"
+DEFAULT_RS_CONFIG = Path(__file__).resolve().parents[2] / "rs_config_gui.json"
+DEFAULT_OUTPUT_ROOT = Path(__file__).resolve().parents[2] / "output" / "references"
 
 
 def _load_gui_config(config_path: Path) -> Dict[str, Any]:

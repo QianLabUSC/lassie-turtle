@@ -33,7 +33,7 @@ export MPLCONFIGDIR="${MPLCONFIGDIR:-/tmp}"
 
 for session_dir in "${STEEL_SESSIONS[@]}"; do
   echo "Rendering steel: ${session_dir}"
-  python3 "$SCRIPT_DIR/render_rgbd_force_mocap_sync_video.py" \
+  python3 "$SCRIPT_DIR/src/utils/render_rgbd_force_mocap_sync_video.py" \
     "$session_dir" \
     --mode experiment \
     --half-sphere steel \
@@ -45,7 +45,7 @@ done
 
 for session_dir in "${RESIN_SESSIONS[@]}"; do
   echo "Rendering resin: ${session_dir}"
-  python3 "$SCRIPT_DIR/render_rgbd_force_mocap_sync_video.py" \
+  python3 "$SCRIPT_DIR/src/utils/render_rgbd_force_mocap_sync_video.py" \
     "$session_dir" \
     --mode experiment \
     --half-sphere resin \

@@ -8,7 +8,7 @@ Creates an MP4 that stacks:
     plus mocap for a selected half sphere (empty/lead/resin/steel/sand)
     
 Usage e.g.:
-/home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
+/home/parnia/anaconda3/envs/Turtle_TM/bin/python highlevel/terrain_manipulation/src/utils/render_rgbd_force_mocap_sync_video.py --half-sphere resin --mode experiment --depth-min-m 0.25 --depth-max-m 1.00
 """
 # NOTE:
 # Steel experiments on March 14, 2026 and resin experiments on
@@ -35,7 +35,7 @@ try:
 except ModuleNotFoundError as exc:
     raise SystemExit("matplotlib is required for plotting.") from exc
 
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 MOCAP_RB_EMPTY_ID = 2
 MOCAP_RB_LEAD_ID = 3
 MOCAP_RB_RESIN_ID = 5

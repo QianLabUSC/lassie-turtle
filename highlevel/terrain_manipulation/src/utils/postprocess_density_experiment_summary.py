@@ -19,7 +19,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 import numpy as np
 
 
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_TORQUE_SCALE = 0.072
 MOCAP_SPEED_SMOOTH_WINDOW_S = 0.02  # 20 ms moving-average smoothing before dp/dt
 MOCAP_SPEED_DERIV_WINDOW_S = 0.02  # 20 ms forward time-span derivative for robust speed

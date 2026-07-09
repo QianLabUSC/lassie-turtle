@@ -8,7 +8,7 @@ from rotated mocap position arrays, then plots:
   - +/- 1 std band across sessions
 
 Example:
-    python3 highlevel/terrain_manipulation/plot_trial_displacement_band_across_sessions.py \
+    python3 highlevel/terrain_manipulation/src/utils/plot_trial_displacement_band_across_sessions.py \
       highlevel/terrain_manipulation/data/session_20260301_101010 \
       highlevel/terrain_manipulation/data/session_20260302_101010 \
       highlevel/terrain_manipulation/data/session_20260303_101010 \
@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 # Default sessions used when no positional session args are provided.
 
 # # empty

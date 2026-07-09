@@ -43,7 +43,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
         "Install the Intel RealSense SDK Python bindings before running this program."
     ) from exc
 
-SESSION_ROOT = Path(__file__).resolve().parent / "data"
+SESSION_ROOT = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 
 STREAM_WIDTH = 848

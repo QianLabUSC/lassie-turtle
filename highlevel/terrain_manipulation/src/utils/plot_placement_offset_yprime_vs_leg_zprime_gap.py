@@ -6,7 +6,7 @@ Definitions used by this script:
   - leg_z_prime_gap = |z'_obstacle(t) - z'_leg|
 """
 # usage
-# python3 highlevel/terrain_manipulation/plot_placement_offset_yprime_vs_leg_zprime_gap.py   --fixed-y-range-mm 150 250   --x-axis-label "Absolute vertical separation from leg, |z' - z'_leg| (mm)"   --y-axis-label "Vertical obstacle position y' (mm)"   --output-dir highlevel/terrain_manipulation/data/obstacle_yprime_vs_leg_zprime_gap_both_plots
+# python3 highlevel/terrain_manipulation/src/utils/plot_placement_offset_yprime_vs_leg_zprime_gap.py   --fixed-y-range-mm 150 250   --x-axis-label "Absolute vertical separation from leg, |z' - z'_leg| (mm)"   --y-axis-label "Vertical obstacle position y' (mm)"   --output-dir highlevel/terrain_manipulation/data/obstacle_yprime_vs_leg_zprime_gap_both_plots
 
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 M_TO_MM = 1000.0
 
 MOCAP_RB_IDS_BY_KIND: Dict[str, int] = {

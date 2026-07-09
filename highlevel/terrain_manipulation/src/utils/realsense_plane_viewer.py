@@ -43,7 +43,7 @@ class Intrinsics:
 
 DEFAULT_DEPTH = StreamCfg(848, 480, 30)
 DEFAULT_COLOR = StreamCfg(848, 480, 30)
-DEFAULT_RS_CONFIG = Path(__file__).with_name("rs_config_gui.json")
+DEFAULT_RS_CONFIG = Path(__file__).resolve().parents[2] / "rs_config_gui.json"
 
 
 def _try_set(opt_owner, option, value) -> bool:

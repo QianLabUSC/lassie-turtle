@@ -11,7 +11,7 @@ import numpy as np
 
 
 TORQUE_SCALE = 0.072
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 
 
 def _load_trial(path: Path) -> Dict[str, object]:

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-COLLECTOR_SCRIPT="$SCRIPT_DIR/distributed_data_collector_highrate_density_experiment.py"
+COLLECTOR_SCRIPT="$SCRIPT_DIR/src/data_collectors/distributed_data_collector_highrate_density_experiment.py"
 DEFAULT_HEIGHT_CM="$(awk -F= '/^HEIGHT_CM[[:space:]]*=/{gsub(/[[:space:]]/, "", $2); print $2; exit}' "$COLLECTOR_SCRIPT")"
 
 if [[ -z "$DEFAULT_HEIGHT_CM" ]]; then

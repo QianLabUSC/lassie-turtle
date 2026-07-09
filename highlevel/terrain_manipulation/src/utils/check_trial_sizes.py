@@ -181,7 +181,7 @@ def main() -> int:
     ap.add_argument(
         "session_dir",
         nargs="?",
-        default=Path(__file__).resolve().parent / "data" / "session_preliminary",
+        default=Path(__file__).resolve().parents[2] / "data" / "session_preliminary",
         type=Path,
         help="Session folder containing trial npy files (default: data/session_preliminary)",
     )

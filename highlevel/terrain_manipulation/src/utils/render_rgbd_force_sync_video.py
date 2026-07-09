@@ -25,7 +25,7 @@ try:
 except ModuleNotFoundError as exc:
     raise SystemExit("matplotlib is required for plotting.") from exc
 
-DATA_ROOT = Path(__file__).resolve().parent / "data"
+DATA_ROOT = Path(__file__).resolve().parents[2] / "data"
 
 
 def _load_payload(path: Path) -> Dict[str, object]:

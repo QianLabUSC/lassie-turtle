@@ -44,8 +44,8 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
         "Install the Intel RealSense SDK Python bindings before running this program."
     ) from exc
 
-SESSION_ROOT = Path(__file__).resolve().parent / "data"
-REFERENCE_ROOT = Path(__file__).resolve().parent / "output" / "references"
+SESSION_ROOT = Path(__file__).resolve().parents[2] / "data"
+REFERENCE_ROOT = Path(__file__).resolve().parents[2] / "output" / "references"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 
 STREAM_WIDTH = 848
@@ -325,7 +325,7 @@ def _latest_reference_session_path() -> Path:
     if not pointer.exists():
         raise SystemExit(
             f"No latest reference session found at {pointer}. "
-            "Run record_realsense_reference.py first or pass --reference-session."
+            "Run src/data_collectors/record_realsense_reference.py first or pass --reference-session."
         )
     with open(pointer, "r", encoding="utf-8") as fh:
         payload = json.load(fh)
