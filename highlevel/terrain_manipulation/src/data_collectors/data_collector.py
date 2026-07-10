@@ -37,6 +37,11 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Float64MultiArray
 
 try:
+    from .trajectory import DEFAULT_TRAJECTORY_NAME, TrajectorySpec, parse_trajectory_name
+except ImportError:  # pragma: no cover - supports direct script execution
+    from trajectory import DEFAULT_TRAJECTORY_NAME, TrajectorySpec, parse_trajectory_name
+
+try:
     import pyrealsense2 as rs
 except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
     raise SystemExit(
@@ -56,8 +61,8 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 5
-HEIGHT_CM = 4.0
+TRIAL_COUNT = 1
+HEIGHT_CM = 3
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
@@ -78,34 +83,48 @@ MOCAP_RB_NAMES = {
 MOCAP_REFERENCE_MODE = "session"
 MOCAP_INCLINE_DEG = 0.0
 
-TRAJ_SPEED_RAD_S = 2.0
+DEFAULT_TRAJECTORY_SEQUENCE = (f"{DEFAULT_TRAJECTORY_NAME}:1",)
 
 
-FIXED_TRAJECTORY = [
-    0.0,
-    -0.53,
-    TRAJ_SPEED_RAD_S,
-    0.0,
-    -1.315,
-    TRAJ_SPEED_RAD_S,
-    0.785,
-    -1.315,
-    TRAJ_SPEED_RAD_S,
-    0.785,
-    -0.53,
-    TRAJ_SPEED_RAD_S,
-    0.785,
-    0.1,
-    TRAJ_SPEED_RAD_S,
-    0.0,
-    0.1,
-    TRAJ_SPEED_RAD_S,
-    0.0,
-    -0.53,
-    TRAJ_SPEED_RAD_S,
-]
+@dataclass(frozen=True)
+class TrajectorySequenceBlock:
+    spec: TrajectorySpec
+    count: int
 
-TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
+    def as_metadata(self) -> Dict[str, object]:
+        payload = self.spec.as_metadata()
+        payload["count"] = int(self.count)
+        return payload
+
+
+def parse_trajectory_sequence(items: List[str]) -> List[TrajectorySequenceBlock]:
+    blocks: List[TrajectorySequenceBlock] = []
+    for item in items:
+        if ":" in item:
+            name, count_text = item.split(":", maxsplit=1)
+        else:
+            name, count_text = item, "1"
+        name = name.strip()
+        if not name:
+            raise ValueError(f"empty trajectory name in {item!r}")
+        try:
+            count = int(count_text)
+        except ValueError as exc:
+            raise ValueError(f"trajectory repeat count must be an integer in {item!r}") from exc
+        if count <= 0:
+            raise ValueError(f"trajectory repeat count must be positive in {item!r}")
+        blocks.append(TrajectorySequenceBlock(parse_trajectory_name(name), count))
+    if not blocks:
+        raise ValueError("trajectory sequence must contain at least one trajectory")
+    return blocks
+
+
+def trajectory_sequence_metadata(blocks: List[TrajectorySequenceBlock]) -> List[Dict[str, object]]:
+    return [block.as_metadata() for block in blocks]
+
+
+def first_trajectory_spec(blocks: List[TrajectorySequenceBlock]) -> TrajectorySpec:
+    return blocks[0].spec
 
 
 def _resolve_now(timezone_name: Optional[str]) -> datetime:
@@ -176,7 +195,9 @@ def save_session_metadata(
     reference_camera_dir_1: Path,
     mocap_incline_deg: float,
     height_cm: float,
+    trajectory_sequence_request: List[Dict[str, object]],
 ) -> None:
+    first_trajectory = trajectory_sequence_request[0] if trajectory_sequence_request else {}
     payload = {
         "start_time": start_time.isoformat(),
         "stop_time": stop_time.isoformat(),
@@ -188,6 +209,8 @@ def save_session_metadata(
         "slope": 0,
         "initial_compaction": -1,
         "height_cm": float(height_cm),
+        "trajectory_name": first_trajectory.get("name", ""),
+        "trajectory_sequence_request": trajectory_sequence_request,
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
         "fps": int(STREAM_FPS),
         "histogram_equalization": bool(DEPTH_HIST_EQ),
@@ -216,15 +239,19 @@ def build_metadata(
     dwell_time_sec: float,
     mocap_incline_deg: float,
     height_cm: float,
+    trajectory_sequence_request: List[Dict[str, object]],
     traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
+    first_trajectory = trajectory_sequence_request[0] if trajectory_sequence_request else {}
     metadata = {
         "start_time": start_time.isoformat(),
         "stop_time": stop_time.isoformat(),
         "duration_sec": (stop_time - start_time).total_seconds(),
         "dwell_time_sec": float(dwell_time_sec),
         "height_cm": float(height_cm),
+        "trajectory_name": first_trajectory.get("name", ""),
+        "trajectory_sequence_request": trajectory_sequence_request,
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
         "mocap_incline_deg": float(mocap_incline_deg),
@@ -799,6 +826,10 @@ class ControlNodeHighRate(Node):
             self._right_flipper_pose = None
             self._traj_complete = False
 
+    def clear_traj_complete(self) -> None:
+        with self._lock:
+            self._traj_complete = False
+
     def _traj_complete_cb(self, msg: Bool) -> None:
         with self._lock:
             self._traj_complete = bool(msg.data)
@@ -1011,6 +1042,16 @@ def parse_args() -> argparse.Namespace:
         help="Physically set experiment height in cm; used for run naming and metadata only.",
     )
     ap.add_argument(
+        "--trajectory-sequence",
+        nargs="+",
+        default=list(DEFAULT_TRAJECTORY_SEQUENCE),
+        metavar="NAME:COUNT",
+        help=(
+            "Ordered trajectory blocks to run inside each trial, e.g. "
+            "45_30_2_front:5 45_90_1p5_back:3. COUNT defaults to 1 if omitted."
+        ),
+    )
+    ap.add_argument(
         "--incline-deg",
         type=float,
         default=MOCAP_INCLINE_DEG,
@@ -1027,6 +1068,13 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    try:
+        trajectory_sequence = parse_trajectory_sequence(list(args.trajectory_sequence))
+    except ValueError as exc:
+        raise SystemExit(f"Invalid --trajectory-sequence: {exc}") from exc
+    trajectory_sequence_request = trajectory_sequence_metadata(trajectory_sequence)
+    first_trajectory = first_trajectory_spec(trajectory_sequence)
+
     reference_session_dir = _resolve_reference_session(args.reference_session)
     session_dir = ensure_reference_session_dir(
         _resolve_now(DEFAULT_TIMEZONE),
@@ -1036,6 +1084,9 @@ def main() -> int:
     print(f"Session directory: {session_dir}")
     print(f"Reference session: {reference_session_dir}")
     print(f"Experiment height: {float(args.height_cm):g} cm")
+    print("Trajectory sequence:")
+    for block in trajectory_sequence:
+        print(f"  {block.spec.name} x{block.count}")
 
     rclpy.init()
     node = ControlNodeHighRate()
@@ -1073,8 +1124,6 @@ def main() -> int:
         .get_depth_scale()
     )
 
-    trajectory_msg = Float64MultiArray()
-    trajectory_msg.data = list(TRAJECTORY_POINTS)
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
     mocap_receiver: Optional[MocapUDPReceiver] = None
     if MOCAP_ENABLED:
@@ -1106,7 +1155,7 @@ def main() -> int:
     bind_signal(signal.SIGINT, request_stop)
     bind_signal(signal.SIGTERM, request_stop)
 
-    input("Press Enter to start the fixed trajectory run...")
+    input("Press Enter to start the trajectory sequence run...")
 
     for trial_idx in range(args.trials):
         if stop_requested.is_set():
@@ -1129,29 +1178,83 @@ def main() -> int:
             mocap_receiver.reset(run_start, reset_reference=reset_reference)
         start_time = _resolve_now(DEFAULT_TIMEZONE)
         print(f"Starting trial {trial_idx + 1}/{args.trials}...")
-        trajectory_publisher.publish(trajectory_msg)
         traj_complete_time_s: Optional[float] = None
+        trajectory_runs: List[Dict[str, object]] = []
 
         try:
-            while not stop_requested.is_set():
-                color_img, depth_raw, _depth_bgr = realsense_primary.poll()
-                color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
-                frame_time = time.time() - run_start
-                recorder.write(color_img, depth_raw, frame_time)
-                recorder_2.write(color_img_2, depth_raw_2, frame_time)
-                _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
-                _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
-                if node.is_traj_complete():
-                    if traj_complete_time_s is None:
-                        traj_complete_time_s = frame_time
-                        if DWELL_TIME_S > 0.0:
-                            print(
-                                "Trajectory complete received; "
-                                f"recording dwell for {DWELL_TIME_S:.2f} second(s)..."
-                            )
-                    if frame_time - traj_complete_time_s >= DWELL_TIME_S:
+            sequence_index = 0
+            for block in trajectory_sequence:
+                for repeat_index in range(block.count):
+                    if stop_requested.is_set():
+                        break
+
+                    node.clear_traj_complete()
+                    trajectory_msg = Float64MultiArray()
+                    trajectory_msg.data = list(block.spec.points)
+                    command_time_s = time.time() - run_start
+                    run_log: Dict[str, object] = {
+                        "run_index": int(sequence_index),
+                        "block_repeat_index": int(repeat_index),
+                        "name": block.spec.name,
+                        "adduction_deg": int(block.spec.adduction_deg),
+                        "sweep_deg": int(block.spec.sweep_deg),
+                        "speed_rad_s": float(block.spec.speed_rad_s),
+                        "direction": block.spec.direction,
+                        "points": list(block.spec.points),
+                        "command_time_sec": float(command_time_s),
+                        "complete_time_sec": None,
+                        "status": "running",
+                    }
+                    trajectory_runs.append(run_log)
+                    print(
+                        f"  Trajectory {sequence_index + 1}: "
+                        f"{block.spec.name} ({repeat_index + 1}/{block.count})"
+                    )
+                    trajectory_publisher.publish(trajectory_msg)
+
+                    while not stop_requested.is_set():
+                        color_img, depth_raw, _depth_bgr = realsense_primary.poll()
+                        color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
+                        frame_time = time.time() - run_start
+                        recorder.write(color_img, depth_raw, frame_time)
+                        recorder_2.write(color_img_2, depth_raw_2, frame_time)
+                        _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
+                        _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
+                        if node.is_traj_complete():
+                            traj_complete_time_s = frame_time
+                            run_log["complete_time_sec"] = float(frame_time)
+                            run_log["status"] = "complete"
+                            break
+
+                    sequence_index += 1
+                if stop_requested.is_set():
+                    break
+
+            for run_log in trajectory_runs:
+                if run_log["status"] == "running":
+                    run_log["status"] = "interrupted"
+
+            if not stop_requested.is_set():
+                if DWELL_TIME_S > 0.0:
+                    print(
+                        "Trajectory sequence complete; "
+                        f"recording dwell for {DWELL_TIME_S:.2f} second(s)..."
+                    )
+                dwell_start_time_s = time.time() - run_start
+                while not stop_requested.is_set():
+                    color_img, depth_raw, _depth_bgr = realsense_primary.poll()
+                    color_img_2, depth_raw_2, _depth_bgr_2 = realsense_secondary.poll()
+                    frame_time = time.time() - run_start
+                    recorder.write(color_img, depth_raw, frame_time)
+                    recorder_2.write(color_img_2, depth_raw_2, frame_time)
+                    _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
+                    _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
+                    if frame_time - dwell_start_time_s >= DWELL_TIME_S:
                         break
         except RuntimeError as exc:
+            for run_log in trajectory_runs:
+                if run_log["status"] == "running":
+                    run_log["status"] = "stream_error"
             print(f"RealSense stream error: {exc}")
             stop_requested.set()
         finally:
@@ -1189,6 +1292,7 @@ def main() -> int:
             DWELL_TIME_S,
             mocap_incline_deg=float(args.incline_deg),
             height_cm=float(args.height_cm),
+            trajectory_sequence_request=trajectory_sequence_request,
             traj_complete_time_sec=traj_complete_time_s,
             mocap_summary=mocap_summary,
         )
@@ -1205,7 +1309,10 @@ def main() -> int:
             "reference_session_dir": str(reference_session_dir),
             "reference_camera_dir_0": str(reference_0.reference_dir),
             "reference_camera_dir_1": str(reference_1.reference_dir),
-            "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
+            "trajectory_name": first_trajectory.name,
+            "trajectory_points": np.asarray(first_trajectory.points, dtype=float),
+            "trajectory_sequence_request": trajectory_sequence_request,
+            "trajectory_runs": trajectory_runs,
             "robot_state_raw": robot_state_raw,
             "robot_state": robot_state_aligned,
             "mocap_raw": mocap_raw,
@@ -1252,6 +1359,7 @@ def main() -> int:
         reference_1.reference_dir,
         mocap_incline_deg=float(args.incline_deg),
         height_cm=float(args.height_cm),
+        trajectory_sequence_request=trajectory_sequence_request,
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 
