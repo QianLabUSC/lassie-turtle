@@ -14,9 +14,11 @@ timestamps (from camera 0) after each trial. Output includes:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import pickle
+import random
 import shutil
 import signal
 import socket
@@ -37,9 +39,23 @@ from rclpy.node import Node
 from std_msgs.msg import Bool, Float64MultiArray
 
 try:
-    from .trajectory import DEFAULT_TRAJECTORY_NAME, TrajectorySpec, parse_trajectory_name
+    from .trajectory import (
+        ADDUCTION_DISPLACEMENTS_DEG,
+        DEFAULT_TRAJECTORY_NAME,
+        SWEEP_DISPLACEMENTS_DEG,
+        TRAJ_SPEED_RAD_S,
+        TrajectorySpec,
+        parse_trajectory_name,
+    )
 except ImportError:  # pragma: no cover - supports direct script execution
-    from trajectory import DEFAULT_TRAJECTORY_NAME, TrajectorySpec, parse_trajectory_name
+    from trajectory import (
+        ADDUCTION_DISPLACEMENTS_DEG,
+        DEFAULT_TRAJECTORY_NAME,
+        SWEEP_DISPLACEMENTS_DEG,
+        TRAJ_SPEED_RAD_S,
+        TrajectorySpec,
+        parse_trajectory_name,
+    )
 
 try:
     import pyrealsense2 as rs
@@ -62,7 +78,7 @@ DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
 TRIAL_COUNT = 1
-HEIGHT_CM = 3
+HEIGHT_CM = 4
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
@@ -84,6 +100,22 @@ MOCAP_REFERENCE_MODE = "session"
 MOCAP_INCLINE_DEG = 0.0
 
 DEFAULT_TRAJECTORY_SEQUENCE = (f"{DEFAULT_TRAJECTORY_NAME}:1",)
+SCHEDULE_VERSION = "terrain_manipulation_v1"
+DEFAULT_SCHEDULE_SEED = 20260713
+SCHEDULE_DIRECTION = "front"
+SCHEDULE_DIRECTIONS = ("front", "back")
+SCHEDULE_SWEEPS_PER_TRIAL = 5
+EXPERIMENT_COMBINATIONS = tuple(
+    (adduction_deg, sweep_deg)
+    for adduction_deg in ADDUCTION_DISPLACEMENTS_DEG
+    for sweep_deg in SWEEP_DISPLACEMENTS_DEG
+    if (adduction_deg, sweep_deg) != (90, 90)
+)
+EXPERIMENT_ACTIONS = tuple(
+    (adduction_deg, sweep_deg, direction)
+    for adduction_deg, sweep_deg in EXPERIMENT_COMBINATIONS
+    for direction in SCHEDULE_DIRECTIONS
+)
 
 
 @dataclass(frozen=True)
@@ -125,6 +157,67 @@ def trajectory_sequence_metadata(blocks: List[TrajectorySequenceBlock]) -> List[
 
 def first_trajectory_spec(blocks: List[TrajectorySequenceBlock]) -> TrajectorySpec:
     return blocks[0].spec
+
+
+def _schedule_trajectory_name(adduction_deg: int, sweep_deg: int, direction: str) -> str:
+    speed_token = f"{float(TRAJ_SPEED_RAD_S):g}".replace(".", "p")
+    return f"{int(adduction_deg)}_{int(sweep_deg)}_{speed_token}_{direction}"
+
+
+def generate_experiment_schedule(seed: int) -> List[List[Tuple[int, int, str]]]:
+    rng = random.Random(int(seed))
+    schedule: List[List[Tuple[int, int, str]]] = []
+    for adduction_deg, sweep_deg in EXPERIMENT_COMBINATIONS:
+        trial = [(adduction_deg, sweep_deg, SCHEDULE_DIRECTION)]
+        trial.extend(rng.choice(EXPERIMENT_ACTIONS) for _ in range(SCHEDULE_SWEEPS_PER_TRIAL - 1))
+        schedule.append(trial)
+    return schedule
+
+
+def _jsonable_schedule(schedule: List[List[Tuple[int, int, str]]]) -> List[List[List[object]]]:
+    return [[[int(a), int(s), str(direction)] for a, s, direction in trial] for trial in schedule]
+
+
+def schedule_json(schedule: List[List[Tuple[int, int, str]]]) -> str:
+    return json.dumps(_jsonable_schedule(schedule), separators=(",", ":"), sort_keys=True)
+
+
+def schedule_hash(schedule: List[List[Tuple[int, int, str]]]) -> str:
+    return hashlib.sha256(schedule_json(schedule).encode("utf-8")).hexdigest()
+
+
+def build_scheduled_trajectory_sequence(
+    seed: int,
+    trial_index: int,
+    height_cm: float,
+) -> Tuple[List[str], Dict[str, object]]:
+    schedule = generate_experiment_schedule(seed)
+    if trial_index < 0 or trial_index >= len(schedule):
+        raise ValueError(f"schedule trial index must be 0 through {len(schedule) - 1}, got {trial_index}")
+
+    selected_trial = schedule[trial_index]
+    selected_names = [_schedule_trajectory_name(a, s, direction) for a, s, direction in selected_trial]
+    for name in selected_names:
+        parse_trajectory_name(name)
+
+    metadata = {
+        "schedule_version": SCHEDULE_VERSION,
+        "schedule_seed": int(seed),
+        "schedule_trial_index": int(trial_index),
+        "complete_schedule": _jsonable_schedule(schedule),
+        "complete_schedule_hash": schedule_hash(schedule),
+        "selected_sequence": [[int(a), int(s), str(direction)] for a, s, direction in selected_trial],
+        "selected_trajectory_names": selected_names,
+        "starting_combination": [int(selected_trial[0][0]), int(selected_trial[0][1])],
+        "starting_direction": str(selected_trial[0][2]),
+        "valid_combinations": [[int(a), int(s)] for a, s in EXPERIMENT_COMBINATIONS],
+        "valid_actions": [[int(a), int(s), str(direction)] for a, s, direction in EXPERIMENT_ACTIONS],
+        "height_cm": float(height_cm),
+        "starting_direction_policy": SCHEDULE_DIRECTION,
+        "random_tail_directions": list(SCHEDULE_DIRECTIONS),
+        "speed_rad_s": float(TRAJ_SPEED_RAD_S),
+    }
+    return [f"{name}:1" for name in selected_names], metadata
 
 
 def _resolve_now(timezone_name: Optional[str]) -> datetime:
@@ -196,6 +289,7 @@ def save_session_metadata(
     mocap_incline_deg: float,
     height_cm: float,
     trajectory_sequence_request: List[Dict[str, object]],
+    schedule_metadata: Optional[Dict[str, object]] = None,
 ) -> None:
     first_trajectory = trajectory_sequence_request[0] if trajectory_sequence_request else {}
     payload = {
@@ -229,6 +323,8 @@ def save_session_metadata(
         "mocap_incline_deg": float(mocap_incline_deg),
         "mocap_rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
     }
+    if schedule_metadata is not None:
+        payload.update(schedule_metadata)
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
 
@@ -242,6 +338,7 @@ def build_metadata(
     trajectory_sequence_request: List[Dict[str, object]],
     traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
+    schedule_metadata: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
     first_trajectory = trajectory_sequence_request[0] if trajectory_sequence_request else {}
     metadata = {
@@ -260,6 +357,8 @@ def build_metadata(
         metadata["traj_complete_time_sec"] = float(traj_complete_time_sec)
     if mocap_summary is not None:
         metadata["mocap_summary"] = mocap_summary
+    if schedule_metadata is not None:
+        metadata.update(schedule_metadata)
     return metadata
 
 
@@ -1048,8 +1147,27 @@ def parse_args() -> argparse.Namespace:
         metavar="NAME:COUNT",
         help=(
             "Ordered trajectory blocks to run inside each trial, e.g. "
-            "45_30_2_front:5 45_90_1p5_back:3. COUNT defaults to 1 if omitted."
+            "30_30_2_front:5 30_90_1p5_back:3. COUNT defaults to 1 if omitted."
         ),
+    )
+    ap.add_argument(
+        "--schedule-trial-index",
+        type=int,
+        choices=range(len(EXPERIMENT_COMBINATIONS)),
+        default=None,
+        metavar="0..7",
+        help="Run one deterministic five-sweep schedule trial by canonical index.",
+    )
+    ap.add_argument(
+        "--schedule-seed",
+        type=int,
+        default=DEFAULT_SCHEDULE_SEED,
+        help=f"Fixed deterministic schedule seed. Default: {DEFAULT_SCHEDULE_SEED}.",
+    )
+    ap.add_argument(
+        "--print-schedule",
+        action="store_true",
+        help="Print the complete eight-trial deterministic schedule and exit before hardware initialization.",
     )
     ap.add_argument(
         "--incline-deg",
@@ -1068,6 +1186,44 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    schedule_metadata: Optional[Dict[str, object]] = None
+
+    if args.print_schedule:
+        schedule = generate_experiment_schedule(int(args.schedule_seed))
+        print(f"Schedule version: {SCHEDULE_VERSION}")
+        print(f"Schedule seed: {int(args.schedule_seed)}")
+        print(f"Schedule hash: {schedule_hash(schedule)}")
+        print(schedule_json(schedule))
+        return 0
+
+    if args.schedule_trial_index is not None:
+        if list(args.trajectory_sequence) != list(DEFAULT_TRAJECTORY_SEQUENCE):
+            raise SystemExit("--schedule-trial-index cannot be used with custom --trajectory-sequence.")
+        if int(args.trials) != 1:
+            print(
+                f"--schedule-trial-index executes one selected five-sweep trial; "
+                f"overriding --trials {int(args.trials)} to 1."
+            )
+            args.trials = 1
+        try:
+            scheduled_sequence, schedule_metadata = build_scheduled_trajectory_sequence(
+                seed=int(args.schedule_seed),
+                trial_index=int(args.schedule_trial_index),
+                height_cm=float(args.height_cm),
+            )
+        except ValueError as exc:
+            raise SystemExit(str(exc)) from exc
+        args.trajectory_sequence = scheduled_sequence
+        print("Deterministic schedule selection:")
+        print(f"  seed: {int(args.schedule_seed)}")
+        print(f"  height_cm: {float(args.height_cm):g}")
+        print(f"  selected_trial_index: {int(args.schedule_trial_index)}")
+        print("  selected_trajectory_names:")
+        for name in schedule_metadata["selected_trajectory_names"]:
+            print(f"    {name}")
+        print(f"  complete_schedule_hash: {schedule_metadata['complete_schedule_hash']}")
+        print(f"  complete_schedule: {schedule_json(generate_experiment_schedule(int(args.schedule_seed)))}")
+
     try:
         trajectory_sequence = parse_trajectory_sequence(list(args.trajectory_sequence))
     except ValueError as exc:
@@ -1295,6 +1451,7 @@ def main() -> int:
             trajectory_sequence_request=trajectory_sequence_request,
             traj_complete_time_sec=traj_complete_time_s,
             mocap_summary=mocap_summary,
+            schedule_metadata=schedule_metadata,
         )
         payload = {
             "rgb_0": rgbd_payload["rgb"],
@@ -1313,6 +1470,7 @@ def main() -> int:
             "trajectory_points": np.asarray(first_trajectory.points, dtype=float),
             "trajectory_sequence_request": trajectory_sequence_request,
             "trajectory_runs": trajectory_runs,
+            "schedule_metadata": schedule_metadata,
             "robot_state_raw": robot_state_raw,
             "robot_state": robot_state_aligned,
             "mocap_raw": mocap_raw,
@@ -1360,6 +1518,7 @@ def main() -> int:
         mocap_incline_deg=float(args.incline_deg),
         height_cm=float(args.height_cm),
         trajectory_sequence_request=trajectory_sequence_request,
+        schedule_metadata=schedule_metadata,
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 

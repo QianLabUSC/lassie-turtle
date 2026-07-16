@@ -8,8 +8,8 @@ Labels use degree and rad/s units:
 
     {adduction displacement}_{sweep displacement}_{speed rad/s}_{front|back}
 
-For example, ``45_90_2_front`` starts at the centered sweeping angle,
-pre-positions to the back side, moves the leg down by adding 45 degrees to
+For example, ``30_90_2_front`` starts at the centered sweeping angle,
+pre-positions to the back side, moves the leg down by adding 30 degrees to
 right-adduction, sweeps forward through 90 degrees, lifts back up, and returns
 to center.
 """
@@ -22,14 +22,16 @@ from typing import Dict, List, Literal, Tuple
 
 
 TRAJ_SPEED_RAD_S = 2.0
-DEFAULT_TRAJECTORY_NAME = "45_30_2_front"
+DEFAULT_TRAJECTORY_NAME = "30_30_2_front"
 
 # Controller coordinates from the current fixed trajectory.
-ADDUCTION_HOME_RAD = 0.5235987756
+ADDUCTION_HOME_BASE_RAD = 0.5235987756
+ADDUCTION_HOME_OFFSET_CORRECTION_DEG = -70.0
+ADDUCTION_HOME_RAD = ADDUCTION_HOME_BASE_RAD + math.radians(ADDUCTION_HOME_OFFSET_CORRECTION_DEG)
 SWEEP_CENTER_RAD = -0.53
 
-ADDUCTION_DISPLACEMENTS_DEG = (0, 45, 90)
-SWEEP_DISPLACEMENTS_DEG = (30, 45, 90)
+ADDUCTION_DISPLACEMENTS_DEG = (30, 60, 90)
+SWEEP_DISPLACEMENTS_DEG = (30, 60, 90)
 SWEEP_DIRECTIONS = ("front", "back")
 
 SweepDirection = Literal["front", "back"]
@@ -123,7 +125,7 @@ def parse_trajectory_name(name: str) -> TrajectorySpec:
     parts = name.strip().split("_")
     if len(parts) != 4:
         raise ValueError(
-            f"trajectory name must look like 45_30_2_front, got {name!r}"
+            f"trajectory name must look like 30_30_2_front, got {name!r}"
         )
 
     adduction_token, sweep_token, speed_token, direction_token = parts
@@ -138,7 +140,7 @@ def parse_trajectory_name(name: str) -> TrajectorySpec:
         speed_rad_s = _parse_speed(speed_token)
     except ValueError as exc:
         raise ValueError(
-            f"trajectory name must look like 45_30_2_front, got {name!r}"
+            f"trajectory name must look like 30_30_2_front, got {name!r}"
         ) from exc
 
     direction = direction_token  # type: ignore[assignment]
