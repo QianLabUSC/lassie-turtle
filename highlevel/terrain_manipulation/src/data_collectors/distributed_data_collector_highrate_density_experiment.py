@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import pickle
 import signal
@@ -54,8 +55,8 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 5
-HEIGHT_CM = 4.0
+TRIAL_COUNT = 2
+HEIGHT_CM = -1
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
@@ -77,29 +78,31 @@ MOCAP_REFERENCE_MODE = "session"
 MOCAP_INCLINE_DEG = 0.0
 
 TRAJ_SPEED_RAD_S = 2.0
+SWEEPING_START_OFFSET_DEG = 50.0
+SWEEPING_START_OFFSET_RAD = math.radians(SWEEPING_START_OFFSET_DEG)
 
 
 FIXED_TRAJECTORY = [
     0.0,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    -1.315,
+    -1.315 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    -1.315,
+    -1.315 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    0.1,
+    0.1 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    0.1,
+    0.1 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
 ]
 
