@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""High-rate robot_state logging with camera-time alignment.
+"""High-rate robot_state + UDP mocap logging with camera-time alignment.
 
 Captures every /robot_state message (plus OptiTrack body + flipper poses)
 at the native publish rate, then aligns those samples to RGB-D frame 
 timestamps (from camera 0) after each trial. Output includes:
   - robot_state_raw: full-rate samples
   - robot_state: nearest-neighbor aligned to camera_time_0
+  - mocap_raw: full-rate UDP mocap samples grouped by rigid body ID
+  - mocap: nearest-neighbor aligned to camera_time_0
   - per-trial metadata and session-level metadata.json
 """
 
@@ -13,8 +15,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
+import pickle
 import signal
+import socket
 import threading
 import time
 from dataclasses import dataclass
@@ -25,6 +30,7 @@ from typing import Dict, List, Optional, Tuple
 import cv2
 import numpy as np
 import rclpy
+from scipy.spatial.transform import Rotation as R
 from geometry_msgs.msg import Pose
 from rclpy.executors import SingleThreadedExecutor
 from rclpy.node import Node
@@ -38,7 +44,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
         "Install the Intel RealSense SDK Python bindings before running this program."
     ) from exc
 
-SESSION_ROOT = Path(__file__).resolve().parent / "data"
+SESSION_ROOT = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 
 STREAM_WIDTH = 848
@@ -49,82 +55,56 @@ DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 3
+TRIAL_COUNT = 2
+HEIGHT_CM = -1
+# Dwell duration after /trajectory_complete before ending the trial record.
+DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
+MOCAP_ENABLED = True
+MOCAP_UDP_IP = "0.0.0.0"
+MOCAP_UDP_PORT = 8000
+MOCAP_PACKET_SIZE_BYTES = 4096
+MOCAP_RB_NAMES = {
+    2: "Empty Half Sphere",
+    3: "Lead Half Sphere",
+    6: "Steel Half Sphere",
+    5: "Resin Half Sphere",
+    8: "Sand Half Sphere",
+}
+# Orientation reference mode for roll/pitch/yaw:
+#   "trial"   -> re-zero each trial (recommended if object is re-placed each trial)
+#   "session" -> keep one reference for the whole run
+MOCAP_REFERENCE_MODE = "session"
+MOCAP_INCLINE_DEG = 0.0
 
-TRAJ_SPEED_RAD_S = 1.0
+TRAJ_SPEED_RAD_S = 2.0
+SWEEPING_START_OFFSET_DEG = 50.0
+SWEEPING_START_OFFSET_RAD = math.radians(SWEEPING_START_OFFSET_DEG)
+
 
 FIXED_TRAJECTORY = [
     0.0,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    -1.315,
+    -1.315 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    -1.315,
+    -1.315 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.785,
-    0.1,
+    0.1 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    0.1,
+    0.1 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
     0.0,
-    -0.53,
+    -0.53 + SWEEPING_START_OFFSET_RAD,
     TRAJ_SPEED_RAD_S,
 ]
-
-# FIXED_TRAJECTORY = [
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -1.32,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -0.53,
-#     TRAJ_SPEED_RAD_S,
-#     0.0,
-#     -0.54,
-#     TRAJ_SPEED_RAD_S*0.01,
-#     0.0,
-#     -1.315,
-#     TRAJ_SPEED_RAD_S,
-# ]
 
 TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
 
@@ -150,10 +130,16 @@ def _resolve_now(timezone_name: Optional[str]) -> datetime:
     return now
 
 
-def ensure_session_dir(run_time: datetime) -> Path:
+def _format_height_cm_label(height_cm: float) -> str:
+    label = f"{float(height_cm):g}"
+    return label.replace("-", "minus").replace(".", "p")
+
+
+def ensure_session_dir(run_time: datetime, height_cm: float) -> Path:
     SESSION_ROOT.mkdir(parents=True, exist_ok=True)
     timestamp = run_time.strftime("%Y%m%d_%H%M%S")
-    session_dir = SESSION_ROOT / f"session_{timestamp}"
+    height_label = _format_height_cm_label(height_cm)
+    session_dir = SESSION_ROOT / f"session_{timestamp}_height_{height_label}cm"
     session_dir.mkdir(parents=True, exist_ok=False)
     return session_dir
 
@@ -165,8 +151,11 @@ def save_session_metadata(
     trials_planned: int,
     trials_completed: int,
     trial_duration_sec: float,
+    dwell_time_sec: float,
     depth_scale_0: float,
     depth_scale_1: float,
+    mocap_incline_deg: float,
+    height_cm: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -175,24 +164,50 @@ def save_session_metadata(
         "trials_planned": int(trials_planned),
         "trials_completed": int(trials_completed),
         "trial_duration_sec": float(trial_duration_sec),
+        "dwell_time_sec": float(dwell_time_sec),
         "slope": 0,
         "initial_compaction": -1,
+        "height_cm": float(height_cm),
         "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
         "fps": int(STREAM_FPS),
         "histogram_equalization": bool(DEPTH_HIST_EQ),
         "depth_scale_0": float(depth_scale_0),
         "depth_scale_1": float(depth_scale_1),
+        "mocap_enabled": bool(MOCAP_ENABLED),
+        "mocap_udp_ip": str(MOCAP_UDP_IP),
+        "mocap_udp_port": int(MOCAP_UDP_PORT),
+        "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
+        "mocap_incline_deg": float(mocap_incline_deg),
+        "mocap_rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
     }
     with open(session_dir / "metadata.json", "w", encoding="utf-8") as fh:
         json.dump(payload, fh, indent=2)
 
 
-def build_metadata(start_time: datetime, stop_time: datetime) -> Dict[str, object]:
-    return {
+def build_metadata(
+    start_time: datetime,
+    stop_time: datetime,
+    dwell_time_sec: float,
+    mocap_incline_deg: float,
+    height_cm: float,
+    traj_complete_time_sec: Optional[float] = None,
+    mocap_summary: Optional[Dict[str, object]] = None,
+) -> Dict[str, object]:
+    metadata = {
         "start_time": start_time.isoformat(),
         "stop_time": stop_time.isoformat(),
         "duration_sec": (stop_time - start_time).total_seconds(),
+        "dwell_time_sec": float(dwell_time_sec),
+        "height_cm": float(height_cm),
+        "mocap_enabled": bool(MOCAP_ENABLED),
+        "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
+        "mocap_incline_deg": float(mocap_incline_deg),
     }
+    if traj_complete_time_sec is not None:
+        metadata["traj_complete_time_sec"] = float(traj_complete_time_sec)
+    if mocap_summary is not None:
+        metadata["mocap_summary"] = mocap_summary
+    return metadata
 
 
 def bind_signal(sig: int, handler) -> None:
@@ -217,8 +232,20 @@ def _try_set(opt_owner, option, value) -> None:
 
 
 def _make_colorizer() -> rs.colorizer:
+    scheme_map = {
+        "jet": 0,
+        "classic": 1,
+        "white_to_black": 2,
+        "black_to_white": 3,
+        "bio": 4,
+        "cold": 5,
+        "warm": 6,
+        "quantized": 7,
+        "pattern": 8,
+        "turbo": 9,
+    }
     cz = rs.colorizer()
-    scheme = 2.0 if DEPTH_SCHEME == "jet" else 0.0
+    scheme = scheme_map.get(DEPTH_SCHEME, 0)
     _try_set(cz, rs.option.color_scheme, float(scheme))
     if DEPTH_MIN_M is not None:
         _try_set(cz, rs.option.min_distance, float(DEPTH_MIN_M))
@@ -358,6 +385,235 @@ class RobotStateSample:
     right_flipper_orientation_w: float
 
 
+@dataclass
+class MocapSample:
+    time_s: float
+    rigid_body_id: int
+    position_x: float
+    position_y: float
+    position_z: float
+    zeroed_position_x: float
+    zeroed_position_y: float
+    zeroed_position_z: float
+    rotated_position_x: float
+    rotated_position_y: float
+    rotated_position_z: float
+    rotated_zeroed_position_x: float
+    rotated_zeroed_position_y: float
+    rotated_zeroed_position_z: float
+    orientation_x: float
+    orientation_y: float
+    orientation_z: float
+    orientation_w: float
+    zeroed_orientation_x: float
+    zeroed_orientation_y: float
+    zeroed_orientation_z: float
+    zeroed_orientation_w: float
+    rotated_orientation_x: float
+    rotated_orientation_y: float
+    rotated_orientation_z: float
+    rotated_orientation_w: float
+    rotated_zeroed_orientation_x: float
+    rotated_zeroed_orientation_y: float
+    rotated_zeroed_orientation_z: float
+    rotated_zeroed_orientation_w: float
+    roll_deg: float
+    pitch_deg: float
+    yaw_deg: float
+    rotated_roll_deg: float
+    rotated_pitch_deg: float
+    rotated_yaw_deg: float
+
+
+class MocapUDPReceiver:
+    def __init__(self, udp_ip: str, udp_port: int, incline_deg: float = MOCAP_INCLINE_DEG) -> None:
+        self.udp_ip = udp_ip
+        self.udp_port = int(udp_port)
+        self.incline_deg = float(incline_deg)
+        # Clockwise y-z plane rotation equals a -x right-handed rotation.
+        self._frame_rot = R.from_euler("x", -self.incline_deg, degrees=True)
+        self._lock = threading.Lock()
+        self._run_start = time.time()
+        self._samples_by_rigid_body: Dict[int, List[MocapSample]] = {}
+        self._initial_rot: Dict[int, R] = {}
+        self._initial_pos: Dict[int, np.ndarray] = {}
+        self._packets_received = 0
+        self._decode_errors = 0
+        self._stop_requested = threading.Event()
+        self._thread: Optional[threading.Thread] = None
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self._sock.bind((self.udp_ip, self.udp_port))
+        self._sock.settimeout(0.2)
+
+    def start(self) -> None:
+        if self._thread is not None:
+            return
+        self._thread = threading.Thread(target=self._recv_loop, daemon=True)
+        self._thread.start()
+
+    def stop(self) -> None:
+        self._stop_requested.set()
+        try:
+            self._sock.close()
+        except OSError:
+            pass
+        if self._thread is not None:
+            self._thread.join(timeout=1.0)
+            self._thread = None
+
+    def reset(self, run_start: float, reset_reference: bool = True) -> None:
+        with self._lock:
+            self._run_start = run_start
+            self._samples_by_rigid_body.clear()
+            if reset_reference:
+                self._initial_rot.clear()
+                self._initial_pos.clear()
+            self._packets_received = 0
+            self._decode_errors = 0
+
+    def snapshot(self) -> Dict[int, List[MocapSample]]:
+        with self._lock:
+            return {rigid_body_id: list(samples) for rigid_body_id, samples in self._samples_by_rigid_body.items()}
+
+    def summary(self) -> Dict[str, object]:
+        with self._lock:
+            return {
+                "packets_received": int(self._packets_received),
+                "decode_errors": int(self._decode_errors),
+                "rigid_body_ids": [int(rigid_body_id) for rigid_body_id in sorted(self._samples_by_rigid_body.keys())],
+                "samples_per_rigid_body": {
+                    str(rigid_body_id): int(len(samples))
+                    for rigid_body_id, samples in sorted(self._samples_by_rigid_body.items())
+                },
+                "rigid_body_names": {str(key): value for key, value in sorted(MOCAP_RB_NAMES.items())},
+                "udp_ip": self.udp_ip,
+                "udp_port": self.udp_port,
+                "incline_deg": float(self.incline_deg),
+            }
+
+    def _recv_loop(self) -> None:
+        while not self._stop_requested.is_set():
+            try:
+                packet, _addr = self._sock.recvfrom(MOCAP_PACKET_SIZE_BYTES)
+            except socket.timeout:
+                continue
+            except OSError:
+                if self._stop_requested.is_set():
+                    break
+                continue
+            self._handle_packet(packet)
+
+    def _record_decode_error(self) -> None:
+        with self._lock:
+            self._decode_errors += 1
+
+    def _handle_packet(self, packet: bytes) -> None:
+        with self._lock:
+            self._packets_received += 1
+
+        try:
+            rb = pickle.loads(packet)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        if not hasattr(rb, "__len__") or len(rb) < 8:
+            self._record_decode_error()
+            return
+
+        try:
+            rigid_body_id = int(rb[0])
+            quat = np.asarray(rb[1:5], dtype=float)
+            pos = np.asarray(rb[5:8], dtype=float)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        if quat.shape != (4,) or pos.shape != (3,):
+            self._record_decode_error()
+            return
+        if not np.all(np.isfinite(quat)) or not np.all(np.isfinite(pos)):
+            self._record_decode_error()
+            return
+
+        quat_norm = float(np.linalg.norm(quat))
+        if quat_norm <= 1e-9:
+            self._record_decode_error()
+            return
+        quat = quat / quat_norm
+
+        try:
+            current_rot = R.from_quat(quat)
+        except Exception:
+            self._record_decode_error()
+            return
+
+        with self._lock:
+            if rigid_body_id not in self._initial_rot:
+                self._initial_rot[rigid_body_id] = current_rot
+                relative_rot = R.identity()
+            else:
+                # World-relative zeroed rotation: initial pose is treated as the
+                # session reference frame, and deltas are expressed in fixed axes.
+                relative_rot = current_rot * self._initial_rot[rigid_body_id].inv()
+            if rigid_body_id not in self._initial_pos:
+                self._initial_pos[rigid_body_id] = pos.copy()
+            zeroed_pos = pos - self._initial_pos[rigid_body_id]
+            zeroed_quat = relative_rot.as_quat()
+            # Report RPY in fixed axes of the zeroed trial frame (extrinsic xyz).
+            roll_deg, pitch_deg, yaw_deg = relative_rot.as_euler("xyz", degrees=True)
+            rotated_pos = self._frame_rot.apply(pos)
+            rotated_zeroed_pos = self._frame_rot.apply(zeroed_pos)
+            # Express orientation in the rotated frame via basis change:
+            # R' = F * R * F^{-1}
+            rotated_rot = self._frame_rot * current_rot * self._frame_rot.inv()
+            rotated_zeroed_rot = self._frame_rot * relative_rot * self._frame_rot.inv()
+            rotated_quat = rotated_rot.as_quat()
+            rotated_zeroed_quat = rotated_zeroed_rot.as_quat()
+            rotated_roll_deg, rotated_pitch_deg, rotated_yaw_deg = rotated_zeroed_rot.as_euler("xyz", degrees=True)
+
+            sample = MocapSample(
+                time_s=time.time() - self._run_start,
+                rigid_body_id=rigid_body_id,
+                position_x=float(pos[0]),
+                position_y=float(pos[1]),
+                position_z=float(pos[2]),
+                zeroed_position_x=float(zeroed_pos[0]),
+                zeroed_position_y=float(zeroed_pos[1]),
+                zeroed_position_z=float(zeroed_pos[2]),
+                rotated_position_x=float(rotated_pos[0]),
+                rotated_position_y=float(rotated_pos[1]),
+                rotated_position_z=float(rotated_pos[2]),
+                rotated_zeroed_position_x=float(rotated_zeroed_pos[0]),
+                rotated_zeroed_position_y=float(rotated_zeroed_pos[1]),
+                rotated_zeroed_position_z=float(rotated_zeroed_pos[2]),
+                orientation_x=float(quat[0]),
+                orientation_y=float(quat[1]),
+                orientation_z=float(quat[2]),
+                orientation_w=float(quat[3]),
+                zeroed_orientation_x=float(zeroed_quat[0]),
+                zeroed_orientation_y=float(zeroed_quat[1]),
+                zeroed_orientation_z=float(zeroed_quat[2]),
+                zeroed_orientation_w=float(zeroed_quat[3]),
+                rotated_orientation_x=float(rotated_quat[0]),
+                rotated_orientation_y=float(rotated_quat[1]),
+                rotated_orientation_z=float(rotated_quat[2]),
+                rotated_orientation_w=float(rotated_quat[3]),
+                rotated_zeroed_orientation_x=float(rotated_zeroed_quat[0]),
+                rotated_zeroed_orientation_y=float(rotated_zeroed_quat[1]),
+                rotated_zeroed_orientation_z=float(rotated_zeroed_quat[2]),
+                rotated_zeroed_orientation_w=float(rotated_zeroed_quat[3]),
+                roll_deg=float(roll_deg),
+                pitch_deg=float(pitch_deg),
+                yaw_deg=float(yaw_deg),
+                rotated_roll_deg=float(rotated_roll_deg),
+                rotated_pitch_deg=float(rotated_pitch_deg),
+                rotated_yaw_deg=float(rotated_yaw_deg),
+            )
+            self._samples_by_rigid_body.setdefault(rigid_body_id, []).append(sample)
+
+
 class ControlNodeHighRate(Node):
     def __init__(self) -> None:
         super().__init__("control_node_highrate")
@@ -494,6 +750,52 @@ def _build_robot_state(samples: List[RobotStateSample]) -> Dict[str, np.ndarray]
     }
 
 
+def _build_mocap_state(samples_by_rigid_body: Dict[int, List[MocapSample]]) -> Dict[str, Dict[str, np.ndarray]]:
+    mocap_state: Dict[str, Dict[str, np.ndarray]] = {}
+    for rigid_body_id, samples in sorted(samples_by_rigid_body.items()):
+        key = str(rigid_body_id)
+        mocap_state[key] = {
+            "time": np.asarray([s.time_s for s in samples], dtype=float),
+            "rigid_body_id": np.asarray([s.rigid_body_id for s in samples], dtype=float),
+            "position_x": np.asarray([s.position_x for s in samples], dtype=float),
+            "position_y": np.asarray([s.position_y for s in samples], dtype=float),
+            "position_z": np.asarray([s.position_z for s in samples], dtype=float),
+            "zeroed_position_x": np.asarray([s.zeroed_position_x for s in samples], dtype=float),
+            "zeroed_position_y": np.asarray([s.zeroed_position_y for s in samples], dtype=float),
+            "zeroed_position_z": np.asarray([s.zeroed_position_z for s in samples], dtype=float),
+            "rotated_position_x": np.asarray([s.rotated_position_x for s in samples], dtype=float),
+            "rotated_position_y": np.asarray([s.rotated_position_y for s in samples], dtype=float),
+            "rotated_position_z": np.asarray([s.rotated_position_z for s in samples], dtype=float),
+            "rotated_zeroed_position_x": np.asarray([s.rotated_zeroed_position_x for s in samples], dtype=float),
+            "rotated_zeroed_position_y": np.asarray([s.rotated_zeroed_position_y for s in samples], dtype=float),
+            "rotated_zeroed_position_z": np.asarray([s.rotated_zeroed_position_z for s in samples], dtype=float),
+            "orientation_x": np.asarray([s.orientation_x for s in samples], dtype=float),
+            "orientation_y": np.asarray([s.orientation_y for s in samples], dtype=float),
+            "orientation_z": np.asarray([s.orientation_z for s in samples], dtype=float),
+            "orientation_w": np.asarray([s.orientation_w for s in samples], dtype=float),
+            # Zeroed orientation (initial pose treated as identity/world-aligned).
+            "zeroed_orientation_x": np.asarray([s.zeroed_orientation_x for s in samples], dtype=float),
+            "zeroed_orientation_y": np.asarray([s.zeroed_orientation_y for s in samples], dtype=float),
+            "zeroed_orientation_z": np.asarray([s.zeroed_orientation_z for s in samples], dtype=float),
+            "zeroed_orientation_w": np.asarray([s.zeroed_orientation_w for s in samples], dtype=float),
+            "rotated_orientation_x": np.asarray([s.rotated_orientation_x for s in samples], dtype=float),
+            "rotated_orientation_y": np.asarray([s.rotated_orientation_y for s in samples], dtype=float),
+            "rotated_orientation_z": np.asarray([s.rotated_orientation_z for s in samples], dtype=float),
+            "rotated_orientation_w": np.asarray([s.rotated_orientation_w for s in samples], dtype=float),
+            "rotated_zeroed_orientation_x": np.asarray([s.rotated_zeroed_orientation_x for s in samples], dtype=float),
+            "rotated_zeroed_orientation_y": np.asarray([s.rotated_zeroed_orientation_y for s in samples], dtype=float),
+            "rotated_zeroed_orientation_z": np.asarray([s.rotated_zeroed_orientation_z for s in samples], dtype=float),
+            "rotated_zeroed_orientation_w": np.asarray([s.rotated_zeroed_orientation_w for s in samples], dtype=float),
+            "roll_deg": np.asarray([s.roll_deg for s in samples], dtype=float),
+            "pitch_deg": np.asarray([s.pitch_deg for s in samples], dtype=float),
+            "yaw_deg": np.asarray([s.yaw_deg for s in samples], dtype=float),
+            "rotated_roll_deg": np.asarray([s.rotated_roll_deg for s in samples], dtype=float),
+            "rotated_pitch_deg": np.asarray([s.rotated_pitch_deg for s in samples], dtype=float),
+            "rotated_yaw_deg": np.asarray([s.rotated_yaw_deg for s in samples], dtype=float),
+        }
+    return mocap_state
+
+
 def _nearest_indices(sample_times: np.ndarray, query_times: np.ndarray) -> np.ndarray:
     if sample_times.size == 0:
         return np.zeros_like(query_times, dtype=int)
@@ -518,9 +820,40 @@ def _align_robot_state(robot_state: Dict[str, np.ndarray], camera_times: np.ndar
     return aligned
 
 
+def _align_mocap_state(
+    mocap_state: Dict[str, Dict[str, np.ndarray]],
+    camera_times: np.ndarray,
+) -> Dict[str, Dict[str, np.ndarray]]:
+    aligned_mocap: Dict[str, Dict[str, np.ndarray]] = {}
+    for rigid_body_id, rigid_body_state in mocap_state.items():
+        sample_times = rigid_body_state.get("time")
+        if not isinstance(sample_times, np.ndarray) or sample_times.size == 0:
+            continue
+        indices = _nearest_indices(sample_times, camera_times)
+        aligned_state: Dict[str, np.ndarray] = {"time": sample_times[indices]}
+        for key, values in rigid_body_state.items():
+            if key == "time":
+                continue
+            aligned_state[key] = values[indices]
+        aligned_mocap[rigid_body_id] = aligned_state
+    return aligned_mocap
+
+
 def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(description="High-rate robot_state logging with camera alignment.")
     ap.add_argument("--trials", type=int, default=TRIAL_COUNT, help="Number of trials to record.")
+    ap.add_argument(
+        "--height-cm",
+        type=float,
+        default=HEIGHT_CM,
+        help="Physically set experiment height in cm; used for run naming and metadata only.",
+    )
+    ap.add_argument(
+        "--incline-deg",
+        type=float,
+        default=MOCAP_INCLINE_DEG,
+        help="Clockwise y-z plane rotation angle (deg) used to save rotated mocap position/orientation.",
+    )
     ap.add_argument(
         "--save-rgb-mp4",
         action="store_true",
@@ -532,8 +865,9 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE))
+    session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE), height_cm=float(args.height_cm))
     print(f"Session directory: {session_dir}")
+    print(f"Experiment height: {float(args.height_cm):g} cm")
 
     rclpy.init()
     node = ControlNodeHighRate()
@@ -572,6 +906,19 @@ def main() -> int:
     trajectory_msg = Float64MultiArray()
     trajectory_msg.data = list(TRAJECTORY_POINTS)
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
+    mocap_receiver: Optional[MocapUDPReceiver] = None
+    if MOCAP_ENABLED:
+        try:
+            mocap_receiver = MocapUDPReceiver(MOCAP_UDP_IP, MOCAP_UDP_PORT, incline_deg=float(args.incline_deg))
+            mocap_receiver.start()
+            print(
+                f"Mocap UDP listener active on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT} "
+                f"(incline={float(args.incline_deg):.3f} deg)"
+            )
+        except OSError as exc:
+            raise SystemExit(
+                f"Failed to bind mocap UDP listener on {MOCAP_UDP_IP}:{MOCAP_UDP_PORT}: {exc}"
+            ) from exc
 
     print(
         "Robot command issued. Recording RGB-D + high-rate telemetry...\n"
@@ -606,9 +953,13 @@ def main() -> int:
 
         run_start = time.time()
         node.reset(run_start)
+        if mocap_receiver is not None:
+            reset_reference = (MOCAP_REFERENCE_MODE == "trial") or (trial_idx == 0)
+            mocap_receiver.reset(run_start, reset_reference=reset_reference)
         start_time = _resolve_now(DEFAULT_TIMEZONE)
+        print(f"Starting trial {trial_idx + 1}/{args.trials}...")
         trajectory_publisher.publish(trajectory_msg)
-        print(f"Starting trial {trial_idx + 1}/{TRIAL_COUNT}...")
+        traj_complete_time_s: Optional[float] = None
 
         try:
             while not stop_requested.is_set():
@@ -620,7 +971,15 @@ def main() -> int:
                 _write_rgb_frame(rgb_writer_0, color_img, rgb_size)
                 _write_rgb_frame(rgb_writer_1, color_img_2, rgb_size)
                 if node.is_traj_complete():
-                    break
+                    if traj_complete_time_s is None:
+                        traj_complete_time_s = frame_time
+                        if DWELL_TIME_S > 0.0:
+                            print(
+                                "Trajectory complete received; "
+                                f"recording dwell for {DWELL_TIME_S:.2f} second(s)..."
+                            )
+                    if frame_time - traj_complete_time_s >= DWELL_TIME_S:
+                        break
         except RuntimeError as exc:
             print(f"RealSense stream error: {exc}")
             stop_requested.set()
@@ -637,7 +996,31 @@ def main() -> int:
         rgbd_payload_2 = recorder_2.finalize()
         robot_state_raw = _build_robot_state(node.snapshot())
         robot_state_aligned = _align_robot_state(robot_state_raw, rgbd_payload["timestamps"])
-        metadata = build_metadata(start_time, stop_time)
+        if mocap_receiver is not None:
+            mocap_raw = _build_mocap_state(mocap_receiver.snapshot())
+            mocap_aligned = _align_mocap_state(mocap_raw, rgbd_payload["timestamps"])
+            mocap_summary = mocap_receiver.summary()
+        else:
+            mocap_raw = {}
+            mocap_aligned = {}
+            mocap_summary = {
+                "packets_received": 0,
+                "decode_errors": 0,
+                "rigid_body_ids": [],
+                "samples_per_rigid_body": {},
+                "rigid_body_names": {},
+                "udp_ip": "",
+                "udp_port": 0,
+            }
+        metadata = build_metadata(
+            start_time,
+            stop_time,
+            DWELL_TIME_S,
+            mocap_incline_deg=float(args.incline_deg),
+            height_cm=float(args.height_cm),
+            traj_complete_time_sec=traj_complete_time_s,
+            mocap_summary=mocap_summary,
+        )
         payload = {
             "rgb_0": rgbd_payload["rgb"],
             "depth_0": rgbd_payload["depth"],
@@ -648,6 +1031,8 @@ def main() -> int:
             "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
             "robot_state_raw": robot_state_raw,
             "robot_state": robot_state_aligned,
+            "mocap_raw": mocap_raw,
+            "mocap": mocap_aligned,
             "metadata": metadata,
         }
 
@@ -662,6 +1047,8 @@ def main() -> int:
     
     realsense_primary.stop()
     realsense_secondary.stop()
+    if mocap_receiver is not None:
+        mocap_receiver.stop()
 
     stop_requested.set()
     executor.shutdown()
@@ -678,8 +1065,11 @@ def main() -> int:
         args.trials,
         trials_completed,
         avg_trial_duration,
+        DWELL_TIME_S,
         depth_scale_0,
         depth_scale_1,
+        mocap_incline_deg=float(args.incline_deg),
+        height_cm=float(args.height_cm),
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 
@@ -688,3 +1078,18 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+# there is a small jump between trials to save stuff and to send the trajectory command again. if we need uninterrupted recording, i can chnage the whole thing so we save only one file.
+# also make sure copy mocap scripts from pc
+## I need to think about RPY. I think the orientatins are coupled. 
+# i think ppl changed the location of cameras. need to readjust. having issue with mocap
+# to expediate data collection, maybe I should make a plotting script so I dont have to wait for the full render to check the accuracy of mocap etc.
+# why is the delay increasing?
+
+
+# the plots for sand vs resin doesn't make sense. recalculate resin with correct COM or redo (same with steel) and observe.
+# also check sand videos for validation.
+
+
+# check rendered vbideos for resin and steel to see what changed vs previous time.

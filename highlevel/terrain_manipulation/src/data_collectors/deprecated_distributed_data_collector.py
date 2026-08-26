@@ -37,7 +37,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
     ) from exc
 
 # Ensure we can import the existing turtle interface as used by lassie_gui.py
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 REPO_ROOT = PROJECT_ROOT.parent
 for path in (PROJECT_ROOT, REPO_ROOT):
     if str(path) not in sys.path:
@@ -46,11 +46,11 @@ for path in (PROJECT_ROOT, REPO_ROOT):
 try:  # Prefer the full GUI interface when its dependencies are available.
     from LASSIE_GUI.ros2_interface_turtle import ControlNode_Turtle  # type: ignore  # noqa: E402
 except Exception:  # pragma: no cover - fallback for headless environments
-    from highlevel.terrain_manipulation.headless_ros2_interface_turtle import (  # noqa: E402
+    from highlevel.terrain_manipulation.src.utils.headless_ros2_interface_turtle import (  # noqa: E402
         ControlNode_Turtle,
     )
 
-SESSION_ROOT = Path(__file__).resolve().parent / "data"
+SESSION_ROOT = Path(__file__).resolve().parents[2] / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 
 STREAM_WIDTH = 848
