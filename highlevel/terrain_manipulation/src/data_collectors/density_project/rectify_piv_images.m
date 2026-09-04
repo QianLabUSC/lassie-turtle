@@ -14,12 +14,32 @@ function rectify_piv_images
 
     validExtensions = {'.png', '.jpg', '.jpeg', '.tif', '.tiff', '.bmp'};
 
-    % Measured board properties.
-    checkerColumns = 7;
-    checkerRows = 10;
-    gridWidthMM = 174;
-    gridHeightMM = 249;
+    % Board orientation:
+    %   "portrait"  = 7 checkers across, 10 down
+    %   "landscape" = 10 checkers across, 7 down
+    boardOrientation = "landscape";
+    
     pixelsPerMM = 2;
+    
+    switch boardOrientation
+        case "portrait"
+            % Previous calibration image
+            checkerColumns = 7;
+            checkerRows = 10;
+            gridWidthMM = 174;
+            gridHeightMM = 249;
+    
+        case "landscape"
+            % New calibration image
+            checkerColumns = 10;
+            checkerRows = 7;
+            gridWidthMM = 249;
+            gridHeightMM = 174;
+    
+        otherwise
+            error('boardOrientation must be "portrait" or "landscape".');
+    end
+    
     checkerWidthMM = gridWidthMM / checkerColumns;
     checkerHeightMM = gridHeightMM / checkerRows;
 
