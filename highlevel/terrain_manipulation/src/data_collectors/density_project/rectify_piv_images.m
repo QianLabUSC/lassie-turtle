@@ -1,5 +1,5 @@
 function rectify_piv_images
-%RECTIFY_PIV_IMAGES Manually rectify oblique PIV images using four corners.
+% RECTIFY_PIV_IMAGES Manually rectify oblique PIV images using four corners.
 %
 % Board used here:
 %   7 checker columns across 174 mm
