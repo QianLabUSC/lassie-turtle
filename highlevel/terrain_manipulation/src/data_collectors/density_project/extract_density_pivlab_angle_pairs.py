@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import ast
 import csv
 import math
 from pathlib import Path
@@ -17,95 +16,14 @@ import numpy as np
 DEFAULT_SESSION_DIR = (
     Path(__file__).resolve().parents[3]
     / "data"
-    / "session_20260314_121349"
+    / "session_20260903_173420_height_4cm"
 )
-DEFAULT_THRESHOLD_SCRIPT = Path(__file__).with_name("capture_pivlab_frame_pair_threshold.py")
+DEFAULT_TRIGGER_RIGHT_ADDUCTION_RAD = 0.785 + math.radians(-5.0)
+DEFAULT_TRIGGER_RIGHT_SWEEPING_RAD = -1.315 + math.radians(45.0)
 DEFAULT_OUTPUT_DIR_NAME = "pivlab_angle_matched_pairs"
 DEFAULT_ALL_FRAMES_OUTPUT_DIR_NAME = "pivlab_all_trial_frames"
 DEFAULT_CAMERA_INDEX = 0
 DEFAULT_SECOND_FRAME_OFFSET = 1
-
-
-class _SafeEval(ast.NodeVisitor):
-    def __init__(self, names: Mapping[str, float]) -> None:
-        self.names = names
-
-    def visit_Expression(self, node: ast.Expression) -> float:
-        return self.visit(node.body)
-
-    def visit_Constant(self, node: ast.Constant) -> float:
-        if isinstance(node.value, (int, float)):
-            return float(node.value)
-        raise ValueError(f"Unsupported constant in threshold expression: {node.value!r}")
-
-    def visit_Name(self, node: ast.Name) -> float:
-        if node.id in self.names:
-            return float(self.names[node.id])
-        raise ValueError(f"Unsupported name in threshold expression: {node.id}")
-
-    def visit_UnaryOp(self, node: ast.UnaryOp) -> float:
-        value = self.visit(node.operand)
-        if isinstance(node.op, ast.UAdd):
-            return value
-        if isinstance(node.op, ast.USub):
-            return -value
-        raise ValueError("Unsupported unary operator in threshold expression.")
-
-    def visit_BinOp(self, node: ast.BinOp) -> float:
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        if isinstance(node.op, ast.Add):
-            return left + right
-        if isinstance(node.op, ast.Sub):
-            return left - right
-        if isinstance(node.op, ast.Mult):
-            return left * right
-        if isinstance(node.op, ast.Div):
-            return left / right
-        raise ValueError("Unsupported binary operator in threshold expression.")
-
-    def visit_Call(self, node: ast.Call) -> float:
-        if (
-            isinstance(node.func, ast.Attribute)
-            and isinstance(node.func.value, ast.Name)
-            and node.func.value.id == "math"
-            and node.func.attr == "radians"
-            and len(node.args) == 1
-            and not node.keywords
-        ):
-            return math.radians(self.visit(node.args[0]))
-        raise ValueError("Unsupported function call in threshold expression.")
-
-
-def _eval_float_expr(node: ast.AST, names: Mapping[str, float]) -> float:
-    return _SafeEval(names).visit(ast.Expression(node))
-
-
-def load_threshold_angles(threshold_script: Path) -> Tuple[float, float]:
-    """Read the current default trigger angles without importing the hardware script."""
-    tree = ast.parse(threshold_script.read_text(encoding="utf-8"), filename=str(threshold_script))
-    names: Dict[str, float] = {}
-    wanted = {
-        "DEFAULT_SWEEPING_OFFSET_DEG",
-        "DEFAULT_ADDUCTION_OFFSET_DEG",
-        "DEFAULT_TRIGGER_RIGHT_ADDUCTION_RAD",
-        "DEFAULT_TRIGGER_RIGHT_SWEEPING_RAD",
-    }
-    for node in tree.body:
-        if not isinstance(node, ast.Assign) or len(node.targets) != 1:
-            continue
-        target = node.targets[0]
-        if not isinstance(target, ast.Name) or target.id not in wanted:
-            continue
-        names[target.id] = _eval_float_expr(node.value, names)
-
-    try:
-        return (
-            names["DEFAULT_TRIGGER_RIGHT_ADDUCTION_RAD"],
-            names["DEFAULT_TRIGGER_RIGHT_SWEEPING_RAD"],
-        )
-    except KeyError as exc:
-        raise RuntimeError(f"Could not find threshold angle in {threshold_script}") from exc
 
 
 def _trial_sort_key(path: Path) -> Tuple[int, str]:
@@ -384,11 +302,10 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser(
         description=(
             "Extract A/B PIVLab image pairs from density collector .npy trials by matching "
-            "the right flipper angle to the current capture_pivlab threshold."
+            "the right flipper angle to the built-in trigger angles."
         )
     )
     ap.add_argument("--session-dir", type=Path, default=DEFAULT_SESSION_DIR)
-    ap.add_argument("--threshold-script", type=Path, default=DEFAULT_THRESHOLD_SCRIPT)
     ap.add_argument(
         "--output-dir",
         type=Path,
@@ -435,7 +352,8 @@ def main() -> int:
     if not session_dir.is_dir():
         raise SystemExit(f"Session directory does not exist: {session_dir}")
 
-    target_adduction_rad, target_sweeping_rad = load_threshold_angles(args.threshold_script)
+    target_adduction_rad = DEFAULT_TRIGGER_RIGHT_ADDUCTION_RAD
+    target_sweeping_rad = DEFAULT_TRIGGER_RIGHT_SWEEPING_RAD
     if args.target_adduction_rad is not None:
         target_adduction_rad = float(args.target_adduction_rad)
     if args.target_sweeping_rad is not None:
