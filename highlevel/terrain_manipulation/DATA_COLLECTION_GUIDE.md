@@ -170,5 +170,5 @@ PYTHON_BIN=/path/to/Turtle_TM/bin/python \
 - Modify [`src/data_collectors/trajectory.py`](src/data_collectors/trajectory.py) to add or change the current named sweep family.
 - Modify [`run_data_collector.sh`](../../../run_data_collector.sh) only when changing the lab's convenient default sequence or Python path.
 - Use [`src/data_collectors/record_realsense_reference.py`](src/data_collectors/record_realsense_reference.py) whenever a fresh depth reference is required.
-- Treat [`src/data_collectors/trajectory_dictionary.py`](src/data_collectors/trajectory_dictionary.py) as an untracked exploratory file, not the module used by the collector. The live collector imports `trajectory.py`.
+- [`src/data_collectors/trajectory_dictionary.py`](src/data_collectors/trajectory_dictionary.py) is a reusable, degree-labeled preset library. It is not the module used by the live collector, which imports `trajectory.py`.
 - Leave the older distributed collectors and `run_density_experiment.sh` alone unless deliberately reproducing their specific historical study.
