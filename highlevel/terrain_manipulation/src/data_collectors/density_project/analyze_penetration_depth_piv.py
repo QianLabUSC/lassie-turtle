@@ -44,7 +44,8 @@ DEFAULT_OUTPUT_DIR = DATA_ROOT / "penetration_depth_piv_analysis"
 COLUMNS = ("x [m]", "y [m]", "u [m/s]", "v [m/s]", "Vector type [-]")
 STAT_NAMES = ("mean", "median", "std", "min", "max", "q25", "q75", "p95")
 METRICS = tuple(f"{component}_{stat}_m_s" for component in ("u", "v", "speed")
-                for stat in STAT_NAMES) + ("abs_u_mean_m_s", "abs_v_mean_m_s")
+                for stat in STAT_NAMES) + ("abs_u_mean_m_s", "abs_v_mean_m_s",
+                                          "abs_u_p95_m_s", "abs_v_p95_m_s")
 POLICIES = ((1,), (1, 3), (1, 2, 3))
 VECTOR_SOURCE = "https://github.com/Shrediquette/PIVlab/blob/main/%2Bvalidate/filtervectors.m"
 COLORS = ("#2469A0", "#C46B24", "#777C35", "#B75F87", "#555555")
@@ -174,6 +175,8 @@ def velocity_statistics(uv: np.ndarray) -> Dict[str, float]:
                        for stat, value in zip(STAT_NAMES, stats)})
     result["abs_u_mean_m_s"] = float(np.mean(np.abs(u)))
     result["abs_v_mean_m_s"] = float(np.mean(np.abs(v)))
+    result["abs_u_p95_m_s"] = float(np.percentile(np.abs(u), 95))
+    result["abs_v_p95_m_s"] = float(np.percentile(np.abs(v), 95))
     return result
 
 
@@ -304,6 +307,8 @@ def make_plots(trials: Sequence[Trial], rows: Sequence[dict], types: Tuple[int, 
     # Chart contract: static PNG/PDF; 21 trial summaries, 7 ordered trials/condition.
     # Comparison = faceted dots + mean/SD; distributions = per-trial boxplots;
     # progression = observed trial-order markers joined within each session only.
+    # P95 companions use spatial quantiles per trial, never pooled quantiles.
+    # P95 boxplots show absolute components, with mean/P95 markers on full fields.
     # Three categories use blue/orange/olive with distinct markers/line styles.
     # No inferred trend fit, pooled-vector inferential intervals, or dropped outliers.
     import matplotlib
@@ -328,78 +333,110 @@ def make_plots(trials: Sequence[Trial], rows: Sequence[dict], types: Tuple[int, 
             fig.savefig(output / f"{name}.{extension}", dpi=200, bbox_inches="tight")
         plt.close(fig)
 
-    fig, axes = plt.subplots(1, 3, figsize=(12, 4.9), sharey=True)
-    fig.suptitle("PIV motion strength by condition\n" + subtitle, fontsize=13)
-    for ax, metric, title in zip(axes, ("speed_mean_m_s", "abs_u_mean_m_s", "abs_v_mean_m_s"),
-                                 ("Mean speed", "Mean |u|", "Mean |v|")):
-        labels = []
+    for stat, label in (("mean", "Mean"), ("p95", "P95")):
+        suffix = "" if stat == "mean" else "_p95"
+        title = "PIV motion strength by condition" if stat == "mean" else "PIV 95th-percentile motion strength by condition"
+        fig, axes = plt.subplots(1, 3, figsize=(12, 4.9), sharey=True)
+        fig.suptitle(title + "\n" + subtitle, fontsize=13)
+        for ax, component, name in zip(axes, ("speed", "abs_u", "abs_v"), ("speed", "|u|", "|v|")):
+            metric = f"{component}_{stat}_m_s"
+            labels = []
+            for i, condition in enumerate(conditions):
+                group = [row for row in rows if row["condition_cm"] == condition]
+                available = [row for row in group if math.isfinite(row[metric])]
+                values = np.array([row[metric] for row in available])
+                offsets = np.linspace(-0.16, 0.16, len(values)) if len(values) > 1 else [0]
+                ax.scatter(i + np.array(offsets), values, color=COLORS[i % len(COLORS)],
+                           marker=MARKERS[i % len(MARKERS)], s=36, alpha=0.85, zorder=3)
+                mean = float(np.mean(values))
+                sd = float(np.std(values, ddof=1)) if len(values) > 1 else 0
+                ax.errorbar(i + 0.27, mean, yerr=sd, fmt="_", color="#272727",
+                            markersize=12, capsize=4, linewidth=1.5, zorder=4)
+                labels.append(f"{condition:g} cm\nn={len(values)}/{len(group)}")
+            ax.set(title=f"{label} {name}", xlabel="Recorded condition (cm)", xticks=range(len(conditions)),
+                   xticklabels=labels, xlim=(-0.5, len(conditions) - 0.4))
+            ax.grid(axis="y", color="#E7E7E7", linewidth=0.7)
+        axes[0].set_ylabel("Velocity (m/s)")
+        # Include zero while retaining any below-zero mean-SD interval in unusual data.
+        if axes[0].get_ylim()[0] > 0:
+            axes[0].set_ylim(bottom=0)
+        fig.tight_layout(rect=(0, 0.13, 1, 0.87))
+        note = ("Dots: one spatial mean per trial. Black marks: equal-weight trial mean ± between-trial SD (not a confidence interval)."
+                if stat == "mean" else
+                "Dots: one spatial P95 per trial. Black marks: mean of trial P95s ± between-trial SD (not a 95% confidence interval).")
+        save(fig, f"condition_comparison{suffix}", note)
+
+    for highlight_p95 in (False, True):
+        suffix = "_p95" if highlight_p95 else ""
+        title = ("Within-trial motion magnitudes: mean and P95" if highlight_p95
+                 else "Within-trial velocity distributions")
+        fig, axes = plt.subplots(3, len(conditions), figsize=(max(8, 4 * len(conditions)), 9),
+                                 sharey="row", squeeze=False)
+        fig.suptitle(title + "\n" + subtitle, fontsize=13)
+        names = ("|u|", "|v|", "speed") if highlight_p95 else ("u", "v", "speed")
+        for col, condition in enumerate(conditions):
+            group = [trial for trial in trials if trial.condition_cm == condition]
+            fields = [selected_vectors(trial, types, roi_px)[0][:, 2:4] for trial in group]
+            counts = [len(field) for field in fields]
+            for row_index, name in enumerate(names):
+                ax = axes[row_index, col]
+                values = [(field[:, row_index] if row_index < 2 else np.hypot(field[:, 0], field[:, 1]))
+                          if len(field) else np.array([math.nan]) for field in fields]
+                if highlight_p95:
+                    values = [np.abs(value) for value in values]
+                positions = np.arange(1, len(group) + 1)
+                artists = ax.boxplot(values, positions=positions, widths=0.55,
+                                     patch_artist=True, whis=1.5, showfliers=True,
+                                     medianprops={"color": "#272727", "linewidth": 1.4},
+                                     flierprops={"marker": ".", "markersize": 2, "alpha": 0.4,
+                                                 "markeredgecolor": "#555555"})
+                for patch in artists["boxes"]:
+                    patch.set(facecolor=COLORS[col % len(COLORS)], alpha=0.45, edgecolor="#272727")
+                if highlight_p95:
+                    ax.scatter(positions, [np.mean(value) for value in values], marker="o", s=25,
+                               facecolors="white", edgecolors="#272727", label="Mean", zorder=4)
+                    ax.scatter(positions, [np.percentile(value, 95) for value in values], marker="D", s=25,
+                               color="#272727", label="P95", zorder=5)
+                ax.set_xticks(positions)
+                ax.set_xticklabels([str(trial.trial_number) for trial in group])
+                ax.axhline(0, color="#777777", linewidth=0.7, zorder=0)
+                ax.grid(axis="y", color="#E7E7E7", linewidth=0.7)
+                if row_index == 0:
+                    ax.set_title(f"{condition:g} cm | {len(group)} trials\n{min(counts)}–{max(counts)} vectors/trial")
+                if col == 0:
+                    ax.set_ylabel(f"{name} (m/s)")
+                if row_index == 2:
+                    ax.set_xlabel("Trial number")
+        # Set shared limits after all conditions have contributed their outliers.
+        for ax in (axes[:, 0] if highlight_p95 else [axes[2, 0]]):
+            ax.set_ylim(bottom=0)
+        if highlight_p95:
+            handles, labels = axes[0, 0].get_legend_handles_labels()
+            fig.legend(handles, labels, loc="upper center", bbox_to_anchor=(0.5, 0.905), ncol=2, frameon=False)
+        fig.tight_layout(rect=(0, 0.085, 1, 0.90 if highlight_p95 else 0.92))
+        note = ("Full spatial distributions: boxes Q25–Q75/median; whiskers 1.5×IQR; outliers shown. Open circles: mean; black diamonds: P95."
+                if highlight_p95 else
+                "Boxes: spatial Q25–Q75 and median. Whiskers: 1.5×IQR; all points beyond whiskers shown. Spatial vectors are not independent repeats.")
+        save(fig, f"trial_distributions{suffix}", note)
+
+    for stat, label in (("mean", "Mean"), ("p95", "P95")):
+        suffix = "" if stat == "mean" else "_p95"
+        fig, ax = plt.subplots(figsize=(10, 5.5))
+        fig.suptitle(f"{label} grain speed by trial order\n" + subtitle, fontsize=13)
         for i, condition in enumerate(conditions):
             group = [row for row in rows if row["condition_cm"] == condition]
-            available = [row for row in group if math.isfinite(row[metric])]
-            values = np.array([row[metric] for row in available])
-            offsets = np.linspace(-0.16, 0.16, len(values)) if len(values) > 1 else [0]
-            ax.scatter(i + np.array(offsets), values, color=COLORS[i % len(COLORS)],
-                       marker=MARKERS[i % len(MARKERS)], s=36, alpha=0.85, zorder=3)
-            mean = float(np.mean(values))
-            sd = float(np.std(values, ddof=1)) if len(values) > 1 else 0
-            ax.errorbar(i + 0.27, mean, yerr=sd, fmt="_", color="#272727",
-                        markersize=12, capsize=4, linewidth=1.5, zorder=4)
-            labels.append(f"{condition:g} cm\nn={len(values)}/{len(group)}")
-        ax.set(title=title, xlabel="Recorded condition (cm)", xticks=range(len(conditions)),
-               xticklabels=labels, xlim=(-0.5, len(conditions) - 0.4))
+            ax.plot([row["trial"] for row in group], [row[f"speed_{stat}_m_s"] for row in group],
+                    marker=MARKERS[i % len(MARKERS)], linestyle=LINESTYLES[i % len(LINESTYLES)],
+                    color=COLORS[i % len(COLORS)], label=f"{condition:g} cm", linewidth=1.5)
+        ax.set(xlabel="Trial number within session", ylabel=f"{label} speed (m/s)", ylim=(0, None),
+               xticks=sorted({row["trial"] for row in rows}))
         ax.grid(axis="y", color="#E7E7E7", linewidth=0.7)
-    axes[0].set_ylabel("Velocity (m/s)")
-    # Include zero while retaining any below-zero mean-SD interval in unusual data.
-    if axes[0].get_ylim()[0] > 0:
-        axes[0].set_ylim(bottom=0)
-    fig.tight_layout(rect=(0, 0.13, 1, 0.87))
-    save(fig, "condition_comparison", "Dots: one spatial mean per trial. Black marks: equal-weight trial mean ± between-trial SD (not a confidence interval).")
-
-    fig, axes = plt.subplots(3, len(conditions), figsize=(max(8, 4 * len(conditions)), 9),
-                             sharey="row", squeeze=False)
-    fig.suptitle("Within-trial velocity distributions\n" + subtitle, fontsize=13)
-    for col, condition in enumerate(conditions):
-        group = [trial for trial in trials if trial.condition_cm == condition]
-        fields = [selected_vectors(trial, types, roi_px)[0][:, 2:4] for trial in group]
-        counts = [len(field) for field in fields]
-        for row_index, name in enumerate(("u", "v", "speed")):
-            ax = axes[row_index, col]
-            values = [(field[:, row_index] if row_index < 2 else np.hypot(field[:, 0], field[:, 1]))
-                      if len(field) else np.array([math.nan]) for field in fields]
-            artists = ax.boxplot(values, positions=range(1, len(group) + 1), widths=0.55,
-                                 patch_artist=True, whis=1.5, showfliers=True,
-                                 medianprops={"color": "#272727", "linewidth": 1.4},
-                                 flierprops={"marker": ".", "markersize": 2, "alpha": 0.4,
-                                             "markeredgecolor": "#555555"})
-            for patch in artists["boxes"]:
-                patch.set(facecolor=COLORS[col % len(COLORS)], alpha=0.45, edgecolor="#272727")
-            ax.set_xticks(range(1, len(group) + 1))
-            ax.set_xticklabels([str(trial.trial_number) for trial in group])
-            ax.axhline(0, color="#777777", linewidth=0.7, zorder=0)
-            ax.grid(axis="y", color="#E7E7E7", linewidth=0.7)
-            if row_index == 0:
-                ax.set_title(f"{condition:g} cm | {len(group)} trials\n{min(counts)}–{max(counts)} vectors/trial")
-            if col == 0:
-                ax.set_ylabel(f"{name} (m/s)")
-            if row_index == 2:
-                ax.set_xlabel("Trial number")
-    axes[2, 0].set_ylim(bottom=0)
-    fig.tight_layout(rect=(0, 0.085, 1, 0.92))
-    save(fig, "trial_distributions", "Boxes: spatial Q25–Q75 and median. Whiskers: 1.5×IQR; all points beyond whiskers shown. Spatial vectors are not independent repeats.")
-
-    fig, ax = plt.subplots(figsize=(10, 5.5))
-    fig.suptitle("Mean grain speed by trial order\n" + subtitle, fontsize=13)
-    for i, condition in enumerate(conditions):
-        group = [row for row in rows if row["condition_cm"] == condition]
-        ax.plot([row["trial"] for row in group], [row["speed_mean_m_s"] for row in group],
-                marker=MARKERS[i % len(MARKERS)], linestyle=LINESTYLES[i % len(LINESTYLES)],
-                color=COLORS[i % len(COLORS)], label=f"{condition:g} cm", linewidth=1.5)
-    ax.set(xlabel="Trial number within session", ylabel="Mean speed (m/s)", ylim=(0, None),
-           xticks=sorted({row["trial"] for row in rows}))
-    ax.grid(axis="y", color="#E7E7E7", linewidth=0.7)
-    ax.legend(title="Recorded condition", frameon=False)
-    fig.tight_layout(rect=(0, 0.13, 1, 0.90))
-    save(fig, "trial_order", "One point per trial; lines connect observed repeats within each session. Matching trial numbers across conditions do not establish pairing.")
+        ax.legend(title="Recorded condition", frameon=False)
+        fig.tight_layout(rect=(0, 0.13, 1, 0.90))
+        note = ("One point per trial; lines connect observed repeats within each session. Matching trial numbers across conditions do not establish pairing."
+                if stat == "mean" else
+                "Each point: 95th percentile of spatial speeds within one trial. Lines connect observed repeats within each session; no fitted trend.")
+        save(fig, f"trial_order{suffix}", note)
 
 
 def write_notes(output: Path, trials: Sequence[Trial],
@@ -413,7 +450,8 @@ def write_notes(output: Path, trials: Sequence[Trial],
         "- [ ] Resolve inconsistent calibration across conditions. Verify the spatial reference and frame interval for each acquisition setup; use consistent calibration procedures and record the factors.",
         "", "## Method and interpretation", "",
         "The exported u/v values are used unchanged in m/s. Their calibration factors are recorded, never applied a second time. Speed is sqrt(u²+v²) at each vector, then summarized spatially within each trial.", "",
-        "Trial CSVs contain signed u/v and speed mean, median, population spatial SD (ddof=0), min/max, Q25/Q75, and P95; also mean |u| and mean |v|. Percentiles use NumPy's default linear interpolation. Min/max are descriptive, with no automatic outlier trimming.", "",
+        "Trial CSVs contain signed u/v and speed mean, median, population spatial SD (ddof=0), min/max, Q25/Q75, and P95; also mean and P95 of |u| and |v|. Percentiles use NumPy's default linear interpolation. Min/max are descriptive, with no automatic outlier trimming.", "",
+        "P95 is the spatial 95th-percentile threshold within one trial: approximately 95% of its retained values fall at or below it. It is neither the mean of the fastest 5% nor a 95% confidence interval. Component motion-strength plots use P95(|u|) and P95(|v|), calculated after taking absolute values, so large negative velocities contribute to motion strength. The signed u_p95_m_s/v_p95_m_s remain in the CSVs for directional analysis.", "",
         "Condition CSVs summarize each trial metric with equal trial weight: mean, between-trial sample SD (ddof=1), median, min/max, and trial counts. These are not pooled-vector summaries. For example, the condition mean of speed_p95_m_s is the mean of trial P95s, not a pooled P95. Missing/nonfinite results are blank in CSVs; missing trials are counted and excluded from numerical aggregates.", "",
         f"Primary vector types: {'+'.join(map(str, args.vector_types))}. Type 0 (masked) and nonfinite u/v are always excluded. Type 1 is the original accepted field; type 2 marks rejected vectors that may have been filled by interpolation; type 3 denotes accepted second-peak substitutions in current PIVlab. Sensitivity tables compare 1, 1+3, and 1+2+3. Confirm these semantics against the version used for export. Including replacements changes both values and spatial coverage.",
         f"Vector-type source: {VECTOR_SOURCE}", "",
@@ -421,7 +459,8 @@ def write_notes(output: Path, trials: Sequence[Trial],
         "Coordinates and components remain in the unrectified camera view. Condition values preserve the supplied height/penetration labels; they do not imply that 0 cm is a no-motion control or establish an absolute penetration measurement.", "",
         "Angles/timestamps are joined by both A/B source filenames, then trial/camera/frame identities are verified. Errors are recomputed from actual and target angles. Timestamp differences are diagnostics: collector timestamps may differ from camera exposure times. No timing correction is applied automatically.", "",
         f"Warning thresholds: angle error > {args.angle_warning_deg:g} deg; absolute recorded-versus-implied pair-interval difference > {args.timing_warning_percent:g}%. They flag observations without discarding them.", "",
-        "The three figures show trial means with between-trial SD, full within-trial boxplots, and observed trial order. The seven points per default condition are the available repeats; connecting them is descriptive, without a fitted trend. There are no p-values or confidence intervals. Spatial PIV locations are correlated and are not independent experimental repeats.", "",
+        "The original three figures show trial means with between-trial SD, signed within-trial boxplots, and observed trial order. Three additional *_p95 figures show trial P95s with between-trial SD, full |u|/|v|/speed boxplots with mean and P95 markers, and P95 speed by trial order. The P95 condition figure's black marks summarize the seven trial P95s with their mean and SD; they do not show a pooled P95. Mean and P95 comparison/order figures use the same units and styles, with separately scaled y axes for readability: compare the numeric axis values. The new boxplots put mean and P95 directly on the same axes.", "",
+        "The seven points per default condition are the available repeats; connecting them is descriptive, without a fitted trend. There are no p-values or confidence intervals. Spatial PIV locations are correlated and are not independent experimental repeats.", "",
         "## Calibration and metadata checks", "",
         "| Condition (cm) | Trials | xy (m/px) | uv ((m/s)/(px/frame)) | Max-angle error range (deg) | Recorded pair interval range (ms) |",
         "|---|---:|---|---|---|---|",
@@ -444,6 +483,9 @@ def write_notes(output: Path, trials: Sequence[Trial],
                   "- vector_sensitivity_trials.csv / vector_sensitivity_conditions.csv: same summaries for alternative vector inclusion policies.",
                   "- quality_checks.csv: original file hashes, source image names, calibration, angles, timestamps, grid bounds, and vector counts. Type/nonfinite counts cover the full export; *_in_roi counts cover the optional ROI.",
                   "- condition_comparison.png/.pdf, trial_distributions.png/.pdf, trial_order.png/.pdf.",
+                  "- condition_comparison_p95.png/.pdf: per-trial P95 of speed, |u|, and |v|; black marks summarize trial P95s.",
+                  "- trial_distributions_p95.png/.pdf: full |u|, |v|, and speed distributions; open circles show means and black diamonds show P95s.",
+                  "- trial_order_p95.png/.pdf: spatial P95 speed versus trial number.",
                   "", "## Reproduce", "", "```bash", command, "```", "",
                   "Requires Python 3, NumPy, and Matplotlib. --session CONDITION_CM SESSION_DIR may be repeated to replace the default sessions. --piv-subdir selects a different PIV export folder relative to each session. One session per condition and one PIV pair per trial are required; duplicated trial exports are rejected.",
                   "", "Sources:", ""])
