@@ -29,6 +29,7 @@ public:
   
   ~SocketcanInterface();
   int readFrame(can_frame *frame);
+  int readLatestFrame(can_frame *frame);
   int writeFrame(can_frame frame);
 
 private:
