@@ -44,19 +44,21 @@ except ModuleNotFoundError as exc:  # pragma: no cover - defensive guard
         "Install the Intel RealSense SDK Python bindings before running this program."
     ) from exc
 
-SESSION_ROOT = Path(__file__).resolve().parents[2] / "data"
+SESSION_ROOT = Path(__file__).resolve().parents[3] / "data"
 DEFAULT_TIMEZONE = os.environ.get("TERRAIN_TIMEZONE", "Etc/GMT+8")
 
-STREAM_WIDTH = 848
-STREAM_HEIGHT = 480
-STREAM_FPS = 60
+DEPTH_WIDTH = 848
+DEPTH_HEIGHT = 480
+COLOR_WIDTH = 1280
+COLOR_HEIGHT = 720
+STREAM_FPS = 30
 DEPTH_MIN_M = None
 DEPTH_MAX_M = None
 DEPTH_SCHEME = "jet"
 DEPTH_HIST_EQ = False
 DEPTH_POSTPROCESS = False
-TRIAL_COUNT = 2
-HEIGHT_CM = -1
+TRIAL_COUNT = 7
+HEIGHT_CM = 0
 # Dwell duration after /trajectory_complete before ending the trial record.
 DWELL_TIME_S = 3.0
 SAVE_RGB_MP4 = False
@@ -80,35 +82,40 @@ MOCAP_INCLINE_DEG = 0.0
 TRAJ_SPEED_RAD_S = 2.0
 SWEEPING_START_OFFSET_DEG = 45.0
 ADDUCTION_START_OFFSET_DEG = -5.0
+CURRENT_ADDUCTION_DELTA_RAD = 0.785
+DEFAULT_ADDUCTION_DELTA_DEG = math.degrees(CURRENT_ADDUCTION_DELTA_RAD)
 
 SWEEPING_START_OFFSET_RAD = math.radians(SWEEPING_START_OFFSET_DEG)
-ADDUCTION_START_OFFSET_RAD = math.radians(ADDUCTION_START_OFFSET_DEG)
 
-FIXED_TRAJECTORY = [
-    0.0 + ADDUCTION_START_OFFSET_RAD,
-    -0.53 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.0 + ADDUCTION_START_OFFSET_RAD,
-    -1.315 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.785 + ADDUCTION_START_OFFSET_RAD,
-    -1.315 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.785 + ADDUCTION_START_OFFSET_RAD,
-    -0.53 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.785 + ADDUCTION_START_OFFSET_RAD,
-    0.1 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.0 + ADDUCTION_START_OFFSET_RAD,
-    0.1 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-    0.0 + ADDUCTION_START_OFFSET_RAD,
-    -0.53 + SWEEPING_START_OFFSET_RAD,
-    TRAJ_SPEED_RAD_S,
-]
 
-TRAJECTORY_POINTS = list(FIXED_TRAJECTORY)
+def build_fixed_trajectory(adduction_delta_deg: float) -> List[float]:
+    """Build the density sweep with a configurable adduction downstroke."""
+    adduction_home_rad = math.radians(ADDUCTION_START_OFFSET_DEG)
+    adduction_down_rad = adduction_home_rad + math.radians(adduction_delta_deg)
+
+    return [
+        adduction_home_rad,
+        -0.53 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_home_rad,
+        -1.315 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_down_rad,
+        -1.315 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_down_rad,
+        -0.53 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_down_rad,
+        0.1 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_home_rad,
+        0.1 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+        adduction_home_rad,
+        -0.53 + SWEEPING_START_OFFSET_RAD,
+        TRAJ_SPEED_RAD_S,
+    ]
 
 
 def _resolve_now(timezone_name: Optional[str]) -> datetime:
@@ -158,6 +165,9 @@ def save_session_metadata(
     depth_scale_1: float,
     mocap_incline_deg: float,
     height_cm: float,
+    adduction_delta_deg: float,
+    adduction_home_deg: float,
+    adduction_down_deg: float,
 ) -> None:
     payload = {
         "start_time": start_time.isoformat(),
@@ -170,7 +180,12 @@ def save_session_metadata(
         "slope": 0,
         "initial_compaction": -1,
         "height_cm": float(height_cm),
-        "image_resolution": [int(STREAM_WIDTH), int(STREAM_HEIGHT)],
+        "adduction_delta_deg": float(adduction_delta_deg),
+        "adduction_home_deg": float(adduction_home_deg),
+        "adduction_down_deg": float(adduction_down_deg),
+        "image_resolution": [int(COLOR_WIDTH), int(COLOR_HEIGHT)],
+        "color_resolution": [int(COLOR_WIDTH), int(COLOR_HEIGHT)],
+        "depth_resolution": [int(DEPTH_WIDTH), int(DEPTH_HEIGHT)],
         "fps": int(STREAM_FPS),
         "histogram_equalization": bool(DEPTH_HIST_EQ),
         "depth_scale_0": float(depth_scale_0),
@@ -192,6 +207,9 @@ def build_metadata(
     dwell_time_sec: float,
     mocap_incline_deg: float,
     height_cm: float,
+    adduction_delta_deg: float,
+    adduction_home_deg: float,
+    adduction_down_deg: float,
     traj_complete_time_sec: Optional[float] = None,
     mocap_summary: Optional[Dict[str, object]] = None,
 ) -> Dict[str, object]:
@@ -201,6 +219,9 @@ def build_metadata(
         "duration_sec": (stop_time - start_time).total_seconds(),
         "dwell_time_sec": float(dwell_time_sec),
         "height_cm": float(height_cm),
+        "adduction_delta_deg": float(adduction_delta_deg),
+        "adduction_home_deg": float(adduction_home_deg),
+        "adduction_down_deg": float(adduction_down_deg),
         "mocap_enabled": bool(MOCAP_ENABLED),
         "mocap_reference_mode": str(MOCAP_REFERENCE_MODE),
         "mocap_incline_deg": float(mocap_incline_deg),
@@ -305,8 +326,8 @@ class RealSenseSession:
         self.config = rs.config()
         if serial:
             self.config.enable_device(serial)
-        self.config.enable_stream(rs.stream.depth, STREAM_WIDTH, STREAM_HEIGHT, rs.format.z16, STREAM_FPS)
-        self.config.enable_stream(rs.stream.color, STREAM_WIDTH, STREAM_HEIGHT, rs.format.bgr8, STREAM_FPS)
+        self.config.enable_stream(rs.stream.depth, DEPTH_WIDTH, DEPTH_HEIGHT, rs.format.z16, STREAM_FPS)
+        self.config.enable_stream(rs.stream.color, COLOR_WIDTH, COLOR_HEIGHT, rs.format.bgr8, STREAM_FPS)
         self.colorizer = _make_colorizer()
         self.spatial = rs.spatial_filter()
         self.temporal = rs.temporal_filter()
@@ -851,6 +872,15 @@ def parse_args() -> argparse.Namespace:
         help="Physically set experiment height in cm; used for run naming and metadata only.",
     )
     ap.add_argument(
+        "--adduction-delta-deg",
+        type=float,
+        default=DEFAULT_ADDUCTION_DELTA_DEG,
+        help=(
+            "Right-adduction downstroke displacement from the home angle, in degrees. "
+            f"Default {DEFAULT_ADDUCTION_DELTA_DEG:.3f} reproduces the original density collector trajectory."
+        ),
+    )
+    ap.add_argument(
         "--incline-deg",
         type=float,
         default=MOCAP_INCLINE_DEG,
@@ -867,9 +897,22 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
+    adduction_delta_deg = float(args.adduction_delta_deg)
+    if not math.isfinite(adduction_delta_deg) or adduction_delta_deg < 0.0:
+        raise SystemExit("--adduction-delta-deg must be a finite, non-negative value.")
+    adduction_home_deg = float(ADDUCTION_START_OFFSET_DEG)
+    adduction_down_deg = adduction_home_deg + adduction_delta_deg
+    trajectory_points = build_fixed_trajectory(adduction_delta_deg)
+
     session_dir = ensure_session_dir(_resolve_now(DEFAULT_TIMEZONE), height_cm=float(args.height_cm))
     print(f"Session directory: {session_dir}")
     print(f"Experiment height: {float(args.height_cm):g} cm")
+    print(
+        "Adduction command: "
+        f"home={adduction_home_deg:.3f} deg, "
+        f"delta={adduction_delta_deg:.3f} deg, "
+        f"down={adduction_down_deg:.3f} deg"
+    )
 
     rclpy.init()
     node = ControlNodeHighRate()
@@ -906,7 +949,7 @@ def main() -> int:
     )
 
     trajectory_msg = Float64MultiArray()
-    trajectory_msg.data = list(TRAJECTORY_POINTS)
+    trajectory_msg.data = list(trajectory_points)
     trajectory_publisher = node.create_publisher(Float64MultiArray, "/trajectory_points", 10)
     mocap_receiver: Optional[MocapUDPReceiver] = None
     if MOCAP_ENABLED:
@@ -944,7 +987,7 @@ def main() -> int:
             break
         recorder = RGBDRecorder()
         recorder_2 = RGBDRecorder()
-        rgb_size = (STREAM_WIDTH, STREAM_HEIGHT)
+        rgb_size = (COLOR_WIDTH, COLOR_HEIGHT)
         rgb_writer_0: Optional[object] = None
         rgb_writer_1: Optional[object] = None
         if args.save_rgb_mp4:
@@ -1020,6 +1063,9 @@ def main() -> int:
             DWELL_TIME_S,
             mocap_incline_deg=float(args.incline_deg),
             height_cm=float(args.height_cm),
+            adduction_delta_deg=adduction_delta_deg,
+            adduction_home_deg=adduction_home_deg,
+            adduction_down_deg=adduction_down_deg,
             traj_complete_time_sec=traj_complete_time_s,
             mocap_summary=mocap_summary,
         )
@@ -1030,7 +1076,7 @@ def main() -> int:
             "rgb_1": rgbd_payload_2["rgb"],
             "depth_1": rgbd_payload_2["depth"],
             "camera_time_1": rgbd_payload_2["timestamps"],
-            "trajectory_points": np.asarray(TRAJECTORY_POINTS, dtype=float),
+            "trajectory_points": np.asarray(trajectory_points, dtype=float),
             "robot_state_raw": robot_state_raw,
             "robot_state": robot_state_aligned,
             "mocap_raw": mocap_raw,
@@ -1072,6 +1118,9 @@ def main() -> int:
         depth_scale_1,
         mocap_incline_deg=float(args.incline_deg),
         height_cm=float(args.height_cm),
+        adduction_delta_deg=adduction_delta_deg,
+        adduction_home_deg=adduction_home_deg,
+        adduction_down_deg=adduction_down_deg,
     )
     print(f"Completed {trials_completed} trial(s) in {duration_sec:.1f} seconds.")
 
