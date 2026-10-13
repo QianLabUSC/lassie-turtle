@@ -89,6 +89,37 @@ blower_stop() {
   blower_call stop "[0.0, 0.0, 0.0]" || echo "Warning: blower stop request failed." >&2
 }
 
+# Right-leg motor currents (A) in /robot_state: data[7] adduction, data[8] sweeping.
+right_leg_currents() {
+  ROS_DOMAIN_ID=$TURTLE_DOMAIN_ID timeout 5 ros2 topic echo --once /robot_state 2>/dev/null \
+    | awk '/^- / { i++; if (i == 8 || i == 9) printf "%s ", $2 }'
+}
+
+# Switch the right-leg motors to idle with the same /Gui_information stop
+# (start_flag 0) the collector sends on exit, then check the currents dropped.
+# Between trials the motors keep holding the leg at home, so this runs once at
+# the end of the session.
+IDLE_CURRENT_A=0.1
+release_motors() {
+  echo
+  read -r -p "Support the leg: the motors will be switched off and the leg may drop. Press Enter... "
+  if ! ROS_DOMAIN_ID=$TURTLE_DOMAIN_ID timeout 15 ros2 topic pub -t 3 -r 2 -w 1 --keep-alive 1 \
+      /Gui_information std_msgs/msg/Float64MultiArray "{data: [0.0, 0.0]}" >/dev/null; then
+    echo "Warning: could not send the stop on /Gui_information." >&2
+  fi
+  sleep 1
+  local currents
+  currents="$(right_leg_currents)"
+  if [[ -n "$currents" ]] && awk -v lim="$IDLE_CURRENT_A" '{ for (i = 1; i <= NF; i++) if ($i > lim || $i < -lim) exit 1 }' <<< "$currents"; then
+    echo "Motors idle (right-leg currents: ${currents}A)."
+  else
+    echo "Warning: right-leg motors may still be on (currents: '${currents:-no reading}')." >&2
+    echo "On the turtle Pi, idle them with:" >&2
+    echo "  cansend can1 047#01000000" >&2
+    echo "  cansend can1 067#01000000" >&2
+  fi
+}
+
 BLOWER_ACTIVE=0
 on_interrupt() {
   if (( BLOWER_ACTIVE )); then
@@ -170,6 +201,8 @@ for (( n = 0; n < NUM_TRIALS; n++ )); do
     --schedule-seed "$SCHEDULE_SEED" \
     --schedule-trial-index "$trial_index"
 done
+
+release_motors
 
 echo
 echo "Session complete: schedule trial(s) ${TRIAL_INDICES[*]} at ${HEIGHT_CM} cm."

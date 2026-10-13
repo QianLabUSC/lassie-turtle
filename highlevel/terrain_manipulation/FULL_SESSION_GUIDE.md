@@ -19,6 +19,13 @@ For each trial the script:
 4. asks you to put the robot back; the collector then asks for Enter and runs the five sweeps.
 
 With `all`, the script pauses 3 s between trials. Each trial is saved in its own session folder.
+
+Between trials the motors stay on and hold the leg at the home pose, so the next trial starts from
+there. At the end of the session the script asks you to support the leg, then switches the
+right-leg motors to idle (the same `/Gui_information` stop the collector sends on exit, sent three
+times) and checks in `/robot_state` that both right-leg currents are below 0.1 A. If they are not,
+it prints the `cansend` commands to idle the motors from the Pi (see below). Idle motors have no
+torque, so the leg can drop.
 Pressing Ctrl+C while the blower is running sends a stop command before exiting.
 
 Set `SCHEDULE_SEED` to use a different schedule, and `PYTHON_BIN`, `TRACKWAY_SETUP` or
@@ -105,6 +112,17 @@ lying on it or tools.
 
 ## After the session
 
+If the script warned that the motors may still be on, or the leg is still quivering, idle the
+right-leg motors (ODrive nodes 2 and 3) on the Pi. Support the leg first:
+
+```bash
+cansend can1 047#01000000
+cansend can1 067#01000000
+```
+
+Stopping the controller with Ctrl+C does not do this: the ODrives keep holding their last position
+until they are told to go idle.
+
 Other experiments on this robot expect the default CAN names. If you swapped the names in step 2,
 swap them back on the Pi (or reboot it):
 
@@ -125,4 +143,6 @@ sudo ip link set cantmp name can1
 | `candump: read: Network is down` | That interface is down. Bring it up at 1 Mbit/s as in step 2. |
 | Script stops at the blower check | The ebox is off or still booting, or the PC is not on the EEB network. |
 | Script stops at the turtle check | The controller is not running, or not on `ROS_DOMAIN_ID=2`. |
+| Leg quivers while holding a position | The ODrive position loop hunts at roughly 13–17 Hz with about ±0.5 A. This is present in earlier data too; it needs the gains of nodes 2 and 3 re-tuned. |
+| Leg still quivers after the session | The motors were not set to idle. Use the `cansend` commands above. |
 | `mocap` arrays empty | OptiTrack UDP forwarding to port 8000 is not running. |
