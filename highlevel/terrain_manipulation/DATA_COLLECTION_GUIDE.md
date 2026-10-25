@@ -4,6 +4,8 @@ This guide describes the current sweep-data collection pipeline for the LASSIE t
 
 The active entry point is [`run_data_collector.sh`](../../../run_data_collector.sh). It runs [`src/data_collectors/data_collector.py`](src/data_collectors/data_collector.py), which is the current reference-corrected, sequence-aware collector. Do not start collection with `distributed_data_collector_highrate.py`, `distributed_data_collector_highrate_density_experiment.py`, or `deprecated_distributed_data_collector.py` unless reproducing their older fixed-trajectory experiments. `run_density_experiment.sh` belongs specifically to the density experiment and invokes the older density collector.
 
+To also reset the sand with the trackway blower before each trial and record the camera reference automatically, use `run_full_session_test.sh`; see [`FULL_SESSION_GUIDE.md`](FULL_SESSION_GUIDE.md), which also covers the CAN setup the controller needs after a Pi reboot.
+
 ## What the collector records
 
 For every trial, the collector:
