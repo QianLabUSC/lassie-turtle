@@ -90,6 +90,24 @@ int SocketcanInterface::readFrame(can_frame *frame)
     return read(this->s, frame, sizeof(*frame));
 }
 
+// Drain everything already queued without waiting and keep the newest data frame.
+// Returns -1 if nothing new arrived since the last call.
+int SocketcanInterface::readLatestFrame(can_frame *frame)
+{
+    can_frame tmp;
+    int result = -1;
+    while (recv(this->s, &tmp, sizeof(tmp), MSG_DONTWAIT) == sizeof(tmp))
+    {
+        if (tmp.can_id & CAN_RTR_FLAG)
+        {
+            continue;
+        }
+        *frame = tmp;
+        result = sizeof(tmp);
+    }
+    return result;
+}
+
 
 int SocketcanInterface::writeFrame(can_frame frame)
 {

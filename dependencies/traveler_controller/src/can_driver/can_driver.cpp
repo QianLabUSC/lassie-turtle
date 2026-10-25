@@ -39,6 +39,18 @@ can_driver::~can_driver()
 
 }
 
+// The ODrives only send Get_Iq when asked, so request it with an RTR frame.
+// The reply is picked up by a later loop's non-blocking read.
+static constexpr int IQ_REQUEST_EVERY_N_LOOPS = 10; // ~100 Hz at the 1 kHz loop rate
+
+static void request_iq(SocketcanInterface& socket, canid_t axis_id)
+{
+    can_frame frame{};
+    frame.can_id = (odrive_can::Msg::MSG_GET_IQ | axis_id) | CAN_RTR_FLAG;
+    frame.can_dlc = 8;
+    socket.writeFrame(frame);
+}
+
 void can_driver::updateChannel1StatusCallback_0()
 {   
     odrive_status_msg_0_axis0.can_channel = 0;
@@ -55,7 +67,7 @@ void can_driver::updateChannel1StatusCallback_0()
     
 
     can_frame recv_frame_0_axis0;
-    if (socket_get_encoder_estimates_0_axis0.readFrame(&recv_frame_0_axis0) < 0) 
+    if (socket_get_encoder_estimates_0_axis0.readLatestFrame(&recv_frame_0_axis0) < 0) 
      {
         // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis0");
      }
@@ -65,7 +77,7 @@ void can_driver::updateChannel1StatusCallback_0()
     }
 
     can_frame iq_recv_frame_0_axis0;
-    if (socket_channel0_get_iq_0.readFrame(&iq_recv_frame_0_axis0) < 0)
+    if (socket_channel0_get_iq_0.readLatestFrame(&iq_recv_frame_0_axis0) < 0)
      {
          // RCLCPP_INFO(this->get_logger(), "No Current Response Received channel0_axis0");
      }
@@ -93,7 +105,7 @@ void can_driver::updateChannel1StatusCallback_1()
     
 
     can_frame recv_frame_0_axis1;
-    if (socket_get_encoder_estimates_0_axis1.readFrame(&recv_frame_0_axis1) < 0) 
+    if (socket_get_encoder_estimates_0_axis1.readLatestFrame(&recv_frame_0_axis1) < 0) 
      {
        // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel0_axis1");
      }
@@ -103,7 +115,7 @@ void can_driver::updateChannel1StatusCallback_1()
     }
 
     can_frame iq_recv_frame_0_axis1;
-    if (socket_channel0_get_iq_1.readFrame(&iq_recv_frame_0_axis1) < 0)
+    if (socket_channel0_get_iq_1.readLatestFrame(&iq_recv_frame_0_axis1) < 0)
      {
        // RCLCPP_INFO(this->get_logger(), "No Current Response Received channel0_axis1");
      }
@@ -136,7 +148,7 @@ void can_driver::updateChannel2StatusCallback_0(){
     can_frame recv_frame_1_axis0;
 
 
-    if (socket_get_encoder_estimates_1_axis0.readFrame(&recv_frame_1_axis0) < 0) 
+    if (socket_get_encoder_estimates_1_axis0.readLatestFrame(&recv_frame_1_axis0) < 0) 
      {
         // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel1_axis0");
      }
@@ -147,7 +159,7 @@ void can_driver::updateChannel2StatusCallback_0(){
      }
  
     can_frame iq_recv_frame_1_axis0;
-    if (socket_channel1_get_iq_0.readFrame(&iq_recv_frame_1_axis0) < 0)
+    if (socket_channel1_get_iq_0.readLatestFrame(&iq_recv_frame_1_axis0) < 0)
      {
          // RCLCPP_INFO(this->get_logger(), "No Current Response Received channel1_axis0");
      }
@@ -181,7 +193,7 @@ void can_driver::updateChannel2StatusCallback_1(){
    //    }
     
     can_frame recv_frame_1_axis1;
-    if (socket_get_encoder_estimates_1_axis1.readFrame(&recv_frame_1_axis1) < 0) 
+    if (socket_get_encoder_estimates_1_axis1.readLatestFrame(&recv_frame_1_axis1) < 0) 
      {
       // RCLCPP_INFO(this->get_logger(), "No Encoder Response Received channel1_axis1");
      }
@@ -191,7 +203,7 @@ void can_driver::updateChannel2StatusCallback_1(){
     
      }
     can_frame iq_recv_frame_1_axis1;
-    if (socket_channel1_get_iq_1.readFrame(&iq_recv_frame_1_axis1) < 0)
+    if (socket_channel1_get_iq_1.readLatestFrame(&iq_recv_frame_1_axis1) < 0)
      {
          //RCLCPP_INFO(this->get_logger(), "No Current Response Received channel1_axis1");
      }
@@ -209,6 +221,15 @@ void can_driver::updateChannel2StatusCallback_1(){
 
 
 void can_driver::get_motor_status(turtle& turtle_){
+      static int iq_request_counter = 0;
+      if (iq_request_counter++ % IQ_REQUEST_EVERY_N_LOOPS == 0)
+      {
+         // request_iq(socket_channel0_get_iq_0, odrive_can::AXIS::AXIS_0_ID);
+         // request_iq(socket_channel0_get_iq_1, odrive_can::AXIS::AXIS_1_ID);
+         request_iq(socket_channel1_get_iq_0, odrive_can::AXIS::AXIS_3_ID);
+         request_iq(socket_channel1_get_iq_1, odrive_can::AXIS::AXIS_2_ID);
+      }
+
       // updateChannel1StatusCallback_0();
       // updateChannel1StatusCallback_1();
       updateChannel2StatusCallback_0();
