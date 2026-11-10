@@ -2,7 +2,7 @@
 
 # Replace these variables with your actual SSH connection details
 remote_user="ubuntu"
-remote_host="192.168.10.19"
+remote_host="192.168.10.20"
 
 echo "Attempting to establish SSH connection to $remote_user@$remote_host..."
 
