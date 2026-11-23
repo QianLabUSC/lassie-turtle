@@ -1,5 +1,7 @@
 
 #include "can_driver/socketcan_interface.hpp"
+#include <stdexcept>
+#include <string>
 // SocketcanInterface::SocketcanInterface()
 // {
 //     // Constructor for no mask definition
@@ -39,18 +41,19 @@ int SocketcanInterface::openSocket(canid_t msg_id, uint8_t can_channel, uint16_t
     s = socket(PF_CAN, SOCK_RAW, CAN_RAW);
     if (s < 0)
     {
-        return -1;
+        throw std::runtime_error("Cannot create CAN socket");
     }
-        if (can_channel == 0)
-        {
-            strcpy(ifr.ifr_name, "can0");
-            ioctl(s, SIOCGIFINDEX, &ifr);
-        }
-        else 
-        {
-            strcpy(ifr.ifr_name, "can1");
-            ioctl(s, SIOCGIFINDEX, &ifr);
-        }
+    ifr = {};
+    addr = {};
+    if (can_channel == 0) {
+        strcpy(ifr.ifr_name, "can0");
+    } else {
+        strcpy(ifr.ifr_name, "can1");
+    }
+    if (ioctl(s, SIOCGIFINDEX, &ifr) < 0) {
+        close(s);
+        throw std::runtime_error(std::string("CAN interface not found: ") + ifr.ifr_name);
+    }
     can_filter filt;
     filt.can_id = msg_id;
     filt.can_mask = mask & CAN_SFF_MASK; // Mask to first 5 bits of 11 bit identifier
@@ -78,8 +81,8 @@ int SocketcanInterface::openSocket(canid_t msg_id, uint8_t can_channel, uint16_t
     int err = bind(s, (struct sockaddr *)&addr, sizeof(addr));
     if (err < 0)
     {
-        printf("Socket Bind Error\n");
-        return -1;
+        close(s);
+        throw std::runtime_error(std::string("Cannot bind CAN interface: ") + ifr.ifr_name);
     }
 
     return s;
@@ -87,7 +90,8 @@ int SocketcanInterface::openSocket(canid_t msg_id, uint8_t can_channel, uint16_t
 
 int SocketcanInterface::readFrame(can_frame *frame)
 {
-    return read(this->s, frame, sizeof(*frame));
+    // Missing cyclic Iq feedback must not stall trajectory timing.
+    return recv(this->s, frame, sizeof(*frame), MSG_DONTWAIT);
 }
 
 

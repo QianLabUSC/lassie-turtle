@@ -1,3 +1,99 @@
+# Gantry world-model data collection
+
+This branch targets the duplicated single-flipper system: **can0**, **adduction node 2**,
+**sweeping node 3**, classic CAN at **1,000,000 bit/s**. Latest observed Wi-Fi IP:
+`192.168.10.28` (DHCP can change it). No ODrive serial numbers are required.
+
+## Deploy from your development computer
+
+Run from your local `lassie-turtle` checkout:
+
+```bash
+./deploy_dependencies.sh
+```
+
+This creates `/home/ubuntu/lassie-turtle/dependencies` if needed and copies the
+dependency sources there. It excludes local `build/`, `install/`, and `log/`
+directories so the Pi can compile its own binaries. No `roboland` directory is
+required. Override a changed IP with `PI_HOST=192.168.10.28 ./deploy_dependencies.sh`.
+The script uses normal SSH authentication; it does not require `~/.ssh/id_rsa`.
+
+Only the Pi needs to build the motor controller. Build on a Linux laptop too
+only if you need the custom ROS messages or nodes locally on that laptop.
+
+## Build on the Pi
+
+Clone this branch on the Pi, then run from the repository root:
+
+```bash
+sudo apt update
+sudo apt install build-essential python3-colcon-common-extensions ros-humble-control-msgs can-utils
+source /opt/ros/humble/setup.bash
+cd dependencies
+colcon build --executor sequential
+source install/setup.bash
+```
+
+For every new SSH terminal, source ROS and the workspace setup again. For a clone in
+`~/lassie-turtle`, run:
+
+```bash
+source /opt/ros/humble/setup.bash
+source ~/lassie-turtle/dependencies/install/setup.bash
+```
+
+## Run a trajectory
+
+On the Pi, enable CAN after each reboot (ODrives must also use 1 Mbps):
+
+```bash
+sudo ip link set can0 up type can bitrate 1000000
+```
+
+If the original robot is running on the same network, use a distinct ROS domain.
+For example, run `export ROS_DOMAIN_ID=23` in **every terminal** controlling this
+system, including the controller terminal. Use that same domain on a laptop
+when publishing directly from the laptop instead of through SSH.
+
+Connect with `ssh ubuntu@192.168.10.28`. In the first sourced terminal:
+
+```bash
+ros2 run turtle_high_controller turtle_high_controller
+```
+
+In a second sourced terminal, publish a trajectory to `/trajectory_points` using
+`std_msgs/msg/Float64MultiArray`. Each triple is **[adduction radians, sweep radians,
+positive interpolation speed in rad/s]**. The existing random, circle, and fixed
+trajectory arrays use this format. These are joint-angle paths, not Cartesian
+positions in metres.
+
+**Loading waypoints waits for Start.** Then run:
+
+```bash
+# Start the loaded trajectory
+ros2 topic pub --once /Gui_information std_msgs/msg/Float64MultiArray '{data: [1.0, 0.0]}'
+# Stop: request ODrive idle (releases motor torque)
+ros2 topic pub --once /Gui_information std_msgs/msg/Float64MultiArray '{data: [0.0, 0.0]}'
+```
+
+The path starts at the first supplied waypoint; it does not ramp there from the
+measured position. Confirm the new hardware has the same mechanical zero,
+rotation directions and effective gearing before using the old full trajectories.
+The conversion remains `motor_turns = -joint_radians / (2*pi)` for both joints.
+Completion clears Start and releases control; `/trajectory_complete` reports it.
+This software stop is not a hardware emergency stop.
+
+Encoder feedback should be enabled on both ODrives. Iq feedback is optional for
+motion timing because CAN reads are nonblocking; current values remain at their
+last/default values if Iq messages are disabled. This controller does not yet
+stop automatically on stale feedback or check ODrive errors.
+
+The controller is `turtle_high_controller`; the separate
+`odrivepro_can_interface` package mentioned in older notes is not needed for this
+execution path. Installing desktop environments is not required.
+
+---
+
 # LASSIE Turtle Robot
 
 Software distribution for the LASSIE (Legged Autonomous Surface Science In Analogue Environments) turtle robot system.
@@ -45,8 +141,8 @@ Software distribution for the LASSIE (Legged Autonomous Surface Science In Analo
 
 1. **Configure deployment script**: Edit `deploy_dependencies.sh` to set:
    - `user` - SSH username (default: `ubuntu`)
-   - `host` - Raspberry Pi IP address (default: `192.168.10.19`)
-   - `remote_dir` - Remote directory path (default: `/home/ubuntu/roboland`)
+   - `host` - Raspberry Pi IP address (default: `192.168.10.28`)
+   - `remote_dir` - Remote directory path (default: `/home/ubuntu/lassie-turtle`)
 
 2. **Deploy dependencies folder to Raspberry Pi**:
    ```bash
@@ -65,7 +161,7 @@ Software distribution for the LASSIE (Legged Autonomous Surface Science In Analo
 Once connected to the Raspberry Pi, navigate to the dependencies folder and build:
 
 ```bash
-cd ~/roboland/dependencies  # or wherever you deployed it
+cd ~/lassie-turtle/dependencies
 ./build.sh
 ```
 

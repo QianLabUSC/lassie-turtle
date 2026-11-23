@@ -7,6 +7,8 @@
 
 #include "proxy/upperproxy.h"
 #include "controller/trajectories_parser.h"
+#include <cmath>
+#include <limits>
 
 
 /**
@@ -37,6 +39,18 @@ upperproxy::upperproxy(std::string name) : Node(name){
 void upperproxy::handle_trajectory_points(
     const std_msgs::msg::Float64MultiArray::SharedPtr msg)
     {
+    if (msg->data.size() < 6 || msg->data.size() % 3 != 0) {
+        RCLCPP_WARN(this->get_logger(), "Provide at least two [adduction_rad, sweep_rad, speed_rad_s] triples");
+        return;
+    }
+    for (size_t i = 0; i < msg->data.size(); ++i) {
+        if (!std::isfinite(msg->data[i]) ||
+            std::abs(msg->data[i]) > std::numeric_limits<float>::max() ||
+            (i % 3 == 2 && static_cast<float>(msg->data[i]) <= 0.0f)) {
+            RCLCPP_WARN(this->get_logger(), "Waypoints require finite angles and positive speeds");
+            return;
+        }
+    }
     std::cout << "Received waypoints:\n";
     // Save into shared state so other parts of the system can use them later
     auto &td = turtle_inter_.traj_data;
@@ -60,17 +74,22 @@ void upperproxy::handle_trajectory_points(
     
     RCLCPP_INFO(this->get_logger(), "Stored %d waypoints", td.num_waypoints);
     
-    // If not currently running, auto-start the trajectory
-    if (turtle_inter_.turtle_gui.start_flag == 0) {
-        std::cout << "Auto-starting trajectory execution\n";
-        turtle_inter_.turtle_gui.start_flag = 1;
-    }
+    // Loading a trajectory waits for an explicit Start command.
+    turtle_inter_.turtle_gui.start_flag = 0;
 }
 
 
 void upperproxy::handle_gui
     (const std_msgs::msg::Float64MultiArray::SharedPtr msg){
-        // int len = msg->data.size();
+        if (msg->data.size() < 2 || !std::isfinite(msg->data[1]) ||
+            (msg->data[0] != 0.0 && msg->data[0] != 1.0)) {
+            RCLCPP_WARN(this->get_logger(), "GUI command must contain [0 or 1, mode]");
+            return;
+        }
+        if (msg->data[0] == 1.0 && turtle_inter_.traj_data.num_waypoints < 2) {
+            RCLCPP_WARN(this->get_logger(), "Load a trajectory before Start");
+            return;
+        }
         turtle_inter_.turtle_gui.start_flag = msg->data[0]; 
         turtle_inter_.turtle_gui.drag_traj = msg->data[1];
         // turtle_inter_.traj_data.lateral_angle_range = msg->data[2]; // sweeping range
@@ -89,9 +108,15 @@ void upperproxy::UpdateGuiCommand(turtle& turtle_){
     turtle_.traj_data = turtle_inter_.traj_data;
 }
 
-void upperproxy::PublishTrajectoryComplete(){
+void upperproxy::PublishTrajectoryComplete(turtle &turtle_){
     auto &traj_parser = turtle_namespace::control::TrajectoriesParser::getTrajParser();
     const bool is_complete = traj_parser.trajComplete();
+    if (is_complete) {
+        // Clear both copies so UpdateGuiCommand cannot restore a stale Start.
+        turtle_inter_.turtle_gui.start_flag = 0;
+        turtle_.turtle_gui.start_flag = 0;
+        turtle_.turtle_control.if_control = false;
+    }
     if (is_complete != last_traj_complete_) {
         auto message = std_msgs::msg::Bool();
         message.data = is_complete;

@@ -12,7 +12,6 @@
 
 
 
-turtle_high_controller      
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
   <depend>control_msgs</depend>

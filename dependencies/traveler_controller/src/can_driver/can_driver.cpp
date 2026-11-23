@@ -1,5 +1,6 @@
 #include "can_driver/can_driver.hpp"
 
+// Gantry: adduction node 2 and sweeping node 3 share can0.
 can_driver::can_driver() : Node("can_driver"),
                               //  socket_channel0_axis0_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                               //  socket_channel0_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
@@ -7,20 +8,20 @@ can_driver::can_driver() : Node("can_driver"),
                               //  socket_channel1_axis1_read_(odrive_can::Msg::MSG_ODRIVE_HEARTBEAT | odrive_can::AXIS::AXIS_1_ID,1, 0x7FF, 110000),
                                socket_channel0_get_iq_0(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_channel0_get_iq_1(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
-                               socket_channel1_get_iq_0(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
-                               socket_channel1_get_iq_1(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 110000), 
+                               socket_channel1_get_iq_0(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_3_ID,0, 0x7FF, 500),
+                               socket_channel1_get_iq_1(odrive_can::Msg::MSG_GET_IQ | odrive_can::AXIS::AXIS_2_ID,0, 0x7FF, 110000),
                                socket_get_encoder_estimates_0_axis0(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_get_encoder_estimates_0_axis1(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 110000),
-                               socket_get_encoder_estimates_1_axis0(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
-                               socket_get_encoder_estimates_1_axis1(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 110000),
+                               socket_get_encoder_estimates_1_axis0(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_3_ID,0, 0x7FF, 500),
+                               socket_get_encoder_estimates_1_axis1(odrive_can::Msg::MSG_GET_ENCODER_ESTIMATES | odrive_can::AXIS::AXIS_2_ID,0, 0x7FF, 110000),
                                socket_topic_set_position_0_axis0(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_topic_set_position_0_axis1(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 500),
-                               socket_topic_set_position_1_axis3(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
-                               socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500),
+                               socket_topic_set_position_1_axis3(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_3_ID,0, 0x7FF, 500),
+                               socket_topic_set_position_1_axis2(odrive_can::Msg::MSG_SET_INPUT_POS | odrive_can::AXIS::AXIS_2_ID,0, 0x7FF, 500),
                                socket_topic_set_state_0_axis0(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_0_ID,0, 0x7FF, 500),
                                socket_topic_set_state_0_axis1(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_1_ID,0, 0x7FF, 500),
-                               socket_topic_set_state_1_axis3(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_3_ID,1, 0x7FF, 500),
-                               socket_topic_set_state_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,1, 0x7FF, 500)
+                               socket_topic_set_state_1_axis3(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_3_ID,0, 0x7FF, 500),
+                               socket_topic_set_state_1_axis2(odrive_can::Msg::MSG_SET_AXIS_REQUESTED_STATE | odrive_can::AXIS::AXIS_2_ID,0, 0x7FF, 500)
 
                                {   
    // count = 0;
@@ -225,8 +226,8 @@ void can_driver::get_motor_status(turtle& turtle_){
 void can_driver::setControl(turtle& turtle_){
    // turtle_.turtle_control.left_adduction.set_input_position_radian.can_channel = 0;
    // turtle_.turtle_control.left_sweeping.set_input_position_radian.can_channel = 0;
-   turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 1;
-   turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 1;
+   turtle_.turtle_control.right_adduction.set_input_position_radian.can_channel = 0;
+   turtle_.turtle_control.right_sweeping.set_input_position_radian.can_channel = 0;
    std::cout<<"ifcontrol:" << turtle_.turtle_control.if_control<<std::endl;
    
    if(turtle_.turtle_control.if_control){
